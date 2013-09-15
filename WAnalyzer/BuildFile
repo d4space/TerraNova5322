@@ -1,0 +1,27 @@
+<use name=FWCore/Framework>
+<use name=FWCore/PluginManager>
+<use name=FWCore/ParameterSet>
+<use name=DataFormats/GeometrySurface>
+<use name=DataFormats/HepMCCandidate>
+<use name=DataFormats/MuonReco>
+<use name=DataFormats/VertexReco>
+<use name=DataFormats/Math>
+<use name=DataFormats/PatCandidates>
+<use name=DataFormats/Common>
+<use name=DataFormats/Candidate>
+<use name=PhysicsTools/RecoUtils>
+<use name=PhysicsTools/RecoAlgos>
+<use name=PhysicsTools/UtilAlgos>
+<use name=MagneticField/Records>
+<use name=RecoVertex/KalmanVertexFit>
+<use name=RecoVertex/GaussianSumVertexFit>
+<use name=root>
+<use name=boost>
+<flags EDM_PLUGIN=1>
+<export>
+   <lib name=KNUPhyWAnalyzer>
+   <use name=FWCore/Framework>
+   <use name=FWCore/PluginManager>
+   <use name=FWCore/ParameterSet>
+   <use name=root>
+</export>

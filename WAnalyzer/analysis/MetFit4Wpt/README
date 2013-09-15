@@ -1,0 +1,66 @@
+
+New(2013.05.21)
+Use runAllFits.csh to MET Fit and Systematic uncertainties from Recoil Correction (in html format)
+
+Old Ones
+
+New files added (fitWMuMetRayleighGausSimult.C and fitWEleMetRayleighGausSimult.C) to fit with new Bins.
+
+1) Muon - Before Recoil Correction, MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py MuonConvBeforeRC
+
+2) Muon - After Recoil Correction (Nominal), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py MuonConvNominal
+
+3) Muon - After Recoil Correction (Up), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py MuonConvUp
+
+4) Muon - After Recoil Correction (Down), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py MuonConvDown
+
+5) Electron - Before Recoil Correction, MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py ElectronConvBeforeRC
+
+6) Electron - After Recoil Correction (Nominal), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py ElectronConvNominal
+
+7) Electron - After Recoil Correction (Up), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py ElectronConvUp
+
+8) Electron - After Recoil Correction (Down), MET fit with Convoluted Landau and Gaussian function (Signal and Side Bands fit Simultaneously), use command:
+$ python runFits.py ElectronConvDown
+
+
+*** Make Comparison Plots Before and After Recoil Correction ***
+(Before running the following commands complete steps 1,2(Muon) and 5,6(Electron))
+
+1) Making MET Fit comparison for Bin 0 (Muon):
+$ root -l 'MetFitCompRecoil.C("Mu")'
+
+2) Making MET Fit comparison for Bin 0 (Electron):
+root -l 'MetFitCompRecoil.C("Ele")'
+
+3) Making W pt comparison (Muon):
+$ root -l 'WptFitCompRecoil.C("Mu")'
+
+4) Making W pt Fit comparison (Electron)
+root -l 'WptFitCompRecoil.C("Ele")'
+
+*** Make Systematics ***
+
+1) Muon Systematics
+$ root -l 'Systematics.C("Mu")'
+
+2) Electron Systematics
+$ root -l 'Systematics.C("Ele")'
+
+// 2013.05.07
+
+The signal number txt files added (MuSigNumb.txt and EleSigNumb.txt) with following format:
+
+Bin"\t"WInclusive"\t\t"Wplus"\t\t"Wminus
+7.5     16998.7         10173.2         6820.4
+12.5    17113.2         9976.6          7121.4
+17.5    13531.4         7951.4          5506.2
+...
+

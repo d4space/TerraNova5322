@@ -1,0 +1,47 @@
+<lcgdict>
+
+  <class name="Ky::WLeptNeuCand"/>
+  <class name="std::vector<Ky::WLeptNeuCand>"/>
+  <class name="edm::Wrapper<Ky::WLeptNeuCand>"/>
+  <class name="edm::Wrapper<std::vector<Ky::WLeptNeuCand> >"/>
+  <class name="edm::Ptr<Ky::WLeptNeuCand>"/>
+
+  <class name="Ky::ZCandidate"/>
+  <class name="std::vector<Ky::ZCandidate>"/>
+  <class name="edm::Wrapper<Ky::ZCandidate>"/>
+  <class name="edm::Wrapper<std::vector<Ky::ZCandidate> >"/>
+  <class name="edm::Ptr<Ky::ZCandidate>"/>
+
+  <class name="Ky::Lepton"/>
+  <class name="std::vector<Ky::Lepton>"/>
+  <class name="edm::Wrapper<Ky::Lepton>"/>
+  <class name="edm::Wrapper<std::vector<Ky::Lepton> >"/>
+  <class name="edm::Ptr<Ky::Lepton>"/>
+
+  <class name="Ky::METCandidate"/>
+  <class name="std::vector<Ky::METCandidate>"/>
+  <class name="edm::Wrapper<Ky::METCandidate>"/>
+  <class name="edm::Wrapper<std::vector<Ky::METCandidate> >"/>
+  <class name="edm::Ptr<Ky::METCandidate>"/>
+
+  <class name="Ky::TTbarEvent" />
+  <class name="std::vector<Ky::TTbarEvent>" />
+  <class name="edm::Wrapper<Ky::TTbarEvent>"/>
+  <class name="edm::Wrapper<std::vector<Ky::TTbarEvent> >"/>
+  <class name="edm::Ptr<Ky::TTbarEvent>"/>
+
+  <class name="Ky::TTbarGenEvent" />
+  <class name="std::vector<Ky::TTbarGenEvent>" />
+  <class name="edm::Wrapper<Ky::TTbarGenEvent>"/>
+  <class name="edm::Wrapper<std::vector<Ky::TTbarGenEvent> >"/>
+  <class name="edm::Ptr<Ky::TTbarGenEvent>"/>
+
+  <class name="Ky::TTbarMass" />
+  <class name="std::vector<Ky::TTbarMass>" />
+  <class name="edm::Wrapper<Ky::TTbarMass>"/>
+  <class name="edm::Wrapper<std::vector<Ky::TTbarMass> >"/>
+  <class name="edm::Ptr<Ky::TTbarMass>"/>
+
+
+</lcgdict>
+

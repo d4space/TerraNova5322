@@ -1,0 +1,44 @@
+20120703=============================
+tool.py
+	changeConeSize
+	change the electrons cone size 03
+	rhoFor2011Aeff
+WAnalyzer/prod/Electron/
+	pf2pat_electron_local_cfg.py
+		changeConeSize --> activate
+		rhoFor2011Aeff
+CommonTools/src/KyElectronSelector.cc
+	rhoIso
+WAnalyzer/prod/Electron/RD/Multicarb/pf2pat_electron_cfg.py
+	changeConeSize
+	rhoFor2011Aeff
+	patConversions ##These three for all of the Multicrab config files
+
+20120709================================
+WAnalyzer/python/pf2pat_template_MC(RD)_cfg.py
+	use for skim
+	specify global tag to these files
+	specify the output skim root file name
+WAnalyzer/KNUPhy/src/wEle(Mu)NeuFilter.cc
+	Dimuon.KalmanVtxFit for Drell-Yan Veto
+KNUPhy/WAnalyzer/wAnalysis_RD(MC)_cff
+	use this at your ntuple making scripts
+20120713======================
+WAnalyzer/KNUPhy/src/wEleNeuFilter.cc
+	bug fixing
+20120718========================
+WAnalyzer/KNUPhy/src/wMuNeuFilter.cc
+	bug fixing
+	it1.innerTrack()
+analysis/MuNeu/W_Pt/WMuNeu.C
+	bug fixing
+	dz=fabs((*W_Lept1_dz)[iw]
+20121213======================
+	Add two files to be used in both Muon and Electron case
+	KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h
+	KNUPhy/WAnalyzer/src/wLeptNeuFilter.cc
+
+20121219=======================
+	KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h
+	KNUPhy/WAnalyzer/interface/wLeptNeuBranchVars.h
+	KNUPhy/WAnalyzer/src/wLeptNeuFilter.cc

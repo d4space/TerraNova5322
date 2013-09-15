@@ -1,0 +1,5 @@
+qsub -q cms run_cfg.sh
+
+check:
+qstat 
+qstat -q

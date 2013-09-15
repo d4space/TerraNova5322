@@ -1,0 +1,28 @@
+
+Commands to submit batch job in lxplus5:
+
+====================================================================================
+1. bsub -R "pool>30000" -q 1nw -J job1 < run_ZG_Incl_cfg.sh
+2. bjobs  		#check the status of all running jobs
+3. bjobs -a  		#check the status of all jobs including finished jobs
+4. bkill -J job1	# Killing a Job
+
+====================================================================================
+
+Detailed Information:
+
+1) -R "pool>30000" means you want a minimum free space of 30G to run your job.
+
+2) -q 1nw means you are submitting to the 1-week que.
+
+Other available queues are:
+8nm (8 minutes) (By default)
+1nh (1 hour)
+8nh (8 hour)
+1nd (1day)
+2nd (2day)
+1nw (1 week)
+2nw (2 week)
+
+3) -J job1 sets job1 as your job name.
+

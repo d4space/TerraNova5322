@@ -1,0 +1,50 @@
+Making input files from producer
+use hadd to merge
+Making SCToPF===================================
+1. et distribution
+	vi testTagProbeFitTreeAnalyzer_Zee.py
+	set "isMC = True(False)"
+
+	EfficiencyBinsSC
+	probe_sc_et = cms.vdouble( 0,10,15,17,19,22,25,27,30,35,60,100,200 )
+	#probe_sc_eta = cms.vdouble( -2.5,2.5 )
+
+	cmsRun testTagProbeFitTreeAnalyzer_Zee.py
+	modify the input file name in sc_wptCut_et.C for MC or RD
+	root -l sc_wptCut_et.C
+
+2. eta distribution
+	vi testTagProbeFitTreeAnalyzer_Zee.py
+	set "isMC = True(False)"
+
+	EfficiencyBinsSC
+	probe_sc_et = cms.vdouble( 25,1500 )
+	probe_sc_eta = cms.vdouble( -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 )                                                               
+
+	cmsRun testTagProbeFitTreeAnalyzer_Zee.py
+	root -l sc_wptCut_eta.C
+
+
+Making WptCut to HLT===================================
+1. et distribution
+	vi testTagProbeFitTreeAnalyzer_Zee.py
+	set "isMC = True(False)"
+
+	EfficiencyBinsHLT
+	probe_sc_et = cms.vdouble( 0,10,15,17,19,22,25,27,30,35,60,100,200 )
+	#probe_sc_eta = cms.vdouble( -2.5,2.5 )
+
+	cmsRun testTagProbeFitTreeAnalyzer_Zee.py
+	modify the input file name in trig_pt.C for MC or RD
+	root -l trig_pt.C
+
+2. eta distribution
+	vi testTagProbeFitTreeAnalyzer_Zee.py
+	set "isMC = True(False)"
+
+	EfficiencyBinsSC
+	probe_sc_et = cms.vdouble( 25,1500 )
+	probe_sc_eta = cms.vdouble( -2.5, -2.0, -1.5, -1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5 )                                                               
+
+	cmsRun testTagProbeFitTreeAnalyzer_Zee.py
+	root -l trig_eta.C

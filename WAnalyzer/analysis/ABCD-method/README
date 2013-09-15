@@ -1,0 +1,7 @@
+
+1) Muon Signal Sa+Sb
+$ root -l 'ABCD_calc.C("Mu")'
+
+2) Electron Signal Sa+Sb
+$ root -l 'ABCD_calc.C("Ele")'
+

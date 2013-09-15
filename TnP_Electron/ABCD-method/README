@@ -1,0 +1,9 @@
+
+
+This folder is made for ABCD I ratio analysys.
+I=(Sa+Sb)/(Sa+Sb+Sc+Sd)
+
+First we calculate the ele effi Tag-WptHLT, Probe-SuperCluster, PassingProbe - Sa+Sb area
+Then we calculate the ele effi Tag-WptHLT, Probe-SuperCluster, PassingProbe - Sa+Sb+Sc+Sd area, which is Wpt cut without SigmaIetaIeta cut.
+
+Then we divide them to get I ratio.

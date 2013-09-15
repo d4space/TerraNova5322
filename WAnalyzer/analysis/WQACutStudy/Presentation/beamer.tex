@@ -1,0 +1,305 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  This Beamer template was created by Cameron Bracken.
+%%  Anyone can freely use or modify it for any purpose
+%%  without attribution.
+%%
+%%  Last Modified: January 9, 2009
+%%
+%%% usage by Sunghyun :
+%%% pdflatex beamer.tex
+%%%
+
+
+\documentclass[xcolor=x11names,compress]{beamer}
+
+%% General document %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}
+%\usepackage{tikz}
+%\usetikzlibrary{decorations.fractals}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%% Beamer Layout %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\useoutertheme[subsection=false,shadow]{miniframes}
+\useinnertheme{default}
+\usefonttheme{serif}
+\usepackage{palatino}
+
+\setbeamerfont{title like}{shape=\scshape}
+\setbeamerfont{frametitle}{shape=\scshape}
+
+\setbeamercolor*{lower separation line head}{bg=DeepSkyBlue4} 
+\setbeamercolor*{normal text}{fg=black,bg=white} 
+\setbeamercolor*{alerted text}{fg=red} 
+\setbeamercolor*{example text}{fg=black} 
+\setbeamercolor*{structure}{fg=black} 
+ 
+\setbeamercolor*{palette tertiary}{fg=black,bg=black!10} 
+\setbeamercolor*{palette quaternary}{fg=black,bg=black!10} 
+
+\renewcommand{\(}{\begin{columns}}
+\renewcommand{\)}{\end{columns}}
+\newcommand{\<}[1]{\begin{column}{#1}}
+\renewcommand{\>}{\end{column}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{\scshape Introduction}
+\begin{frame}
+\title{Cut Optimization Study for WQA}
+%\subtitle{SUBTITLE}
+%\vspace{}
+
+\author{~\\ ~\\ ~\\ ~\\
+	Sunghyun Chang\\
+	{\it Kangwon Nat.Uiv.}
+}
+\date{
+	\today
+}
+\titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{Contents}
+%\tableofcontents
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{\scshape Introduction}
+%\begin{frame}{Introduction}
+
+%\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{\scshape Background}
+\section{Current Selection Summary Table}
+\begin{frame}{Current Selection Summary Table}
+  
+  \begin{table}
+    \begin{center}
+      {\footnotesize
+        \begin{tabular}{lll}
+          Variable & name on code & Values \\
+          \hline
+          $p_{T}$                & pT            & $>$ 30 $GeV$ \\
+          $\eta_{SC}$            & etaSC         & $|\eta|<1.442$(EB), $1.566<|\eta| <2.5$(EE) \\
+          $\sigma_{i\eta i\eta}$   & sigmaIEtaIEta & $<0.01$(EB),    $<0.03$(EE) \\
+          $d_{\eta_{in}}$          & dEtaIn        & $<0.004$(EB),    $<0.007$(EE) \\
+          $d_{\phi_{in}}$         & dPhiIn         & $<0.06$(EB),    $<0.03$(EE) \\
+          $H/E$                 & HoverE        & $<0.12$(EB),$<0.10$(EE)\\
+          $d_{xy}$               & dxy           & $<0.02$(EB,EE) \\
+          $d_{z}$               & dz             & $<0.1$(EB,EE) \\
+          $E_{inv.} - P_{inv.}$   & InvEminusInvP  & $<0.05$(Eb,EE)\\
+          missing Hit          & mHits          & $=0$ \\
+          Conversion           & hasConversion  & No \\
+          Relative Isolation   & relIsoRho03    & $<0.15$ \\
+        \end{tabular}
+      }
+    \end{center}
+  \end{table}
+  
+  
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{\scshape Introduction}
+%\begin{frame}{Samples}
+\begin{frame}{Samples and Selections}
+
+  \begin{itemize}
+  \item Samples
+    \begin{itemize}
+    \item MC (Summer12, S10)
+      \begin{itemize}
+      \item Signal : WToENu
+      \item EWK : DYToEE,DYToTauTau,WToTauNu,G$\_$Pt50to80,TT$\_$CT10
+      \item QCD : QCDpt30-50,QCDpt50-80,QCDpt80-120,QCDpt120-170
+      \end{itemize}
+    \item Real Data : 1024.849 $pb^-1$
+      \begin{itemize}
+      \item 2012A$\_$13Jul, 2012A$\_$recover$\_$06Aug, 2012C$\_$EcalRecover$\_$11Dec$\_$v1
+      \end{itemize}
+    \end{itemize}
+   
+  \item Selection
+    \begin{itemize}
+    \item Trigger : HLT$\_$Ele27$\_$WP80
+    \item Minimum $p_{T}$ : 30 $GeV$
+    \item ECals : EB = $|\eta|<1.442$, EE = $1.566<|\eta| <2.5$, EBEE = $|\eta| < 2.5$
+    \end{itemize}
+  \end{itemize}
+  
+  
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Histograms}
+\begin{frame}{MET}
+
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Neut_pt_EBEE.png}
+      \includegraphics{../LOG10/W_Neut_pt_EB.png}
+      \includegraphics{../LOG10/W_Neut_pt_EE.png}
+    }
+    % \caption{A mouse}
+  \end{figure}
+  
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{frame}{electron $\sigma_{i\eta i\eta}$}
+  $\sigma_{i\eta i\eta}$ : $<$ 0.01(EB), $<$ 0.03(EE)
+  % \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_sigmaIEtaIEta_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_sigmaIEtaIEta_EB.png}
+      \includegraphics{../LOG10/W_Lept1_sigmaIEtaIEta_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{electron $d\eta_{in}$}
+$d\eta_{in}$ : $<$ 0.004(EB), $<$ 0.007(EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_dEtaIn_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_dEtaIn_EB.png}
+      \includegraphics{../LOG10/W_Lept1_dEtaIn_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Histogram:: electron $d\phi_{in}$}
+$d\phi_{in}$ : $<$ 0.06(EB), $<$ 0.03(EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_dPhiIn_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_dPhiIn_EB.png}
+      \includegraphics{../LOG10/W_Lept1_dPhiIn_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{electron H/E}
+H/E : $<$ 0.12(EB),$<$ 0.10(EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_HoverE_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_HoverE_EB.png}
+      \includegraphics{../LOG10/W_Lept1_HoverE_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{electron $E_{inv}-P_{inv}$}
+$E_{inv}-P_{inv}$ : $<$ 0.05(EB,EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_InvEminusInvP_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_InvEminusInvP_EB.png}
+      \includegraphics{../LOG10/W_Lept1_InvEminusInvP_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{electron $d_{z}$}
+$d_{z}$ : $<$ 0.1(EB,EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_dz_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_dz_EB.png}
+      \includegraphics{../LOG10/W_Lept1_dz_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{electron $d_{xy}$}
+$d_{xy}$ : $<$ 0.02(EB,EE)
+%  \vspace{-5pt}
+  \begin{figure}[ht!]
+    \centering
+    \scalebox{0.13}
+    {
+      \includegraphics{../LOG10/W_Lept1_dxy_EBEE.png}
+      \includegraphics{../LOG10/W_Lept1_dxy_EB.png}
+      \includegraphics{../LOG10/W_Lept1_dxy_EE.png}
+    }
+%    \caption{A mouse}
+  \end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\subsection{frame 3}
+%\begin{frame}{frame 3}
+
+%\end{frame}
+
+
+\end{document}

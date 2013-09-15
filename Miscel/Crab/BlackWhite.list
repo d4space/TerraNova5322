@@ -1,0 +1,9 @@
+# By Storage
+se_black_list =	
+#se_black_list =	T2_US_Purdue
+#se_white_list = T2_KR_KNU
+
+## By ComputingElement
+ce_black_list =red.unl.edu, red-gw1.unl.edu, red-gw2.unl.edu, pg.ihepa.ufl.edu, ntugrid2.phys.ntu.edu.tw, osg.hpc.ufl.edu, lcgce04.phy.bris.ac.uk
+#ce_black_list =red.unl.edu, red-gw1.unl.edu, red-gw2.unl.edu, cit-gatekeeper.ultralight.org,cit-gatekeeper.ultralight2.org,ce01.cmsaf.mit.edu, ce02.cmsaf.mit.edu, pg.ihepa.ufl.edu, ntugrid2.phys.ntu.edu.tw, osg.hpc.ufl.edu, lcgce04.phy.bris.ac.uk
+

@@ -1,0 +1,94 @@
+#include <iostream.h>
+#include <sstream>
+#include <TMath.h>       /* fmax */
+#include <stdlib.h>
+#include <string.h>
+#define Nbin 5
+void glbToId_pt()
+{
+  ofstream txtfile;
+  char txtfname[100];
+  char histfname[100];
+  sprintf(txtfname,"pt_plus.txt");
+  sprintf(histfname,"pt_plus.png");
+  //sprintf(txtfname,"pt_minus.txt");
+  //sprintf(histfname,"pt_minus.png");
+  txtfile.open(txtfname);
+  txtfile << fixed << setprecision(4);
+  TCanvas *myCan=new TCanvas("myCan","myCan",800,600);
+  gStyle->SetLineWidth(2.);
+  gStyle->SetLabelSize(0.04,"xy");
+  gStyle->SetTitleSize(0.05,"xy");
+  gStyle->SetTitleOffset(1.1,"x");
+  gStyle->SetTitleOffset(1.2,"y");
+  gStyle->SetPadTopMargin(0.1);
+  gStyle->SetPadRightMargin(0.1);
+  gStyle->SetPadBottomMargin(0.16);
+  gStyle->SetPadLeftMargin(0.12);
+
+  myCan->SetGrid();
+  TLegend* Lgd = new TLegend(.8, .25,.9,.35);
+  
+  TFile *f_MCndof2= new TFile("TnP_GlbToID_MCptplus_WptTight2012_pt.root","read");
+  TFile *f_MCndof4= new TFile("TnP_GlbToID_MCptplus_ndof4_WptTight2012_pt.root","read");
+
+  //TFile *f_MCndof2= new TFile("TnP_GlbToID_MCptminus_WptTight2012_pt.root","read");
+  //TFile *f_MCndof4= new TFile("TnP_GlbToID_MCptminus_ndof4_WptTight2012_pt.root","read");
+
+  RooDataSet *datasetMC = (RooDataSet*)f_MCndof2->Get("tpTree/WptTight2012_pt/fit_eff");
+  cout<<"ntry: "<<datasetMC->numEntries()<<endl;
+  double XMC[Nbin],XMCerrL[Nbin],XMCerrH[Nbin],YMC[Nbin],YMCerrLo[Nbin],YMCerrHi[Nbin],ErrMC[Nbin];
+  for(int i(0); i<datasetMC->numEntries();i++)
+  {
+    const RooArgSet &pointMC=*datasetMC->get(i);
+    RooRealVar &ptMC=pointMC["pt"],&effMC = pointMC["efficiency"];
+    XMC[i]=ptMC.getVal();
+    XMCerrL[i]=-ptMC.getAsymErrorLo();
+    XMCerrH[i]=ptMC.getAsymErrorHi();
+    YMC[i]=effMC.getVal();
+    YMCerrLo[i]=-effMC.getAsymErrorLo();
+    YMCerrHi[i]=effMC.getAsymErrorHi();
+    ErrMC[i]=TMath::Max(YMCerrLo[i],YMCerrHi[i]);
+  }
+  grMC=new TGraphAsymmErrors(4,XMC,YMC,XMCerrL,XMCerrH,YMCerrLo,YMCerrHi);
+  grMC->SetLineColor(kRed);
+  grMC->SetMarkerColor(kRed);
+  grMC->SetMinimum(0.5);
+  grMC->SetMaximum(1.1);
+  grMC->GetXaxis()->SetNdivisions(505);
+  grMC->GetXaxis()->SetTitle("Muon p_{T} [GeV]");
+  grMC->GetYaxis()->SetTitle("ID+ISO Efficiency");
+  grMC->Draw("AP");
+
+  RooDataSet *datasetRD = (RooDataSet*)f_MCndof4->Get("tpTree/WptTight2012_pt/fit_eff");
+  double XRD[Nbin],XRDerrL[Nbin],XRDerrH[Nbin],YRD[Nbin],YRDerrLo[Nbin],YRDerrHi[Nbin],ErrRD[Nbin];
+  for(int i(0); i<datasetRD->numEntries();i++)
+  {
+    const RooArgSet &pointRD=*datasetRD->get(i);
+    RooRealVar &ptRD=pointRD["pt"],&effRD = pointRD["efficiency"];
+    XRD[i]=ptRD.getVal();
+    XRDerrL[i]=-ptRD.getAsymErrorLo();
+    XRDerrH[i]=ptRD.getAsymErrorHi();
+    YRD[i]=effRD.getVal();
+    YRDerrLo[i]=-effRD.getAsymErrorLo();
+    YRDerrHi[i]=effRD.getAsymErrorHi();
+    ErrRD[i]=TMath::Max(YRDerrLo[i],YRDerrHi[i]);
+  }
+  txtfile << "Bins \t MC ndof>2\t\t\t MC ndof>4 \t\t\t Scale Factor ndof4/ndof2 "  << endl;
+  for(int i(0); i<datasetRD->numEntries();i++)
+  {
+    txtfile << i << "\t" << YMC[i] << "+/-" << ErrMC[i] << "\t\t" << YRD[i] << "+/-" << ErrRD[i] << "\t\t" << YRD[i]/YMC[i] << "+/-" << YRD[i]*sqrt(ErrMC[i]*ErrMC[i]/(YMC[i]*YMC[i])+ErrRD[i]*ErrRD[i]/(YRD[i]*YRD[i]))/YMC[i] << endl;
+  }
+
+  grRD=new TGraphAsymmErrors(4,XRD,YRD,XRDerrL,XRDerrH,YRDerrLo,YRDerrHi);
+  grRD->SetLineColor(kBlack);
+  grRD->SetMarkerColor(kBlack);
+  Lgd->AddEntry(grMC,"MC ndof>2");
+  Lgd->AddEntry(grRD,"MC ndof>4");
+  Lgd->SetFillStyle(0);
+  Lgd->Draw();
+  grRD->Draw("PSAME");
+  
+  myCan->SaveAs(histfname);
+  txtfile.close();
+}

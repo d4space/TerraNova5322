@@ -1,0 +1,22 @@
+#! /bin/tcsh -f
+cmsRun fitTracking.py MCptplus
+cmsRun fitTracking.py MCptminus
+cmsRun fitTracking.py RDptplus
+cmsRun fitTracking.py RDptminus
+cmsRun fitTracking.py MCetaplus
+cmsRun fitTracking.py MCetaminus
+cmsRun fitTracking.py RDetaplus
+cmsRun fitTracking.py RDetaminus
+#cmsRun fitTracking.py MCetaplus_20
+#cmsRun fitTracking.py MCetaminus_20
+#cmsRun fitTracking.py RDetaplus_20
+#cmsRun fitTracking.py RDetaminus_20
+#cmsRun fitTracking.py MCetaplus_40
+#cmsRun fitTracking.py MCetaminus_40
+#cmsRun fitTracking.py RDetaplus_40
+#cmsRun fitTracking.py RDetaminus_40
+#cmsRun fitTracking.py MCetaplus_55
+#cmsRun fitTracking.py MCetaminus_55
+#cmsRun fitTracking.py RDetaplus_55
+#cmsRun fitTracking.py RDetaminus_55
+

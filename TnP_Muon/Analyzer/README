@@ -1,0 +1,63 @@
+Track Efficiency =========================
+Modify fitTracking.py
+	PREFIX, *.root files depending on RD and MC
+	ETA_BINS, PT_BINS
+cmsRun fitTracking.py RDptplus : for RD, pt, plus
+Modify track_pt.C
+	Nbin
+	TFile....
+	myCan->SaveAs("track_MCplus_pt.png")
+	myCan->SaveAs("track_MCplus_pt.eps")
+Modify track_eta.C
+	Nbin
+	TFile....
+	myCan->SaveAs("track_MCplus_eta.png")
+	myCan->SaveAs("track_MCplus_eta.eps")
+STA Efficiency=======================
+Modify fitSTA.py
+	PREFIX, *.root files depending on RD and MC
+	ETA_BINS, PT_BINS
+cmsRun fitSTA.py RDptplus : for RD, pt, plus
+Modify trkToSTA_pt.C
+	Nbin
+	TFile....
+	myCan->SaveAs("trkToSTA_MCplus_pt.png")
+	myCan->SaveAs("trkToSTA_MCplus_pt.eps")
+Modify trkToSTA_eta.C
+	Nbin
+	TFile....
+	myCan->SaveAs("trkToSTA_MCplus_eta.png")
+	myCan->SaveAs("trkToSTA_MCplus_eta.eps")
+ID,ISO Efficiency=======================
+Modify fitIDIso.py
+	PREFIX, *.root files depending on RD and MC
+	ETA_BINS, PT_BINS
+cmsRun fitIDIso.py RDptplus : for RD, pt, plus
+Modify glbToId_pt.C
+	Nbin
+	TFile....
+	myCan->SaveAs("glbToId_MCplus_pt.png")
+	myCan->SaveAs("glbToId_MCplus_pt.eps")
+Modify glbToId_eta.C
+	Nbin
+	TFile....
+	myCan->SaveAs("glbToId_MCplus_eta.png")
+	myCan->SaveAs("glbToId_MCplus_eta.eps")
+Trigger Efficiency=======================
+Modify fitTrigger.py
+	PREFIX, *.root files depending on RD and MC
+	ETA_BINS, PT_BINS
+cmsRun fitIDIso.py RDptplus : for RD, pt, plus
+Modify trig_pt.C
+	Nbin
+	TFile....
+	myCan->SaveAs("trig_McPlus_pt.png")
+	myCan->SaveAs("trig_McPlus_pt.eps")
+Modify trig_eta.C
+	Nbin
+	TFile....
+	myCan->SaveAs("trig_McPlus_eta.png")
+	myCan->SaveAs("trig_McPlus_eta.eps")
+
+
+

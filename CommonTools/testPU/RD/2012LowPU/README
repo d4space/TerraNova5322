@@ -1,0 +1,11 @@
+1. Add /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/Prompt/pileup_JSON_DCSONLY_190389-193575.txt file to
+KNUPhy/WAnalyzer/prod/JSONs/ directory.
+
+2. extract files from "macro.tar" to the directory: /UserCode/KNUPhy/CommonTools/testPU/ (all files should be in this directory)
+
+3. Run tsch script ("./LowPU.tcsh") to creat Real Data "LowPUHist.root" file.
+
+4. Run "root -l RD_LowPU.C" to create "RD_S8_PU_distribution.png" and "RD_S8_PU_distribution.txt" files in current directory. 
+
+5. Compare output files with the files in result.tar
+

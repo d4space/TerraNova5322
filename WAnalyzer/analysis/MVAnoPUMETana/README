@@ -1,0 +1,7 @@
+MVA NoPU study:
+
+Uncomment MVAnoPUMETana study related lines in ../EventSelection/WLepNeu.C and ../EventSelection/WLepNeu.h files.
+
+Run $ root -l MvaNoPuMEtAna.C to get root files.
+
+Run $ root -l CompMvaNoPuMEt.C to compare MET and NoPU MET.
