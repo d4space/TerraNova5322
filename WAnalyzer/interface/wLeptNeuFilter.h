@@ -2492,8 +2492,9 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Lept1_relIsoBeta04 = (Lept1_chIso04+
 	  max(0.0, Lept1_nhIso04 + Lept1_phIso04 - 0.5*Lept1_pcIso04))
 	  /Lept1_pt;
+      double rhoPrime = max(rhoIso, 0.0);
       Lept1_relIsoRho03 = (Lept1_chIso03 +
-	  max(0.0, Lept1_nhIso03 + Lept1_phIso03 - rhoIso*Lept1_AEff03))
+	  max(0.0, Lept1_nhIso03 + Lept1_phIso03 - rhoPrime*Lept1_AEff03))
 	/Lept1_pt;
       Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
       Lept1_mHits = it1.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
@@ -2722,8 +2723,9 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Lept2_relIsoBeta04 = (Lept2_chIso04+
             max(0.0, Lept2_nhIso04 + Lept2_phIso04 - 0.5*Lept2_pcIso04))
             /Lept2_pt;
+	double rhoPrime = max(rhoIso, 0.0);
         Lept2_relIsoRho03 = (Lept2_chIso03 +
-            max(0.0, Lept2_nhIso03 + Lept2_phIso03 - rhoIso*Lept2_AEff03))
+            max(0.0, Lept2_nhIso03 + Lept2_phIso03 - rhoPrime*Lept2_AEff03))
           /Lept2_pt;
         Lept2_hasConversion = ConversionTools::hasMatchedConversion(it2,conversions_h, beamSpot_h->position());
         Lept2_mHits = it2.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
