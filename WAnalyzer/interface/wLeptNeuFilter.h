@@ -436,6 +436,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     GenZs.py		= new std::vector<double>;
     GenZs.pz		= new std::vector<double>;
     GenZs.pt		= new std::vector<double>;
+//    GenZs.Neut_pt	= new std::vector<double>;
     GenZs.eta		= new std::vector<double>;
     GenZs.phi		= new std::vector<double>;
     GenZs.Lept1_id	= new std::vector<int>;
@@ -465,7 +466,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Lept1_genDeltaR	= new std::vector<double>;
     Ws.Lept1_genDPtRel	= new std::vector<double>;
 
-
+//    double	GenZs.Neut_pt;
 
     tmp = fs->make<TH1F>("EventSummary","EventSummary",filters_.size(),0,filters_.size());
 
@@ -512,6 +513,7 @@ private:
     double px,py,pz,pt,eta,phi;
     double Lept1_px,Lept1_py,Lept1_pz,Lept1_en,Lept1_pt,Lept1_eta,Lept1_phi,Lept1_et,Lept1_charge;
     double Lept2_px,Lept2_py,Lept2_pz,Lept2_en,Lept2_pt,Lept2_eta,Lept2_phi,Lept2_et,Lept2_charge;
+    double Neut_pt;
   };
   double genDeltaR1, genDeltaR2;
   double BestGenDeltaR1, BestGenDeltaR2;
@@ -1241,6 +1243,7 @@ void clear()
   GenZs.py->clear();
   GenZs.pz->clear();
   GenZs.pt->clear();
+//  GenZs.Neut_pt->clear();
   GenZs.eta->clear();
   GenZs.phi->clear();
   GenZs.Lept1_id->clear();
@@ -1618,6 +1621,7 @@ virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
   GenZinfo.eta=-999;GenZinfo.phi=-999;
   GenZinfo.Lept1_eta=-999;GenZinfo.Lept1_phi=-999;
   GenZinfo.Lept2_eta=-999;GenZinfo.Lept2_phi=-999;
+//  GenZinfo.Neut_pt=0;
 
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByLabel(genParticlesLabel_, genParticles);
@@ -1632,6 +1636,12 @@ virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
     // 3 (identifies the "hard part" of the interaction, i.e. the partons that are used in the matrix
     // element calculation, including immediate decays of resonances.)
     //                       Z0 = 23 ,Gamma = 22
+    if( ((abs(boson.pdgId()) == 12) || (abs(boson.pdgId()) == 14) || (abs(boson.pdgId()) == 16)) && (boson.status() == 1))
+//    {
+//      GenZinfo.Neut_pt = daughter->pt();
+//      GenZs.Neut_pt += GenZinfo.Neut_pt;
+      GenZs.Neut_pt += boson.pt();
+//    }
 
     if( ((abs(boson.pdgId()) == 23) || (abs(boson.pdgId()) == 22)) && (boson.status() == 3))
     {
@@ -1649,6 +1659,7 @@ virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
       for(unsigned int j(0); j<boson.numberOfDaughters();j++)
       {
 	reco::GenParticleRef daughter = boson.daughterRef(j);
+//	if( ((abs(daughter->pdgId()) == 12) || (abs(daughter->pdgId()) == 14) || (abs(daughter->pdgId()) == 16)) && (daughter->status() == 1))
 	if( abs(daughter->pdgId()) != 11 &&
 	    abs(daughter->pdgId()) != 12 &&
 	    abs(daughter->pdgId()) != 13 &&
@@ -2492,9 +2503,8 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Lept1_relIsoBeta04 = (Lept1_chIso04+
 	  max(0.0, Lept1_nhIso04 + Lept1_phIso04 - 0.5*Lept1_pcIso04))
 	  /Lept1_pt;
-      double rhoPrime = max(rhoIso, 0.0);
       Lept1_relIsoRho03 = (Lept1_chIso03 +
-	  max(0.0, Lept1_nhIso03 + Lept1_phIso03 - rhoPrime*Lept1_AEff03))
+	  max(0.0, Lept1_nhIso03 + Lept1_phIso03 - rhoIso*Lept1_AEff03))
 	/Lept1_pt;
       Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
       Lept1_mHits = it1.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
@@ -2723,9 +2733,8 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Lept2_relIsoBeta04 = (Lept2_chIso04+
             max(0.0, Lept2_nhIso04 + Lept2_phIso04 - 0.5*Lept2_pcIso04))
             /Lept2_pt;
-	double rhoPrime = max(rhoIso, 0.0);
         Lept2_relIsoRho03 = (Lept2_chIso03 +
-            max(0.0, Lept2_nhIso03 + Lept2_phIso03 - rhoPrime*Lept2_AEff03))
+            max(0.0, Lept2_nhIso03 + Lept2_phIso03 - rhoIso*Lept2_AEff03))
           /Lept2_pt;
         Lept2_hasConversion = ConversionTools::hasMatchedConversion(it2,conversions_h, beamSpot_h->position());
         Lept2_mHits = it2.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
@@ -2965,7 +2974,8 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	    //Only for W with 2*lepts
 	    if( (*GenWs.Born_nLepts)[iGen] != 2)continue;
 	    //Distance between genMu and Mu---------
-	    if( fabs((*GenWs.PostLept1_id)[iGen]) == GenType::kElectron)
+//	    if( fabs((*GenWs.PostLept1_id)[iGen]) == GenType::kElectron)
+	    if( fabs((*GenWs.PostLept1_id)[iGen]) == GenType::kTau)
 	    {
 	      genDeltaR1 = deltaR( (*GenWs.PostLept1_eta)[iGen],(*GenWs.PostLept1_phi)[iGen],
 		  Lept1_eta, Lept1_phi);
@@ -2981,7 +2991,8 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	      }
 	      //if(genDeltaR1 < 0.025)break;
 	    }
-	    if( fabs((*GenWs.PostLept2_id)[iGen]) == GenType::kElectron)
+//	    if( fabs((*GenWs.PostLept2_id)[iGen]) == GenType::kElectron)
+	    if( fabs((*GenWs.PostLept2_id)[iGen]) == GenType::kTau)
 	    {
 	      genDeltaR1 = deltaR( (*GenWs.PostLept2_eta)[iGen],(*GenWs.PostLept2_phi)[iGen],
 		  Lept1_eta, Lept1_phi);
@@ -3089,8 +3100,10 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	    dPtRel1 = -999;dPtRel2 = -999;
 	    idxMatch = -999;
 	    if( (*GenZs.nLepts)[iGen] != 2)continue;
-	    if( abs((*GenZs.Lept1_id)[iGen]) != GenType::kElectron) continue;
-	    if( abs((*GenZs.Lept2_id)[iGen]) != GenType::kElectron) continue;
+//	    if( abs((*GenZs.Lept1_id)[iGen]) != GenType::kElectron) continue;
+//	    if( abs((*GenZs.Lept2_id)[iGen]) != GenType::kElectron) continue;
+	    if( abs((*GenZs.Lept1_id)[iGen]) != GenType::kTau) continue;
+	    if( abs((*GenZs.Lept2_id)[iGen]) != GenType::kTau) continue;
 	    genDeltaR1 = deltaR( (*GenZs.Lept1_eta)[iGen],(*GenZs.Lept1_phi)[iGen],
 	                          Lept1_eta, Lept1_phi);
 	    dPtRel1 = fabs(Lept1_pt-(*GenZs.Lept1_pt)[iGen])/(*GenZs.Lept1_pt)[iGen];

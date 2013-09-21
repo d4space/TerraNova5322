@@ -198,13 +198,8 @@ if(Debug)cout<<"check point 4"<<endl;    //
     if(Vtx_nPrim < 1 ) continue;
     // Check the VTX cuts for the largest Sum(Pt) vertex
     if( (*vtx_isFake)[0] )continue;
-<<<<<<< WLepNeu.C
-    //if( (*vtx_ndof)[0] <= 2 ) continue; // Our Study
-    if( (*vtx_ndof)[0] <= 4 ) continue; //W&Z Xsec study
-=======
 //    if( (*vtx_ndof)[0] <= 2 ) continue; // Our Study
       if( (*vtx_ndof)[0] <= 4 ) continue; //W&Z Xsec study
->>>>>>> 1.7
     if( (*vtx_z)[0] >= 24 ) continue;
     if( (*vtx_Rho)[0] >= 2 ) continue;
 
@@ -213,13 +208,8 @@ if(Debug)cout<<"check point 5"<<endl;
     for( int ivtx(0);ivtx<Vtx_nPrim; ivtx++)
     {
       if( (*vtx_isFake)[ivtx] )continue;
-<<<<<<< WLepNeu.C
-      //if( (*vtx_ndof)[ivtx] <= 2 ) continue; // Our Study
-      if( (*vtx_ndof)[ivtx] <= 4 ) continue; //W&Z Xsec study
-=======
 //      if( (*vtx_ndof)[ivtx] <= 2 ) continue; // Our Study
       if( (*vtx_ndof)[ivtx] <= 4 ) continue; //W&Z Xsec study
->>>>>>> 1.7
       if( (*vtx_z)[ivtx] >= 24 ) continue;
       if( (*vtx_Rho)[ivtx] >= 2 ) continue;
       Vtx_GoodN++;

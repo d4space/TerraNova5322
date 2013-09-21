@@ -699,6 +699,7 @@ class GenZboson
     vector<double>*     Lept2_charge;
     vector<double>*	Lept2_eta;
     vector<double>*	Lept2_phi;
+    double		Neut_pt;
     void Register(TTree *tree)
     {
       tree->Branch("GenZ_nLepts"	,&nLepts);
@@ -710,6 +711,7 @@ class GenZboson
       tree->Branch("GenZ_py",&py);
       tree->Branch("GenZ_pz",&pz);
       tree->Branch("GenZ_pt",&pt);
+      tree->Branch("GenZ_Neut_pt",&Neut_pt);
       tree->Branch("GenZ_eta",&eta);
       tree->Branch("GenZ_phi",&phi);
       tree->Branch("GenZ_Lept1_id",&Lept1_id);
