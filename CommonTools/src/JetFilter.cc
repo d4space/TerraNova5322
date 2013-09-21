@@ -252,10 +252,10 @@ JetFilter::beginJob()
 {
 
   if ( doJecFly_ ){
-    edm::FileInPath jecL1File("KNUPhy/CommonTools/python/JEC/chs/"+globalTag_+"_L1FastJet_AK5PFchs.txt");
-    edm::FileInPath jecL2File("KNUPhy/CommonTools/python/JEC/chs/"+globalTag_+"_L2Relative_AK5PFchs.txt");
-    edm::FileInPath jecL3File("KNUPhy/CommonTools/python/JEC/chs/"+globalTag_+"_L3Absolute_AK5PFchs.txt");
-    edm::FileInPath jecL2L3File("KNUPhy/CommonTools/python/JEC/chs/"+globalTag_+"_L2L3Residual_AK5PFchs.txt");
+    edm::FileInPath jecL1File("KoSMP/CommonTools/python/JEC/chs/"+globalTag_+"_L1FastJet_AK5PFchs.txt");
+    edm::FileInPath jecL2File("KoSMP/CommonTools/python/JEC/chs/"+globalTag_+"_L2Relative_AK5PFchs.txt");
+    edm::FileInPath jecL3File("KoSMP/CommonTools/python/JEC/chs/"+globalTag_+"_L3Absolute_AK5PFchs.txt");
+    edm::FileInPath jecL2L3File("KoSMP/CommonTools/python/JEC/chs/"+globalTag_+"_L2L3Residual_AK5PFchs.txt");
     std::vector<JetCorrectorParameters> jecParams;
     jecParams.push_back(JetCorrectorParameters(jecL1File.fullPath()));
     jecParams.push_back(JetCorrectorParameters(jecL2File.fullPath()));

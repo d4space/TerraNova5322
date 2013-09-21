@@ -10,10 +10,10 @@
 //#include "DataFormats/Candidate/interface/Candidate.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "KNUPhy/CommonTools/interface/MuonIDSelector.h"
+#include "KoSMP/CommonTools/interface/MuonIDSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatMuonSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatLeptonSelector.h"
-#include "KNUPhy/CommonTools/interface/LeptonIsoSelector.h"
+#include "KoSMP/CommonTools/interface/LeptonIsoSelector.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/InputTag.h"

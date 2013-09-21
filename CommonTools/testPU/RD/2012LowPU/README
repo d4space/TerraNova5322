@@ -1,7 +1,7 @@
 1. Add /afs/cern.ch/cms/CAF/CMSCOMM/COMM_DQM/certification/Collisions12/8TeV/Prompt/pileup_JSON_DCSONLY_190389-193575.txt file to
-KNUPhy/WAnalyzer/prod/JSONs/ directory.
+KoSMP/WAnalyzer/prod/JSONs/ directory.
 
-2. extract files from "macro.tar" to the directory: /UserCode/KNUPhy/CommonTools/testPU/ (all files should be in this directory)
+2. extract files from "macro.tar" to the directory: /UserCode/KoSMP/CommonTools/testPU/ (all files should be in this directory)
 
 3. Run tsch script ("./LowPU.tcsh") to creat Real Data "LowPUHist.root" file.
 

@@ -42,8 +42,8 @@
  
 #include "DataFormats/RecoCandidate/interface/IsoDepositDirection.h"
 
-#include "KNUPhy/CommonTools/interface/KySpecificIsolation.h"
-#include "KNUPhy/CommonTools/interface/KyCombinedIsolation.h"
+#include "KoSMP/CommonTools/interface/KySpecificIsolation.h"
+#include "KoSMP/CommonTools/interface/KyCombinedIsolation.h"
 
 #include "Math/VectorUtil.h"
 #include "TMath.h"
