@@ -21,14 +21,14 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 isMC = False
 
 #InputFileName = "/d2/scratch/Storage_Area/Wpt-efficiency/Electron/TnP_root_files_full/testNewWrite_RD.root"
-#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Ele_ABCD/Producer/Crab/ABCD-method/AB-ABCD/crab_root_files_from_Sangil/testNewWrite_Total.root"
+#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Ele_ABCD/Producer/Crab/ABCD-method/AB-ABCD/crab_root_files_from_Sangil/testNewWrite_Total.root"
 
-#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-Sb_Probe-SC/crab_root_files_from_Sangil/testNewWrite_ReReco.root"
-#nputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-SaSbScSd_Probe-SC/crab_root_files_from_Sangil/testNewWrite_Total.root"
+#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-Sb_Probe-SC/crab_root_files_from_Sangil/testNewWrite_ReReco.root"
+#nputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-SaSbScSd_Probe-SC/crab_root_files_from_Sangil/testNewWrite_Total.root"
 
-#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-SaSbScSd_Probe-SC/crab_root_files_from_Sangil/testNewWrite_Total.root"
+#InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster/PassProb-SaSbScSd_Probe-SC/crab_root_files_from_Sangil/testNewWrite_Total.root"
 
-InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster-TagWpt/PassProb-SaSb_Probe-SC/crab_root_files/testNewWrite_Total.root"
+InputFileName = "/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Ele_ABCD/Producer/Crab/ABCD-method-SuperCluster-TagWpt/PassProb-SaSb_Probe-SC/crab_root_files/testNewWrite_Total.root"
 
 
 #InputFileName = "/terranova_1/W_TnP/Ele_skim_root/RD/ReReco/testNewWrite_RD_ReReco.root"
@@ -41,7 +41,7 @@ if isMC:
 
   InputFileName = "/d2/scratch/Storage_Area/Wpt-efficiency/Electron/TnP_root_files_full/testNewWrite_MC.root"
 
-  #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/KNUPhy/TnP_Electron/Producer/Local/MC/testNewWrite.root"
+  #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/KoSMP/TnP_Electron/Producer/Local/MC/testNewWrite.root"
   # this is not working, you need to set PDFName = "" for each line
 ##  PDFName =""
   PDFName = "pdfSignalPlusBackground"

@@ -75,18 +75,18 @@ scram runtime -sh
 #scram b -j 9 # (lots of output here, but nothing to worry about)
 
 #===========================================================================
-# Before compile KNUPhy, maybe change headerfiles EGamma to EgammaAnalysis 
+# Before compile KoSMP, maybe change headerfiles EGamma to EgammaAnalysis 
 #===========================================================================
-#  ./KNUPhy/CommonTools/interface/KyElectronSelector.h:
+#  ./KoSMP/CommonTools/interface/KyElectronSelector.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
-#  ./KNUPhy/WAnalyzer/interface/wEleNeuFilter.h:
+#  ./KoSMP/WAnalyzer/interface/wEleNeuFilter.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 
-#  ./KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h:
+#  ./KoSMP/WAnalyzer/interface/wLeptNeuFilter.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
@@ -97,15 +97,15 @@ scram runtime -sh
 #setenv CVS_RSH ssh
 #setenv CVSROOT :ext:sangilpark@155.230.23.122:/cern/CVS
 
-#cvs co KNUPhy
+#cvs co KoSMP
 
-#cd KNUPhy
+#cd KoSMP
 
 scram b -j 9
 
 
 #echo -e "\n*************************************************"
-#echo -e " Done compiling KNUPhy"
+#echo -e " Done compiling KoSMP"
 #echo -e " Now making symbolic link to example config file"
 #echo -e "*************************************************"
 #echo -e " \n"

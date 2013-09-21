@@ -150,8 +150,8 @@ process.TnP_GlbToID = Template.clone(
 
 #PREFIX="/terranova_1/W_TnP/Muon/V5/"
 
-#PREFIX="/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Muon/ABCD_Muon/crab_roots/"
-PREFIX="/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Muon/ABCD_Muon/Khakim_crab_roots/"
+#PREFIX="/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Muon/ABCD_Muon/crab_roots/"
+PREFIX="/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Muon/ABCD_Muon/Khakim_crab_roots/"
 
 #PREFIX="/afs/cern.ch/work/g/gpetrucc/CMSSW_5_2_4_patch4/src/MuonAnalysis/TagAndProbe/test/zmumu/"
 if "RD" in scenario:

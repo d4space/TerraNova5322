@@ -1,4 +1,4 @@
-#include "KNUPhy/DataFormats/interface/TTbarGenEvent.h"
+#include "KoSMP/DataFormats/interface/TTbarGenEvent.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "TMath.h"
 

@@ -15,10 +15,10 @@ process = cms.Process("PAT")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KNUPhy.WAnalyzer.pat_S10_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-process.load("KNUPhy.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
-#from KNUPhy.WAnalyzer.tools import *
+from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+process.load("KoSMP.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
+#from KoSMP.WAnalyzer.tools import *
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -118,7 +118,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.patMuonFilter.minNumber = 1
 
 ## Source
-process.load("KNUPhy.WAnalyzer.Sources.SourceTemplate_cff")
+process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
 
 process.out.outputCommands +=pf2patEventContent
 

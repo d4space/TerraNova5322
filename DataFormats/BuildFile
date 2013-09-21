@@ -3,7 +3,7 @@
 <use name=DataFormats/PatCandidates>
 <use name=rootrflx>
 <export>
-  <lib name=KNUPhyDataFormats>
+  <lib name=KoSMPDataFormats>
   <use name=DataFormats/Common>
   <use name=DataFormats/JetReco>
   <use name=DataFormats/Candidate>

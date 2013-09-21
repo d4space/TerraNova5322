@@ -9,14 +9,14 @@ set CfgFile=wEleNeuFilter1_MC_cfg.py
 #set CASTORDIR=$2
 #echo $CfgFile
 
-#set WorkDir=/afs/cern.ch/work/s/salee/private/W/CMSSW_5_2_5/src/KNUPhy/WAnalyzer/test/batch/MuNeu/Run2012A_SingleMu_PromptV1
-#set WorkDir=/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KNUPhy/WAnalyzer/test/local/MuNeu/Hammid_Muon_ntuple/DYToMuMu
-#set WorkDir=/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KNUPhy/WAnalyzer/test/local/EleNeu/Hammid_Electron_allConversions_V4/WplusToEleNu
+#set WorkDir=/afs/cern.ch/work/s/salee/private/W/CMSSW_5_2_5/src/KoSMP/WAnalyzer/test/batch/MuNeu/Run2012A_SingleMu_PromptV1
+#set WorkDir=/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KoSMP/WAnalyzer/test/local/MuNeu/Hammid_Muon_ntuple/DYToMuMu
+#set WorkDir=/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KoSMP/WAnalyzer/test/local/EleNeu/Hammid_Electron_allConversions_V4/WplusToEleNu
 
-set WorkDir=/d1/scratch/jungmin/cms/CMSSW_5_3_7_patch4/src/KNUPhy/WAnalyzer/test/McS10_2012/batch/WminusToTauNu/
-#set WorkDir=/d1/scratch/jungmin/cms/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/test/batch/EleNeu/DYToEE_highPU
+set WorkDir=/d1/scratch/jungmin/cms/CMSSW_5_3_7_patch4/src/KoSMP/WAnalyzer/test/McS10_2012/batch/WminusToTauNu/
+#set WorkDir=/d1/scratch/jungmin/cms/CMSSW_5_2_6/src/KoSMP/WAnalyzer/test/batch/EleNeu/DYToEE_highPU
 
-#/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KNUPhy/WAnalyzer/test/local/MuNeu/Hammid_Muon_ntuple/DYToMuMu
+#/d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KoSMP/WAnalyzer/test/local/MuNeu/Hammid_Muon_ntuple/DYToMuMu
 
 #if [ $# -ne 1 ]
 #then
@@ -27,16 +27,16 @@ set WorkDir=/d1/scratch/jungmin/cms/CMSSW_5_3_7_patch4/src/KNUPhy/WAnalyzer/test
 cd $WorkDir 
 
 #pwd >haha.log
-#source /afs/cern.ch/user/s/salee/WorkSpace/private/W/CMSSW_5_2_5/src/KNUPhy/Miscel/Env/setenv4CMSSW525.tcsh
+#source /afs/cern.ch/user/s/salee/WorkSpace/private/W/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
 
-#source /d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KNUPhy/Miscel/Env/setenv4CMSSW525.tcsh
+#source /d2/scratch/knuhamid/Wpt-x-section/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
 
 source /cvmfs/cms.cern.ch/cmsset_default.csh
 
 setenv SCRAM_ARCH slc5_amd64_gcc462
 
-# source /u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KNUPhy/Miscel/Env/setenv4CMSSW525.tcsh
-# source /mnt/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KNUPhy/Miscel/Env/setenv4CMSSW525.tcsh
+# source /u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
+# source /mnt/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
 
 cmsenv
 #eval `/opt/exp_soft/cms/common/scramv1 runtime -csh`

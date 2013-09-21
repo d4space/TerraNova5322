@@ -16,7 +16,7 @@ process.source = cms.Source("PoolSource",
 	#'/store/data/Run2012A/SingleMu/AOD/PromptReco-v1/000/191/226/3C402D34-DA87-E111-8FCC-003048D37694.root',
     ),
 )
-#process.load("KNUPhy.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_AOD_CP_local_cff")
+#process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_AOD_CP_local_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )    
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -70,7 +70,7 @@ from MuonAnalysis.MuonAssociators.patMuonsWithTrigger_cff import *
 changeRecoMuonInput(process, "mergedMuons")
 
 
-from KNUPhy.TnP_Muon.common_variables_cff import *
+from KoSMP.TnP_Muon.common_variables_cff import *
 process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
 
 process.tagMuons = cms.EDFilter("PATMuonSelector",

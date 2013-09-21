@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from KNUPhy.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from KNUPhy.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
-from KNUPhy.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 muonId = muonSelectorPSet.clone()
 muonId.verbose = False 
 muonId.dB = 0.2

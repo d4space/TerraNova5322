@@ -1,4 +1,4 @@
-#include "KNUPhy/DataFormats/interface/Maos.h"
+#include "KoSMP/DataFormats/interface/Maos.h"
 
 using namespace std;
 using namespace Ky;

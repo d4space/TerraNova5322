@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from KNUPhy.WAnalyzer.pf2pat_template_RD_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
+from KoSMP.WAnalyzer.pf2pat_template_RD_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
 
 postfix = "PFlow"
 jetAlgo="AK5"

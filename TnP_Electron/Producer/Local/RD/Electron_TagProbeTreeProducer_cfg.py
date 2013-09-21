@@ -6,10 +6,10 @@ process.p=cms.Path()
 # Include
 ##########################
 
-#from KNUPhy.WAnalyzer.pf2pat_template_MC_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
-from KNUPhy.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+#from KoSMP.WAnalyzer.pf2pat_template_MC_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
+from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 ## MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.Geometry_cff")
@@ -81,12 +81,12 @@ process.source = cms.Source("PoolSource",
 )
 if MC_flag:
   print "MC sample"
-  process.load("KNUPhy.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
 else:
   print "RD sample"
-  process.load("KNUPhy.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
-#process.load("KNUPhy.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
+#process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
 ############################
 # Output
 ############################

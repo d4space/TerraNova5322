@@ -1,5 +1,5 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "KNUPhy/WAnalyzer/interface/wEleNeuFilter.h"
+#include "KoSMP/WAnalyzer/interface/wEleNeuFilter.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/Electron.h"
 #include "DataFormats/PatCandidates/interface/MET.h"

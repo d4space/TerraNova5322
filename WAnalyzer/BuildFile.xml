@@ -23,7 +23,7 @@
 <use name="DataFormats/L1GlobalMuonTrigger"/>
 <use name="DataFormats/L1Trigger"/>
 <use name="HLTrigger/HLTcore"/>
-<use name="KNUPhy/DataFormats"/>
+<use name="KoSMP/DataFormats"/>
 <use name="CommonTools/CandUtils"/>
 <use name="root"/>
 <use name="boost"/>

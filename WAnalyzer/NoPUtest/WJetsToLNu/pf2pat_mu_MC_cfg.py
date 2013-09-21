@@ -12,13 +12,13 @@ produceMVAPFMET=True
 
 process = cms.Process("PAT")
 
-process.load("KNUPhy.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
+process.load("KoSMP.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KNUPhy.WAnalyzer.pat_S10_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
+from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -62,15 +62,15 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
-#from KNUPhy.TnP_Muon.common_variables_cff import *
+#from KoSMP.TnP_Muon.common_variables_cff import *
 #process.acceptedMuons = cms.EDFilter("PATMuonSelector",
 #    src = cms.InputTag("selectedPatMuonsPFlow"),
 #    #cut =cms.string("pt > 10 && "+MuonIDFlags.PogTight12.value()), # for Double Mu
 #    cut =cms.string("pt > 27 && "+MuonIDFlags.POgTight12.value()), # for W
 #    #cut =cms.string("pt > 27 && abs(eta) < 2.1"),
 #)
-from KNUPhy.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from KNUPhy.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 process.acceptedMuons = cms.EDProducer("KyMuonSelector",
     # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
     version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
@@ -136,7 +136,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.patMuonFilter.minNumber = 1
 
 ## Source
-process.load("KNUPhy.WAnalyzer.Sources.SourceTemplate_cff")
+process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
 
 process.out.outputCommands +=pf2patEventContent
 

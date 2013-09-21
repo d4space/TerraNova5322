@@ -80,14 +80,14 @@
 #include <map> //L1
 #include <string> // L1
 
-#include "KNUPhy/DataFormats/interface/Lepton.h"
-#include "KNUPhy/DataFormats/interface/ZCandidate.h"
-#include "KNUPhy/DataFormats/interface/TTbarGenEvent.h"
-#include "KNUPhy/DataFormats/interface/TTbarMass.h"
-#include "KNUPhy/DataFormats/interface/WLeptNeuCand.h"
-#include "KNUPhy/DataFormats/interface/METCandidate.h"
-#include "KNUPhy/DataFormats/interface/Maos.h"
-#include "KNUPhy/WAnalyzer/interface/wLeptNeuBranchVars.h"
+#include "KoSMP/DataFormats/interface/Lepton.h"
+#include "KoSMP/DataFormats/interface/ZCandidate.h"
+#include "KoSMP/DataFormats/interface/TTbarGenEvent.h"
+#include "KoSMP/DataFormats/interface/TTbarMass.h"
+#include "KoSMP/DataFormats/interface/WLeptNeuCand.h"
+#include "KoSMP/DataFormats/interface/METCandidate.h"
+#include "KoSMP/DataFormats/interface/Maos.h"
+#include "KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"

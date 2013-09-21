@@ -1,7 +1,7 @@
 Before submitting qsub jobs, please change Working directory in each run_cfg_* files. 
 For examle in file: DYToMuMu/run_cfg_DYMuMu_part1.sh, line 9:
 
-set WorkDir=/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/test/batch/MuNeu/Run2012LowPU/DYToMuMu
+set WorkDir=/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KoSMP/WAnalyzer/test/batch/MuNeu/Run2012LowPU/DYToMuMu
 
 Change this line to your wNTuple making directory.
 

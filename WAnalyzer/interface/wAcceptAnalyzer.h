@@ -27,7 +27,7 @@
 #include "DataFormats/Common/interface/MergeableCounter.h"
 
 //
-#include "KNUPhy/WAnalyzer/interface/wLeptNeuBranchVars.h"
+#include "KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"

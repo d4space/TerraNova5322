@@ -21,15 +21,15 @@ WAnalyzer/python/pf2pat_template_MC(RD)_cfg.py
 	use for skim
 	specify global tag to these files
 	specify the output skim root file name
-WAnalyzer/KNUPhy/src/wEle(Mu)NeuFilter.cc
+WAnalyzer/KoSMP/src/wEle(Mu)NeuFilter.cc
 	Dimuon.KalmanVtxFit for Drell-Yan Veto
-KNUPhy/WAnalyzer/wAnalysis_RD(MC)_cff
+KoSMP/WAnalyzer/wAnalysis_RD(MC)_cff
 	use this at your ntuple making scripts
 20120713======================
-WAnalyzer/KNUPhy/src/wEleNeuFilter.cc
+WAnalyzer/KoSMP/src/wEleNeuFilter.cc
 	bug fixing
 20120718========================
-WAnalyzer/KNUPhy/src/wMuNeuFilter.cc
+WAnalyzer/KoSMP/src/wMuNeuFilter.cc
 	bug fixing
 	it1.innerTrack()
 analysis/MuNeu/W_Pt/WMuNeu.C
@@ -37,10 +37,10 @@ analysis/MuNeu/W_Pt/WMuNeu.C
 	dz=fabs((*W_Lept1_dz)[iw]
 20121213======================
 	Add two files to be used in both Muon and Electron case
-	KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h
-	KNUPhy/WAnalyzer/src/wLeptNeuFilter.cc
+	KoSMP/WAnalyzer/interface/wLeptNeuFilter.h
+	KoSMP/WAnalyzer/src/wLeptNeuFilter.cc
 
 20121219=======================
-	KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h
-	KNUPhy/WAnalyzer/interface/wLeptNeuBranchVars.h
-	KNUPhy/WAnalyzer/src/wLeptNeuFilter.cc
+	KoSMP/WAnalyzer/interface/wLeptNeuFilter.h
+	KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h
+	KoSMP/WAnalyzer/src/wLeptNeuFilter.cc

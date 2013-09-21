@@ -123,16 +123,16 @@ process.pileupReweightingProducer = cms.EDProducer("PileupWeightProducer",
 process.source = cms.Source("PoolSource",
        fileNames = cms.untracked.vstring(
 
-	 'file:/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KNUPhy/TnP_Electron/Producer/Hammid/MC/DYToEE_5000_copy_1_1_MQr.root',
+	 'file:/u/user/knuhamid/PhD_work/Wp-x-section/CMSSW_5_2_6/src/KoSMP/TnP_Electron/Producer/Hammid/MC/DYToEE_5000_copy_1_1_MQr.root',
 )
 )
 
 #if MC_flag:
 #  print "MC sample"
-#  process.load("KNUPhy.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+#  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
 #else:
 #  print "RD sample"
-#  process.load("KNUPhy.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+#  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
 
 

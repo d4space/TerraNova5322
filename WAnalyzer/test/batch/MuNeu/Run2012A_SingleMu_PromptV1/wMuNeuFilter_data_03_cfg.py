@@ -24,8 +24,8 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNtuple_03.root')
 )
 
-process.load("KNUPhy.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_PatSkim.PatSkim_list03_cff")
-process.load("KNUPhy.WAnalyzer.wAnalysis_cff")
+process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_PatSkim.PatSkim_list03_cff")
+process.load("KoSMP.WAnalyzer.wAnalysis_cff")
 
 process.p = cms.Path(
     process.WMuNeuAnalysisRealDataSequence

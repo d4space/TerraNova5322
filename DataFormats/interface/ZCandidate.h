@@ -15,7 +15,7 @@
 #include "RecoVertex/VertexTools/interface/InvariantMassFromVertex.h"
 
 
-#include "KNUPhy/DataFormats/interface/Lepton.h"
+#include "KoSMP/DataFormats/interface/Lepton.h"
 #include "TLorentzVector.h"
 
 namespace Ky{

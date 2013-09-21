@@ -6,10 +6,10 @@ process.p=cms.Path()
 # Include
 ##########################
 
-#from KNUPhy.WAnalyzer.pf2pat_template_MC_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
-from KNUPhy.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+#from KoSMP.WAnalyzer.pf2pat_template_MC_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
+from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 ## MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 #process.load("Configuration.StandardSequences.Geometry_cff")
@@ -107,8 +107,8 @@ process.source = cms.Source("PoolSource",
 #    'file:/afs/cern.ch/user/y/ykim/public/Run2012A-13Jul2012_sample.root'
 #    'file:/afs/cern.ch/work/t/taehoon/public/DATA/RD/2012/SingleElectron_Run2012B_13Jul2012-v1_AOD.root'
 #'file:/afs/cern.ch/work/t/taehoon/public/DATA/MC/2012/Summer12_DR53X__WToENu_TuneZ2star_8TeV_pythia6_AODSIM_PU_S10_START53_V7A-v2.root'
-#'file:/afs/cern.ch/work/s/shchang/W_V004/CMSSW_5_3_7_patch4/src/KNUPhy/WAnalyzer/prod/Electron/RD/Local/patTuple_skim_l1Filter.root'
-      'file:/d1/scratch/kimtaehoon/HighPU/CMSSW_5_3_8/src/KNUPhy1/TnP_Electron/Producer/Crab/RD/HighPU2012/Run2012A-13Jul2012-v1/Run2012A-13Jul2012_sample.root'
+#'file:/afs/cern.ch/work/s/shchang/W_V004/CMSSW_5_3_7_patch4/src/KoSMP/WAnalyzer/prod/Electron/RD/Local/patTuple_skim_l1Filter.root'
+      'file:/d1/scratch/kimtaehoon/HighPU/CMSSW_5_3_8/src/KoSMP1/TnP_Electron/Producer/Crab/RD/HighPU2012/Run2012A-13Jul2012-v1/Run2012A-13Jul2012_sample.root'
 
 #    pickRelValInputFiles( cmsswVersion  = os.environ['CMSSW_VERSION']
 #                        , relVal        = 'RelValTTbar'
@@ -119,12 +119,12 @@ process.source = cms.Source("PoolSource",
 )
 #if MC_flag:
 #  print "MC sample"
-#  process.load("KNUPhy.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+#  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
 #else:
 #  print "RD sample"
-#  process.load("KNUPhy.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+#  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
-#process.load("KNUPhy.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
+#process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
 ############################
 # Output
 ############################

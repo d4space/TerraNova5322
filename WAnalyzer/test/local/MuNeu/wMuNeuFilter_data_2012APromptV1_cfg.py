@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
 
-process.load("KNUPhy.WAnalyzer.wAnalysis_RD_cff")
+process.load("KoSMP.WAnalyzer.wAnalysis_RD_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(3000) )
@@ -24,7 +24,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNTuple.root')
 )
 
-process.load("KNUPhy.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_AOD_PatSkim_Local_cff")
+process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_AOD_PatSkim_Local_cff")
 
 process.p = cms.Path(
     process.WMuNeuAnalysisRealDataSequence

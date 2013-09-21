@@ -1,5 +1,5 @@
-#include "KNUPhy/DataFormats/interface/TTbarMass.h"
-#include "KNUPhy/DataFormats/interface/Maos.h"
+#include "KoSMP/DataFormats/interface/TTbarMass.h"
+#include "KoSMP/DataFormats/interface/Maos.h"
 
 using namespace Ky;
 

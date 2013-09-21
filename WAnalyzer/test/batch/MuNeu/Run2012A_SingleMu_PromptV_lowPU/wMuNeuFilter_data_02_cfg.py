@@ -23,8 +23,8 @@ process.source = cms.Source("PoolSource",
 process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNtuple_02.root')
 )
-process.load("KNUPhy.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_PatSkim_lowPU.PatSkim_list02_cff")
-process.load("KNUPhy.WAnalyzer.wAnalysis_cff")
+process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_PatSkim_lowPU.PatSkim_list02_cff")
+process.load("KoSMP.WAnalyzer.wAnalysis_cff")
 
 process.p = cms.Path(
     process.WMuNeuAnalysisRealDataSequence

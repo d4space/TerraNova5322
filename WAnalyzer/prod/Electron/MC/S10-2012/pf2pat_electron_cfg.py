@@ -7,14 +7,14 @@ runOnMC=True
 postfix = "PFlow"
 jetAlgo="AK5"
 
-process.load("KNUPhy.WAnalyzer.pf2pat_template_MC_cfg") ##
+process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg") ##
 
 #PF2PAT ##
 process.load("PhysicsTools.PatAlgos.patSequences_cff") ##
 from PhysicsTools.PatAlgos.tools.pfTools import * ##
-from KNUPhy.WAnalyzer.pat_S10_cfg import * ##
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
+from KoSMP.WAnalyzer.pat_S10_cfg import * ##
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
 
 ## Options and Output Report ##
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )##

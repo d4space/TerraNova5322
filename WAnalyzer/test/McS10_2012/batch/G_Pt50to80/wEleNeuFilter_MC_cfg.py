@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
 
-process.load("KNUPhy.WAnalyzer.wAnalysis_MC_cff")
+process.load("KoSMP.WAnalyzer.wAnalysis_MC_cff")
 
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -22,7 +22,7 @@ process.source = cms.Source("PoolSource",
 #'file:dcap://cluster142.knu.ac.kr//pnfs/knu.ac.kr/data/cms/store/user/jungmin/WToTauNu_TuneZ2star_8TeV_pythia6_tauola_cff/S7_WToTauNu_50de11780fc6522573f7cab3fac4808eb7/patTuple_skim_459_1_ToT.root'
 'file:dcap://cluster142.knu.ac.kr//pnfs/knu.ac.kr/data/cms/store/user/jungmin/WToTauNu_TuneZ2star_8TeV_pythia6_tauola_cff/S7_WToTauNu_50/de11780fc6522573f7cab3fac4808eb7/patTuple_skim_459_1_ToT.root'
 
-  #  'file:/d1/scratch/jungmin/cms/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/test/batch/EleNeu/DYToEE_highPU/patTuple_skim_1_1_s6C.root',
+  #  'file:/d1/scratch/jungmin/cms/CMSSW_5_2_6/src/KoSMP/WAnalyzer/test/batch/EleNeu/DYToEE_highPU/patTuple_skim_1_1_s6C.root',
 
 
 
@@ -37,7 +37,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNTuple.root')
 )
 
-#process.load("KNUPhy.WAnalyzer.Sources.SingleEle_MC_Local_cff")
+#process.load("KoSMP.WAnalyzer.Sources.SingleEle_MC_Local_cff")
 
 process.p = cms.Path(
     process.WEleNeuAnalysisMCSequence

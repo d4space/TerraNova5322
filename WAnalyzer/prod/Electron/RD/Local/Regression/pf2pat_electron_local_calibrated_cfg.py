@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from KNUPhy.WAnalyzer.pf2pat_template_RD_cfg import *
-from KNUPhy.WAnalyzer.eventContent_cff import *
-from KNUPhy.WAnalyzer.tools import *
+from KoSMP.WAnalyzer.pf2pat_template_RD_cfg import *
+from KoSMP.WAnalyzer.eventContent_cff import *
+from KoSMP.WAnalyzer.tools import *
 
 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
     calibratedPatElectrons = cms.PSet(
@@ -59,7 +59,7 @@ process.patMuonFilter.minNumber = 0
 process.patElectronFilter.minNumber = 1
 
 ## Source
-process.load("KNUPhy.WAnalyzer.Sources.Run2012A_SingleEle_AOD_copy_cff")
+process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleEle_AOD_copy_cff")
 
 #process.p += process.hltHighLevelMuMuRD
 process.p += process.nEventsHLT

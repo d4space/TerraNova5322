@@ -1,4 +1,4 @@
-#include "KNUPhy/DataFormats/interface/ZCandidate.h"
+#include "KoSMP/DataFormats/interface/ZCandidate.h"
 
 using namespace Ky;
 int ZCandidate::KalmanVtxFit(reco::TransientTrack tranTrk1, reco::TransientTrack tranTrk2)
