@@ -213,6 +213,10 @@ public:
   vector<double>* MVA_Neut_phi;
   vector<double>* MVA_Neut_px;
   vector<double>* MVA_Neut_py;
+  vector<double>* genMEtTrue_pt;
+  vector<double>* genMEtTrue_phi;
+  vector<double>* genMEtTrue_px;
+  vector<double>* genMEtTrue_py;
   vector<double>* Sign;
 
 
@@ -364,6 +368,10 @@ public:
     tree->Branch("Z_MVA_Neut_phi",&MVA_Neut_phi);
     tree->Branch("Z_MVA_Neut_px",&MVA_Neut_px);
     tree->Branch("Z_MVA_Neut_py",&MVA_Neut_py);
+    tree->Branch("Z_genMEtTrue_pt",&genMEtTrue_pt);
+    tree->Branch("Z_genMEtTrue_phi",&genMEtTrue_phi);
+    tree->Branch("Z_genMEtTrue_px",&genMEtTrue_px);
+    tree->Branch("Z_genMEtTrue_py",&genMEtTrue_py);
     tree->Branch("Z_Sign",&Sign);
   }
 };
@@ -445,6 +453,10 @@ public:
   vector<double>*	MVA_Neut_phi;
   vector<double>*	MVA_Neut_px;
   vector<double>*	MVA_Neut_py;
+  vector<double>*	genMEtTrue_pt;
+  vector<double>*	genMEtTrue_phi;
+  vector<double>*	genMEtTrue_px;
+  vector<double>*	genMEtTrue_py;
   vector<double>*	W_pt;
   vector<double>*	W_eta;
   vector<double>*	W_phi;
@@ -533,6 +545,10 @@ public:
     tree->Branch("W_MVA_Neut_phi"	,&MVA_Neut_phi);
     tree->Branch("W_MVA_Neut_px"	,&MVA_Neut_px);
     tree->Branch("W_MVA_Neut_py"	,&MVA_Neut_py);
+    tree->Branch("W_genMEtTrue_pt"	,&genMEtTrue_pt);
+    tree->Branch("W_genMEtTrue_phi"	,&genMEtTrue_phi);
+    tree->Branch("W_genMEtTrue_px"	,&genMEtTrue_px);
+    tree->Branch("W_genMEtTrue_py"	,&genMEtTrue_py);
     tree->Branch("W_pt"	,&W_pt);
     tree->Branch("W_eta"	,&W_eta);
     tree->Branch("W_phi"	,&W_phi);
@@ -602,6 +618,7 @@ class GenWboson
     vector<double>*	PostLept2_eta;
     vector<double>*	BornLept2_phi;
     vector<double>*	PostLept2_phi;
+    double		Neut_pt;
     void Register(TTree *tree)
     {
       //Before FSR
@@ -662,6 +679,7 @@ class GenWboson
       tree->Branch("GenW_PostLept2_charge", 	&PostLept2_charge);
       tree->Branch("GenW_PostLept2_eta",	&PostLept2_eta);
       tree->Branch("GenW_PostLept2_phi",	&PostLept2_phi);
+      tree->Branch("GenW_Neut_pt",		&Neut_pt);
     }
 };
 class GenZboson
