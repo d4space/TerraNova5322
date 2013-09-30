@@ -150,15 +150,15 @@ void WLepNeu::Loop()
 
   bool Debug(false);
 
-  //for (int i(0); i<Ntries;i++)
-  for (int i(0); i<10;i++)
+  for (int i(0); i<Ntries;i++)
+//  for (int i(0); i<2;i++)
   {
     evtCnt = i;
     //===============================
     //W study
     //===============================
     if(i % 100000 == 0) cout<<i<<"th event"<<endl;
-if(Debug)cout<<"check point 1"<<endl;
+    if(Debug)cout<<"check point 1"<<endl;
   //=========
     //dump tree
     //=========
@@ -177,6 +177,7 @@ if(Debug)cout<<"check point 2"<<endl;
     }
 if(Debug)cout<<"check point 3"<<endl;
     if(AnaChannel == "MuonLowPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
+    if(AnaChannel == "MuonHighPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
     if(AnaChannel == "ElectronLowPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
     if(AnaChannel == "ElectronHighPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
     if(AnaChannel == "TauHighPU")if(fabs(Channel) != GenType::kTau) exit(-1);
@@ -242,11 +243,13 @@ if(Debug)cout<<"check point 6"<<endl;
     {
       //additional lepton count
       if(AnaChannel == "MuonLowPU")    if(AddMuonCut(iw)>0) addLepN++;
+      if(AnaChannel == "MuonHighPU")    if(AddMuonCut(iw)>0) addLepN++;
       if(AnaChannel == "ElectronLowPU")if(AddElectronCut(iw)>0) addLepN++;
       if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
       if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
 if(Debug)cout<<"check point 6-1"<<endl;
       if( (AnaChannel =="MuonLowPU" && MuonCut(iw) >0)||
+	  (AnaChannel =="MuonHighPU" && MuonCut(iw) >0)||
 	  (AnaChannel =="ElectronLowPU" && ElectronCut(iw) > 0)||
 	  (AnaChannel =="ElectronHighPU" && ElectronCutHighPU(iw) > 0) ||
 	  (AnaChannel =="TauHighPU" && TauCut(iw) > 0)
@@ -275,13 +278,24 @@ if(Debug)cout<<"check point 6-2"<<endl;
 	  wCand.pcIso04 = (*W_Lept1_pcIso04)[iw];
 	}//Muon Variable Study---------------------
 if(Debug)cout<<"check point 6-3"<<endl;
-	if(Mode != "MVAnoPUMEt") wCand.dz = fabs((*W_Lept1_dz)[iw]);
+//	wCand.dz = fabs((*W_Lept1_dz)[iw]); // Tau channel has a problem!
+	wCand.dz = 1;
 	wCand.Mt = (*W_Mt)[iw];
 	wCand.Met = (*W_Neut_pt)[iw];
 // MVAnoPUMETana study
-	if ("Mode==MVAnoPUMEt")
+	if (Mode=="MVAnoPUMEt")
 	{
-	  wCand.NoPU_Met = (*W_NoPU_Neut_pt)[iw];
+	  W_Met = (*W_Neut_pt)[iw];
+	  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
+	  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
+	  if (abs((*GenW_BornLept1_id)[0])==16)
+	  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+	  else if (abs((*GenW_BornLept2_id)[0])==16)
+	  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+//	  W_Gen_Met = (*W_Neut_pt)[iw];
+	  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
+	    //cout << "There is no genMEt" << endl;
+	  metCnt++;
 	}
 	wCand.lep_pt = (*W_Lept1_pt)[iw];
 	wCand.lep_phi = (*W_Lept1_phi)[iw];
@@ -444,6 +458,7 @@ if(Debug)cout<<"check point 11"<<endl;
       if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
       evtCnt_Z_afterCut++;
       if(AnaChannel == "MuonLowPU")if( MuonCutZ(iz) == -1) continue;
+      if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
       if(AnaChannel == "ElectronLowPU")if( ElectronCutZ(iz) == -1) continue;
       if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
       if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
@@ -467,8 +482,19 @@ if(Debug)cout<<"check point 11"<<endl;
 //	    && abs((*GenZ_id)[iz]) != 22)continue; //Gamma
  //     }
       Z_pass=true;
+
+//MVAnoPUMETana study
+      if (Mode=="MVAnoPUMEt")
+      {
+	Z_Met = (*Z_Neut_pt)[iz];
+	Z_NoPU_Met = (*Z_NoPU_Neut_pt)[iz];
+	Z_MVA_Met = (*Z_MVA_Neut_pt)[iz];
+//	Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem
+	Z_Gen_Met = 1;
+      }
       if( fabs(Channel) != GenType::kTau)tmpVar=(*Z_diLeptVtxProb)[iz];
-      if( tmpVar > diLeptVtxProb )if( fabs(Channel) != GenType::kTau)
+//      if( tmpVar > diLeptVtxProb )if( fabs(Channel) != GenType::kTau)
+      if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
       {
 	diLeptVtxProb = tmpVar;
 	Zmass		= (*Z_Mass)[iz];
@@ -487,12 +513,6 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-// MVAnoPUMETana study
-//      if ("Mode==NoPUMEt")
-//      {
-//      MEtZ = (*Z_Neut_pt)[iz];
-//      noPUMEtZ = (*Z_NoPU_Neut_pt)[iz];
-//      }
 	if(AnaChannel=="ElectronLowPU" ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
@@ -536,7 +556,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	}//fi Recoil or RecoilMC
       }//fi diLeptVtxProb
       ZLep2PtTmp = (*Z_Lept2_pt)[iz];
-      if( ZLep2PtTmp > ZLep2Pt )if( fabs(Channel) == GenType::kTau)
+//      if( ZLep2PtTmp > ZLep2Pt )if( fabs(Channel) == GenType::kTau)
+      if( fabs(Channel) != GenType::kTau) if( ZLep2PtTmp > ZLep2Pt )
       {
 	Zmass		= (*Z_Mass)[iz];
 	ZLep1Pt		= (*Z_Lept1_pt)[iz];
@@ -554,12 +575,6 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-// MVAnoPUMETana study
-//      if ("Mode==NoPUMEt")
-//      {
-//      MEtZ = (*Z_Neut_pt)[iz];
-//      noPUMEtZ = (*Z_NoPU_Neut_pt)[iz];
-//      }
 	if(AnaChannel=="ElectronLowPU" ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
@@ -676,10 +691,12 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_W_Neut_pt1->Fill(wCand.Met,TTW);
       
 // MVAnoPUMETana study
-      if ("Mode==NoPUMEt")
+      if (Mode=="MVAnoPUMEt")
       {
-        h1_W_Met->Fill(wCand.Met,TTW);
-        h1_W_NoPU_Met->Fill(wCand.NoPU_Met,TTW);
+	h1_W_Met->Fill(W_Met,TTW);
+	h1_W_NoPU_Met->Fill(W_NoPU_Met,TTW);
+	h1_W_MVA_Met->Fill(W_MVA_Met,TTW);
+	h1_W_Gen_Met->Fill(W_Gen_Met,TTW);
       }
 
     if(AnaChannel == "ElectronHighPU" )
@@ -1014,10 +1031,12 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_Zmass->Fill(Zmass,TTW);
 
 // MVAnoPUMETana study
-      if ("Mode==NoPUMEt")
+      if (Mode=="MVAnoPUMEt")
       {
-        h1_Z_Met->Fill(MEtZ);
-        h1_Z_NoPU_Met->Fill(noPUMEtZ);
+	h1_Z_Met->Fill(Z_Met);
+	h1_Z_NoPU_Met->Fill(Z_NoPU_Met);
+	h1_Z_MVA_Met->Fill(Z_MVA_Met);
+	h1_Z_Gen_Met->Fill(Z_Gen_Met);
       }
 
       //MisChargeStudy
@@ -1130,6 +1149,7 @@ if(Debug)cout<<"check point 11"<<endl;
   cout<<"===================================== "<<endl;
   cout<<"Checking numbers "<<n1+n2+n3+n4+n5+n6+n7+n8+n9+n10+n11+n12+n13<<endl;
   cout<<"===================================== "<<endl;
+  cout<<"There is no genMEt: "<<metCnt<<endl;
 
   Fout.close();
 
@@ -1309,10 +1329,12 @@ if(Debug)cout<<"check point 11"<<endl;
   h1_Vtx_Good1->Write();
   
 // MVAnoPUMETana study
-  if ("Mode==NoPUMEt")
+  if (Mode=="MVAnoPUMEt")
   {
     h1_W_Met->Write();
     h1_W_NoPU_Met->Write();
+    h1_W_MVA_Met->Write();
+    h1_W_Gen_Met->Write();
   }
 
   if(AnaChannel == "ElectronHighPU" )
@@ -1392,11 +1414,13 @@ if(Debug)cout<<"check point 11"<<endl;
   h2_Zpt_ZLep2->Write();
 
 // MVAnoPUMETana study
-//  if ("Mode==NoPUMEt")
-//  {
-//    h1_Z_Met->Write();
-//    h1_Z_NoPU_Met->Write();
-//  }
+  if ("Mode==NoPUMEt")
+  {
+    h1_Z_Met->Write();
+    h1_Z_NoPU_Met->Write();
+    h1_Z_MVA_Met->Write();
+    h1_Z_Gen_Met->Write();
+  }
   if(Mode == "RecoilRD" || Mode == "RecoilMC")
   for( int i(0);i<u1Bin;i++)
   {

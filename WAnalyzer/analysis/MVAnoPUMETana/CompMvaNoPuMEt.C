@@ -5,7 +5,7 @@
 
 void drawDifference(TH1* iH0,TH1 *iH1) {
   std::string lName = std::string(iH0->GetName());
-  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),10,0,100); lHDiff->Sumw2();
+  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),50,0,300); lHDiff->Sumw2();
 //  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax()); lHDiff->Sumw2();
   lHDiff->SetFillColor(kViolet); lHDiff->SetFillStyle(1001); lHDiff->SetLineWidth(1);
   TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
@@ -22,7 +22,7 @@ void drawDifference(TH1* iH0,TH1 *iH1) {
   lHDiff->GetXaxis()->SetLabelSize(0.08);
   lHDiff->GetXaxis()->SetTitle("#slash{E}_{T} [GeV]");
 //  lHDiff->GetXaxis()->CenterTitle();
-  lHDiff->GetYaxis()->SetTitle("MET/MVANoPuMEt");
+  lHDiff->GetYaxis()->SetTitle("MET/NoPuMEt");
 
   for(int i0 = 0; i0 < lHDiff->GetNbinsX()+1; i0++) {
     double lXCenter = lHDiff->GetBinCenter(i0);
@@ -39,7 +39,12 @@ void drawDifference(TH1* iH0,TH1 *iH1) {
 
 void CompMvaNoPuMEt()
 {
-  InpFile = new TFile("ElectronHighPU/Ele_WToENu_S10_NoPUMEt.root");
+//  InpFile = new TFile("ElectronHighPU/Ele_WToENu_S10_NoPUMEt.root");
+//  InpFile = new TFile("ElectronHighPU/Ele_WJets_S10_MVAnoPUMEt.root");
+//  InpFile = new TFile("ElectronHighPU/Ele_TTJets_S10_MVAnoPUMEt.root");
+//  InpFile = new TFile("ElectronHighPU/Ele_ZG_Incl_S10_MVAnoPUMEt.root");
+//  InpFile = new TFile("ElectronHighPU/Ele_ZGToNuNuG_S10_MVAnoPUMEt.root");
+  InpFile = new TFile("ElectronHighPU/Ele_DYJetsToLL_S10_MVAnoPUMEt.root");
 
   char ylabel[100];
 
@@ -48,21 +53,42 @@ void CompMvaNoPuMEt()
 
   met =(TH1D*)InpFile->Get("h1_W_Met")->Clone();
   NoPUmet =(TH1D*)InpFile->Get("h1_W_NoPU_Met")->Clone();
+  MVAmet =(TH1D*)InpFile->Get("h1_W_MVA_Met")->Clone();
+  GENmet =(TH1D*)InpFile->Get("h1_W_Gen_Met")->Clone();
+
 //  met =(TH1D*)InpFile->Get("h1_Z_Met")->Clone();
 //  NoPUmet =(TH1D*)InpFile->Get("h1_Z_NoPU_Met")->Clone();
+//  MVAmet =(TH1D*)InpFile->Get("h1_Z_MVA_Met")->Clone();
 
-  met->SetLineColor(kBlue);
+  met->SetLineColor(kBlack);
   NoPUmet->SetLineColor(kRed);
+  MVAmet->SetLineColor(kBlue);
+  GENmet->SetLineColor(kCyan);
   
-  sprintf(ylabel,"Events / %.1f GeV",NoPUmet->GetBinWidth(1));
-//  NoPUmet->GetYaxis()->SetTitle("Events");
-  NoPUmet->GetYaxis()->SetTitle(ylabel);
-  cout << ylabel << endl;
+//  sprintf(ylabel,"Events / %.1f GeV",NoPUmet->GetBinWidth(1));
+//  NoPUmet->GetYaxis()->SetTitle(ylabel);
+//  NoPUmet->GetYaxis()->SetTitleOffset(1.2);
+//  NoPUmet->GetYaxis()->SetTitleSize(0.04);
+//  NoPUmet->GetYaxis()->SetLabelSize(0.04);
+
+  sprintf(ylabel,"Events / %.1f GeV",MVAmet->GetBinWidth(1));
+  MVAmet->GetYaxis()->SetTitle(ylabel);
+  MVAmet->GetYaxis()->SetTitleOffset(1.2);
+  MVAmet->GetYaxis()->SetTitleSize(0.04);
+  MVAmet->GetYaxis()->SetLabelSize(0.04);
+
+//  sprintf(ylabel,"Events / %.1f GeV",GENmet->GetBinWidth(1));
+//  GENmet->GetYaxis()->SetTitle(ylabel);
+//  GENmet->GetYaxis()->SetTitleOffset(1.2);
+//  GENmet->GetYaxis()->SetTitleSize(0.04);
+//  GENmet->GetYaxis()->SetLabelSize(0.04);
 
   TLegend *lL =new TLegend(0.7,0.7,0.9,0.85);
   lL->SetFillColor(0); lL->SetBorderSize(0);
-  lL->AddEntry(met,"Met","L");
+  lL->AddEntry(MVAmet,"MVA Met","L");
+//  lL->AddEntry(GENmet,"Gen Met","L");
   lL->AddEntry(NoPUmet,"No PU Met","L");
+  lL->AddEntry(met,"Met","L");
   TCanvas *lC0 = new TCanvas("Can","Can",800,800); lC0->cd(); lC0->SetLogy();
   lC0->Divide(1,2,0,0);
   lC0->cd(1)->SetPad(0,0.35,0.95,1.0);
@@ -79,10 +105,16 @@ void CompMvaNoPuMEt()
   gStyle->SetTitleSize(0.08,"xy");
   gStyle->SetTitleOffset(1.2,"x");
   gStyle->SetTitleOffset(1.0,"y");
+  gStyle->SetOptTitle(0);
   TGaxis::SetMaxDigits(3);
 
 //  gPad->SetLogy(1);
-  NoPUmet->Draw("hist");
+//  GENmet->Draw("hist");
+  MVAmet->Draw("hist");
+//  NoPUmet->Draw("hist");
+  NoPUmet->Draw("hist same");
+  MVAmet->Draw("hist same");
+//  GENmet->Draw("hist same");
   met->Draw("hist same");
   lL->Draw();
   
@@ -94,5 +126,13 @@ void CompMvaNoPuMEt()
   lC0->cd(2)->SetTickx(1);
   lC0->cd(2)->SetTicky(1);
   drawDifference(met,NoPUmet);
-  lC0->SaveAs("MetComp.png");
+//  lC0->SaveAs("WMetComp_TTJets.png");
+//  lC0->SaveAs("ZMetComp_TTJets.png");
+//  lC0->SaveAs("WMetComp_Z_Incl.png");
+//  lC0->SaveAs("ZMetComp_Z_Incl.png");
+//  lC0->SaveAs("WMetComp_WJetsToLNu.png");
+//  lC0->SaveAs("ZMetComp_WJetsToLNu.png");
+//  lC0->SaveAs("WMetComp_ZGToNuNuG.png");
+//  lC0->SaveAs("ZMetComp_ZGToNuNuG.png");
+  lC0->SaveAs("WMetComp_DYJets.png");
 }

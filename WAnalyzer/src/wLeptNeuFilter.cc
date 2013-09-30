@@ -1,8 +1,9 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "KoSMP/WAnalyzer/interface/wLeptNeuFilter.h"
+#include "KNUPhy/WAnalyzer/interface/wLeptNeuFilter.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
-
+//#include "DataFormats/METReco/interface/GenMET.h"
+//#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
@@ -125,6 +126,9 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByLabel(MVAMEtLabel_,MVA_MET_hand);
     MVA_MetIt = MVA_MET_hand->begin();
 
+    iEvent.getByLabel(genMEtTrueLabel_,genMEtTrue_hand);
+    genMEtTrue_MetIt = genMEtTrue_hand->begin();
+
     edm::Handle< reco::PFCandidateCollection > pfCandidates_;
     typedef reco::PFCandidateCollection::const_iterator CI;
     iEvent.getByLabel("particleFlow",pfCandidates_);
@@ -179,6 +183,20 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       MVA_pfMet->push_back(MVA_pfmet);
     }
     h_MVA_MET->Fill(MVA_MET);
+
+    genMEtTrue_MET = genMEtTrue_MetIt->pt();
+    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtTrue_corrmet;
+    genMEtTrue_corrmet.SetPxPyPzE(genMEtTrue_MetIt->px(),genMEtTrue_MetIt->py(),0,genMEtTrue_MetIt->pt());
+    genMEtTrue_met->push_back(genMEtTrue_corrmet);
+
+    if(genMEtTrue_Study_){
+      const Ky::METCandidate genMEtTrue_pfmet(genMEtTrue_MET, genMEtTrue_MetIt->sumEt(),
+	   genMEtTrue_MetIt->NeutralEMFraction(), genMEtTrue_MetIt->NeutralHadEtFraction(),
+	   genMEtTrue_MetIt->ChargedHadEtFraction(), genMEtTrue_MetIt->ChargedEMEtFraction(),
+	   genMEtTrue_MetIt->MuonEtFraction() );
+      genMEtTrue_pfMet->push_back( genMEtTrue_pfmet);
+    }
+    h_genMEtTrue->Fill(genMEtTrue_MET);
 
     if(Channel == "Muon"){
       EventData.Channel = GenType::kMuon;

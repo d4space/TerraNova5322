@@ -25,5 +25,11 @@ pf2patEventContent +=[
         'keep *_addPileupInfo_*_*',
 	'keep *_noPileUpPFMEt_*_*',
 	'keep *_pfMEtMVA_*_*',
+	'keep *MET*_*_*_*',
+	'keep *_*met*_*_*',
+	'keep *_*Met*_*_*',
+	#'keep *_genMetTrue_*_*',
+	#'keep *_genMetCalo_*_*',
+	#'keep *_genMetCaloAndNonPrompt_*_*',
 ]
 

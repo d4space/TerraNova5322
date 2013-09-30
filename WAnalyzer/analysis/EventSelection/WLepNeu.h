@@ -380,6 +380,7 @@ public :
    vector<double>  *GenZ_py;
    vector<double>  *GenZ_pz;
    vector<double>  *GenZ_pt;
+   vector<double>  *GenZ_Neut_pt;
    vector<double>  *GenZ_eta;
    vector<double>  *GenZ_phi;
    vector<int>     *GenZ_Lept1_id;
@@ -703,6 +704,7 @@ public :
    TBranch        *b_GenZ_py;   //!
    TBranch        *b_GenZ_pz;   //!
    TBranch        *b_GenZ_pt;   //!
+   TBranch        *b_GenZ_Neut_pt;   //!
    TBranch        *b_GenZ_eta;   //!
    TBranch        *b_GenZ_phi;   //!
    TBranch        *b_GenZ_Lept1_id;   //!
@@ -746,8 +748,12 @@ public :
 // MVAnoPUMETana study
    TH1D*        h1_W_Met;
    TH1D*        h1_W_NoPU_Met;
+   TH1D*        h1_W_MVA_Met;
+   TH1D*        h1_W_Gen_Met;
    TH1D*        h1_Z_Met;
    TH1D*        h1_Z_NoPU_Met;
+   TH1D*        h1_Z_MVA_Met;
+   TH1D*        h1_Z_Gen_Met;
 
    TH1D*	h1_W_Multi;
    
@@ -954,7 +960,6 @@ private:
     double pt;
     double Mt;
     double Met;
-    double NoPU_Met;
     double Nu_px;
     double Nu_py;
     double Met_side;
@@ -983,6 +988,11 @@ private:
   //For filling MET histograms for WQA by chang
   double wqaMetMXBins[NWqaBins];
   double wqaMetMNBins[NWqaBins];
+  
+  //MVAnoPUMETana study Variables
+  double W_Met,W_NoPU_Met,W_MVA_Met,W_Gen_Met;
+  double Z_Met,Z_NoPU_Met,Z_MVA_Met,Z_Gen_Met;
+  int metCnt;
 
   //Z boson Variables
   bool Z_pass;
@@ -1325,6 +1335,7 @@ void WLepNeu::Init(TTree *tree)
    GenZ_py = 0;
    GenZ_pz = 0;
    GenZ_pt = 0;
+   GenZ_Neut_pt = 0;
    GenZ_eta = 0;
    GenZ_phi = 0;
    GenZ_Lept1_id = 0;
@@ -1652,6 +1663,7 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("GenZ_py", &GenZ_py, &b_GenZ_py);
    fChain->SetBranchAddress("GenZ_pz", &GenZ_pz, &b_GenZ_pz);
    fChain->SetBranchAddress("GenZ_pt", &GenZ_pt, &b_GenZ_pt);
+   fChain->SetBranchAddress("GenZ_pt", &GenZ_Neut_pt, &b_GenZ_Neut_pt);
    fChain->SetBranchAddress("GenZ_eta", &GenZ_eta, &b_GenZ_eta);
    fChain->SetBranchAddress("GenZ_phi", &GenZ_phi, &b_GenZ_phi);
    fChain->SetBranchAddress("GenZ_Lept1_id", &GenZ_Lept1_id, &b_GenZ_Lept1_id);
@@ -1696,10 +1708,14 @@ void WLepNeu::Init(TTree *tree)
    h1_W_Neut_pt1 = new TH1D("h1_W_Neut_pt1","W_Neut_pt1",100,0.,100);
 
 // MVAnoPUMETana study
-   h1_W_Met = new TH1D("h1_W_Met","W_Neut_pt",10,0.,100);
-   h1_W_NoPU_Met = new TH1D("h1_W_NoPU_Met","W_NoPU_Neut_pt",10,0.,100);
-   h1_Z_Met = new TH1D("h1_Z_Met","Z_Neut_pt",10,0.,100);
-   h1_Z_NoPU_Met = new TH1D("h1_Z_NoPU_Met","Z_NoPU_Neut_pt",10,0.,100);
+   h1_W_Met = new TH1D("h1_W_Met","W_Neut_pt",20,0.,100);
+   h1_W_NoPU_Met = new TH1D("h1_W_NoPU_Met","W_NoPU_Neut_pt",20,0.,100);
+   h1_W_MVA_Met = new TH1D("h1_W_MVA_Met","W_MVA_Neut_pt",20,0.,100);
+   h1_W_Gen_Met = new TH1D("h1_W_Gen_Met","W_Gen_Neut_pt",20,0.,100);
+   h1_Z_Met = new TH1D("h1_Z_Met","Z_Neut_pt",20,0.,100);
+   h1_Z_NoPU_Met = new TH1D("h1_Z_NoPU_Met","Z_NoPU_Neut_pt",20,0.,100);
+   h1_Z_MVA_Met = new TH1D("h1_Z_MVA_Met","Z_MVA_Neut_pt",20,0.,100);
+   h1_Z_Gen_Met = new TH1D("h1_Z_Gen_Met","Z_Gen_Neut_pt",20,0.,100);
 
    if(AnaChannel == "ElectronHighPU" )
   {
@@ -3864,7 +3880,6 @@ Int_t WLepNeu::InitVar4Evt()
   wCand.lep_phi = 0;
   wCand.lep_eta = 0;
   wCand.lep_etaSC = 0;
-  wCand.NoPU_Met=0;
 
   W_pass=0;
   glbMuChi2=0;
