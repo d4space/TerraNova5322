@@ -33,6 +33,8 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"
 #include "DataFormats/METReco/interface/PFMETCollection.h"
 #include "DataFormats/METReco/interface/GenMETCollection.h"
+#include "DataFormats/METReco/interface/CaloMETCollection.h"
+#include "DataFormats/JetReco/interface/CaloJetCollection.h"
 
 #include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
 #include "DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h"
@@ -45,6 +47,7 @@
 #include "DataFormats/RecoCandidate/interface/RecoCandidate.h"
 #include "TrackingTools/TransientTrack/interface/TransientTrack.h"
 
+#include "DataFormats/Common/interface/MergeableCounter.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositDirection.h"
 #include "DataFormats/RecoCandidate/interface/IsoDeposit.h"
 #include "DataFormats/RecoCandidate/interface/IsoDepositVetos.h"
@@ -111,6 +114,8 @@ class wLeptNeuFilter : public edm::EDFilter{
     noPuMEtLabel_ = iConfig.getParameter<edm::InputTag>("noPuMEtLabel");
     MVAMEtLabel_ = iConfig.getParameter<edm::InputTag>("MVAMEtLabel");
     genMEtTrueLabel_ = iConfig.getParameter<edm::InputTag>("genMEtTrueLabel");
+    genMEtCaloLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloLabel");
+    genMEtCaloAndNonPromptLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloAndNonPromptLabel");    
     jetLabel_ = iConfig.getParameter<edm::InputTag>("jetLabel");
     genParticlesLabel_= iConfig.getParameter<edm::InputTag>("genParticlesLabel");
     vertexLabel_ =  iConfig.getUntrackedParameter<edm::InputTag>("vertexLabel");
@@ -118,6 +123,8 @@ class wLeptNeuFilter : public edm::EDFilter{
     NoPU_metStudy_ = iConfig.getUntrackedParameter<bool>("NoPU_metStudy",false);
     MVA_metStudy_ = iConfig.getUntrackedParameter<bool>("MVA_metStudy",false);
     genMEtTrue_Study_ = iConfig.getUntrackedParameter<bool>("genMEtTrue_Study",false);
+    genMEtCalo_Study_ = iConfig.getUntrackedParameter<bool>("genMEtCalo_Study",false);
+    genMEtCaloAndNonPrompt_Study_ = iConfig.getUntrackedParameter<bool>("genMEtCaloAndNonPrompt_Study",false);
     useEventCounter_ = iConfig.getParameter<bool>("useEventCounter");
     filters_ = iConfig.getUntrackedParameter<std::vector<std::string> >("filters");
     relIso1_ = iConfig.getUntrackedParameter<double>("relIso1");
@@ -291,6 +298,14 @@ class wLeptNeuFilter : public edm::EDFilter{
     Zs.genMEtTrue_phi = new std::vector<double>;
     Zs.genMEtTrue_px = new std::vector<double>;
     Zs.genMEtTrue_py = new std::vector<double>;
+    Zs.genMEtCalo_pt = new std::vector<double>;
+    Zs.genMEtCalo_phi = new std::vector<double>;
+    Zs.genMEtCalo_px = new std::vector<double>;
+    Zs.genMEtCalo_py = new std::vector<double>;
+    Zs.genMEtCaloAndNonPrompt_pt = new std::vector<double>;
+    Zs.genMEtCaloAndNonPrompt_phi = new std::vector<double>;
+    Zs.genMEtCaloAndNonPrompt_px = new std::vector<double>;
+    Zs.genMEtCaloAndNonPrompt_py = new std::vector<double>;
     Zs.Sign=new std::vector<double>; //--(-2), +-(0), ++(2)
 
     Ws.Lept1_isGlobal=new std::vector<bool>;
@@ -367,6 +382,14 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.genMEtTrue_phi = new std::vector<double>;
     Ws.genMEtTrue_px = new std::vector<double>;
     Ws.genMEtTrue_py = new std::vector<double>;
+    Ws.genMEtCalo_pt = new std::vector<double>;
+    Ws.genMEtCalo_phi = new std::vector<double>;
+    Ws.genMEtCalo_px = new std::vector<double>;
+    Ws.genMEtCalo_py = new std::vector<double>;
+    Ws.genMEtCaloAndNonPrompt_pt = new std::vector<double>;
+    Ws.genMEtCaloAndNonPrompt_phi = new std::vector<double>;
+    Ws.genMEtCaloAndNonPrompt_px = new std::vector<double>;
+    Ws.genMEtCaloAndNonPrompt_py = new std::vector<double>;
     Ws.W_pt = new std::vector<double>;
     Ws.W_eta = new std::vector<double>;
     Ws.W_phi = new std::vector<double>;
@@ -482,7 +505,9 @@ class wLeptNeuFilter : public edm::EDFilter{
     h_MET       = fs->make<TH1F>( "h_MET", "MET", 40, 0, 80);
     h_NoPU_MET       = fs->make<TH1F>( "h_NoPU_MET", "NoPU_MET", 40, 0, 80);
     h_MVA_MET       = fs->make<TH1F>( "h_MVA_MET", "MVA_MET", 40, 0, 80);
-    h_genMEtTrue    = fs->make<TH1F>( "h_genMEtTrue", "genMEtTrue", 40, 0, 80);
+    h_genMEtTrue_MET = fs->make<TH1F>( "h_genMEtTrue_MET", "genMEtTrue_MET", 40, 0, 80);
+    h_genMEtCalo_MET = fs->make<TH1F>( "h_genMEtCalo_MET", "genMEtCalo_MET", 40, 0, 80);
+    h_genMEtCaloAndNonPrompt_MET = fs->make<TH1F>( "h_genMEtCaloAndNonPrompt_MET", "genMEtCaloAndNonPrompt_MET", 40, 0, 80);
     h_jetpt30_multi = fs->make<TH1F>( "h_jetpt30_multi", "jet30pt_multi", 10, 0, 10);
     h_npileupin = fs->make<TH1F>( "h_npileupin", "npileupin", 30, 0, 30);
     h_npileup = fs->make<TH1F>( "h_npileup", "npileup", 30, 0, 30);
@@ -495,12 +520,16 @@ class wLeptNeuFilter : public edm::EDFilter{
     NoPU_pfMet = new std::vector<Ky::METCandidate>();
     MVA_pfMet = new std::vector<Ky::METCandidate>();
     genMEtTrue_pfMet = new std::vector<Ky::METCandidate>();
+    genMEtCalo_pfMet = new std::vector<Ky::METCandidate>();
+    genMEtCaloAndNonPrompt_pfMet = new std::vector<Ky::METCandidate>();
     //WLeptNeuCand_v = new std::vector<Ky::WLeptNeuCand>();
     //W_invm = new std::vector<double>;
     met = new std::vector<math::XYZTLorentzVector>();
     NoPU_met = new std::vector<math::XYZTLorentzVector>();
     MVA_met = new std::vector<math::XYZTLorentzVector>();
     genMEtTrue_met = new std::vector<math::XYZTLorentzVector>();
+    genMEtCalo_met = new std::vector<math::XYZTLorentzVector>();
+    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
   ~wLeptNeuFilter()
@@ -546,6 +575,8 @@ private:
   edm::InputTag noPuMEtLabel_;
   edm::InputTag MVAMEtLabel_;
   edm::InputTag genMEtTrueLabel_;
+  edm::InputTag genMEtCaloLabel_;
+  edm::InputTag genMEtCaloAndNonPromptLabel_;
   edm::InputTag jetLabel_;
   edm::InputTag genParticlesLabel_;
   edm::InputTag vertexLabel_;
@@ -568,6 +599,8 @@ private:
   edm::Handle<reco::PFMETCollection> NoPU_MET_hand;
   edm::Handle<reco::PFMETCollection> MVA_MET_hand;
   edm::Handle<reco::GenMETCollection> genMEtTrue_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
 
   //iterator------------------------------
@@ -575,6 +608,8 @@ private:
   reco::PFMETCollection::const_iterator NoPU_MetIt;
   reco::PFMETCollection::const_iterator MVA_MetIt;
   reco::GenMETCollection::const_iterator genMEtTrue_MetIt;
+  reco::GenMETCollection::const_iterator genMEtCalo_MetIt;
+  reco::GenMETCollection::const_iterator genMEtCaloAndNonPrompt_MetIt;
 
   std::vector<std::string> filters_;
 
@@ -588,6 +623,8 @@ private:
   bool NoPU_metStudy_;
   bool MVA_metStudy_;
   bool genMEtTrue_Study_;
+  bool genMEtCalo_Study_;
+  bool genMEtCaloAndNonPrompt_Study_;
   bool useEventCounter_;
   
   // relIso
@@ -619,7 +656,9 @@ private:
   TH1F * h_MET;
   TH1F * h_NoPU_MET;
   TH1F * h_MVA_MET;
-  TH1F * h_genMEtTrue;
+  TH1F * h_genMEtTrue_MET;
+  TH1F * h_genMEtCalo_MET;
+  TH1F * h_genMEtCaloAndNonPrompt_MET;
   TH1F * h_jetpt30_multi;
   TH1F * h_npileupin;
   TH1F * h_npileup;
@@ -632,17 +671,23 @@ private:
   std::vector<Ky::METCandidate>* NoPU_pfMet;
   std::vector<Ky::METCandidate>* MVA_pfMet;
   std::vector<Ky::METCandidate>* genMEtTrue_pfMet;
+  std::vector<Ky::METCandidate>* genMEtCalo_pfMet;
+  std::vector<Ky::METCandidate>* genMEtCaloAndNonPrompt_pfMet;
   //std::vector<Ky::WLeptNeuCand>* WLeptNeuCand_v;
   std::vector<math::XYZTLorentzVector>* met;
   std::vector<math::XYZTLorentzVector>* NoPU_met;
   std::vector<math::XYZTLorentzVector>* MVA_met;
   std::vector<math::XYZTLorentzVector>* genMEtTrue_met;
+  std::vector<math::XYZTLorentzVector>* genMEtCalo_met;
+  std::vector<math::XYZTLorentzVector>* genMEtCaloAndNonPrompt_met;
   std::vector<math::XYZTLorentzVector>* jetspt30;
 
   double MET;
   double NoPU_MET;
   double MVA_MET;
   double genMEtTrue_MET;
+  double genMEtCalo_MET;
+  double genMEtCaloAndNonPrompt_MET;
   double dphimetlepton1;
   double dphimetlepton2;
   double dphimetjet1;
@@ -1117,6 +1162,14 @@ void clear()
   Zs.genMEtTrue_phi->clear();
   Zs.genMEtTrue_px->clear();
   Zs.genMEtTrue_py->clear();
+  Zs.genMEtCalo_pt->clear();
+  Zs.genMEtCalo_phi->clear();
+  Zs.genMEtCalo_px->clear();
+  Zs.genMEtCalo_py->clear();
+  Zs.genMEtCaloAndNonPrompt_pt->clear();
+  Zs.genMEtCaloAndNonPrompt_phi->clear();
+  Zs.genMEtCaloAndNonPrompt_px->clear();
+  Zs.genMEtCaloAndNonPrompt_py->clear();
   Zs.Sign->clear();
 
   Ws.Lept1_isGlobal->clear();
@@ -1193,6 +1246,14 @@ void clear()
   Ws.genMEtTrue_phi->clear();
   Ws.genMEtTrue_px->clear();
   Ws.genMEtTrue_py->clear();
+  Ws.genMEtCalo_pt->clear();
+  Ws.genMEtCalo_phi->clear();
+  Ws.genMEtCalo_px->clear();
+  Ws.genMEtCalo_py->clear();
+  Ws.genMEtCaloAndNonPrompt_pt->clear();
+  Ws.genMEtCaloAndNonPrompt_phi->clear();
+  Ws.genMEtCaloAndNonPrompt_px->clear();
+  Ws.genMEtCaloAndNonPrompt_py->clear();
   Ws.W_pt->clear();
   Ws.W_eta->clear();
   Ws.W_phi->clear();
@@ -1306,10 +1367,14 @@ void clear()
   NoPU_pfMet->clear();
   MVA_pfMet->clear();
   genMEtTrue_pfMet->clear();
+  genMEtCalo_pfMet->clear();
+  genMEtCaloAndNonPrompt_pfMet->clear();
   met->clear();
   NoPU_met->clear();
   MVA_met->clear();
   genMEtTrue_met->clear();
+  genMEtCalo_met->clear();
+  genMEtCaloAndNonPrompt_met->clear();
   jetspt30->clear();
 
     //weight = 1.0;
@@ -2125,6 +2190,14 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.genMEtTrue_phi->push_back(genMEtTrue_MetIt->phi());
       Ws.genMEtTrue_px->push_back(genMEtTrue_MetIt->px());
       Ws.genMEtTrue_py->push_back(genMEtTrue_MetIt->py());
+      Ws.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+      Ws.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+      Ws.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+      Ws.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+      Ws.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+      Ws.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+      Ws.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+      Ws.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -2420,6 +2493,14 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.genMEtTrue_phi->push_back( genMEtTrue_MetIt->phi());
         Zs.genMEtTrue_px->push_back( genMEtTrue_MetIt->px());
         Zs.genMEtTrue_py->push_back( genMEtTrue_MetIt->py());
+	Zs.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+	Zs.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+	Zs.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+	Zs.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+	Zs.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+	Zs.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+	Zs.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+	Zs.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
 	Zs.Sign->push_back(Dimuon.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());
@@ -2657,6 +2738,14 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.genMEtTrue_phi->push_back(genMEtTrue_MetIt->phi());
       Ws.genMEtTrue_px->push_back(genMEtTrue_MetIt->px());
       Ws.genMEtTrue_py->push_back(genMEtTrue_MetIt->py());
+      Ws.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+      Ws.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+      Ws.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+      Ws.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+      Ws.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+      Ws.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+      Ws.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+      Ws.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -2672,7 +2761,7 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 //      cout << "W events MET : " << met->at(0).pt() << endl;
 //      cout << "W events No PU MET : " << NoPU_met->at(0).pt() << endl;
 //      cout << "W events MVA MET : " << MVA_met->at(0).pt() << endl;
-      cout << "W Muon events genMEtTrue : " << genMEtTrue_met->at(0).pt() << endl;
+//      cout << "W Muon events genMEtTrue : " << genMEtTrue_met->at(0).pt() << endl;
 
       for(unsigned j = i+1; j < ele2_hand->size(); j++)
       {
@@ -2965,6 +3054,14 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.genMEtTrue_phi->push_back( genMEtTrue_MetIt->phi());
         Zs.genMEtTrue_px->push_back( genMEtTrue_MetIt->px());
         Zs.genMEtTrue_py->push_back( genMEtTrue_MetIt->py());
+	Zs.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+	Zs.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+	Zs.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+	Zs.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+	Zs.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+	Zs.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+	Zs.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+	Zs.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
 	Zs.Sign->push_back(Dimuon.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());
@@ -3082,6 +3179,14 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.genMEtTrue_phi->push_back(genMEtTrue_MetIt->phi());
       Ws.genMEtTrue_px->push_back(genMEtTrue_MetIt->px());
       Ws.genMEtTrue_py->push_back(genMEtTrue_MetIt->py());
+      Ws.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+      Ws.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+      Ws.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+      Ws.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+      Ws.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+      Ws.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+      Ws.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+      Ws.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -3097,7 +3202,7 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 //      cout << "W events MET : " << met->at(0).pt() << endl;
 //      cout << "W events No PU MET : " << NoPU_met->at(0).pt() << endl;
 //      cout << "W events MVA MET : " << MVA_met->at(0).pt() << endl;
-      cout << "W Electron events genMEtTrue : " << genMEtTrue_met->at(0).pt() << endl;
+//      cout << "W Electron events genMEtTrue : " << genMEtTrue_met->at(0).pt() << endl;
 
       for(unsigned j = i+1; j < tau2_hand->size(); j++)
       {
@@ -3240,6 +3345,14 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.genMEtTrue_phi->push_back( genMEtTrue_MetIt->phi());
         Zs.genMEtTrue_px->push_back( genMEtTrue_MetIt->px());
         Zs.genMEtTrue_py->push_back( genMEtTrue_MetIt->py());
+	Zs.genMEtCalo_pt->push_back(genMEtCalo_met->at(0).pt());
+	Zs.genMEtCalo_phi->push_back(genMEtCalo_MetIt->phi());
+	Zs.genMEtCalo_px->push_back(genMEtCalo_MetIt->px());
+	Zs.genMEtCalo_py->push_back(genMEtCalo_MetIt->py());
+	Zs.genMEtCaloAndNonPrompt_pt->push_back(genMEtCaloAndNonPrompt_met->at(0).pt());
+	Zs.genMEtCaloAndNonPrompt_phi->push_back(genMEtCaloAndNonPrompt_MetIt->phi());
+	Zs.genMEtCaloAndNonPrompt_px->push_back(genMEtCaloAndNonPrompt_MetIt->px());
+	Zs.genMEtCaloAndNonPrompt_py->push_back(genMEtCaloAndNonPrompt_MetIt->py());
 	Zs.Sign->push_back(DiTau.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());

@@ -217,6 +217,14 @@ public:
   vector<double>* genMEtTrue_phi;
   vector<double>* genMEtTrue_px;
   vector<double>* genMEtTrue_py;
+  vector<double>* genMEtCalo_pt;
+  vector<double>* genMEtCalo_phi;
+  vector<double>* genMEtCalo_px;
+  vector<double>* genMEtCalo_py;
+  vector<double>* genMEtCaloAndNonPrompt_pt;
+  vector<double>* genMEtCaloAndNonPrompt_phi;
+  vector<double>* genMEtCaloAndNonPrompt_px;
+  vector<double>* genMEtCaloAndNonPrompt_py;
   vector<double>* Sign;
 
 
@@ -372,6 +380,14 @@ public:
     tree->Branch("Z_genMEtTrue_phi",&genMEtTrue_phi);
     tree->Branch("Z_genMEtTrue_px",&genMEtTrue_px);
     tree->Branch("Z_genMEtTrue_py",&genMEtTrue_py);
+    tree->Branch("Z_genMEtCalo_pt",&genMEtCalo_pt);
+    tree->Branch("Z_genMEtCalo_phi",&genMEtCalo_phi);
+    tree->Branch("Z_genMEtCalo_px",&genMEtCalo_px);
+    tree->Branch("Z_genMEtCalo_py",&genMEtCalo_py);
+    tree->Branch("Z_genMEtCaloAndNonPrompt_pt",&genMEtCaloAndNonPrompt_pt);
+    tree->Branch("Z_genMEtCaloAndNonPrompt_phi",&genMEtCaloAndNonPrompt_phi);
+    tree->Branch("Z_genMEtCaloAndNonPrompt_px",&genMEtCaloAndNonPrompt_px);
+    tree->Branch("Z_genMEtCaloAndNonPrompt_py",&genMEtCaloAndNonPrompt_py);
     tree->Branch("Z_Sign",&Sign);
   }
 };
@@ -457,6 +473,14 @@ public:
   vector<double>*	genMEtTrue_phi;
   vector<double>*	genMEtTrue_px;
   vector<double>*	genMEtTrue_py;
+  vector<double>*	genMEtCalo_pt;
+  vector<double>*	genMEtCalo_phi;
+  vector<double>*	genMEtCalo_px;
+  vector<double>*	genMEtCalo_py;
+  vector<double>*	genMEtCaloAndNonPrompt_pt;
+  vector<double>*	genMEtCaloAndNonPrompt_phi;
+  vector<double>*	genMEtCaloAndNonPrompt_px;
+  vector<double>*	genMEtCaloAndNonPrompt_py;
   vector<double>*	W_pt;
   vector<double>*	W_eta;
   vector<double>*	W_phi;
@@ -549,6 +573,14 @@ public:
     tree->Branch("W_genMEtTrue_phi"	,&genMEtTrue_phi);
     tree->Branch("W_genMEtTrue_px"	,&genMEtTrue_px);
     tree->Branch("W_genMEtTrue_py"	,&genMEtTrue_py);
+    tree->Branch("W_genMEtCalo_pt"	,&genMEtCalo_pt);
+    tree->Branch("W_genMEtCalo_phi"	,&genMEtCalo_phi);
+    tree->Branch("W_genMEtCalo_px"	,&genMEtCalo_px);
+    tree->Branch("W_genMEtCalo_py"	,&genMEtCalo_py);
+    tree->Branch("W_genMEtCaloAndNonPrompt_pt",&genMEtCaloAndNonPrompt_pt);
+    tree->Branch("W_genMEtCaloAndNonPrompt_phi",&genMEtCaloAndNonPrompt_phi);
+    tree->Branch("W_genMEtCaloAndNonPrompt_px",&genMEtCaloAndNonPrompt_px);
+    tree->Branch("W_genMEtCaloAndNonPrompt_py",&genMEtCaloAndNonPrompt_py);
     tree->Branch("W_pt"	,&W_pt);
     tree->Branch("W_eta"	,&W_eta);
     tree->Branch("W_phi"	,&W_phi);

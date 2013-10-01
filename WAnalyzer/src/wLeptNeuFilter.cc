@@ -128,6 +128,12 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     iEvent.getByLabel(genMEtTrueLabel_,genMEtTrue_hand);
     genMEtTrue_MetIt = genMEtTrue_hand->begin();
+    
+    iEvent.getByLabel(genMEtCaloLabel_,genMEtCalo_hand);
+    genMEtCalo_MetIt = genMEtCalo_hand->begin();
+
+    iEvent.getByLabel(genMEtCaloAndNonPromptLabel_,genMEtCaloAndNonPrompt_hand);
+    genMEtCaloAndNonPrompt_MetIt = genMEtCaloAndNonPrompt_hand->begin();
 
     edm::Handle< reco::PFCandidateCollection > pfCandidates_;
     typedef reco::PFCandidateCollection::const_iterator CI;
@@ -188,15 +194,22 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtTrue_corrmet;
     genMEtTrue_corrmet.SetPxPyPzE(genMEtTrue_MetIt->px(),genMEtTrue_MetIt->py(),0,genMEtTrue_MetIt->pt());
     genMEtTrue_met->push_back(genMEtTrue_corrmet);
+    
+    h_genMEtTrue_MET->Fill(genMEtTrue_MET);
 
-    if(genMEtTrue_Study_){
-      const Ky::METCandidate genMEtTrue_pfmet(genMEtTrue_MET, genMEtTrue_MetIt->sumEt(),
-	   genMEtTrue_MetIt->NeutralEMFraction(), genMEtTrue_MetIt->NeutralHadEtFraction(),
-	   genMEtTrue_MetIt->ChargedHadEtFraction(), genMEtTrue_MetIt->ChargedEMEtFraction(),
-	   genMEtTrue_MetIt->MuonEtFraction() );
-      genMEtTrue_pfMet->push_back( genMEtTrue_pfmet);
-    }
-    h_genMEtTrue->Fill(genMEtTrue_MET);
+    genMEtCalo_MET = genMEtCalo_MetIt->pt();
+    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtCalo_corrmet;
+    genMEtCalo_corrmet.SetPxPyPzE(genMEtCalo_MetIt->px(),genMEtCalo_MetIt->py(),0,genMEtCalo_MetIt->pt());
+    genMEtCalo_met->push_back(genMEtCalo_corrmet);
+    
+    h_genMEtCalo_MET->Fill(genMEtCalo_MET);
+
+    genMEtCaloAndNonPrompt_MET = genMEtCaloAndNonPrompt_MetIt->pt();
+    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtCaloAndNonPrompt_corrmet;
+    genMEtCaloAndNonPrompt_corrmet.SetPxPyPzE(genMEtCaloAndNonPrompt_MetIt->px(),genMEtCaloAndNonPrompt_MetIt->py(),0,genMEtCaloAndNonPrompt_MetIt->pt());
+    genMEtCaloAndNonPrompt_met->push_back(genMEtCaloAndNonPrompt_corrmet);
+    
+    h_genMEtCaloAndNonPrompt_MET->Fill(genMEtCaloAndNonPrompt_MET);
 
     if(Channel == "Muon"){
       EventData.Channel = GenType::kMuon;
