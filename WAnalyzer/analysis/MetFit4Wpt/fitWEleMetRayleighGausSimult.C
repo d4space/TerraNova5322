@@ -124,15 +124,18 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   vector <double> nEventWToTauNuM;
 
   int ewkNumber(0);
-  fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_Analysis.root"); typev.push_back(eData);
-  fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_Analysis.root"); typev.push_back(eData);
+  //fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_Analysis.root"); typev.push_back(eData);
+  fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_DYToEE_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+   // fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
+   // fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+  
+    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
     fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
@@ -182,6 +185,14 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   TH1D *hDYToTauTau = new TH1D("hDYToTauTau","hDYToTauTau",13,WptBins);hDYToTauTau->Sumw2();
   TH1D *hDYToTauTauP = new TH1D("hDYToTauTauP","hDYToTauTauP",13,WptBins);hDYToTauTauP->Sumw2();
   TH1D *hDYToTauTauM = new TH1D("hDYToTauTauM","hDYToTauTauM",13,WptBins);hDYToTauTauM->Sumw2();
+
+
+  TH1D *hQCD_SigPlus = new TH1D("hQCD_SigPlus","hQCD_SigPlus",13,WptBins);hQCD_SigPlus->Sumw2();
+  TH1D *hQCD_SigMinus = new TH1D("hQCD_SigMinus","hQCD_SigMinus",13,WptBins);hQCD_SigMinus->Sumw2();
+  TH1D *hQCD_SigQCDPlus = new TH1D("hQCD_SigQCDPlus","hQCD_SigQCDPlus",13,WptBins);hQCD_SigQCDPlus->Sumw2();
+  TH1D *hQCD_SigQCDMinus = new TH1D("hQCD_SigQCDMinus","hQCD_SigQCDMinus",13,WptBins);hQCD_SigQCDMinus->Sumw2();
+
+
 
   TH1D *hDataMet[NWptBinPlus];
   TH1D *hDataMetm[NWptBinPlus];
@@ -1574,6 +1585,15 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     hQCDWpt -> SetBinContent(ipt, nQCD->getVal());
     hQCDWPpt-> SetBinContent(ipt, nQCDp->getVal());
     hQCDWMpt-> SetBinContent(ipt, nQCDm->getVal());
+    
+    
+    hQCD_SigPlus-> SetBinContent(ipt, nQCDp->getVal()/nSigp->getVal());
+    hQCD_SigMinus-> SetBinContent(ipt, nQCDm->getVal()/nSigm->getVal());
+    hQCD_SigQCDPlus-> SetBinContent(ipt,  nQCDp->getVal()/(  nQCDp->getVal()+ nSigp->getVal()  )  );
+    hQCD_SigQCDMinus-> SetBinContent(ipt, nQCDm->getVal()/(  nQCDm->getVal()+ nSigm->getVal()  )  );
+    
+   
+    
     double total = nEventDYToMuMu[ipt]+nEventDYToTauTau[ipt]+nEventTTJets[ipt]+nEventWToTauNu[ipt];
     double totalp = nEventDYToMuMuP[ipt]+nEventDYToTauTauP[ipt]+nEventTTJetsP[ipt]+nEventWToTauNuP[ipt];
     double totalm = nEventDYToMuMuM[ipt]+nEventDYToTauTauM[ipt]+nEventTTJetsM[ipt]+nEventWToTauNuM[ipt];
@@ -1616,6 +1636,24 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hSigWpt -> Write();
   hSigWPpt-> Write();
   hSigWMpt-> Write();
+  
+  
+  TF1 *f111 = new TF1("f111","[0]*TMath::Exp(-x/[1])+[2]",50.,600.);
+  f111->SetParameter(0,1);
+  f111->SetParameter(1,0.3);
+  f111->SetParameter(2,0);
+  f111->SetLineColor(kBlue);
+  hQCD_SigPlus->Fit("f111","L","",50.,600.);
+  hQCD_SigPlus-> Write();
+  hQCD_SigMinus->Fit("f111","L","",50.,600.);
+  hQCD_SigMinus-> Write();
+
+  hQCD_SigQCDPlus->Fit("f111","L","",50.,600.);
+  hQCD_SigQCDPlus-> Write();
+  hQCD_SigQCDMinus->Fit("f111","L","",50.,600.);
+  hQCD_SigQCDMinus-> Write();
+
+  
   nsigfile->Close();
 
 // Wpt distribution=========================
