@@ -385,29 +385,31 @@ if(Debug)cout<<"check point 7"<<endl;
 	//}
       //}
 
-      if(AnaChannel == "ElectronLowPU" )
+      if(Mode == "AllCorrectionsMC" )
       {
-	if( wCand.charge > 0)
+	if(AnaChannel == "ElectronLowPU" )
 	{
-	  SF1 = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  if( wCand.charge > 0)
+	  {	  
+	    SF1 = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  }
+	  else  if( wCand.charge < 0)
+	  {
+	    SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  }
 	}
-	else  if( wCand.charge < 0)
+	if(AnaChannel == "MuonLowPU")
 	{
-	  SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  if( wCand.charge > 0)
+	  {
+	    SF1 = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	  }
+	  else  if( wCand.charge < 0)
+	  {
+	    SF1 = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	  }
 	}
       }
-      if(AnaChannel == "MuonLowPU")
-      {
-	if( wCand.charge > 0)
-	{
-	  SF1 = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	}
-	else  if( wCand.charge < 0)
-	{
-	  SF1 = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	}
-      }
-
 
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
@@ -422,9 +424,17 @@ if(Debug)cout<<"check point 8"<<endl;
 
 	if(Debug)cout<<"check point 9"<<endl;
 	//lep_pt_side = (*W_Lept1_pt)[iw];
-	if((*W_Charge)[iw]> 0)	  {
+	if((*W_Charge)[iw]> 0)	  
+	{
 	  h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
+	  
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+	  }else{
+	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
+	  }
+
 if(Debug)cout<<"check point 10"<<endl;
 	  //Fill MET sideband for WQA, Wplus case
 	  if(AnaChannel == "ElectronHighPU") {
@@ -440,13 +450,29 @@ if(Debug)cout<<"check point 11"<<endl;
 	  //Wpt case
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+	      
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+	      }else{
+		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+	      }
+	  
 	    }
 	  }
 	}
-	else if( (*W_Charge)[iw] <0) {
+	else if( (*W_Charge)[iw] <0) 
+	{
 	  h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
+	  
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+	  }else{
+	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
+	  }
+
 	  if(Debug)cout<<"check point 12"<<endl;
 	  //Fill MET sideband for WQA, Wminus case
 	  if(AnaChannel == "ElectronHighPU") {
@@ -461,14 +487,20 @@ if(Debug)cout<<"check point 11"<<endl;
 	  //Wpt case
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+	      }else{
+		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
+	      }
 	    }
-	  }
-	}else {
-	  cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
-	  exit(0);}
+	  }else {
+	    cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
+	    exit(0);}
+	}
       }
-    }
     
     if(Debug)cout<<"check point 14"<<endl;
     double tmp_prob;
