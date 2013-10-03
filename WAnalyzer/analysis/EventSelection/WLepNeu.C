@@ -500,7 +500,8 @@ if(Debug)cout<<"check point 11"<<endl;
 		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 	      }
 	    }
-	  }else {
+	  }
+	}else {
 	    cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
 	    exit(0);}
 	}
