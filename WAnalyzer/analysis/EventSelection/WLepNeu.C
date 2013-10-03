@@ -384,6 +384,31 @@ if(Debug)cout<<"check point 7"<<endl;
 	  //}
 	//}
       //}
+
+      if(AnaChannel == "ElectronLowPU" )
+      {
+	if( wCand.charge > 0)
+	{
+	  SF1 = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+      }
+      if(AnaChannel == "MuonLowPU")
+      {
+	if( wCand.charge > 0)
+	{
+	  SF1 = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  SF1 = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+      }
+
+
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
       if( (AnaChannel =="MuonLowPU" && MuonCutSide(iw) >0)||
@@ -726,7 +751,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	{
 	  //cout<<"filling corrMet "<<corrMet<<endl;
           h1_W_Neu_pt[0]->Fill(corrMet,TTW);
-	  h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
+	  //h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
+	  h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  
 	  if(corrMet > 25.)
 	  {
@@ -763,7 +789,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	    {
 	      //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
 	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	      h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 	      
 	      if(corrMet >25.)
 	      {
@@ -798,7 +825,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	{
           h1_W_Neu_pt[0]->Fill(corrMet,TTW);
-	  h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
+	  //h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
+	  h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  
 	  if(corrMet > 25.)
 	  {
@@ -834,7 +862,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	    if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	    {
 	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	      h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 
 	      if(corrMet >25.)
 	      {

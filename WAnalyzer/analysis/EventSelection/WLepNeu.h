@@ -943,6 +943,7 @@ private:
   int evtCnt;
   bool TruthRecoPost;
   double SF;
+  double SF1;
   //Recoil Variables
   RecoilCorrector *recoilCorr;
   struct RecoilVar{
