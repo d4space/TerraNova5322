@@ -44,5 +44,3 @@ analysis/MuNeu/W_Pt/WMuNeu.C
 	KoSMP/WAnalyzer/interface/wLeptNeuFilter.h
 	KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h
 	KoSMP/WAnalyzer/src/wLeptNeuFilter.cc
-
-	Test git Sangil
