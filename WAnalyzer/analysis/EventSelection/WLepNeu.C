@@ -426,12 +426,13 @@ if(Debug)cout<<"check point 8"<<endl;
 	//lep_pt_side = (*W_Lept1_pt)[iw];
 	if((*W_Charge)[iw]> 0)	  
 	{
-	  h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	  
 	  if(Mode == "AllCorrectionsMC" )
 	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
 	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
 	  }else{
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	  }
 
@@ -450,12 +451,13 @@ if(Debug)cout<<"check point 11"<<endl;
 	  //Wpt case
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 	      
 	      if(Mode == "AllCorrectionsMC" )
 	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
 		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
 	      }else{
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 	      }
 	  
@@ -464,12 +466,13 @@ if(Debug)cout<<"check point 11"<<endl;
 	}
 	else if( (*W_Charge)[iw] <0) 
 	{
-	  h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	  
 	  if(Mode == "AllCorrectionsMC" )
 	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
 	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
 	  }else{
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	  }
 
@@ -487,12 +490,13 @@ if(Debug)cout<<"check point 11"<<endl;
 	  //Wpt case
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-	      h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 
 	      if(Mode == "AllCorrectionsMC" )
 	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
 		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
 	      }else{
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 	      }
 	    }
@@ -782,7 +786,7 @@ if(Debug)cout<<"check point 11"<<endl;
 	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	{
 	  //cout<<"filling corrMet "<<corrMet<<endl;
-          h1_W_Neu_pt[0]->Fill(corrMet,TTW);
+          h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  //h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
 	  h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  
@@ -820,7 +824,7 @@ if(Debug)cout<<"check point 11"<<endl;
 	    if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	    {
 	      //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
-	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 	      //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
 	      h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 	      
@@ -856,7 +860,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }else if(wCand.charge <0){
 	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	{
-          h1_W_Neu_pt[0]->Fill(corrMet,TTW);
+          h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  //h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
 	  h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  
@@ -893,7 +897,7 @@ if(Debug)cout<<"check point 11"<<endl;
 	  {
 	    if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	    {
-	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 	      //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
 	      h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
 
