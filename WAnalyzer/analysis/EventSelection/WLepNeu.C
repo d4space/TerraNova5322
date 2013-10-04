@@ -551,11 +551,10 @@ if(Debug)cout<<"check point 11"<<endl;
 	Z_Met = (*Z_Neut_pt)[iz];
 	Z_NoPU_Met = (*Z_NoPU_Neut_pt)[iz];
 	Z_MVA_Met = (*Z_MVA_Neut_pt)[iz];
-//	Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem
-	Z_Gen_Met = 1;
+	if( fabs(Channel) != GenType::kTau)
+	Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem, in that case use next line
+//	Z_Gen_Met = 1;
       }
-      if( fabs(Channel) != GenType::kTau)tmpVar=(*Z_diLeptVtxProb)[iz];
-//      if( tmpVar > diLeptVtxProb )if( fabs(Channel) != GenType::kTau)
       if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
       {
 	diLeptVtxProb = tmpVar;
@@ -619,7 +618,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }//fi diLeptVtxProb
       ZLep2PtTmp = (*Z_Lept2_pt)[iz];
 //      if( ZLep2PtTmp > ZLep2Pt )if( fabs(Channel) == GenType::kTau)
-      if( fabs(Channel) != GenType::kTau) if( ZLep2PtTmp > ZLep2Pt )
+      if( fabs(Channel) == GenType::kTau) if( ZLep2PtTmp > ZLep2Pt )
       {
 	Zmass		= (*Z_Mass)[iz];
 	ZLep1Pt		= (*Z_Lept1_pt)[iz];
