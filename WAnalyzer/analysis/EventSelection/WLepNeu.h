@@ -237,14 +237,6 @@ public :
    vector<double>  *Z_MVA_Neut_phi;
    vector<double>  *Z_MVA_Neut_px;
    vector<double>  *Z_MVA_Neut_py;
-   vector<double>  *Z_MVA_Neut_pt;
-   vector<double>  *Z_MVA_Neut_phi;
-   vector<double>  *Z_MVA_Neut_px;
-   vector<double>  *Z_MVA_Neut_py;
-   vector<double>  *Z_MVA_Neut_pt;
-   vector<double>  *Z_MVA_Neut_phi;
-   vector<double>  *Z_MVA_Neut_px;
-   vector<double>  *Z_MVA_Neut_py;
    vector<double>  *Z_Sign;
    vector<double>  *W_Lept1_chIso03;
    vector<double>  *W_Lept1_chIso04;
