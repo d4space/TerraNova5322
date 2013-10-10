@@ -6,9 +6,12 @@
 #define NWqaBins 12 
 //#define NWptBinPlus 14
 //#define NWptBinPlus 18 //Pt bins + 1 to include total ; the total is 0th bin
-#define NBINS_1 30
-#define NBINS_2 15
-#define NBINS_3 15
+#define NBINS_1 60 
+#define NBINS_2 30
+#define NBINS_3 30
+//#define NBINS_1 30
+//#define NBINS_2 15
+//#define NBINS_3 15
 #define METMAX_1 100
 #define METMAX_2 200
 #define METMAX_3 300

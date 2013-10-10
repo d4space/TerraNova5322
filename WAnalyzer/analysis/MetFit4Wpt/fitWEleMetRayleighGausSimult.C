@@ -55,6 +55,7 @@ typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > LorentzVecto
 // make data-fit difference plots
 TH1D* makeDiffHist(TH1D* hData, TH1D* hFit, const TString name);
 TH1D* makeDiffHistWpt(TH1D* hData, TH1D* hFit, const TString name);
+TH1D* makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name);
 // print correlations of fitted parameters
 void printCorrelations(ostream& os, RooFitResult *res);
 
@@ -124,16 +125,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   vector <double> nEventWToTauNuM;
 
   int ewkNumber(0);
-  //fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_Analysis.root"); typev.push_back(eData);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_DYToEE_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
   fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-   // fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-   // fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
-  
     fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WpToEleNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/ElectronLowPU/Ele_WmToEleNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
@@ -213,13 +210,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   TH1D *hAntiEWKMet[NWptBinPlus];
   TH1D *hAntiEWKMetp[NWptBinPlus];
   TH1D *hAntiEWKMetm[NWptBinPlus];
+  
   Double_t METMAX;
-  Double_t gs;
-  Double_t gsp;
-  Double_t gsm;
-  Double_t gm;
-  Double_t gmp;
-  Double_t gmm;
   //
   // Declare variables to read in ntuple
   //
@@ -388,111 +380,158 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //
 
   //MET fitting =====================
-  RooRealVar* nSig;
-  RooRealVar* nQCD;
-  RooRealVar  cewk("cewk","cewk",0.1,0,5) ;
-  RooFormulaVar* nEWK;
-  RooRealVar* nAntiSig;
-  RooRealVar* nAntiQCD;
-  RooRealVar  dewk("dewk","dewk",0.1,0,5) ;
-  RooFormulaVar* nAntiEWK;
-  RooRealVar* nSigp;
-  RooRealVar* nQCDp;
-  RooRealVar  cewkp("cewkp","cewkp",0.1,0,5) ;
-  RooFormulaVar* nEWKp;
-  RooRealVar* nAntiSigp;
-  RooRealVar* nAntiQCDp;
-  RooRealVar dewkp("dewkp","dewkp",0.1,0,5) ;
-  RooFormulaVar* nAntiEWKp;
-  RooRealVar* nSigm;
-  RooRealVar* nQCDm;
-  RooRealVar cewkm("cewkm","cewkm",0.1,0,5) ;
-  RooFormulaVar* nEWKm;
-  RooRealVar* nAntiSigm;
-  RooRealVar* nAntiQCDm;
-  RooRealVar dewkm("dewkm","dewkm",0.1,0,5) ;
-  RooFormulaVar* nAntiEWKm;
-  RooDataHist* wmunuMet ;RooHistPdf*pdfWm ;
-  RooDataHist* wmunuMetp;RooHistPdf*pdfWmp;
-  RooDataHist* wmunuMetm;RooHistPdf*pdfWmm; 
-  RooDataHist* ewkMet ; RooHistPdf* pdfEWK ;
-  RooDataHist* ewkMetp; RooHistPdf* pdfEWKp; 
-  RooDataHist* ewkMetm; RooHistPdf* pdfEWKm; 
-  RooAddPdf* pdfMet ;
-  RooAddPdf* pdfMetp;
-  RooAddPdf* pdfMetm;
-  RooDataHist* awmunuMet ; RooHistPdf* apdfWm ;
-  RooDataHist* awmunuMetp; RooHistPdf* apdfWmp;
-  RooDataHist* awmunuMetm; RooHistPdf* apdfWmm; 
-  RooDataHist* aewkMet ; RooHistPdf* apdfEWK ;
-  RooDataHist* aewkMetp; RooHistPdf* apdfEWKp; 
-  RooDataHist* aewkMetm; RooHistPdf* apdfEWKm; 
-  RooAddPdf* apdfMet ;
-  RooAddPdf* apdfMetp;
-  RooAddPdf* apdfMetm;
+  RooRealVar* nSig[NWptBinPlus];
+  RooRealVar* nSigp[NWptBinPlus];
+  RooRealVar* nSigm[NWptBinPlus];
+  
+  RooRealVar* nAntiSig[NWptBinPlus];
+  RooRealVar* nAntiSigp[NWptBinPlus];
+  RooRealVar* nAntiSigm[NWptBinPlus];
+  
+  RooRealVar* nQCD[NWptBinPlus];
+  RooRealVar* nQCDp[NWptBinPlus];
+  RooRealVar* nQCDm[NWptBinPlus];
+  
+  RooRealVar* nAntiQCD[NWptBinPlus];
+  RooRealVar* nAntiQCDp[NWptBinPlus];
+  RooRealVar* nAntiQCDm[NWptBinPlus];
+  
+  RooFormulaVar* nEWK[NWptBinPlus];
+  RooFormulaVar* nEWKp[NWptBinPlus];
+  RooFormulaVar* nEWKm[NWptBinPlus];
+  
+  RooFormulaVar* nAntiEWK[NWptBinPlus];
+  RooFormulaVar* nAntiEWKp[NWptBinPlus];
+  RooFormulaVar* nAntiEWKm[NWptBinPlus];
+  
+  RooRealVar* cewk[NWptBinPlus];
+  RooRealVar* cewkp[NWptBinPlus];
+  RooRealVar* cewkm[NWptBinPlus];
+  
+  RooRealVar* dewk[NWptBinPlus];
+  RooRealVar* dewkp[NWptBinPlus];
+  RooRealVar* dewkm[NWptBinPlus];
+ 
+  RooDataHist* wmunuMet[NWptBinPlus];
+  RooDataHist* wmunuMetp[NWptBinPlus];
+  RooDataHist* wmunuMetm[NWptBinPlus];
+  RooDataHist* awmunuMet[NWptBinPlus];
+  RooDataHist* awmunuMetp[NWptBinPlus];
+  RooDataHist* awmunuMetm[NWptBinPlus];
+  
+  RooHistPdf*pdfWm[NWptBinPlus] ;
+  RooHistPdf*pdfWmp[NWptBinPlus];
+  RooHistPdf*pdfWmm[NWptBinPlus];
+  RooHistPdf*apdfWm[NWptBinPlus] ;
+  RooHistPdf*apdfWmp[NWptBinPlus];
+  RooHistPdf*apdfWmm[NWptBinPlus];
+ 
+  RooDataHist* ewkMet[NWptBinPlus] ;
+  RooDataHist* ewkMetp[NWptBinPlus];
+  RooDataHist* ewkMetm[NWptBinPlus];
+  RooDataHist* aewkMet[NWptBinPlus] ;
+  RooDataHist* aewkMetp[NWptBinPlus];
+  RooDataHist* aewkMetm[NWptBinPlus];
+  
+  RooHistPdf* pdfEWK[NWptBinPlus] ;
+  RooHistPdf* pdfEWKp[NWptBinPlus]; 
+  RooHistPdf* pdfEWKm[NWptBinPlus]; 
+  RooHistPdf* apdfEWK[NWptBinPlus] ;
+  RooHistPdf* apdfEWKp[NWptBinPlus]; 
+  RooHistPdf* apdfEWKm[NWptBinPlus]; 
+  
+  RooAddPdf* pdfMet[NWptBinPlus];
+  RooAddPdf* pdfMetp[NWptBinPlus];
+  RooAddPdf* pdfMetm[NWptBinPlus];
+  RooAddPdf* apdfMet[NWptBinPlus] ;
+  RooAddPdf* apdfMetp[NWptBinPlus];
+  RooAddPdf* apdfMetm[NWptBinPlus];
+  
   RooCategory rooCat("rooCat","rooCat");
   rooCat.defineType("Select");
   rooCat.defineType("Anti");
-  RooSimultaneous* pdfTotal;
-  RooSimultaneous* pdfTotalp;
-  RooSimultaneous* pdfTotalm;
-  RooSimultaneous* apdfTotal;
-  RooSimultaneous* apdfTotalp;
-  RooSimultaneous* apdfTotalm;
-  RooDataHist* dataMet ; 
-  RooDataHist* antiMet ; 
-  RooDataHist* dataTotal;
-  RooFitResult *fitRes;
-  RooDataHist* dataMetp  ;
-  RooDataHist* antiMetp  ;
-  RooDataHist* dataTotalp;
-  RooFitResult *fitResp;
-  RooDataHist* dataMetm;
-  RooDataHist* antiMetm;
-  RooDataHist* dataTotalm;
-  RooFitResult *fitResm;
+  
+  RooSimultaneous* pdfTotal[NWptBinPlus];
+  RooSimultaneous* pdfTotalp[NWptBinPlus];
+  RooSimultaneous* pdfTotalm[NWptBinPlus];
+  
+  RooDataHist* dataMet[NWptBinPlus]; 
+  RooDataHist* dataMetp[NWptBinPlus]; 
+  RooDataHist* dataMetm[NWptBinPlus]; 
+  
+  RooDataHist* antiMet[NWptBinPlus]; 
+  RooDataHist* antiMetp[NWptBinPlus]; 
+  RooDataHist* antiMetm[NWptBinPlus]; 
+  
+  RooDataHist* dataTotal[NWptBinPlus];
+  RooDataHist* dataTotalp[NWptBinPlus];
+  RooDataHist* dataTotalm[NWptBinPlus];
+
+  RooFitResult *fitRes[NWptBinPlus];
+  RooFitResult *fitResp[NWptBinPlus];
+  RooFitResult *fitResm[NWptBinPlus];
+  
   TH1D *hPdfMet;TH1D *hMetDiff;
   TH1D *hPdfMetp;TH1D *hMetpDiff;
   TH1D *hPdfMetm;TH1D *hMetmDiff;
   TH1D *hPdfAntiMet;TH1D *hAntiMetDiff;
   TH1D *hPdfAntiMetp;TH1D *hAntiMetpDiff;
   TH1D *hPdfAntiMetm;TH1D *hAntiMetmDiff;
-  CPepeModelMean* qcd;
-  CPepeModelMean* qcdp;
-  CPepeModelMean* qcdm;
-  CPepeModelMean* aqcd;
-  CPepeModelMean* aqcdp;
-  CPepeModelMean* aqcdm;
-  CPepeModel1* qcd1;
-  CPepeModel1* qcd1p;
-  CPepeModel1* qcd1m;
-  CPepeModel1* aqcd1;
-  CPepeModel1* aqcd1p;
-  CPepeModel1* aqcd1m;
-  RooAddPdf* pdfqcd;
-  RooAddPdf* pdfqcdp;
-  RooAddPdf* pdfqcdm;
-  RooAddPdf* apdfqcd;
-  RooAddPdf* apdfqcdp;
-  RooAddPdf* apdfqcdm;
+  
+  CPepeModelMean* qcd[NWptBinPlus];
+  CPepeModelMean* qcdp[NWptBinPlus];
+  CPepeModelMean* qcdm[NWptBinPlus];
+  CPepeModelMean* aqcd[NWptBinPlus];
+  CPepeModelMean* aqcdp[NWptBinPlus];
+  CPepeModelMean* aqcdm[NWptBinPlus];
+  
+  CPepeModel1* qcd1[NWptBinPlus];
+  CPepeModel1* qcd1p[NWptBinPlus];
+  CPepeModel1* qcd1m[NWptBinPlus];
+  CPepeModel1* aqcd1[NWptBinPlus];
+  CPepeModel1* aqcd1p[NWptBinPlus];
+  CPepeModel1* aqcd1m[NWptBinPlus];
+  
+  CPepeGaus* qcdGaus[NWptBinPlus];
+  CPepeGaus* qcdGausp[NWptBinPlus];
+  CPepeGaus* qcdGausm[NWptBinPlus];
+  
+  CPepeGaus* aqcdGaus[NWptBinPlus];
+  CPepeGaus* aqcdGausp[NWptBinPlus];
+  CPepeGaus* aqcdGausm[NWptBinPlus];
+  
+  RooRealVar* qcdmean[NWptBinPlus];
+  RooRealVar* qcdPmean[NWptBinPlus];
+  RooRealVar* qcdMmean[NWptBinPlus];
+  
+  RooRealVar* qcdsigma[NWptBinPlus];
+  RooRealVar* qcdPsigma[NWptBinPlus];
+  RooRealVar* qcdMsigma[NWptBinPlus];
+  
+  RooRealVar* qcdsigma1[NWptBinPlus];
+  RooRealVar* qcdPsigma1[NWptBinPlus];
+  RooRealVar* qcdMsigma1[NWptBinPlus];
+  
+  RooRealVar* Gmean[NWptBinPlus];
+  RooRealVar* GmeanP[NWptBinPlus];
+  RooRealVar* GmeanM[NWptBinPlus];
+  
+  RooRealVar* Gsigma[NWptBinPlus];
+  RooRealVar* GsigmaP[NWptBinPlus];
+  RooRealVar* GsigmaM[NWptBinPlus];
+  
 
-  RooRealVar qcdfrac1("qcdfrac1","qcdfrac1",0.5,0.01,1.);
-  RooRealVar qcdpmean("qcdpmean","qcdpmean",10,0,50);
-  RooRealVar qcdsigma1("qcdsigma1","qcdsigma1",70,25,150);
-  RooRealVar qcdsigma("qcdsigma","qcdsigma",25,20,50);
-  RooRealVar* gausMean;
-  RooRealVar* gausMean_p;
-  RooRealVar* gausMean_m;
-  RooRealVar* gausSigma;
-  RooRealVar* gausSigma_p;
-  RooRealVar* gausSigma_m;
-  RooGaussian* QCDGaus;
-  RooGaussian* QCDGaus_p;
-  RooGaussian* QCDGaus_m;
-  RooGaussian* aQCDGaus;
-  RooGaussian* aQCDGaus_p;
-  RooGaussian* aQCDGaus_m;
-
+  RooRealVar* Frac[NWptBinPlus];
+  RooRealVar* FracP[NWptBinPlus];
+  RooRealVar* FracM[NWptBinPlus];
+  
+  RooGaussian* QCDGaus[NWptBinPlus];
+  RooGaussian* QCDGaus_p[NWptBinPlus];
+  RooGaussian* QCDGaus_m[NWptBinPlus];
+  RooGaussian* aQCDGaus[NWptBinPlus];
+  RooGaussian* aQCDGaus_p[NWptBinPlus];
+  RooGaussian* aQCDGaus_m[NWptBinPlus];
+  
   TCanvas *c;
   c = MakeCanvas("c","c",800,800);
   c->Divide(1,2,0,0);
@@ -659,970 +698,1922 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   sprintf(qcdfname,"%s/qcd_shapes.txt",CPlot::sOutDir.Data());
   qcdfile.open(qcdfname);
   assert(qcdfile.is_open());
-  qcdfile << " *** QCD Rayleigh Func. shape parameters *** " << endl;
-
+  
+  ofstream InValfile;
+  char InValfname[100];    
+  sprintf(InValfname,"%s/InVal.txt",CPlot::sOutDir.Data());
+  InValfile.open(InValfname);
+  assert(InValfile.is_open());
+  
+  //Merge Bins 10-13
+  TH1D *hHighWpTAnti_DataMet ;
+  TH1D *hHighWpTAnti_DataMetm;
+  TH1D *hHighWpTAnti_DataMetp;
+  TH1D *hHighWpTAnti_WmunuMet;
+  TH1D *hHighWpTAnti_WmunuMetp;
+  TH1D *hHighWpTAnti_WmunuMetm;
+  TH1D *hHighWpTAnti_EWKMet;
+  TH1D *hHighWpTAnti_EWKMetp;
+  TH1D *hHighWpTAnti_EWKMetm;
+  
+  hHighWpTAnti_DataMet  = (TH1D*)hAntiDataMet[10]  ->Clone("hHighWpTAnti_DataMet");   hHighWpTAnti_DataMet->Sumw2();
+  hHighWpTAnti_DataMetp = (TH1D*)hAntiDataMetp[10] ->Clone("hHighWpTAnti_DataMetp");  hHighWpTAnti_DataMetp->Sumw2();
+  hHighWpTAnti_DataMetm = (TH1D*)hAntiDataMetm[10] ->Clone("hHighWpTAnti_DataMetm");  hHighWpTAnti_DataMetm->Sumw2();
+  hHighWpTAnti_WmunuMet = (TH1D*)hAntiWmunuMet[10] ->Clone("hHighWpTAnti_WmunuMet");  hHighWpTAnti_WmunuMet->Sumw2();
+  hHighWpTAnti_WmunuMetp= (TH1D*)hAntiWmunuMetp[10]->Clone("hHighWpTAnti_WmunuMetp"); hHighWpTAnti_WmunuMetp->Sumw2();
+  hHighWpTAnti_WmunuMetm= (TH1D*)hAntiWmunuMetm[10]->Clone("hHighWpTAnti_WmunuMetm"); hHighWpTAnti_WmunuMetm->Sumw2();
+  hHighWpTAnti_EWKMet   = (TH1D*)hAntiEWKMet[10]   ->Clone("hHighWpTAnti_EWKMet");    hHighWpTAnti_EWKMet->Sumw2();
+  hHighWpTAnti_EWKMetp  = (TH1D*)hAntiEWKMetp[10]  ->Clone("hHighWpTAnti_EWKMetp");   hHighWpTAnti_EWKMetp->Sumw2();
+  hHighWpTAnti_EWKMetm  = (TH1D*)hAntiEWKMetm[10]  ->Clone("hHighWpTAnti_EWKMetm");   hHighWpTAnti_EWKMetm->Sumw2();
+  
+  for( int ipt(11);ipt<NWptBinPlus;ipt++)
+  {
+    hHighWpTAnti_DataMet  -> Add(hAntiDataMet[ipt]);
+    hHighWpTAnti_DataMetp -> Add(hAntiDataMetp[ipt]);
+    hHighWpTAnti_DataMetm -> Add(hAntiDataMetm[ipt]);
+    hHighWpTAnti_WmunuMet -> Add(hAntiWmunuMet[ipt]);
+    hHighWpTAnti_WmunuMetp-> Add(hAntiWmunuMetp[ipt]);
+    hHighWpTAnti_WmunuMetm-> Add(hAntiWmunuMetm[ipt]);
+    hHighWpTAnti_EWKMet   -> Add(hAntiEWKMet[ipt]);
+    hHighWpTAnti_EWKMetp  -> Add(hAntiEWKMetp[ipt]);
+    hHighWpTAnti_EWKMetm  -> Add(hAntiEWKMetm[ipt]);
+  }
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
   {
-    nSig = new RooRealVar("nSig","nSig",0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-    if (ipt==0){
-      nQCD  = new RooRealVar("nQCD","nQCD",0.003*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-      nQCDp = new RooRealVar("nQCDp","nQCDp",0.003*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-      nQCDm = new RooRealVar("nQCDm","nQCDm",0.003*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    }else if (ipt==2){
-      nQCD  = new RooRealVar("nQCD","nQCD",0.05*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-      nQCDp = new RooRealVar("nQCDp","nQCDp",0.04*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-      nQCDm = new RooRealVar("nQCDm","nQCDm",0.07*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    }else if (ipt==4){
-      nQCD  = new RooRealVar("nQCD","nQCD",0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-      nQCDp = new RooRealVar("nQCDp","nQCDp",0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-      nQCDm = new RooRealVar("nQCDm","nQCDm",0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    }else if (ipt>2 && ipt<7){
-      nQCD  = new RooRealVar("nQCD","nQCD",0.03*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-      nQCDp = new RooRealVar("nQCDp","nQCDp",0.03*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-      nQCDm = new RooRealVar("nQCDm","nQCDm",0.03*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-   }else{
-      nQCD  = new RooRealVar("nQCD","nQCD",0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-      nQCDp = new RooRealVar("nQCDp","nQCDp",0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-      nQCDm = new RooRealVar("nQCDm","nQCDm",0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-   }
-  cewk.setVal(hEWKMet[ipt]->Integral()/hWmunuMet[ipt]->Integral());
-  cewk.setConstant(kTRUE);
-    nEWK = new RooFormulaVar("nEWK","nEWK","cewk*nSig",RooArgList(*nSig,cewk));
-    nAntiSig = new RooRealVar("nAntiSig","nAntiSig",hAntiDataMet[ipt]->Integral(),0,hAntiDataMet[ipt]->Integral());
-    //nAntiSig = new RooRealVar("nAntiSig","nAntiSig",0.05*(hAntiDataMet[ipt]->Integral()),0,hAntiDataMet[ipt]->Integral());
-    nAntiQCD = new RooRealVar("nAntiQCD","nAntiQCD",0.9*(hAntiDataMet[ipt]->Integral()),0,hAntiDataMet[ipt]->Integral());
-    //nAntiQCD = new RooRealVar("nAntiQCD","nAntiQCD",0.9*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-    dewk.setVal(hAntiEWKMet[ipt]->Integral()/hAntiWmunuMet[ipt]->Integral());
-    dewk.setConstant(kTRUE);
-    nAntiEWK = new RooFormulaVar("nAntiEWK","nAntiEWK","dewk*nAntiSig",RooArgList(*nAntiSig,dewk));
- 
-    nSigp = new RooRealVar("nSigp","nSigp",0.7*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-    cewkp.setVal(hEWKMetp[ipt]->Integral()/hWmunuMetp[ipt]->Integral());
-    cewkp.setConstant(kTRUE);
-    nEWKp = new RooFormulaVar("nEWKp","nEWKp","cewkp*nSigp",RooArgList(*nSigp,cewkp));
-    nAntiSigp = new RooRealVar("nAntiSigp","nAntiSigp",hAntiDataMetp[ipt]->Integral(),0,hAntiDataMetp[ipt]->Integral());
-    //nAntiSigp = new RooRealVar("nAntiSigp","nAntiSigp",0.05*(hAntiDataMetp[ipt]->Integral()),0,hAntiDataMetp[ipt]->Integral());
-    nAntiQCDp = new RooRealVar("nAntiQCDp","nAntiQCDp",0.9*(hAntiDataMetp[ipt]->Integral()),0,hAntiDataMetp[ipt]->Integral());
-    dewkp.setVal(hAntiEWKMetp[ipt]->Integral()/hAntiWmunuMetp[ipt]->Integral());
-    dewkp.setConstant(kTRUE);
-    nAntiEWKp = new RooFormulaVar("nAntiEWKp","nAntiEWKp","dewkp*nAntiSigp",RooArgList(*nAntiSigp,dewkp));
-  
-    nSigm = new RooRealVar("nSigm","nSigm",0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    cewkm.setVal(hEWKMetm[ipt]->Integral()/hWmunuMetm[ipt]->Integral());
-    cewkm.setConstant(kTRUE);
-    nEWKm = new RooFormulaVar("nEWKm","nEWKm","cewkm*nSigm",RooArgList(*nSigm,cewkm));  
-    nAntiSigm = new RooRealVar("nAntiSigm","nAntiSigm",hAntiDataMetm[ipt]->Integral(),0,hAntiDataMetm[ipt]->Integral());
-    //nAntiSigm = new RooRealVar("nAntiSigm","nAntiSigm",0.05*(hAntiDataMetm[ipt]->Integral()),0,hAntiDataMetm[ipt]->Integral());
-    nAntiQCDm = new RooRealVar("nAntiQCDm","nAntiQCDm",0.9*(hAntiDataMetm[ipt]->Integral()),0,hAntiDataMetm[ipt]->Integral());
-    dewkm.setVal(hAntiEWKMetm[ipt]->Integral()/hAntiWmunuMetm[ipt]->Integral());
-    dewkm.setConstant(kTRUE);
-    nAntiEWKm = new RooFormulaVar("nAntiEWKm","nAntiEWKm","dewkm*nAntiSigm",RooArgList(*nAntiSigm,dewkm));
-  //
-  // Construct PDFs for fitting
-  //
-
-  if ( ipt < NBIN_PT_DIVIDER_1and2 ) {
-    METMAX = METMAX_1;
-    NBINS   = NBINS_1;
-  } else if ( ipt < NBIN_PT_DIVIDER_2and3 ) {
-    METMAX = METMAX_2;
-    NBINS   = NBINS_2;
-  } else {
-    METMAX = METMAX_3;
-    NBINS  = NBINS_3;
-  }
-
-  RooRealVar pfmet("pfmet","pfmet",0,METMAX);
-  pfmet.setBins(NBINS);
-
-  // Signal PDFs
-  wmunuMet  =new RooDataHist("wmunuMET", "wmunuMET", RooArgSet(pfmet),hWmunuMet[ipt]); pdfWm =new RooHistPdf ("wm", "wm", pfmet,*wmunuMet, 1);
-  wmunuMetp =new RooDataHist("wmunuMETp","wmunuMETp",RooArgSet(pfmet),hWmunuMetp[ipt]);pdfWmp=new RooHistPdf ("wmp","wmp",pfmet,*wmunuMetp,1);
-  wmunuMetm =new RooDataHist("wmunuMETm","wmunuMETm",RooArgSet(pfmet),hWmunuMetm[ipt]);pdfWmm=new RooHistPdf ("wmm","wmm",pfmet,*wmunuMetm,1); 
-  // EWK+top PDFs
-  ewkMet =new RooDataHist("ewkMET", "ewkMET", RooArgSet(pfmet),hEWKMet[ipt]); pdfEWK =new RooHistPdf ("ewk", "ewk", pfmet,*ewkMet, 1);
-  ewkMetp=new RooDataHist("ewkMETp","ewkMETp",RooArgSet(pfmet),hEWKMetp[ipt]);pdfEWKp=new RooHistPdf ("ewkp","ewkp",pfmet,*ewkMetp,1); 
-  ewkMetm=new RooDataHist("ewkMETm","ewkMETm",RooArgSet(pfmet),hEWKMetm[ipt]);pdfEWKm=new RooHistPdf ("ewkm","ewkm",pfmet,*ewkMetm,1); 
-  
-  // Anti-Signal PDFs
-  awmunuMet =new RooDataHist("awmunuMET", "awmunuMET", RooArgSet(pfmet),hAntiWmunuMet[ipt]) ;
-  awmunuMetp=new RooDataHist("awmunuMETp","awmunuMETp",RooArgSet(pfmet),hAntiWmunuMetp[ipt]);
-  awmunuMetm=new RooDataHist("awmunuMETm","awmunuMETm",RooArgSet(pfmet),hAntiWmunuMetm[ipt]);
-  apdfWm =new RooHistPdf("awm", "awm", pfmet,*awmunuMet, 1);
-  apdfWmp=new RooHistPdf("awmp","awmp",pfmet,*awmunuMetp,1);
-  apdfWmm=new RooHistPdf("awmm","awmm",pfmet,*awmunuMetm,1); 
-  // Anti-EWK+top PDFs
-  aewkMet =new RooDataHist("aewkMET", "aewkMET", RooArgSet(pfmet),hAntiEWKMet[ipt]);  
-  aewkMetp=new RooDataHist("aewkMETp","aewkMETp",RooArgSet(pfmet),hAntiEWKMetp[ipt]);  
-  aewkMetm=new RooDataHist("aewkMETm","aewkMETm",RooArgSet(pfmet),hAntiEWKMetm[ipt]);  
-  apdfEWK =new RooHistPdf("aewk", "aewk", pfmet,*aewkMet, 1);
-  apdfEWKp=new RooHistPdf("aewkp","aewkp",pfmet,*aewkMetp,1);
-  apdfEWKm=new RooHistPdf("aewkm","aewkm",pfmet,*aewkMetm,1);
-
-  dataMet  =new RooDataHist("dataMet", "dataMet", RooArgSet(pfmet), hDataMet[ipt]);
-  antiMet  =new RooDataHist("antiMet", "antiMet", RooArgSet(pfmet), hAntiDataMet[ipt]);
-  dataTotal=new RooDataHist("dataTotal","dataTotal", RooArgList(pfmet), Index(rooCat),
-                        Import("Select", *dataMet),
-                        Import("Anti",   *antiMet));
-  dataMetp  =new RooDataHist("dataMetp", "dataMetp", RooArgSet(pfmet), hDataMetp[ipt]);
-  antiMetp  =new RooDataHist("antiMetp", "antiMetp", RooArgSet(pfmet), hAntiDataMetp[ipt]);
-  dataTotalp=new RooDataHist("dataTotalp","dataTotalp", RooArgList(pfmet), Index(rooCat),
-                         Import("Select", *dataMetp),
-                         Import("Anti",   *antiMetp));
-  dataMetm  =new RooDataHist("dataMetm", "dataMetm", RooArgSet(pfmet), hDataMetm[ipt]);
-  antiMetm  =new RooDataHist("antiMetm", "antiMetm", RooArgSet(pfmet), hAntiDataMetm[ipt]);
-  dataTotalm=new RooDataHist("dataTotalm","dataTotalm", RooArgList(pfmet), Index(rooCat),
-                         Import("Select", *dataMetm),
-                         Import("Anti",   *antiMetm));
-  //QCD PDFs
-//  if (ipt < NBIN_PT_DIVIDER_2and3) {
-//Modified Rayleigh
-  if (ipt<7){
-    qcd =new CPepeModelMean("qcd",pfmet);
-    qcdp =new CPepeModelMean("qcdp",pfmet);
-    qcdm =new CPepeModelMean("qcdm",pfmet);
-    if (ipt==1 || ipt==4){
-      qcd =new CPepeModelMean("qcd",pfmet);
-      qcdp =new CPepeModelMean("qcdp",pfmet,&qcdpmean);
-      qcdm =new CPepeModelMean("qcdm",pfmet,&qcdpmean);
-    }else if (ipt==2 || ipt==6){
-      qcd =new CPepeModelMean("qcd",pfmet,&qcdpmean);
-      qcdp =new CPepeModelMean("qcdp",pfmet,&qcdpmean);
-      qcdm =new CPepeModelMean("qcdm",pfmet,&qcdpmean);
+    if ( ipt<NBIN_PT_DIVIDER_1and2 ){
+      METMAX = METMAX_1;
+      NBINS   = NBINS_1;
+    } else if ( ipt<NBIN_PT_DIVIDER_2and3 ) {
+      METMAX = METMAX_2;
+      NBINS   = NBINS_2;
+    } else {
+      METMAX = METMAX_3;
+      NBINS  = NBINS_3;
     }
-    aqcd =new CPepeModelMean("aqcd",pfmet, qcd->mean,qcd->sigma,qcd->a1);
-    aqcdp=new CPepeModelMean("aqcdp",pfmet,qcdp->mean,qcdp->sigma,qcdp->a1);
-    aqcdm=new CPepeModelMean("aqcdm",pfmet,qcdm->mean,qcdm->sigma,qcdm->a1);
-  }else if (ipt>6 && ipt<10){
-//Rayleigh+fract*Gaussian
-    qcd1 =new CPepeModel1("qcd1",pfmet);
-    qcd1p =new CPepeModel1("qcd1p",pfmet);
-    qcd1m =new CPepeModel1("qcd1m",pfmet);
+    RooRealVar pfmet("pfmet","pfmet",0,METMAX);
+    pfmet.setBins(NBINS);
 
-    gausSigma   = new RooRealVar("gausSigma","Gaussian Sigma",25,0,METMAX);
-    gausSigma_p = new RooRealVar("gausSigma_p","Gaussian Sigma",25,0,METMAX);
-    gausSigma_m = new RooRealVar("gausSigma_m","Gaussian Sigma",25,0,METMAX);
-    gausMean    = new RooRealVar("gausMean","Gaussian Mean",20,0,METMAX);
-    gausMean_p  = new RooRealVar("gausMean_p","Gaussian Mean",20,0,METMAX);
-    gausMean_m  = new RooRealVar("gausMean_m","Gaussian Mean",20,0,METMAX);
-    if (ipt==8){
-      gausSigma   = new RooRealVar("gausSigma","Gaussian Sigma",25,7,50);
-      gausSigma_p = new RooRealVar("gausSigma_p","Gaussian Sigma",25,7,50);
-      gausSigma_m = new RooRealVar("gausSigma_m","Gaussian Sigma",25,7,50);
-      gausMean    = new RooRealVar("gausMean","Gaussian Mean",10,0,50);
-      gausMean_p  = new RooRealVar("gausMean_p","Gaussian Mean",10,0,50);
-      gausMean_m  = new RooRealVar("gausMean_m","Gaussian Mean",10,0,50);
-    }else if(ipt==9){
-      qcd1 =new CPepeModel1("qcd1",pfmet,&qcdsigma);
-      qcd1p =new CPepeModel1("qcd1p",pfmet,&qcdsigma);
-      qcd1m =new CPepeModel1("qcd1m",pfmet,&qcdsigma);
-      
-      gausSigma   = new RooRealVar("gausSigma","Gaussian Sigma",20,15,50);
-      gausSigma_p = new RooRealVar("gausSigma_p","Gaussian Sigma",20,15,50);
-      gausSigma_m = new RooRealVar("gausSigma_m","Gaussian Sigma",20,15,50);
-      gausMean    = new RooRealVar("gausMean","Gaussian Mean",15,5,50);
-      gausMean_p  = new RooRealVar("gausMean_p","Gaussian Mean",15,5,50);
-      gausMean_m  = new RooRealVar("gausMean_m","Gaussian Mean",15,5,50);
-    }
-    aqcd1 =new CPepeModel1("aqcd1",pfmet,qcd1->sigma,qcd1->a1);
-    aqcd1p=new CPepeModel1("aqcd1p",pfmet,qcd1p->sigma,qcd1p->a1);
-    aqcd1m=new CPepeModel1("aqcd1m",pfmet,qcd1m->sigma,qcd1m->a1);
-
-    QCDGaus	= new RooGaussian("QCDGaus","Gaussian PDF",pfmet,*gausMean,*gausSigma);
-    QCDGaus_p	= new RooGaussian("QCDGaus_p","Gaussian PDF",pfmet,*gausMean_p,*gausSigma_p);
-    QCDGaus_m	= new RooGaussian("QCDGaus_m","Gaussian PDF",pfmet,*gausMean_m,*gausSigma_m);
+    sprintf(histName,"nSig_%d",ipt);
+    nSig[ipt] = new RooRealVar(histName,histName
+	,0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
+    sprintf(histName,"nSigp_%d",ipt);
+    nSigp[ipt] = new RooRealVar(histName,histName
+	,0.7*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
+    sprintf(histName,"nSigm_%d",ipt);
+    nSigm[ipt] = new RooRealVar(histName,histName
+	,0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
     
-    aQCDGaus	= new RooGaussian("aQCDGaus","Gaussian PDF",pfmet,*gausMean,*gausSigma);
-    aQCDGaus_p	= new RooGaussian("aQCDGaus_p","Gaussian PDF",pfmet,*gausMean_p,*gausSigma_p);
-    aQCDGaus_m	= new RooGaussian("aQCDGaus_m","Gaussian PDF",pfmet,*gausMean_m,*gausSigma_m);
-  }else if (ipt==10 || ipt==11){
-//Rayleigh func. used
-    qcd1 =new CPepeModel1("qcd1",pfmet,&qcdsigma1);
-    qcd1p =new CPepeModel1("qcd1p",pfmet,&qcdsigma1);
-    qcd1m =new CPepeModel1("qcd1m",pfmet,&qcdsigma1);
-    aqcd1 =new CPepeModel1("aqcd1",pfmet,qcd1->sigma,qcd1->a1);
-    aqcd1p =new CPepeModel1("qcd1p",pfmet,qcd1p->sigma,qcd1p->a1);
-    aqcd1m =new CPepeModel1("qcd1m",pfmet,qcd1m->sigma,qcd1m->a1);
-  }else{
-    qcd1 =new CPepeModel1("qcd1",pfmet,&qcdsigma1);
-    qcd1->sigma->getValV();
-    qcd1->sigma->setConstant(kTRUE);
-    qcd1->a1->getValV();
-    qcd1->a1->setConstant(kTRUE);
-    qcd1p =new CPepeModel1("qcd1p",pfmet,&qcdsigma1);
-    qcd1p->sigma->getValV();
-    qcd1p->sigma->setConstant(kTRUE);
-    qcd1p->a1->getValV();
-    qcd1p->a1->setConstant(kTRUE);
-    qcd1m =new CPepeModel1("qcd1m",pfmet,&qcdsigma1);
-    qcd1m->sigma->getValV();
-    qcd1m->sigma->setConstant(kTRUE);
-    qcd1m->a1->getValV();
-    qcd1m->a1->setConstant(kTRUE);
-    aqcd1 =new CPepeModel1("aqcd1",pfmet,qcd1->sigma,qcd1->a1);
-    aqcd1->sigma->setVal(qcd1->sigma->getValV());
-    aqcd1->sigma->setConstant(kTRUE);
-    aqcd1->a1->setVal(qcd1->a1->getValV());
-    aqcd1->a1->setConstant(kTRUE);
-    aqcd1p =new CPepeModel1("qcd1p",pfmet,qcd1p->sigma,qcd1p->a1);
-    aqcd1p->sigma->setVal(qcd1p->sigma->getValV());
-    aqcd1p->sigma->setConstant(kTRUE);
-    aqcd1p->a1->setVal(qcd1p->a1->getValV());
-    aqcd1p->a1->setConstant(kTRUE);
-    aqcd1m =new CPepeModel1("qcd1m",pfmet,qcd1m->sigma,qcd1m->a1);
-    aqcd1m->sigma->setVal(qcd1m->sigma->getValV());
-    aqcd1m->sigma->setConstant(kTRUE);
-    aqcd1m->a1->setVal(qcd1m->a1->getValV());
-    aqcd1m->a1->setConstant(kTRUE);
-  }
-  // Signal + Background PDFs
-  if (ipt<7){
-    pdfMet =new RooAddPdf("pdfMet", "pdfMet", RooArgList(*pdfWm, *pdfEWK, *(qcd->model)), RooArgList(*nSig, *nEWK, *nQCD));
-    pdfMetp=new RooAddPdf("pdfMetp","pdfMetp",RooArgList(*pdfWmp,*pdfEWKp,*(qcdp->model)),RooArgList(*nSigp,*nEWKp,*nQCDp));
-    pdfMetm=new RooAddPdf("pdfMetm","pdfMetm",RooArgList(*pdfWmm,*pdfEWKm,*(qcdm->model)),RooArgList(*nSigm,*nEWKm,*nQCDm));
-    
-    apdfMet =new RooAddPdf("apdfMet", "apdfMet", RooArgList(*apdfWm,*apdfEWK,*(aqcd->model)),   RooArgList(*nAntiSig,*nAntiEWK,*nAntiQCD));
-    apdfMetp=new RooAddPdf("apdfMetp","apdfMetp",RooArgList(*apdfWmp,*apdfEWKp,*(aqcdp->model)),RooArgList(*nAntiSigp,*nAntiEWKp,*nAntiQCDp));
-    apdfMetm=new RooAddPdf("apdfMetm","apdfMetm",RooArgList(*apdfWmm,*apdfEWKm,*(aqcdm->model)),RooArgList(*nAntiSigm,*nAntiEWKm,*nAntiQCDm));
-  }else if (ipt>6 && ipt<10){
-    pdfqcd = new RooAddPdf("pdfqcd","pdfqcd",RooArgList(*(qcd1->model),*QCDGaus),qcdfrac1);
-    pdfqcdp = new RooAddPdf("pdfqcdp","pdfqcdp",RooArgList(*(qcd1p->model),*QCDGaus_p),qcdfrac1);
-    pdfqcdm = new RooAddPdf("pdfqcdm","pdfqcdm",RooArgList(*(qcd1m->model),*QCDGaus_m),qcdfrac1);
-
-    pdfMet =new RooAddPdf("pdfMet", "pdfMet", RooArgList(*pdfWm,*pdfEWK,*pdfqcd),   RooArgList(*nSig,*nEWK,*nQCD));
-    pdfMetp=new RooAddPdf("pdfMetp","pdfMetp",RooArgList(*pdfWmp,*pdfEWKp,*pdfqcdp),RooArgList(*nSigp,*nEWKp,*nQCDp));
-    pdfMetm=new RooAddPdf("pdfMetm","pdfMetm",RooArgList(*pdfWmm,*pdfEWKm,*pdfqcdm),RooArgList(*nSigm,*nEWKm,*nQCDm));
-
-    apdfqcd = new RooAddPdf("apdfqcd","apdfqcd",RooArgList(*(aqcd1->model),*aQCDGaus),qcdfrac1);
-    apdfqcdp = new RooAddPdf("apdfqcdp","apdfqcdp",RooArgList(*(aqcd1p->model),*aQCDGaus_p),qcdfrac1);
-    apdfqcdm = new RooAddPdf("apdfqcdm","apdfqcdm",RooArgList(*(aqcd1m->model),*aQCDGaus_m),qcdfrac1);
-
-    apdfMet =new RooAddPdf("apdfMet", "apdfMet", RooArgList(*apdfWm,*apdfEWK,*apdfqcd),   RooArgList(*nAntiSig,*nAntiEWK,*nAntiQCD));
-    apdfMetp=new RooAddPdf("apdfMetp","apdfMetp",RooArgList(*apdfWmp,*apdfEWKp,*apdfqcdp),RooArgList(*nAntiSigp,*nAntiEWKp,*nAntiQCDp));
-    apdfMetm=new RooAddPdf("apdfMetm","apdfMetm",RooArgList(*apdfWmm,*apdfEWKm,*apdfqcdm),RooArgList(*nAntiSigm,*nAntiEWKm,*nAntiQCDm));
-  }else{
-    pdfMet =new RooAddPdf("pdfMet", "pdfMet", RooArgList(*pdfWm,*pdfEWK,*(qcd1->model)),   RooArgList(*nSig,*nEWK,*nQCD));
-    pdfMetp=new RooAddPdf("pdfMetp","pdfMetp",RooArgList(*pdfWmp,*pdfEWKp,*(qcd1p->model)),RooArgList(*nSigp,*nEWKp,*nQCDp));
-    pdfMetm=new RooAddPdf("pdfMetm","pdfMetm",RooArgList(*pdfWmm,*pdfEWKm,*(qcd1m->model)),RooArgList(*nSigm,*nEWKm,*nQCDm));
-    apdfMet =new RooAddPdf("apdfMet", "apdfMet", RooArgList(*apdfWm,*apdfEWK,*(aqcd1->model)),   RooArgList(*nAntiSig,*nAntiEWK,*nAntiQCD));
-    apdfMetp=new RooAddPdf("apdfMetp","apdfMetp",RooArgList(*apdfWmp,*apdfEWKp,*(aqcd1p->model)),RooArgList(*nAntiSigp,*nAntiEWKp,*nAntiQCDp));
-    apdfMetm=new RooAddPdf("apdfMetm","apdfMetm",RooArgList(*apdfWmm,*apdfEWKm,*(aqcd1m->model)),RooArgList(*nAntiSigm,*nAntiEWKm,*nAntiQCDm));
-  }
-  // PDF for simultaneous fit
-  pdfTotal= new RooSimultaneous("pdfTotal","pdfTotal",rooCat);
-  pdfTotal->addPdf(*pdfMet, "Select");
-  pdfTotal->addPdf(*apdfMet,"Anti");
-  
-  pdfTotalp= new RooSimultaneous("pdfTotalp","pdfTotalp",rooCat);
-  pdfTotalp->addPdf(*pdfMetp, "Select");
-  pdfTotalp->addPdf(*apdfMetp,"Anti");
-  
-  pdfTotalm=new RooSimultaneous("pdfTotalm","pdfTotalm",rooCat);
-  pdfTotalm->addPdf(*pdfMetm, "Select");
-  pdfTotalm->addPdf(*apdfMetm,"Anti");
-  //
-  // Perform fits
-  //
-  if (ipt<11){
-    fitRes  = pdfTotal ->fitTo(*dataTotal,Extended(),Minos(kTRUE),Save(kTRUE));
-    fitResp = pdfTotalp->fitTo(*dataTotalp,Extended(),Minos(kTRUE),Save(kTRUE));
-    fitResm = pdfTotalm->fitTo(*dataTotalm,Extended(),Minos(kTRUE),Save(kTRUE));
-  }else{
-    fitRes  = pdfMet ->fitTo(*dataMet,Extended(),Minos(kTRUE),Save(kTRUE));
-    fitResp = pdfMetp->fitTo(*dataMetp,Extended(),Minos(kTRUE),Save(kTRUE));
-    fitResm = pdfMetm->fitTo(*dataMetm,Extended(),Minos(kTRUE),Save(kTRUE));
-  }
-  //
-  // Use histogram version of fitted PDFs to make ratio plots
-  // (Will also use PDF histograms later for Chi^2 and KS tests)
-  //
-  hPdfMet = (TH1D*)(pdfMet->createHistogram("hPdfMet", pfmet));
-  hPdfMet->Scale((nSig->getVal()+nEWK->getVal()+nQCD->getVal())/hPdfMet->Integral());
-  hMetDiff = makeDiffHist(hDataMet[ipt],hPdfMet,"hMetDiff");
-  hMetDiff->SetMarkerStyle(kFullCircle);
-  hMetDiff->SetMarkerSize(0.9);
-   
-  hPdfMetp = (TH1D*)(pdfMetp->createHistogram("hPdfMetp", pfmet));
-  hPdfMetp->Scale((nSigp->getVal()+nEWKp->getVal()+nQCDp->getVal())/hPdfMetp->Integral());
-  hMetpDiff = makeDiffHist(hDataMetp[ipt],hPdfMetp,"hMetpDiff");
-  hMetpDiff->SetMarkerStyle(kFullCircle);
-  hMetpDiff->SetMarkerSize(0.9);
-    
-  hPdfMetm = (TH1D*)(pdfMetm->createHistogram("hPdfMetm", pfmet));
-  hPdfMetm->Scale((nSigm->getVal()+nEWKm->getVal()+nQCDm->getVal())/hPdfMetm->Integral());
-  hMetmDiff = makeDiffHist(hDataMetm[ipt],hPdfMetm,"hMetmDiff");
-  hMetmDiff->SetMarkerStyle(kFullCircle); 
-  hMetmDiff->SetMarkerSize(0.9);
-
-  hPdfAntiMet = (TH1D*)(apdfMet->createHistogram("hPdfAntiMet", pfmet));
-  hPdfAntiMet->Scale((nAntiSig->getVal()+nAntiEWK->getVal()+nAntiQCD->getVal())/hPdfAntiMet->Integral());
-  hAntiMetDiff = makeDiffHist(hAntiDataMet[ipt],hPdfAntiMet,"hAntiMetDiff");
-  hAntiMetDiff->SetMarkerStyle(kFullCircle);
-  hAntiMetDiff->SetMarkerSize(0.9);
-   
-  hPdfAntiMetp = (TH1D*)(apdfMetp->createHistogram("hPdfAntiMetp", pfmet));
-  hPdfAntiMetp->Scale((nAntiSigp->getVal()+nAntiEWKp->getVal()+nAntiQCDp->getVal())/hPdfAntiMetp->Integral());
-  hAntiMetpDiff = makeDiffHist(hAntiDataMetp[ipt],hPdfAntiMetp,"hAntiMetpDiff");
-  hAntiMetpDiff->SetMarkerStyle(kFullCircle);
-  hAntiMetpDiff->SetMarkerSize(0.9);
-    
-  hPdfAntiMetm = (TH1D*)(apdfMetm->createHistogram("hPdfAntiMetm", pfmet));
-  hPdfAntiMetm->Scale((nAntiSigm->getVal()+nAntiEWKm->getVal()+nAntiQCDm->getVal())/hPdfAntiMetm->Integral());
-  hAntiMetmDiff = makeDiffHist(hAntiDataMetm[ipt],hPdfAntiMetm,"hAntiMetmDiff");
-  hAntiMetmDiff->SetMarkerStyle(kFullCircle); 
-  hAntiMetmDiff->SetMarkerSize(0.9);
-
-//Write MET Histogram to file
-  if(ipt == 0)
-    if (filetype == "BeforeRC" || filetype == "Nominal")
+    if (ipt<10)
     {
-      char metfname[100];
-      sprintf(metfname,"%s/MET_"+filetype+".root",CPlot::sOutDir.Data());
-      TFile *metfile = new TFile(metfname,"RECREATE");
-      RooAddPdf* pdfWmunu0Met;
-      RooAddPdf* pdfWmunu0Metp;
-      RooAddPdf* pdfWmunu0Metm;
-      RooAddPdf* pdfEWK0Met;
-      RooAddPdf* pdfEWK0Metp;
-      RooAddPdf* pdfEWK0Metm;
-      RooAddPdf* pdfQCD0Met;
-      RooAddPdf* pdfQCD0Metp;
-      RooAddPdf* pdfQCD0Metm;
+      sprintf(histName,"nAntiSig_%d",ipt);
+      nAntiSig[ipt] = new RooRealVar(histName,histName
+	  ,hAntiDataMet[ipt]->Integral(),0,hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiSigp_%d",ipt);
+      nAntiSigp[ipt] = new RooRealVar(histName,histName
+	  ,hAntiDataMetp[ipt]->Integral(),0,hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiSigm_%d",ipt);
+      nAntiSigm[ipt] = new RooRealVar(histName,histName
+	  ,hAntiDataMetm[ipt]->Integral(),0,hAntiDataMetm[ipt]->Integral());
+    
+      sprintf(histName,"nAntiQCD_%d",ipt);
+      nAntiQCD[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMet[ipt]->Integral()),0,hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiQCDp_%d",ipt);
+      nAntiQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetp[ipt]->Integral()),0,hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiQCDm_%d",ipt);
+      nAntiQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetm[ipt]->Integral()),0,hAntiDataMetm[ipt]->Integral());
       
-      TH1D* hWmunu0;
-      TH1D* hWmunu0p;
-      TH1D* hWmunu0m;
-      TH1D* hEWK0;
-      TH1D* hEWK0p;
-      TH1D* hEWK0m;
-      TH1D* hQCD0;
-      TH1D* hQCD0p;
-      TH1D* hQCD0m;
-      
-      pdfWmunu0Met	= new RooAddPdf("pdfWmunu0Met", "pdfWmunu0Met", RooArgList(*pdfWm),RooArgList(*nSig));
-      pdfWmunu0Metp	= new RooAddPdf("pdfWmunu0Metp","pdfWmunu0Metp",RooArgList(*pdfWmp),RooArgList(*nSigp));
-      pdfWmunu0Metm	= new RooAddPdf("pdfWmunu0Metm","pdfWmunu0Metm",RooArgList(*pdfWmm),RooArgList(*nSigm));
-      
-      pdfEWK0Met	= new RooAddPdf("pdfEWK0Met", "pdfEWK0Met", RooArgList(*pdfEWK),RooArgList(*nEWK));
-      pdfEWK0Metp	= new RooAddPdf("pdfEWK0Metp","pdfEWK0Metp",RooArgList(*pdfEWKp),RooArgList(*nEWKp));
-      pdfEWK0Metm	= new RooAddPdf("pdfEWK0Metm","pdfEWK0Metm",RooArgList(*pdfEWKm),RooArgList(*nEWKm));
-      
-      pdfQCD0Met	= new RooAddPdf("pdfQCD0Met", "pdfQCD0Met", RooArgList(*(qcd->model)),RooArgList(*nQCD));
-      pdfQCD0Metp	= new RooAddPdf("pdfQCD0Metp","pdfQCD0Metp",RooArgList(*(qcdp->model)),RooArgList(*nQCDp));
-      pdfQCD0Metm	= new RooAddPdf("pdfQCD0Metm","pdfQCD0Metm",RooArgList(*(qcdm->model)),RooArgList(*nQCDm));
-      
-      hWmunu0 = (TH1D*)(pdfWmunu0Met->createHistogram("hWmunu0", pfmet));
-      hWmunu0->Scale((nSig->getVal())/hWmunu0->Integral());
-      hWmunu0p = (TH1D*)(pdfWmunu0Metp->createHistogram("hWmunu0p", pfmet));
-      hWmunu0p->Scale((nSigp->getVal())/hWmunu0p->Integral());
-      hWmunu0m = (TH1D*)(pdfWmunu0Metm->createHistogram("hWmunu0m", pfmet));
-      hWmunu0m->Scale((nSigm->getVal())/hWmunu0m->Integral());
-      
-      hEWK0 = (TH1D*)(pdfEWK0Met->createHistogram("hEWK0", pfmet));
-      hEWK0->Scale((nEWK->getVal())/hEWK0->Integral());
-      hEWK0p = (TH1D*)(pdfEWK0Metp->createHistogram("hEWK0p", pfmet));
-      hEWK0p->Scale((nEWKp->getVal())/hEWK0p->Integral());
-      hEWK0m = (TH1D*)(pdfEWK0Metm->createHistogram("hEWK0m", pfmet));
-      hEWK0m->Scale((nEWKm->getVal())/hEWK0m->Integral());
-      
-      hQCD0 = (TH1D*)(pdfQCD0Met->createHistogram("hQCD0", pfmet));
-      hQCD0->Scale((nQCD->getVal())/hQCD0->Integral());
-      hQCD0p = (TH1D*)(pdfQCD0Metp->createHistogram("hQCD0p", pfmet));
-      hQCD0p->Scale((nQCDp->getVal())/hQCD0p->Integral());
-      hQCD0m = (TH1D*)(pdfQCD0Metm->createHistogram("hQCD0m", pfmet));
-      hQCD0m->Scale((nQCDm->getVal())/hQCD0m->Integral());
-      
-      hDataMet[ipt]->Write();
-      hDataMetp[ipt]->Write();
-      hDataMetm[ipt]->Write();
-      hWmunu0->Write();
-      hWmunu0p->Write();
-      hWmunu0m->Write();
-      hEWK0->Write();
-      hEWK0p->Write();
-      hEWK0m->Write();
-      hQCD0->Write();
-      hQCD0p->Write();
-      hQCD0m->Write();
-      metfile->Close();
-    }
-  
-  //-------------------------------------------------
-  // Make plots 
-  //=================================================  
-  //
-  // W MET plot
-  //
-  wmframe = pfmet.frame(Bins(NBINS)); 
-  wmframe->GetYaxis()->SetNdivisions(505);
-  dataMet->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-  pdfMet->plotOn(wmframe,FillColor(fillcolorW),DrawOption("F"));
-  pdfMet->plotOn(wmframe,LineColor(linecolorW));
-  if (ipt<7){
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd->model))),LineColor(linecolorEWK));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd->model))),LineColor(linecolorQCD));
-  }else if (ipt>6 && ipt<10){
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*pdfqcd)),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*pdfqcd)),LineColor(linecolorEWK));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfqcd)),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfqcd)),LineColor(linecolorQCD));
-  }else{
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd1->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd1->model))),LineColor(linecolorEWK));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd1->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd1->model))),LineColor(linecolorQCD));
-  }
-  pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfWm)),LineColor(linecolorW),LineStyle(2));
-  dataMet->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
-  
-  sprintf(ylabel,"Events / %.1f GeV",hDataMet[ipt]->GetBinWidth(1));
-  sprintf(histName,"fitMet_%d",ipt);
-  plotMet=new CPlot(histName,wmframe,"","",ylabel);
-  plotMet->setOutDir(CPlot::sOutDir);
-  plotMet->SetLegend(0.68,0.57,0.93,0.77);
-  plotMet->GetLegend()->AddEntry(hDummyData,"data","PL");
-  plotMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
-  plotMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-  plotMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-  plotMet->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-  plotMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-  plotMet->SetYRange(0.1,1.1*(hDataMet[ipt]->GetMaximum()));
-  plotMet->Draw(c,kFALSE,format,1);
-
-  plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-  plotMetDiff->setOutDir(CPlot::sOutDir);
-  plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
-  plotMetDiff->SetYRange(-8,8);
-  plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-  plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-  plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-  plotMetDiff->Draw(c,kTRUE,format,2);
-  
-  sprintf(histName,"fitMetLog_%d",ipt);
-  plotMet->SetName(histName);
-  plotMet->SetLogy();
-  plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
-  plotMet->Draw(c,kTRUE,format,1);
-
-  if ( ipt < 11 ){
-    awmframe = pfmet.frame(Bins(NBINS));
-    antiMet->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    apdfMet->plotOn(awmframe,FillColor(fillcolorW),DrawOption("F"));
-    apdfMet->plotOn(awmframe,LineColor(linecolorW));
-    if (ipt<7){
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd->model))),LineColor(linecolorEWK));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd->model))),LineColor(linecolorQCD));
-    }else if (ipt>6 && ipt<10){
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*apdfqcd)),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*apdfqcd)),LineColor(linecolorEWK));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfqcd)),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfqcd)),LineColor(linecolorQCD));
-    }else{
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd1->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd1->model))),LineColor(linecolorEWK));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd1->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd1->model))),LineColor(linecolorQCD));
-    }
-    apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfWm)),LineColor(linecolorW),LineStyle(2));
-    antiMet->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    
-    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitAntiMet_%d",ipt);
-    plotAntiMet=new CPlot (histName,awmframe,"","",ylabel);
-    plotAntiMet->setOutDir(CPlot::sOutDir);
-    plotAntiMet->SetLegend(0.68,0.57,0.93,0.77);
-    plotAntiMet->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
-    plotAntiMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotAntiMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotAntiMet->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-    plotAntiMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
-    plotAntiMet->Draw(c,kFALSE,format,1);
-    
-    plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
-    plotAntiMetDiff->SetYRange(-8,8);
-    plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    plotAntiMetDiff->Draw(c,kTRUE,format,2);
-    
-    sprintf(histName,"fitAntiMetLog_%d",ipt);
-    plotAntiMet->SetName(histName);
-    plotAntiMet->SetLogy();
-    plotAntiMet->SetYRange(1e-3*(hAntiDataMet[ipt]->GetMaximum()),10*(hAntiDataMet[ipt]->GetMaximum()));
-    plotAntiMet->Draw(c,kTRUE,format,1);
-  }
-  //
-  // W+ MET plot
-  //
-  wmpframe = pfmet.frame(Bins(NBINS));
-  wmpframe->GetYaxis()->SetNdivisions(505);
-  dataMetp->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-  pdfMetp->plotOn(wmpframe,FillColor(fillcolorW),DrawOption("F"));
-  pdfMetp->plotOn(wmpframe,LineColor(linecolorW));
-  if (ipt<7){
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdp->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdp->model))),LineColor(linecolorEWK));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdp->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdp->model))),LineColor(linecolorQCD));
-  }else if (ipt>6 && ipt<10){
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*pdfqcdp)),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*pdfqcdp)),LineColor(linecolorEWK));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfqcdp)),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfqcdp)),LineColor(linecolorQCD));
-  }else{
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcd1p->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcd1p->model))),LineColor(linecolorEWK));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcd1p->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcd1p->model))),LineColor(linecolorQCD));
-  }
-  pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfWmp)),LineColor(linecolorW),LineStyle(2));
-  dataMetp->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
-  
-  sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
-  sprintf(histName,"fitMetP_%d",ipt);
-  plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
-  plotMetp->setOutDir(CPlot::sOutDir);
-  plotMetp->SetLegend(0.68,0.57,0.93,0.77);
-  plotMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-  plotMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
-  plotMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-  plotMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-  plotMetp->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-  plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-  plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
-  plotMetp->Draw(c,kFALSE,format,1);
-
-  plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
-  plotMetpDiff->setOutDir(CPlot::sOutDir);
-  plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
-  plotMetpDiff->SetYRange(-8,8);
-  plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-  plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-  plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-  plotMetpDiff->Draw(c,kTRUE,format,2);
-  
-  sprintf(histName,"fitMetPLog_%d",ipt);
-  plotMetp->SetName(histName);
-  plotMetp->SetLogy();
-  plotMetp->SetYRange(1e-3*(hDataMetp[ipt]->GetMaximum()),10*(hDataMetp[ipt]->GetMaximum()));
-  plotMetp->Draw(c,kTRUE,format,1);
-
-  if ( ipt < 11 ){
-    awmpframe = pfmet.frame(Bins(NBINS));
-    antiMetp->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    apdfMetp->plotOn(awmpframe,FillColor(fillcolorW),DrawOption("F"));
-    apdfMetp->plotOn(awmpframe,LineColor(linecolorW));
-    if (ipt<7){
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdp->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdp->model))),LineColor(linecolorEWK));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdp->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdp->model))),LineColor(linecolorQCD));
-    }else if (ipt>6 && ipt<10){
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*apdfqcdp)),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*apdfqcdp)),LineColor(linecolorEWK));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfqcdp)),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfqcdp)),LineColor(linecolorQCD));
-    }else{
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcd1p->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcd1p->model))),LineColor(linecolorEWK));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcd1p->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcd1p->model))),LineColor(linecolorQCD));
-    }
-    apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfWmp)),LineColor(linecolorW),LineStyle(2));
-    antiMetp->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitAntiMetP_%d",ipt);
-    plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
-    plotAntiMetp->setOutDir(CPlot::sOutDir);
-    plotAntiMetp->SetLegend(0.68,0.57,0.93,0.77);
-    plotAntiMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotAntiMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotAntiMetp->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-    plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
-    plotAntiMetp->Draw(c,kFALSE,format,1);
-    
-    plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
-    plotAntiMetpDiff->SetYRange(-8,8);
-    plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    plotAntiMetpDiff->Draw(c,kTRUE,format,2);
-    
-    sprintf(histName,"fitAntiMetPLog_%d",ipt);
-    plotAntiMetp->SetName(histName);
-    plotAntiMetp->SetLogy();
-    plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
-    plotAntiMetp->Draw(c,kTRUE,format,1);
-  }
-  //
-  // W- MET plot
-  //
-
-  wmmframe = pfmet.frame(Bins(NBINS));
-  wmmframe->GetYaxis()->SetNdivisions(505);
-  dataMetm->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-  pdfMetm->plotOn(wmmframe,FillColor(fillcolorW),DrawOption("F"));
-  pdfMetm->plotOn(wmmframe,LineColor(linecolorW));
-  if (ipt<7){
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdm->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdm->model))),LineColor(linecolorEWK));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdm->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdm->model))),LineColor(linecolorQCD));
-  }else if (ipt>6 && ipt<10){
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*pdfqcdm)),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*pdfqcdm)),LineColor(linecolorEWK));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfqcdm)),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfqcdm)),LineColor(linecolorQCD));
-  }else{
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcd1m->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcd1m->model))),LineColor(linecolorEWK));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcd1m->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcd1m->model))),LineColor(linecolorQCD));
-  }
-  pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfWmm)),LineColor(linecolorW),LineStyle(2));
-  dataMetm->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-  
-  sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
-  sprintf(histName,"fitMetM_%d",ipt);
-  plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
-  plotMetm->setOutDir(CPlot::sOutDir);
-  plotMetm->SetLegend(0.68,0.57,0.93,0.77);
-  plotMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-  plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
-  plotMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-  plotMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-  plotMetm->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-  plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-  plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
-  plotMetm->Draw(c,kFALSE,format,1);
-
-  plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-  plotMetmDiff->setOutDir(CPlot::sOutDir);
-  plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
-  plotMetmDiff->SetYRange(-8,8);
-  plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-  plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-  plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-  plotMetmDiff->Draw(c,kTRUE,format,2);
-  
-  sprintf(histName,"fitMetMLog_%d",ipt);
-  plotMetm->SetName(histName);
-  plotMetm->SetLogy();
-  plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
-  plotMetm->Draw(c,kTRUE,format,1);
-
-  if ( ipt < 11 ){
-    awmmframe = pfmet.frame(Bins(NBINS));
-    antiMetm->plotOn(awmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    apdfMetm->plotOn(awmmframe,FillColor(fillcolorW),DrawOption("F"));
-    apdfMetm->plotOn(awmmframe,LineColor(linecolorW));
-    if (ipt<7){
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdm->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdm->model))),LineColor(linecolorEWK));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdm->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdm->model))),LineColor(linecolorQCD));
-    }else if (ipt>6 && ipt<10){
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*apdfqcdm)),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*apdfqcdm)),LineColor(linecolorEWK));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfqcdm)),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfqcdm)),LineColor(linecolorQCD));
-    }else{
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcd1m->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcd1m->model))),LineColor(linecolorEWK));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcd1m->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcd1m->model))),LineColor(linecolorQCD));
-    }
-    apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfWmm)),LineColor(linecolorW),LineStyle(2));
-    antiMetm->plotOn(awmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
-    
-    sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitAntiMetM_%d",ipt);
-    plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
-    plotAntiMetm->setOutDir(CPlot::sOutDir);
-    plotAntiMetm->SetLegend(0.68,0.57,0.93,0.77);
-    plotAntiMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
-    plotAntiMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
-    plotAntiMetm->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
-    plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
-    plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
-    plotAntiMetm->Draw(c,kFALSE,format,1);
-    
-    plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
-    plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
-    plotAntiMetmDiff->SetYRange(-8,8);
-    plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
-    plotAntiMetmDiff->Draw(c,kTRUE,format,2);
-    
-    sprintf(histName,"fitAntiMetMLog_%d",ipt);
-    plotAntiMetm->SetName(histName);
-    plotAntiMetm->SetLogy();
-    plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
-    plotAntiMetm->Draw(c,kTRUE,format,1);
-  }
-    
-  //----------------------------
-  // Output
-  //============================
+      sprintf(histName,"dewk_%d",ipt);
+      dewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewk[ipt]->setVal(hAntiEWKMet[ipt]->Integral()/hAntiWmunuMet[ipt]->Integral());
+      dewk[ipt]->setConstant(kTRUE);
    
-  cout << "*****************************************" << endl;
-  cout << "* SUMMARY" << endl;
-  cout << "*****************************************" << endl;  
-  
-  //
-  // Write fit results
-  //
-  
-  flags = allyields.flags();
-  allyields << fixed << setprecision(1);
-  allyields << "Bin" << "\t" << ipt << "\t" <<"Signal" << "\t" << nSig->getVal() << "\t" << "Error" << "\t" << nSig->getPropagatedError(*fitRes) << endl;
-  allyields.flags(flags);
-
-  flags = allyieldsp.flags();
-  allyieldsp << fixed << setprecision(1);
-  allyieldsp << "Bin" << "\t" << ipt << "\t" <<"Signal" << "\t" << nSigp->getVal() << "\t" << "Error" << "\t" << nSigp->getPropagatedError(*fitResp) << endl;
-  allyieldsp.flags(flags);
-
-  flags = allyieldsm.flags();
-  allyieldsm << fixed << setprecision(1);
-  allyieldsm << "Bin" << "\t" << ipt << "\t" <<"Signal" << "\t" << nSigm->getVal() << "\t" << "Error" << "\t" << nSigm->getPropagatedError(*fitResm) << endl;
-  allyieldsm.flags(flags);
-
-  chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
-  chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
-  ksprob   = hDataMet[ipt]->KolmogorovTest(hPdfMet);
-  ksprobpe = hDataMet[ipt]->KolmogorovTest(hPdfMet,"DX");
-
-  flags = Wmfile.flags();
-  if (ipt==0)
-    Wmfile << "============================================== [0, 600] Bin - " << ipt << " ==============================================" << endl;
-  else
-    Wmfile << "============================================== [" << WptBins[ipt-1] << ", " << WptBins[ipt] << "] Bin - " << ipt << " ==============================================" << endl;
-  Wmfile << endl;
-  Wmfile << fixed << setprecision(4);
-  Wmfile << "Selected: " << hDataMet[ipt]->Integral() << endl;
-  Wmfile << "  Signal: " << nSig->getVal() << " +/- " << nSig->getPropagatedError(*fitRes) << endl;
-  Wmfile << "     QCD: " << nQCD->getVal() << " +/- " << nQCD->getPropagatedError(*fitRes) << endl;
-  Wmfile << "   Other: " << nEWK->getVal() << " +/- " << nEWK->getPropagatedError(*fitRes) << endl;
-  Wmfile << "   Total: " << nSig->getVal()+nQCD->getVal()+nEWK->getVal() << endl;
-  Wmfile << endl;
-  Wmfile.flags(flags);
-  
-  fitRes->printStream(Wmfile,RooPrintable::kValue,RooPrintable::kVerbose);
-  Wmfile << endl;
-  printCorrelations(Wmfile, fitRes);
-  Wmfile << endl;
-  printChi2AndKSResults(Wmfile, chi2prob, chi2ndf, ksprob, ksprobpe);
-  
-  chi2prob = hDataMetp[ipt]->Chi2Test(hPdfMetp,"PUW");
-  chi2ndf  = hDataMetp[ipt]->Chi2Test(hPdfMetp,"CHI2/NDFUW");
-  ksprob   = hDataMetp[ipt]->KolmogorovTest(hPdfMetp);
-  ksprobpe = hDataMetp[ipt]->KolmogorovTest(hPdfMetp,"DX");  
-  
-  flags = Wmpfile.flags();
-  if (ipt==0)
-    Wmpfile << "============================================== [0, 600] Bin - " << ipt << " ==============================================" << endl;
-  else
-    Wmpfile << "============================================== [" << WptBins[ipt-1] << ", " << WptBins[ipt] << "] Bin - " << ipt << " ==============================================" << endl;
-  Wmpfile << fixed << setprecision(4);
-  Wmpfile << endl;
-  Wmpfile << "Selected: " << hDataMetp[ipt]->Integral() << endl;
-  Wmpfile << "  Signal: " << nSigp->getVal() << " +/- " << nSigp->getPropagatedError(*fitResp) << endl;
-  Wmpfile << "     QCD: " << nQCDp->getVal() << " +/- " << nQCDp->getPropagatedError(*fitResp) << endl;
-  Wmpfile << "   Other: " << nEWKp->getVal() << " +/- " << nEWKp->getPropagatedError(*fitResp) << endl;
-  Wmpfile << "   Total: " << nSigp->getVal()+nQCDp->getVal()+nEWKp->getVal() << endl;
-  Wmpfile << endl; 
-  Wmpfile.flags(flags);
-  
-  fitResp->printStream(Wmpfile,RooPrintable::kValue,RooPrintable::kVerbose);
-  Wmpfile << endl;
-  printCorrelations(Wmpfile, fitResp);
-  Wmpfile << endl;
-  printChi2AndKSResults(Wmpfile, chi2prob, chi2ndf, ksprob, ksprobpe);
-
-  chi2prob = hDataMetm[ipt]->Chi2Test(hPdfMetm,"PUW");
-  chi2ndf  = hDataMetm[ipt]->Chi2Test(hPdfMetm,"CHI2/NDFUW");
-  ksprob   = hDataMetm[ipt]->KolmogorovTest(hPdfMetm);
-  ksprobpe = hDataMetm[ipt]->KolmogorovTest(hPdfMetm,"DX");  
-
-  flags = Wmmfile.flags();
-  if (ipt==0)
-    Wmmfile << "============================================== [0, 600] Bin - " << ipt << " ==============================================" << endl;
-  else
-    Wmmfile << "============================================== [" << WptBins[ipt-1] << ", " << WptBins[ipt] << "] Bin - " << ipt << " ==============================================" << endl;
-  Wmmfile << endl;
-  Wmmfile << fixed << setprecision(4);
-  Wmmfile << "Selected: " << hDataMetm[ipt]->Integral() << endl;
-  Wmmfile << "  Signal: " << nSigm->getVal() << " +/- " << nSigm->getPropagatedError(*fitResm) << endl;
-  Wmmfile << "     QCD: " << nQCDm->getVal() << " +/- " << nQCDm->getPropagatedError(*fitResm) << endl;
-  Wmmfile << "   Other: " << nEWKm->getVal() << " +/- " << nEWKm->getPropagatedError(*fitResm) << endl;
-  Wmmfile << "   Total: " << nSigm->getVal()+nQCDm->getVal()+nEWKm->getVal() << endl;
-  Wmmfile << endl;
-  Wmmfile.flags(flags);
-  
-  fitResm->printStream(Wmmfile,RooPrintable::kValue,RooPrintable::kVerbose);
-  Wmmfile << endl;
-  printCorrelations(Wmmfile, fitResm);
-  Wmmfile << endl;
-  printChi2AndKSResults(Wmmfile, chi2prob, chi2ndf, ksprob, ksprobpe);
-
-  flags = qcdfile.flags();
-  if (ipt<7){
-    qcdfile << "Sigma: " << qcd->sigma->getValV() << "\t" << "Mean: " << qcd->mean->getValV() << "\t" << "Sigma1: " << qcd->a1->getValV() << "\t" << "SigmaP: " << qcdp->sigma->getValV() << "\t" << "MeanP: " << qcdp->mean->getValV() << "\t" << "Sigma1P: " << qcdp->a1->getValV() << "\t" << "SigmaM: " << qcdm->sigma->getValV() << "\t" << "MeanM: " << qcdm->mean->getValV() << "\t" << "Sigma1M: " << qcdm->a1->getValV() << endl;
-  }else if(ipt>6 && ipt<10){
-    qcdfile << "Gauss Sigma,Mean(Incl, + -): " << gausSigma->getValV() << "\t" << gausSigma_p->getValV() << "\t" << gausSigma_m->getValV() << "\t" << gausMean->getValV() << "\t" << gausMean_p->getValV() << "\t" << gausMean_m->getValV() << "QCD Sigma,a1(Incl, + -): " << qcd1->sigma->getValV() << "\t" << qcd1p->sigma->getValV() << "\t" << qcd1m->sigma->getValV() << "\t" << qcd1->a1->getValV() << "\t" << qcd1p->a1->getValV() << "\t" << qcd1m->a1->getValV() << "\t" << " Side Sigma,a1(Incl, + -): " << aqcd1->sigma->getValV() << "\t" << aqcd1p->sigma->getValV() << "\t" << aqcd1m->sigma->getValV() << "\t" << aqcd1->a1->getValV() << "\t" << aqcd1p->a1->getValV() << "\t" << aqcd1m->a1->getValV() << endl;
-  }else{
-    qcdfile << "QCD Sigma,a1(Incl, + -): " << qcd1->sigma->getValV() << "\t" << qcd1p->sigma->getValV() << "\t" << qcd1m->sigma->getValV() << "\t" << qcd1->a1->getValV() << "\t" << qcd1p->a1->getValV() << "\t" << qcd1m->a1->getValV() << "\t" << " Side Sigma,a1(Incl, + -): " << aqcd1->sigma->getValV() << "\t" << aqcd1p->sigma->getValV() << "\t" << aqcd1m->sigma->getValV() << "\t" << aqcd1->a1->getValV() << "\t" << aqcd1p->a1->getValV() << "\t" << aqcd1m->a1->getValV() << endl;
-  }
-  qcdfile << endl;
-  qcdfile.flags(flags);
-
-  metplotsfile << "<hr />" << endl;
-  if (ipt==0)
-    metplotsfile << "<p align=\"center\"> [0, 600] Bin - " << ipt << "</p>" << endl;
-  else
-    metplotsfile << "<p align=\"center\"> [" << WptBins[ipt-1] << ", " << WptBins[ipt] << "] Bin - " << ipt << "</p>" << endl;
-  metplotsfile << "<table border=\"0\" cellspacing=\"5\" width=\"900\" align=\"center\">" << endl; 
-  metplotsfile << "<tr>" << endl;
-  metplotsfile << "<td width=\"100\"></td>" << endl;
-  metplotsfile << "<td width=\"400\" colspan=\"2\"><p align=\"center\" style=\"font-size:small\"> Signal </p></td>" << endl;
-  metplotsfile << "<td width=\"400\" colspan=\"2\"><p align=\"center\" style=\"font-size:small\"> Side </p></td>" << endl;
-  metplotsfile << "</tr>" << endl;
-  metplotsfile << "<tr>" << endl;
-  metplotsfile << "<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W </p></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMet_" << ipt <<".png\"><img src=\"fitMet_" << ipt <<".png\" width=\"200\" alt=\"fitMet_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMetLog_" << ipt <<".png\"><img src=\"fitMetLog_" << ipt <<".png\" width=\"200\" alt=\"fitMetLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMet_" << ipt <<".png\"><img src=\"fitAntiMet_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMet_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetLog_" << ipt <<".png\"><img src=\"fitAntiMetLog_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMetLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "</tr>" << endl;
-  metplotsfile << "<tr>" << endl;
-  metplotsfile << "<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>+</sup> </p></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMetP_" << ipt <<".png\"><img src=\"fitMetP_" << ipt <<".png\" width=\"200\" alt=\"fitMetP_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMetPLog_" << ipt <<".png\"><img src=\"fitMetPLog_" << ipt <<".png\" width=\"200\" alt=\"fitMetPLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetP_" << ipt <<".png\"><img src=\"fitAntiMetP_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMetP_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetPLog_" << ipt <<".png\"><img src=\"fitAntiMetPLog_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMetPLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "</tr>" << endl;
-  metplotsfile << "<tr>" << endl;
-  metplotsfile << "<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>-</sup></p></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMetM_" << ipt <<".png\"><img src=\"fitMetM_" << ipt <<".png\" width=\"200\" alt=\"fitMetM_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitMetMLog_" << ipt <<".png\"><img src=\"fitMetMLog_" << ipt <<".png\" width=\"200\" alt=\"fitMetMLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetM_" << ipt <<".png\"><img src=\"fitAntiMetM_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMetM_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetMLog_" << ipt <<".png\"><img src=\"fitAntiMetMLog_" << ipt <<".png\" width=\"200\" alt=\"fitAntiMetMLog_" << ipt <<".png\"></a></td>" << endl;
-  metplotsfile << "</tr>" << endl;
-  metplotsfile << "</table>" << endl;
-
-  if (ipt==0)
-    tablefile << "<p align=\"center\">  [0, 600] Bin - "<< ipt <<" Yields </p>" << endl;
-  else
-    tablefile << "<p align=\"center\"> [" << WptBins[ipt-1] << ", " << WptBins[ipt] << "] Bin - "<< ipt <<" Yields </p>" << endl;
-  tablefile << "<table border=\"1\" style=\"border-collapse: collapse\" bordercolor=\"black\" cellspacing=\"6\" width=\"880\" align=\"center\">" << endl;
-  tablefile << "<tr>" << endl;
-  tablefile << "<td width=\"60\"></td>" << endl;
-  tablefile << "<td width=\"100\"><p> Selected</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p> Total</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p> Signal</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p> QCD</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p> Others</p></td>" << endl;
-  tablefile << "</tr>" << endl;
-  tablefile << fixed << setprecision(1);
-  tablefile << "<tr>" << endl;
-  tablefile << "<td width=\"60\"><p> W</p></td>" << endl;
-  tablefile << "<td width=\"100\"><p>"<< hDataMet[ipt]->Integral() <<"</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSig->getVal()+nQCD->getVal()+nEWK->getVal() << " &plusmn; " << sqrt(nSig->getPropagatedError(*fitRes)*nSig->getPropagatedError(*fitRes)+nQCD->getPropagatedError(*fitRes)*nQCD->getPropagatedError(*fitRes)+nEWK->getPropagatedError(*fitRes)*nEWK->getPropagatedError(*fitRes)) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSig->getVal() << " &plusmn; " << nSig->getPropagatedError(*fitRes) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nQCD->getVal() << " &plusmn; " << nQCD->getPropagatedError(*fitRes) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nEWK->getVal() << " &plusmn; " << nEWK->getPropagatedError(*fitRes) << "</p></td>" << endl;
-  tablefile << "</tr>" << endl;
-  tablefile << "<tr>" << endl;
-  tablefile << "<td width=\"60\"><p> W <sup>+</sup></p></td>" << endl;
-  tablefile << "<td width=\"100\"><p>"<< hDataMetp[ipt]->Integral() <<"</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSigp->getVal()+nQCDp->getVal()+nEWKp->getVal() << " &plusmn; " << sqrt(nSigp->getPropagatedError(*fitResp)*nSigp->getPropagatedError(*fitResp)+nQCDp->getPropagatedError(*fitResp)*nQCDp->getPropagatedError(*fitResp)+nEWKp->getPropagatedError(*fitResp)*nEWKp->getPropagatedError(*fitResp)) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSigp->getVal() << " &plusmn; " << nSigp->getPropagatedError(*fitResp) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nQCDp->getVal() << " &plusmn; " << nQCDp->getPropagatedError(*fitResp) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nEWKp->getVal() << " &plusmn; " << nEWKp->getPropagatedError(*fitResp) << "</p></td>" << endl;
-  tablefile << "</tr>" << endl;
-  tablefile << "<tr>" << endl;
-  tablefile << "<td width=\"60\"><p> W <sup>-</sup></p></td>" << endl;
-  tablefile << "<td width=\"100\"><p>"<< hDataMetm[ipt]->Integral() <<"</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSigm->getVal()+nQCDm->getVal()+nEWKm->getVal() << " &plusmn; " << sqrt(nSigm->getPropagatedError(*fitResm)*nSigm->getPropagatedError(*fitResm)+nQCDm->getPropagatedError(*fitResm)*nQCDm->getPropagatedError(*fitResm)+nEWKm->getPropagatedError(*fitResm)*nEWKm->getPropagatedError(*fitResm)) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nSigm->getVal() << " &plusmn; " << nSigm->getPropagatedError(*fitResm) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nQCDm->getVal() << " &plusmn; " << nQCDm->getPropagatedError(*fitResm) << "</p></td>" << endl;
-  tablefile << "<td width=\"180\"><p>"<< nEWKm->getVal() << " &plusmn; " << nEWKm->getPropagatedError(*fitResm) << "</p></td>" << endl;
-  tablefile << "</tr>" << endl;
-  tablefile << "</table>" << endl;
-  tablefile << "<hr />" << endl;
-
-  cout << endl;
-  cout << "  <> Output saved in " << outputDir << "/" << endl;    
-  cout << endl;
-
-  if (ipt>0){
-    hSigWpt -> SetBinContent(ipt, nSig->getVal());
-    hSigWpt -> SetBinError(ipt, nSig->getPropagatedError(*fitRes));
-    hSigWPpt-> SetBinContent(ipt, nSigp->getVal());
-    hSigWPpt-> SetBinError(ipt, nSigp->getPropagatedError(*fitResp));
-    hSigWMpt-> SetBinContent(ipt, nSigm->getVal());
-    hSigWMpt-> SetBinError(ipt, nSigm->getPropagatedError(*fitResm));
-    hQCDWpt -> SetBinContent(ipt, nQCD->getVal());
-    hQCDWPpt-> SetBinContent(ipt, nQCDp->getVal());
-    hQCDWMpt-> SetBinContent(ipt, nQCDm->getVal());
+      sprintf(histName,"dewkp_%d",ipt);
+      dewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewkp[ipt]->setVal(hAntiEWKMetp[ipt]->Integral()/hAntiWmunuMetp[ipt]->Integral());
+      dewkp[ipt]->setConstant(kTRUE);
+      
+      sprintf(histName,"dewkm_%d",ipt);
+      dewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewkm[ipt]->setVal(hAntiEWKMetm[ipt]->Integral()/hAntiWmunuMetm[ipt]->Integral());
+      dewkm[ipt]->setConstant(kTRUE);
+    }else{
+      sprintf(histName,"nAntiSig_%d",ipt);
+      nAntiSig[ipt] = new RooRealVar(histName,histName
+	  ,hHighWpTAnti_DataMet->Integral(),0,hHighWpTAnti_DataMet->Integral());
+      sprintf(histName,"nAntiSigp_%d",ipt);
+      nAntiSigp[ipt] = new RooRealVar(histName,histName
+	  ,hHighWpTAnti_DataMetp->Integral(),0,hHighWpTAnti_DataMetp->Integral());
+      sprintf(histName,"nAntiSigm_%d",ipt);
+      nAntiSigm[ipt] = new RooRealVar(histName,histName
+	  ,hHighWpTAnti_DataMetm->Integral(),0,hHighWpTAnti_DataMetm->Integral());
     
-    
-    hQCD_SigPlus-> SetBinContent(ipt, nQCDp->getVal()/nSigp->getVal());
-    hQCD_SigMinus-> SetBinContent(ipt, nQCDm->getVal()/nSigm->getVal());
-    hQCD_SigQCDPlus-> SetBinContent(ipt,  nQCDp->getVal()/(  nQCDp->getVal()+ nSigp->getVal()  )  );
-    hQCD_SigQCDMinus-> SetBinContent(ipt, nQCDm->getVal()/(  nQCDm->getVal()+ nSigm->getVal()  )  );
-    
+      sprintf(histName,"nAntiQCD_%d",ipt);
+      nAntiQCD[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hHighWpTAnti_DataMet->Integral()),0,hHighWpTAnti_DataMet->Integral());
+      sprintf(histName,"nAntiQCDp_%d",ipt);
+      nAntiQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hHighWpTAnti_DataMetp->Integral()),0,hHighWpTAnti_DataMetp->Integral());
+      sprintf(histName,"nAntiQCDm_%d",ipt);
+      nAntiQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hHighWpTAnti_DataMetm->Integral()),0,hHighWpTAnti_DataMetm->Integral());
+      
+      sprintf(histName,"dewk_%d",ipt);
+      dewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewk[ipt]->setVal(hHighWpTAnti_EWKMet->Integral()/hHighWpTAnti_WmunuMet->Integral());
+      dewk[ipt]->setConstant(kTRUE);
    
+      sprintf(histName,"dewkp_%d",ipt);
+      dewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewkp[ipt]->setVal(hHighWpTAnti_EWKMetp->Integral()/hHighWpTAnti_WmunuMetp->Integral());
+      dewkp[ipt]->setConstant(kTRUE);
+      
+      sprintf(histName,"dewkm_%d",ipt);
+      dewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+      dewkm[ipt]->setVal(hHighWpTAnti_EWKMetm->Integral()/hHighWpTAnti_WmunuMetm->Integral());
+      dewkm[ipt]->setConstant(kTRUE);
+    } 
+    sprintf(histName,"nQCD_%d",ipt);
+    nQCD[ipt]  = new RooRealVar(histName,histName
+	,0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
+    sprintf(histName,"nQCDp_%d",ipt);
+    nQCDp[ipt] = new RooRealVar(histName,histName
+	,0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
+    sprintf(histName,"nQCDm_%d",ipt);
+    nQCDm[ipt] = new RooRealVar(histName,histName
+	,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
     
-    double total = nEventDYToMuMu[ipt]+nEventDYToTauTau[ipt]+nEventTTJets[ipt]+nEventWToTauNu[ipt];
-    double totalp = nEventDYToMuMuP[ipt]+nEventDYToTauTauP[ipt]+nEventTTJetsP[ipt]+nEventWToTauNuP[ipt];
-    double totalm = nEventDYToMuMuM[ipt]+nEventDYToTauTauM[ipt]+nEventTTJetsM[ipt]+nEventWToTauNuM[ipt];
-    hDYToMuMu   -> SetBinContent(ipt,nEWK->getVal()*nEventDYToMuMu[ipt]/total);
-    hWToTauTau  -> SetBinContent(ipt,nEWK->getVal()*nEventWToTauNu[ipt]/total);
-    hTTJets     -> SetBinContent(ipt,nEWK->getVal()*nEventTTJets[ipt]/total);
-    hDYToTauTau -> SetBinContent(ipt,nEWK->getVal()*nEventDYToTauTau[ipt]/total);
-    hDYToMuMuP  -> SetBinContent(ipt,nEWKp->getVal()*nEventDYToMuMuP[ipt]/totalp);
-    hWToTauTauP -> SetBinContent(ipt,nEWKp->getVal()*nEventWToTauNuP[ipt]/totalp);
-    hTTJetsP    -> SetBinContent(ipt,nEWKp->getVal()*nEventTTJetsP[ipt]/totalp);
-    hDYToTauTauP-> SetBinContent(ipt,nEWKp->getVal()*nEventDYToTauTauP[ipt]/totalp);
-    hDYToMuMuM  -> SetBinContent(ipt,nEWKm->getVal()*nEventDYToMuMuM[ipt]/totalm);
-    hWToTauTauM -> SetBinContent(ipt,nEWKm->getVal()*nEventWToTauNuM[ipt]/totalm);
-    hTTJetsM    -> SetBinContent(ipt,nEWKm->getVal()*nEventTTJetsM[ipt]/totalm);
-    hDYToTauTauM-> SetBinContent(ipt,nEWKm->getVal()*nEventDYToTauTauM[ipt]/totalm);
-  }
+    sprintf(histName,"cewk_%d",ipt);
+    cewk[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    cewk[ipt]->setVal(hEWKMet[ipt]->Integral()/hWmunuMet[ipt]->Integral());
+    cewk[ipt]->setConstant(kTRUE);
+    
+    sprintf(histName,"cewkp_%d",ipt);
+    cewkp[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    cewkp[ipt]->setVal(hEWKMetp[ipt]->Integral()/hWmunuMetp[ipt]->Integral());
+    cewkp[ipt]->setConstant(kTRUE);
+    
+    sprintf(histName,"cewkm_%d",ipt);
+    cewkm[ipt] = new RooRealVar(histName,histName,0.01,0,5);
+    cewkm[ipt]->setVal(hEWKMetm[ipt]->Integral()/hWmunuMetm[ipt]->Integral());
+    cewkm[ipt]->setConstant(kTRUE);
+    
+    sprintf(histName,"nEWK_%d",ipt);
+    nEWK[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nSig[ipt],*cewk[ipt]));
+    sprintf(histName,"nEWKp_%d",ipt);
+    nEWKp[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nSigp[ipt],*cewkp[ipt]));
+    sprintf(histName,"nEWKm_%d",ipt);
+    nEWKm[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nSigm[ipt],*cewkm[ipt]));  
+    
+    sprintf(histName,"nAntiEWK_%d",ipt);
+    nAntiEWK[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nAntiSig[ipt],*dewk[ipt]));
+    sprintf(histName,"nAntiEWK_%d",ipt);
+    nAntiEWKp[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nAntiSigp[ipt],*dewkp[ipt]));
+    sprintf(histName,"nAntiEWK_%d",ipt);
+    nAntiEWKm[ipt] = new RooFormulaVar(histName,histName
+	,"@0*@1",RooArgList(*nAntiSigm[ipt],*dewkm[ipt]));
+
+    sprintf(histName,"qcdmean_%d",ipt);
+    qcdmean[ipt] = new RooRealVar(histName,histName,15,0,75);
+    sprintf(histName,"qcdPmean_%d",ipt);
+    qcdPmean[ipt] = new RooRealVar(histName,histName,15,0,75);
+    sprintf(histName,"qcdMmean_%d",ipt);
+    qcdMmean[ipt] = new RooRealVar(histName,histName,15,0,75);
+
+    sprintf(histName,"qcdsigma_%d",ipt);
+    qcdsigma[ipt] = new RooRealVar(histName,histName,25,5,75);
+    sprintf(histName,"qcdPsigma_%d",ipt);
+    qcdPsigma[ipt] = new RooRealVar(histName,histName,25,5,75);
+    sprintf(histName,"qcdMsigma_%d",ipt);
+    qcdMsigma[ipt] = new RooRealVar(histName,histName,25,5,75);
+    
+    sprintf(histName,"qcdsigma1_%d",ipt);
+    qcdsigma1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    sprintf(histName,"qcdPsigma1_%d",ipt);
+    qcdPsigma1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+    sprintf(histName,"qcdMsigma1_%d",ipt);
+    qcdMsigma1[ipt] = new RooRealVar(histName,histName,0.01,-1,1);
+
+    sprintf(histName,"Gsigma_%d",ipt);
+    Gsigma[ipt] = new RooRealVar(histName,histName,25,5,75);
+    sprintf(histName,"GsigmaP_%d",ipt);
+    GsigmaP[ipt] = new RooRealVar(histName,histName,25,5,75);
+    sprintf(histName,"GsigmaM_%d",ipt);
+    GsigmaM[ipt] = new RooRealVar(histName,histName,25,5,75);
+    
+    sprintf(histName,"Gmean_%d",ipt);
+    Gmean[ipt] = new RooRealVar(histName,histName,15,0,75);
+    sprintf(histName,"GmeanP_%d",ipt);
+    GmeanP[ipt] = new RooRealVar(histName,histName,15,0,75);
+    sprintf(histName,"GmeanM_%d",ipt);
+    GmeanM[ipt] = new RooRealVar(histName,histName,15,0,75);
+    
+    sprintf(histName,"Frac_%d",ipt);
+    Frac[ipt] = new RooRealVar(histName,histName,0.5,0.001,1);
+    sprintf(histName,"FracP_%d",ipt);
+    FracP[ipt] = new RooRealVar(histName,histName,0.5,0.001,1);
+    sprintf(histName,"FracM_%d",ipt);
+    FracM[ipt] = new RooRealVar(histName,histName,0.5,0.001,1);
+    
+    //Initial Values
+    if (ipt == 0){
+      nSig[ipt]  -> setVal(73586.7);
+      nSigp[ipt] -> setVal(43316.3);
+      nSigm[ipt] -> setVal(30236);
+      
+      nAntiSig[ipt] -> setVal(17.077);
+      nAntiSigp[ipt]-> setVal(0.000181748);
+      nAntiSigm[ipt]-> setVal(0.00153951);
+      
+      nQCD[ipt]	-> setVal(58025.6);
+      nQCDp[ipt]-> setVal(29595.6);
+      nQCDm[ipt]-> setVal(28456.5);
+      
+      nAntiQCD[ipt] -> setVal(42176.9);
+      nAntiQCDp[ipt]-> setVal(21785);
+      nAntiQCDm[ipt]-> setVal(20419);
+      
+      qcdmean[ipt] ->setVal(0.0401306);
+      qcdPmean[ipt]->setVal(0.0655608);
+      qcdMmean[ipt]->setVal(0.0394025);
+      
+      qcdsigma[ipt] ->setVal(10.7755);
+      qcdPsigma[ipt]->setVal(10.6025);
+      qcdMsigma[ipt]->setVal(10.8535);
+      
+      qcdsigma1[ipt] ->setVal(0.146006);
+      qcdPsigma1[ipt]->setVal(0.150574);
+      qcdMsigma1[ipt]->setVal(0.144358);
+    }else if (ipt == 1){
+      nSig[ipt]	-> setVal(14643.2);
+      nSigp[ipt]-> setVal(8721.93);
+      nSigm[ipt]-> setVal(5920.9);
+      
+      nAntiSig[ipt] -> setVal(26.6252);
+      nAntiSigp[ipt]-> setVal(31.3348);
+      nAntiSigm[ipt]-> setVal(1.45298e-05);
+      
+      nQCD[ipt]	-> setVal(509.329);
+      nQCDp[ipt]-> setVal(281.204);
+      nQCDm[ipt]-> setVal(228.237);
+      
+      nAntiQCD[ipt] -> setVal(503.181);
+      nAntiQCDp[ipt]-> setVal(252.763);
+      nAntiQCDm[ipt]-> setVal(243.919);
+      
+      qcdmean[ipt] ->setVal(17.0418);
+      qcdPmean[ipt]->setVal(17.0768);
+      qcdMmean[ipt]->setVal(16.9968);
+      
+      qcdsigma[ipt] ->setVal(11.1569);
+      qcdPsigma[ipt]->setVal(13.1762);
+      qcdMsigma[ipt]->setVal(10.7473);
+      
+      qcdsigma1[ipt] ->setVal(-0.032768);
+      qcdPsigma1[ipt]->setVal(-0.152523);
+      qcdMsigma1[ipt]->setVal(-0.0143163);
+    }else if (ipt == 2){
+      nSig[ipt]  -> setVal(15280.6);
+      nSigp[ipt] -> setVal(8995.31);
+      nSigm[ipt] -> setVal(6266.38);
+      
+      nQCD[ipt]  -> setVal(1047.14);
+      nQCDp[ipt] -> setVal(525.058);
+      nQCDm[ipt] -> setVal(540.596);
+      
+      nAntiSig[ipt]  -> setVal(83.8558);
+      nAntiSigp[ipt] -> setVal(46.7328);
+      nAntiSigm[ipt] -> setVal(23.493);
+      
+      nAntiQCD[ipt]  -> setVal(1128.6);
+      nAntiQCDp[ipt] -> setVal(545.622);
+      nAntiQCDm[ipt] -> setVal(599.446);
+
+      qcdmean[ipt] ->setVal(12.4131);
+      qcdPmean[ipt]->setVal(13.2813);
+      qcdMmean[ipt]->setVal(12.4144);
+      
+      qcdsigma[ipt] ->setVal(7.3496);
+      qcdPsigma[ipt]->setVal(5.16217);
+      qcdMsigma[ipt]->setVal(7.31915);
+      
+      qcdsigma1[ipt] ->setVal(0.137371);
+      qcdPsigma1[ipt]->setVal(0.198497);
+      qcdMsigma1[ipt]->setVal(0.161477);
+    }else if (ipt == 3){
+      nSig[ipt]  -> setVal(11956.2);
+      nSigp[ipt] -> setVal(7080.19);
+      nSigm[ipt] -> setVal(4869.02);
+      
+      nQCD[ipt]  -> setVal(2685.66);
+      nQCDp[ipt] -> setVal(1366.14);
+      nQCDm[ipt] -> setVal(1326.65);
+      
+      nAntiSig[ipt]  -> setVal(0.33);
+      nAntiSigp[ipt] -> setVal(17.053);
+      nAntiSigm[ipt] -> setVal(11.4542);
+      
+      nAntiQCD[ipt]  -> setVal(579.37);
+      nAntiQCDp[ipt] -> setVal(1147.74);
+      nAntiQCDm[ipt] -> setVal(1176.91);
+
+      qcdmean[ipt] ->setVal(7.3);
+      qcdPmean[ipt]->setVal(7.28063);
+      qcdMmean[ipt]->setVal(7.37305);
+      
+      qcdsigma[ipt] ->setVal(7.50024);
+      qcdPsigma[ipt]->setVal(7.79508);
+      qcdMsigma[ipt]->setVal(7.74293);
+      
+      qcdsigma1[ipt] ->setVal(0.16);
+      qcdPsigma1[ipt]->setVal(0.169729);
+      qcdMsigma1[ipt]->setVal(0.154168);
+    }else if (ipt == 4){
+      nSig[ipt]  -> setVal(10512.5);
+      nSigp[ipt] -> setVal(6182.12);
+      nSigm[ipt] -> setVal(4316.62);
+      
+      nQCD[ipt]  -> setVal(7042.77);
+      nQCDp[ipt] -> setVal(3620.04);
+      nQCDm[ipt] -> setVal(3436.57);
+      
+      nAntiSig[ipt]  -> setVal(48.3364);
+      nAntiSigp[ipt] -> setVal(29.1557);
+      nAntiSigm[ipt] -> setVal(9.772);
+      
+      nAntiQCD[ipt] -> setVal(5411.61);
+      nAntiQCDp[ipt] -> setVal(2781.7);
+      nAntiQCDm[ipt] -> setVal(2644.39);
+
+      qcdsigma[ipt]->setVal(14.7505);
+      qcdPsigma[ipt]->setVal(14.4351);
+      qcdMsigma[ipt]->setVal(14.8844);
+      
+      qcdsigma1[ipt]->setVal(-0.0371794);
+      qcdPsigma1[ipt]->setVal(-0.0183642);
+      qcdMsigma1[ipt]->setVal(-0.0461814);
+      
+      Gsigma[ipt]->setVal(6.6366);
+      GsigmaP[ipt]->setVal(8.26452);
+      GsigmaM[ipt]->setVal(5.00002);
+      
+      Gmean[ipt]->setVal(35.6706);
+      GmeanP[ipt]->setVal(36.8819);
+      GmeanM[ipt]->setVal(36.3373);
+      
+      Frac[ipt]->setVal(1);
+      FracP[ipt]->setVal(1);
+      FracM[ipt]->setVal(1);
+    }else if (ipt == 5){
+      nSig[ipt]  -> setVal(6004.69);
+      nSigp[ipt] -> setVal(3552.62);
+      nSigm[ipt] -> setVal(2461.43);
+      
+      nQCD[ipt]  -> setVal(9680.42);
+      nQCDp[ipt] -> setVal(4910.14);
+      nQCDm[ipt] -> setVal(4758.72);
+      
+      nAntiSig[ipt]  -> setVal(8.75968e-09);
+      nAntiSigp[ipt] -> setVal(7.28757e-05);
+      nAntiSigm[ipt] -> setVal(0.188447);
+      
+      nAntiQCD[ipt] -> setVal(6764.78);
+      nAntiQCDp[ipt] -> setVal(3410.48);
+      nAntiQCDm[ipt] -> setVal(3350.06);
+
+      qcdsigma[ipt]->setVal(5.64705);
+      qcdPsigma[ipt]->setVal(5.85444);
+      qcdMsigma[ipt]->setVal(5.67068);
+      
+      qcdsigma1[ipt]->setVal(0.225225);
+      qcdPsigma1[ipt]->setVal(0.225375);
+      qcdMsigma1[ipt]->setVal(0.225295);
+      
+      Gsigma[ipt]->setVal(5.16736);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(19.3879);
+      GmeanP[ipt]->setVal(6.53606e-05);
+      GmeanM[ipt]->setVal(18.2698);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(0.99);
+      FracM[ipt]->setVal(1);
+    }else if (ipt == 6){
+      nSig[ipt]  -> setVal(5921.61);
+      nSigp[ipt] -> setVal(3503.7);
+      nSigm[ipt] -> setVal(2404.68);
+      
+      nQCD[ipt]  -> setVal(16072.7);
+      nQCDp[ipt] -> setVal(8151.68);
+      nQCDm[ipt] -> setVal(7940.57);
+      
+      nAntiSig[ipt]  -> setVal(36.8755);
+      nAntiSigp[ipt] -> setVal(22.4252);
+      nAntiSigm[ipt] -> setVal(13.0564);
+      
+      nAntiQCD[ipt]  -> setVal(11427);
+      nAntiQCDp[ipt] -> setVal(5971.69);
+      nAntiQCDm[ipt] -> setVal(5458.73);
+
+      qcdsigma[ipt]->setVal(8.97718);
+      qcdPsigma[ipt]->setVal(9.319);
+      qcdMsigma[ipt]->setVal(8.60199);
+      
+      qcdsigma1[ipt]->setVal(0.117889);
+      qcdPsigma1[ipt]->setVal(0.102716);
+      qcdMsigma1[ipt]->setVal(0.1347);
+      
+      Gsigma[ipt] ->setVal(5);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(9.73559);
+      GmeanP[ipt]->setVal(10.0729);
+      GmeanM[ipt]->setVal(9.36975);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(0.99);
+      FracM[ipt]->setVal(1);
+    }else if (ipt == 7){
+      nSig[ipt]  -> setVal(3513.3);
+      nSigp[ipt] -> setVal(2033.19);
+      nSigm[ipt] -> setVal(1458.14);
+      
+      nQCD[ipt]  -> setVal(10020.1);
+      nQCDp[ipt] -> setVal(5088.1);
+      nQCDm[ipt] -> setVal(4963.93);
+      
+      nAntiSig[ipt]  -> setVal(47.0546);
+      nAntiSigp[ipt] -> setVal(15.6851);
+      nAntiSigm[ipt] -> setVal(24.0621);
+      
+      nAntiQCD[ipt] -> setVal(7244.99);
+      nAntiQCDp[ipt] -> setVal(3768.52);
+      nAntiQCDm[ipt] -> setVal(3501.16);
+
+      qcdsigma[ipt]->setVal(23.8064);
+      qcdPsigma[ipt]->setVal(22.2618);
+      qcdMsigma[ipt]->setVal(24.2922);
+      
+      qcdsigma1[ipt] ->setVal(-0.310795);
+      qcdPsigma1[ipt]->setVal(-0.25643);
+      qcdMsigma1[ipt]->setVal(-0.320919);
+      
+      Gsigma[ipt] ->setVal(5);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt] ->setVal(15.5097);
+      GmeanP[ipt]->setVal(15.6029);
+      GmeanM[ipt]->setVal(15.3812);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(1);
+      FracM[ipt]->setVal(1);
+    }else if (ipt == 8){
+      nSig[ipt]  -> setVal(3280.03);
+      nSigp[ipt] -> setVal(1819.13);
+      nSigm[ipt] -> setVal(1433.18);
+      
+      nQCD[ipt]  -> setVal(7237.53);
+      nQCDp[ipt] -> setVal(3792.41);
+      nQCDm[ipt] -> setVal(3473.84);
+      
+      nAntiSig[ipt]  -> setVal(16.9027);
+      nAntiSigp[ipt] -> setVal(0.544036);
+      nAntiSigm[ipt] -> setVal(9.24523e-06);
+      
+      nAntiQCD[ipt] -> setVal(5149.91);
+      nAntiQCDp[ipt] -> setVal(2727.1);
+      nAntiQCDm[ipt] -> setVal(2472);
+
+      qcdsigma[ipt]->setVal(24.5159);
+      qcdPsigma[ipt]->setVal(22.4538);
+      qcdMsigma[ipt]->setVal(26.682);
+      
+      qcdsigma1[ipt] ->setVal(-0.124166);
+      qcdPsigma1[ipt]->setVal(-0.0713075);
+      qcdMsigma1[ipt]->setVal(-0.181724);
+      
+      Gsigma[ipt]->setVal(5);
+      GsigmaP[ipt]->setVal(34.6475 );
+      GsigmaM[ipt]->setVal(8.31583);
+      
+      Gmean[ipt]->setVal(5.49565);
+      GmeanP[ipt]->setVal(40.3893);
+      GmeanM[ipt]->setVal(50);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(0.974002);
+      FracM[ipt]->setVal(0.505581);
+    }else if (ipt == 9){
+      nSig[ipt]  -> setVal(2141.01);
+      nSigp[ipt] -> setVal(1238.91);
+      nSigm[ipt] -> setVal(903.423);
+      
+      nQCD[ipt]  -> setVal(2447.07);
+      nQCDp[ipt] -> setVal(1260.07);
+      nQCDm[ipt] -> setVal(1183.49);
+      
+      nAntiSig[ipt]  -> setVal(4.82403e-07);
+      nAntiSigp[ipt] -> setVal(8.03237e-11);
+      nAntiSigm[ipt] -> setVal(2.69477e-05);
+      
+      nAntiQCD[ipt] -> setVal(1513.98);
+      nAntiQCDp[ipt] -> setVal(791.978);
+      nAntiQCDm[ipt] -> setVal(721.979);
+
+      qcdsigma[ipt]->setVal(16.5052);
+      qcdPsigma[ipt]->setVal(15.7734);
+      qcdMsigma[ipt]->setVal(17.5589);
+      
+      qcdsigma1[ipt]->setVal(0.129001);
+      qcdPsigma1[ipt]->setVal(0.135802);
+      qcdMsigma1[ipt]->setVal(0.119381);
+      
+      Gsigma[ipt]->setVal(5);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(40.7528);
+      GmeanP[ipt]->setVal(38.7026);
+      GmeanM[ipt]->setVal(6.41366);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(1);
+      FracM[ipt]->setVal(0.557833);
+    }else if (ipt == 10){
+      nSig[ipt]  -> setVal(567.986);
+      nSigp[ipt] -> setVal(309.168);
+      nSigm[ipt] -> setVal(256.371);
+      
+      nQCD[ipt]  -> setVal(372.551);
+      nQCDp[ipt] -> setVal(176.995);
+      nQCDm[ipt] -> setVal(198.277);
+      
+      nAntiSig[ipt]  -> setVal(0.238621);
+      nAntiSigp[ipt] -> setVal(1.7996e-07);
+      nAntiSigm[ipt] -> setVal(4.98866e-07);
+      
+      nAntiQCD[ipt] -> setVal(210.091);
+      nAntiQCDp[ipt] -> setVal(125.808);
+      nAntiQCDm[ipt] -> setVal(84.9939);
+
+      qcdsigma[ipt]->setVal(14.9274);
+      qcdPsigma[ipt]->setVal(16.7952);
+      qcdMsigma[ipt]->setVal(12.8123);
+      
+      qcdsigma1[ipt]->setVal(0.141838);
+      qcdPsigma1[ipt]->setVal(0.0932227);
+      qcdMsigma1[ipt]->setVal(0.197542);
+      
+      Gsigma[ipt]->setVal(5);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(16.5598);
+      GmeanP[ipt]->setVal(2.97865);
+      GmeanM[ipt]->setVal(38.1486);
+      
+      Frac[ipt] ->setVal(1);
+      FracP[ipt]->setVal(0.999991);
+      FracM[ipt]->setVal(0.99999);
+    }else if (ipt == 11){
+      nSig[ipt]  -> setVal(183.683);
+      nSigp[ipt] -> setVal(106.733);
+      nSigm[ipt] -> setVal(76.8764);
+      
+      nQCD[ipt]  -> setVal(66.3671);
+      nQCDp[ipt] -> setVal(44.176);
+      nQCDm[ipt] -> setVal(22.3126);
+      
+      nAntiSig[ipt]  -> setVal(0.302514);
+      nAntiSigp[ipt] -> setVal(4.71416e-10);
+      nAntiSigm[ipt] -> setVal(1.02788e-06);
+      
+      nAntiQCD[ipt] -> setVal(209.474);
+      nAntiQCDp[ipt] -> setVal(125.864);
+      nAntiQCDm[ipt] -> setVal(84.889);
+
+      qcdsigma[ipt]->setVal(16.4874);
+      qcdPsigma[ipt]->setVal(19.1509);
+      qcdMsigma[ipt]->setVal(12.1222);
+      
+      qcdsigma1[ipt]->setVal(0.1104);
+      qcdPsigma1[ipt]->setVal(0.0480893);
+      qcdMsigma1[ipt]->setVal(0.209272);
+      
+      Gsigma[ipt]->setVal(5.00008);
+      GsigmaP[ipt]->setVal(5.00041);
+      GsigmaM[ipt]->setVal(5.00016);
+      
+      Gmean[ipt]->setVal(2.88994);
+      GmeanP[ipt]->setVal(3.12909);
+      GmeanM[ipt]->setVal(2.51472);
+      
+      Frac[ipt] ->setVal(0.999941);
+      FracP[ipt]->setVal(0.999959);
+      FracM[ipt]->setVal(0.999957);
+    }else if (ipt == 12){
+      nSig[ipt]  -> setVal(84.3513);
+      nSigp[ipt] -> setVal(50.1843);
+      nSigm[ipt] -> setVal(33.5551);
+      
+      nQCD[ipt]  -> setVal(26.8328);
+      nQCDp[ipt] -> setVal(9.37395);
+      nQCDm[ipt] -> setVal(18.3355);
+      
+      nAntiSig[ipt]  -> setVal(0.337167);
+      nAntiSigp[ipt] -> setVal(4.98057e-09);
+      nAntiSigm[ipt] -> setVal(6.20639e-08);
+      
+      nAntiQCD[ipt] -> setVal(209.636);
+      nAntiQCDp[ipt] -> setVal(125.898);
+      nAntiQCDm[ipt] -> setVal(84.983);
+
+      qcdsigma[ipt]->setVal(17.6788);
+      qcdPsigma[ipt]->setVal(20.1876);
+      qcdMsigma[ipt]->setVal(12.5987);
+      
+      qcdsigma1[ipt]->setVal(0.0823236);
+      qcdPsigma1[ipt]->setVal(0.0218085);
+      qcdMsigma1[ipt]->setVal(0.200051);
+      
+      Gsigma[ipt]->setVal(5);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(2.53871);
+      GmeanP[ipt]->setVal(2.91091);
+      GmeanM[ipt]->setVal(38.4577);
+      
+      Frac[ipt] ->setVal(0.999983);
+      FracP[ipt]->setVal(0.999999);
+      FracM[ipt]->setVal(1);
+    }else if (ipt == 13){
+      nSig[ipt]  -> setVal(38.4356);
+      nSigp[ipt] -> setVal(24.6956);
+      nSigm[ipt] -> setVal(9.64185);
+      
+      nQCD[ipt]  -> setVal(13.5032);
+      nQCDp[ipt] -> setVal(7.3132);
+      nQCDm[ipt] -> setVal(11.8213);
+      
+      nAntiSig[ipt]  -> setVal(0.312161);
+      nAntiSigp[ipt] -> setVal(4.62544e-07);
+      nAntiSigm[ipt] -> setVal(1.64552e-09);
+      
+      nAntiQCD[ipt] -> setVal(210.964);
+      nAntiQCDp[ipt] -> setVal(125.864);
+      nAntiQCDm[ipt] -> setVal(84.8406);
+
+      qcdsigma[ipt]->setVal(16.5373);
+      qcdPsigma[ipt]->setVal(19.9768);
+      qcdMsigma[ipt]->setVal(19.9768);
+      
+      qcdsigma1[ipt]->setVal(0.107002);
+      qcdPsigma1[ipt]->setVal(0.0280412);
+      qcdMsigma1[ipt]->setVal(0.0280412);
+      
+      Gsigma[ipt]->setVal(5.00002);
+      GsigmaP[ipt]->setVal(5);
+      GsigmaM[ipt]->setVal(5);
+      
+      Gmean[ipt]->setVal(2.6728);
+      GmeanP[ipt]->setVal(3.00386);
+      GmeanM[ipt]->setVal(3.00386);
+      
+      Frac[ipt] ->setVal(0.999903);
+      FracP[ipt]->setVal(0.999997);
+      FracM[ipt]->setVal(0.999997);
+    }
+    
+    //
+    // Construct PDFs for fitting
+    //
+    // Signal PDFs
+    sprintf(histName,"wmunuMet_%d",ipt);
+    wmunuMet[ipt]  =new RooDataHist(histName,histName
+	,RooArgSet(pfmet),hWmunuMet[ipt]);
+    sprintf(histName,"wmunuMetp_%d",ipt);
+    wmunuMetp[ipt] =new RooDataHist(histName,histName
+        ,RooArgSet(pfmet),hWmunuMetp[ipt]);
+    sprintf(histName,"wmunuMetm_%d",ipt);
+    wmunuMetm[ipt] =new RooDataHist(histName,histName
+        ,RooArgSet(pfmet),hWmunuMetm[ipt]);
+  
+    sprintf(histName,"pdfWm_%d",ipt);
+    pdfWm[ipt] =new RooHistPdf (histName,histName, pfmet,*wmunuMet[ipt], 1);
+    sprintf(histName,"pdfWmp_%d",ipt);
+    pdfWmp[ipt]=new RooHistPdf (histName,histName,pfmet,*wmunuMetp[ipt],1);
+    sprintf(histName,"pdfWmm_%d",ipt);
+    pdfWmm[ipt]=new RooHistPdf (histName,histName,pfmet,*wmunuMetm[ipt],1); 
+ 
+    // EWK+top PDFs
+    sprintf(histName,"ewkMet_%d",ipt);
+    ewkMet[ipt] =new RooDataHist(histName,histName
+	,RooArgSet(pfmet),hEWKMet[ipt]);
+    sprintf(histName,"ewkMetp_%d",ipt);
+    ewkMetp[ipt]=new RooDataHist(histName,histName
+        ,RooArgSet(pfmet),hEWKMetp[ipt]);
+    sprintf(histName,"ewkMetm_%d",ipt);
+    ewkMetm[ipt]=new RooDataHist(histName,histName
+        ,RooArgSet(pfmet),hEWKMetm[ipt]);
+  
+    sprintf(histName,"pdfEWK_%d",ipt);
+    pdfEWK[ipt] =new RooHistPdf (histName,histName,pfmet,*ewkMet[ipt], 1);
+    sprintf(histName,"pdfEWKp_%d",ipt);
+    pdfEWKp[ipt]=new RooHistPdf (histName,histName,pfmet,*ewkMetp[ipt],1); 
+    sprintf(histName,"pdfEWKm_%d",ipt);
+    pdfEWKm[ipt]=new RooHistPdf (histName,histName,pfmet,*ewkMetm[ipt],1); 
+  
+    // Anti-Signal & Anti-EWK+top PDFs
+    if (ipt<10){
+      sprintf(histName,"awmunuMet_%d",ipt);
+      awmunuMet[ipt] =new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiWmunuMet[ipt]) ;
+      sprintf(histName,"awmunuMetp_%d",ipt);
+      awmunuMetp[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiWmunuMetp[ipt]);
+      sprintf(histName,"awmunuMetm_%d",ipt);
+      awmunuMetm[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiWmunuMetm[ipt]);
+      
+      sprintf(histName,"aewkMet_%d",ipt);
+      aewkMet[ipt] =new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiEWKMet[ipt]);  
+      sprintf(histName,"aewkMetp_%d",ipt);
+      aewkMetp[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiEWKMetp[ipt]);  
+      sprintf(histName,"aewkMetm_%d",ipt);
+      aewkMetm[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hAntiEWKMetm[ipt]);  
+    }else{
+      sprintf(histName,"awmunuMet_%d",ipt);
+      awmunuMet[ipt] =new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMet) ;
+      sprintf(histName,"awmunuMetp_%d",ipt);
+      awmunuMetp[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMetp);
+      sprintf(histName,"awmunuMetm_%d",ipt);
+      awmunuMetm[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_WmunuMetm);
+      
+      sprintf(histName,"aewkMet_%d",ipt);
+      aewkMet[ipt] =new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_EWKMet);  
+      sprintf(histName,"aewkMetp_%d",ipt);
+      aewkMetp[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_EWKMetp);  
+      sprintf(histName,"aewkMetm_%d",ipt);
+      aewkMetm[ipt]=new RooDataHist(histName,histName
+          ,RooArgSet(pfmet),hHighWpTAnti_EWKMetm);  
+    }
+    sprintf(histName,"apdfWm_%d",ipt);
+    apdfWm[ipt] =new RooHistPdf("awm", "awm", pfmet,*awmunuMet[ipt], 1);
+    sprintf(histName,"apdfWmp_%d",ipt);
+    apdfWmp[ipt]=new RooHistPdf(histName,histName,pfmet,*awmunuMetp[ipt],1);
+    sprintf(histName,"apdfWmm_%d",ipt);
+    apdfWmm[ipt]=new RooHistPdf(histName,histName,pfmet,*awmunuMetm[ipt],1); 
+  
+    sprintf(histName,"apdfEWK_%d",ipt);
+    apdfEWK[ipt] =new RooHistPdf(histName,histName,pfmet,*aewkMet[ipt], 1);
+    sprintf(histName,"apdfEWKp_%d",ipt);
+    apdfEWKp[ipt]=new RooHistPdf(histName,histName,pfmet,*aewkMetp[ipt],1);
+    sprintf(histName,"apdfEWKm_%d",ipt);
+    apdfEWKm[ipt]=new RooHistPdf(histName,histName,pfmet,*aewkMetm[ipt],1);
+
+    sprintf(histName,"dataMet_%d",ipt);
+    dataMet[ipt]  =new RooDataHist(histName,histName,  RooArgSet(pfmet), hDataMet[ipt]);
+    sprintf(histName,"dataMetp_%d",ipt);
+    dataMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hDataMetp[ipt]);
+    sprintf(histName,"dataMetm_%d",ipt);
+    dataMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hDataMetm[ipt]);
+    
+    if (ipt<10)
+    {
+      sprintf(histName,"antiMet_%d",ipt);
+      antiMet[ipt]  =new RooDataHist(histName,histName,  RooArgSet(pfmet), hAntiDataMet[ipt]);
+      sprintf(histName,"antiMetp_%d",ipt);
+      antiMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetp[ipt]);
+      sprintf(histName,"antiMetm_%d",ipt);
+      antiMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hAntiDataMetm[ipt]);
+    }else{
+      sprintf(histName,"antiMet_%d",ipt);
+      antiMet[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet),  hHighWpTAnti_DataMet);
+      sprintf(histName,"antiMetp_%d",ipt);
+      antiMetp[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hHighWpTAnti_DataMetp);
+      sprintf(histName,"antiMetm_%d",ipt);
+      antiMetm[ipt]  =new RooDataHist(histName,histName, RooArgSet(pfmet), hHighWpTAnti_DataMetm);
+    }
+    sprintf(histName,"dataTotal_%d",ipt);
+    dataTotal[ipt]=new RooDataHist(histName,histName, RooArgList(pfmet), Index(rooCat),
+                          Import("Select", *dataMet[ipt]),
+                          Import("Anti",   *antiMet[ipt]));
+    
+    sprintf(histName,"dataTotalp_%d",ipt);
+    dataTotalp[ipt]=new RooDataHist(histName,histName, RooArgList(pfmet), Index(rooCat),
+                           Import("Select", *dataMetp[ipt]),
+                           Import("Anti",   *antiMetp[ipt]));
+    
+    sprintf(histName,"dataTotalm_%d",ipt);
+    dataTotalm[ipt]=new RooDataHist(histName,histName, RooArgList(pfmet), Index(rooCat),
+                           Import("Select", *dataMetm[ipt]),
+                           Import("Anti",   *antiMetm[ipt]));
+    //QCD PDFs
+    if (ipt<4){
+      //Modified Rayleigh Function - Bins 0-3
+      sprintf(histName,"qcd_%d",ipt);
+      //qcd[ipt] =new CPepeModelMean(histName, pfmet);
+      qcd[ipt] =new CPepeModelMean(histName, pfmet,qcdmean[ipt], qcdsigma[ipt], qcdsigma1[ipt]);
+      sprintf(histName,"qcdp_%d",ipt);
+      //qcdp[ipt] =new CPepeModelMean(histName,pfmet);
+      qcdp[ipt] =new CPepeModelMean(histName,pfmet,qcdPmean[ipt],qcdPsigma[ipt],qcdPsigma1[ipt]);
+      sprintf(histName,"qcdm_%d",ipt);
+      //qcdm[ipt] =new CPepeModelMean(histName,pfmet);
+      qcdm[ipt] =new CPepeModelMean(histName,pfmet,qcdMmean[ipt],qcdMsigma[ipt],qcdMsigma1[ipt]);
+      
+      sprintf(histName,"aqcd_%d",ipt);
+      aqcd[ipt] =new CPepeModelMean(histName,pfmet,qcd[ipt]->mean, qcd[ipt]->sigma, qcd[ipt]->a1);
+      sprintf(histName,"aqcdp_%d",ipt);
+      aqcdp[ipt]=new CPepeModelMean(histName,pfmet,qcdp[ipt]->mean,qcdp[ipt]->sigma,qcdp[ipt]->a1);
+      sprintf(histName,"aqcdm_%d",ipt);
+      aqcdm[ipt]=new CPepeModelMean(histName,pfmet,qcdm[ipt]->mean,qcdm[ipt]->sigma,qcdm[ipt]->a1);
+      
+      // Signal + Background PDFs
+      sprintf(histName,"pdfMet_%d",ipt);
+      pdfMet[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWm[ipt], *pdfEWK[ipt], *(qcd[ipt]->model))
+          ,RooArgList(*nSig[ipt], *nEWK[ipt], *nQCD[ipt]));
+      sprintf(histName,"pdfMetp_%d",ipt);
+      pdfMetp[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmp[ipt],*pdfEWKp[ipt],*(qcdp[ipt]->model))
+          ,RooArgList(*nSigp[ipt],*nEWKp[ipt],*nQCDp[ipt]));
+      sprintf(histName,"pdfMetm_%d",ipt);
+      pdfMetm[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcdm[ipt]->model))
+          ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nQCDm[ipt]));
+     
+      sprintf(histName,"apdfMet_%d",ipt);
+      apdfMet[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcd[ipt]->model))
+          ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
+      sprintf(histName,"apdfMetp_%d",ipt);
+      apdfMetp[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcdp[ipt]->model))
+          ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+      sprintf(histName,"apdfMetm_%d",ipt);
+      apdfMetm[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcdm[ipt]->model))
+          ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+    }else{
+      //sprintf(histName,"qcdGaus_%d",ipt);
+      //qcdGaus[ipt]  = new CPepeGaus(histName,pfmet);
+      //sprintf(histName,"qcdGausp_%d",ipt);
+      //qcdGausp[ipt] = new CPepeGaus(histName,pfmet);
+      //sprintf(histName,"qcdGausm_%d",ipt);
+      //qcdGausm[ipt] = new CPepeGaus(histName,pfmet);
+      
+      sprintf(histName,"qcdGaus_%d",ipt);
+      qcdGaus[ipt]  = new CPepeGaus(histName,pfmet,qcdsigma[ipt], qcdsigma1[ipt], Gmean[ipt], Gsigma[ipt], Frac[ipt] );
+      sprintf(histName,"qcdGausp_%d",ipt);
+      qcdGausp[ipt] = new CPepeGaus(histName,pfmet,qcdPsigma[ipt],qcdPsigma1[ipt],GmeanP[ipt],GsigmaP[ipt],FracP[ipt]);
+      sprintf(histName,"qcdGausm_%d",ipt);
+      qcdGausm[ipt] = new CPepeGaus(histName,pfmet,qcdMsigma[ipt],qcdMsigma1[ipt],GmeanM[ipt],GsigmaM[ipt],FracM[ipt]);
+      
+      sprintf(histName,"aqcdGaus_%d",ipt);
+      aqcdGaus[ipt] = new CPepeGaus(histName,pfmet
+	  ,qcdGaus[ipt]->sigma,qcdGaus[ipt]->a1,qcdGaus[ipt]->gau_mean,qcdGaus[ipt]->gau_sigma,qcdGaus[ipt]->frac);
+      sprintf(histName,"aqcdGausp_%d",ipt);
+      aqcdGausp[ipt] = new CPepeGaus(histName,pfmet
+	  ,qcdGausp[ipt]->sigma,qcdGausp[ipt]->a1,qcdGausp[ipt]->gau_mean,qcdGausp[ipt]->gau_sigma,qcdGausp[ipt]->frac);
+      sprintf(histName,"aqcdGausm_%d",ipt);
+      aqcdGausm[ipt] = new CPepeGaus(histName,pfmet
+	  ,qcdGausm[ipt]->sigma,qcdGausm[ipt]->a1,qcdGausm[ipt]->gau_mean,qcdGausm[ipt]->gau_sigma,qcdGausm[ipt]->frac);
+      // Signal + Background PDFs
+      sprintf(histName,"pdfMet_%d",ipt);
+      pdfMet[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWm[ipt],*pdfEWK[ipt],*(qcdGaus[ipt]->model))
+          ,RooArgList(*nSig[ipt],*nEWK[ipt],*nQCD[ipt]));
+      sprintf(histName,"pdfMetp_%d",ipt);
+      pdfMetp[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmp[ipt],*pdfEWKp[ipt],*(qcdGausp[ipt]->model))
+          ,RooArgList(*nSigp[ipt],*nEWKp[ipt],*nQCDp[ipt]));
+      sprintf(histName,"pdfMetm_%d",ipt);
+      pdfMetm[ipt] =new RooAddPdf(histName,histName
+          ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcdGausm[ipt]->model))
+          ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nQCDm[ipt]));
+
+      if(hAntiWmunuMet[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMet->Integral() > 0)
+      {
+	sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcdGaus[ipt]->model))
+            ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
+      }else if(hAntiEWKMet[ipt]->Integral() > 0 || hHighWpTAnti_EWKMet->Integral() > 0)
+      {
+        sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWK[ipt],*(aqcdGaus[ipt]->model))
+            ,RooArgList(*nAntiEWK[ipt],*nAntiQCD[ipt]));
+        nAntiSigp[ipt]->setVal(0);
+      }else
+      {
+        sprintf(histName,"apdfMet_%d",ipt);
+        apdfMet[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcdGaus[ipt]->model))
+            ,RooArgList(*nAntiQCD[ipt]));
+        nAntiSig[ipt]->setVal(0);
+      }
+
+      if(hAntiWmunuMetp[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetp->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcdGausp[ipt]->model))
+            ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+      }else if(hAntiEWKMetp[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetp->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWKp[ipt],*(aqcdGausp[ipt]->model))
+            ,RooArgList(*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
+        nAntiSigp[ipt]->setVal(0);
+      }else{
+        sprintf(histName,"apdfMetp_%d",ipt);
+        apdfMetp[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcdGausp[ipt]->model))
+            ,RooArgList(*nAntiQCDp[ipt]));
+        nAntiSigp[ipt]->setVal(0);
+      }
+
+      if(hAntiWmunuMetm[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetm->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcdGausm[ipt]->model))
+            ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+      }else if(hAntiEWKMetm[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetm->Integral() > 0)
+      {
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*apdfEWKm[ipt],*(aqcdGausm[ipt]->model))
+            ,RooArgList(*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
+        nAntiSigm[ipt]->setVal(0);
+      }else{
+        sprintf(histName,"apdfMetm_%d",ipt);
+        apdfMetm[ipt] =new RooAddPdf(histName,histName
+            ,RooArgList(*(aqcdGausm[ipt]->model))
+            ,RooArgList(*nAntiQCDm[ipt]));
+        nAntiSigm[ipt]->setVal(0);
+      }
+    }
+    // PDF for simultaneous fit
+    sprintf(histName,"pdfTotal_%d",ipt);
+    pdfTotal[ipt]= new RooSimultaneous(histName,histName,rooCat);
+    pdfTotal[ipt]->addPdf(*pdfMet[ipt], "Select");
+    pdfTotal[ipt]->addPdf(*apdfMet[ipt],"Anti");
+    
+    sprintf(histName,"pdfTotalp_%d",ipt);
+    pdfTotalp[ipt]= new RooSimultaneous(histName,histName,rooCat);
+    pdfTotalp[ipt]->addPdf(*pdfMetp[ipt], "Select");
+    pdfTotalp[ipt]->addPdf(*apdfMetp[ipt],"Anti");
+      
+    sprintf(histName,"pdfTotalm_%d",ipt);
+    pdfTotalm[ipt]=new RooSimultaneous(histName,histName,rooCat);
+    pdfTotalm[ipt]->addPdf(*pdfMetm[ipt], "Select");
+    pdfTotalm[ipt]->addPdf(*apdfMetm[ipt],"Anti");
+    //
+    // Perform fits
+    //
+    if (ipt<14){
+      fitRes[ipt]  = pdfTotal[ipt] ->fitTo(*dataTotal[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResp[ipt] = pdfTotalp[ipt]->fitTo(*dataTotalp[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResm[ipt] = pdfTotalm[ipt]->fitTo(*dataTotalm[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+    }else{
+      fitRes[ipt]  = pdfMet[ipt] ->fitTo(*dataMet[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResp[ipt] = pdfMetp[ipt]->fitTo(*dataMetp[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+      fitResm[ipt] = pdfMetm[ipt]->fitTo(*dataMetm[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
+    }
+    //
+    // Use histogram version of fitted PDFs to make ratio plots
+    // (Will also use PDF histograms later for Chi^2 and KS tests)
+    //
+    hPdfMet = (TH1D*)(pdfMet[ipt]->createHistogram("hPdfMet", pfmet));
+    hPdfMet->Scale(
+	(nSig[ipt]->getVal()+nEWK[ipt]->getVal()+nQCD[ipt]->getVal())/hPdfMet->Integral());
+    hMetDiff = makeDiffHist(hDataMet[ipt],hPdfMet,"hMetDiff");
+    hMetDiff->SetMarkerStyle(kFullCircle);
+    hMetDiff->SetMarkerSize(0.9);
+     
+    hPdfMetp = (TH1D*)(pdfMetp[ipt]->createHistogram("hPdfMetp", pfmet));
+    hPdfMetp->Scale(
+	(nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal())/hPdfMetp->Integral());
+    hMetpDiff = makeDiffHist(hDataMetp[ipt],hPdfMetp,"hMetpDiff");
+    hMetpDiff->SetMarkerStyle(kFullCircle);
+    hMetpDiff->SetMarkerSize(0.9);
+      
+    hPdfMetm = (TH1D*)(pdfMetm[ipt]->createHistogram("hPdfMetm", pfmet));
+    hPdfMetm->Scale(
+	(nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal())/hPdfMetm->Integral());
+    hMetmDiff = makeDiffHist(hDataMetm[ipt],hPdfMetm,"hMetmDiff");
+    hMetmDiff->SetMarkerStyle(kFullCircle); 
+    hMetmDiff->SetMarkerSize(0.9);
+
+    hPdfAntiMet = (TH1D*)(apdfMet[ipt]->createHistogram("hPdfAntiMet", pfmet));
+    hPdfAntiMet->Scale(
+	(nAntiSig[ipt]->getVal()+nAntiEWK[ipt]->getVal()+nAntiQCD[ipt]->getVal())/hPdfAntiMet->Integral());
+    if (ipt<10)
+      hAntiMetDiff = makeDiffHist(hAntiDataMet[ipt],hPdfAntiMet,"hAntiMetDiff");
+    else
+      hAntiMetDiff = makeDiffHist(hHighWpTAnti_DataMet,hPdfAntiMet,"hAntiMetDiff");
+    hAntiMetDiff->SetMarkerStyle(kFullCircle);
+    hAntiMetDiff->SetMarkerSize(0.9);
+     
+    hPdfAntiMetp = (TH1D*)(apdfMetp[ipt]->createHistogram("hPdfAntiMetp", pfmet));
+    hPdfAntiMetp->Scale(
+	(nAntiSigp[ipt]->getVal()+nAntiEWKp[ipt]->getVal()+nAntiQCDp[ipt]->getVal())/hPdfAntiMetp->Integral());
+    if (ipt<10)
+      hAntiMetpDiff = makeDiffHist(hAntiDataMetp[ipt],hPdfAntiMetp,"hAntiMetpDiff");
+    else
+      hAntiMetpDiff = makeDiffHist(hHighWpTAnti_DataMetp,hPdfAntiMetp,"hAntiMetpDiff");
+    hAntiMetpDiff->SetMarkerStyle(kFullCircle);
+    hAntiMetpDiff->SetMarkerSize(0.9);
+      
+    hPdfAntiMetm = (TH1D*)(apdfMetm[ipt]->createHistogram("hPdfAntiMetm", pfmet));
+    hPdfAntiMetm->Scale(
+	(nAntiSigm[ipt]->getVal()+nAntiEWKm[ipt]->getVal()+nAntiQCDm[ipt]->getVal())/hPdfAntiMetm->Integral());
+    if (ipt<10)
+      hAntiMetmDiff = makeDiffHist(hAntiDataMetm[ipt],hPdfAntiMetm,"hAntiMetmDiff");
+    else
+      hAntiMetmDiff = makeDiffHist(hHighWpTAnti_DataMetm,hPdfAntiMetm,"hAntiMetmDiff");
+    hAntiMetmDiff->SetMarkerStyle(kFullCircle); 
+    hAntiMetmDiff->SetMarkerSize(0.9);
+
+    //Write MET Histogram to file
+    if(ipt == 0)
+      if (filetype == "BeforeRC" || filetype == "Nominal")
+      {
+        char metfname[100];
+        sprintf(metfname,"%s/MET_"+filetype+".root",CPlot::sOutDir.Data());
+        TFile *metfile = new TFile(metfname,"RECREATE");
+        RooAddPdf* pdfWmunu0Met;
+        RooAddPdf* pdfWmunu0Metp;
+        RooAddPdf* pdfWmunu0Metm;
+        RooAddPdf* pdfEWK0Met;
+        RooAddPdf* pdfEWK0Metp;
+        RooAddPdf* pdfEWK0Metm;
+        RooAddPdf* pdfQCD0Met;
+        RooAddPdf* pdfQCD0Metp;
+        RooAddPdf* pdfQCD0Metm;
+        
+        TH1D* hWmunu0;
+        TH1D* hWmunu0p;
+        TH1D* hWmunu0m;
+        TH1D* hEWK0;
+        TH1D* hEWK0p;
+        TH1D* hEWK0m;
+        TH1D* hQCD0;
+        TH1D* hQCD0p;
+        TH1D* hQCD0m;
+        
+        pdfWmunu0Met  = new RooAddPdf("pdfWmunu0Met", "pdfWmunu0Met"
+	   		,RooArgList(*pdfWm[ipt]),RooArgList(*nSig[ipt]));
+        pdfWmunu0Metp = new RooAddPdf("pdfWmunu0Metp","pdfWmunu0Metp"
+	    		,RooArgList(*pdfWmp[ipt]),RooArgList(*nSigp[ipt]));
+        pdfWmunu0Metm = new RooAddPdf("pdfWmunu0Metm","pdfWmunu0Metm"
+	   		,RooArgList(*pdfWmm[ipt]),RooArgList(*nSigm[ipt]));
+        
+        pdfEWK0Met  = new RooAddPdf("pdfEWK0Met", "pdfEWK0Met"
+	   		,RooArgList(*pdfEWK[ipt]),RooArgList(*nEWK[ipt]));
+        pdfEWK0Metp = new RooAddPdf("pdfEWK0Metp","pdfEWK0Metp"
+	   		,RooArgList(*pdfEWKp[ipt]),RooArgList(*nEWKp[ipt]));
+        pdfEWK0Metm = new RooAddPdf("pdfEWK0Metm","pdfEWK0Metm"
+	   		,RooArgList(*pdfEWKm[ipt]),RooArgList(*nEWKm[ipt]));
+        
+        pdfQCD0Met  = new RooAddPdf("pdfQCD0Met", "pdfQCD0Met"
+	    		,RooArgList(*(qcd[ipt]->model)),RooArgList(*nQCD[ipt]));
+        pdfQCD0Metp = new RooAddPdf("pdfQCD0Metp","pdfQCD0Metp"
+	   		,RooArgList(*(qcdp[ipt]->model)),RooArgList(*nQCDp[ipt]));
+        pdfQCD0Metm = new RooAddPdf("pdfQCD0Metm","pdfQCD0Metm"
+	    		,RooArgList(*(qcdm[ipt]->model)),RooArgList(*nQCDm[ipt]));
+        
+        hWmunu0 = (TH1D*)(pdfWmunu0Met->createHistogram("hWmunu0", pfmet));
+        hWmunu0->Scale((nSig[ipt]->getVal())/hWmunu0->Integral());
+        hWmunu0p = (TH1D*)(pdfWmunu0Metp->createHistogram("hWmunu0p", pfmet));
+        hWmunu0p->Scale((nSigp[ipt]->getVal())/hWmunu0p->Integral());
+        hWmunu0m = (TH1D*)(pdfWmunu0Metm->createHistogram("hWmunu0m", pfmet));
+        hWmunu0m->Scale((nSigm[ipt]->getVal())/hWmunu0m->Integral());
+        
+        hEWK0 = (TH1D*)(pdfEWK0Met->createHistogram("hEWK0", pfmet));
+        hEWK0->Scale((nEWK[ipt]->getVal())/hEWK0->Integral());
+        hEWK0p = (TH1D*)(pdfEWK0Metp->createHistogram("hEWK0p", pfmet));
+        hEWK0p->Scale((nEWKp[ipt]->getVal())/hEWK0p->Integral());
+        hEWK0m = (TH1D*)(pdfEWK0Metm->createHistogram("hEWK0m", pfmet));
+        hEWK0m->Scale((nEWKm[ipt]->getVal())/hEWK0m->Integral());
+        
+        hQCD0 = (TH1D*)(pdfQCD0Met->createHistogram("hQCD0", pfmet));
+        hQCD0->Scale((nQCD[ipt]->getVal())/hQCD0->Integral());
+        hQCD0p = (TH1D*)(pdfQCD0Metp->createHistogram("hQCD0p", pfmet));
+        hQCD0p->Scale((nQCDp[ipt]->getVal())/hQCD0p->Integral());
+        hQCD0m = (TH1D*)(pdfQCD0Metm->createHistogram("hQCD0m", pfmet));
+        hQCD0m->Scale((nQCDm[ipt]->getVal())/hQCD0m->Integral());
+        
+        hDataMet[ipt]->Write();
+        hDataMetp[ipt]->Write();
+        hDataMetm[ipt]->Write();
+        hWmunu0->Write();
+        hWmunu0p->Write();
+        hWmunu0m->Write();
+        hEWK0->Write();
+        hEWK0p->Write();
+        hEWK0m->Write();
+        hQCD0->Write();
+        hQCD0p->Write();
+        hQCD0m->Write();
+        metfile->Close();
+      }
+    //-------------------------------------------------
+    // Make MET Fit plots 
+    //=================================================  
+    //
+    // W Inclusive Signal region MET plot
+    //
+    wmframe = pfmet.frame(Bins(NBINS)); 
+    wmframe->GetYaxis()->SetNdivisions(505);
+    dataMet[ipt]->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+    pdfMet[ipt]->plotOn(wmframe,FillColor(fillcolorW),DrawOption("F"));
+    pdfMet[ipt]->plotOn(wmframe,LineColor(linecolorW));
+    if (ipt<4){
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*(qcd[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  ,Components(RooArgSet(*(qcd[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else{
+      pdfMet[ipt]->plotOn(wmframe
+	  //,Components(RooArgSet(*pdfEWK,*pdfqcd))
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcdGaus[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  //,Components(RooArgSet(*pdfEWK,*pdfqcd))
+	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcdGaus[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMet[ipt]->plotOn(wmframe
+	  //,Components(RooArgSet(*pdfqcd))
+	  ,Components(RooArgSet(*(qcdGaus[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMet[ipt]->plotOn(wmframe
+	  //,Components(RooArgSet(*pdfqcd))
+	  ,Components(RooArgSet(*(qcdGaus[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }
+    pdfMet[ipt]->plotOn(wmframe
+	,Components(RooArgSet(*pdfWm[ipt])),LineColor(linecolorW),LineStyle(2));
+    dataMet[ipt]->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
+    
+    sprintf(ylabel,"Events / %.1f GeV",hDataMet[ipt]->GetBinWidth(1));
+    sprintf(histName,"fitMet_%d",ipt);
+    plotMet=new CPlot(histName,wmframe,"","",ylabel);
+    plotMet->setOutDir(CPlot::sOutDir);
+    plotMet->SetLegend(0.68,0.57,0.93,0.77);
+    plotMet->GetLegend()->AddEntry(hDummyData,"data","PL");
+    plotMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
+    plotMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    plotMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotMet->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+    plotMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    plotMet->SetYRange(0.1,1.1*(hDataMet[ipt]->GetMaximum()));
+    plotMet->Draw(c,kFALSE,format,1);
+
+    plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetDiff->setOutDir(CPlot::sOutDir);
+    plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
+    plotMetDiff->SetYRange(-8,8);
+    plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+    plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    plotMetDiff->Draw(c,kTRUE,format,2);
+    
+    sprintf(histName,"fitMetLog_%d",ipt);
+    plotMet->SetName(histName);
+    plotMet->SetLogy();
+    plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
+    plotMet->Draw(c,kTRUE,format,1);
+
+    // W Inclusive Control region MET plot
+    if ( ipt < 14 ){
+      awmframe = pfmet.frame(Bins(NBINS));
+      antiMet[ipt]->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      apdfMet[ipt]->plotOn(awmframe,FillColor(fillcolorW),DrawOption("F"));
+      apdfMet[ipt]->plotOn(awmframe,LineColor(linecolorW));
+      if (ipt<4){
+        apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*(aqcd[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMet[ipt]->plotOn(awmframe
+	    ,Components(RooArgSet(*(aqcd[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }else{
+        apdfMet[ipt]->plotOn(awmframe
+	    //,Components(RooArgSet(*apdfEWK,*apdfqcd))
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcdGaus[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMet[ipt]->plotOn(awmframe
+	    //,Components(RooArgSet(*apdfEWK,*apdfqcd))
+	    ,Components(RooArgSet(*apdfEWK[ipt],*(aqcdGaus[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMet[ipt]->plotOn(awmframe
+	    //,Components(RooArgSet(*apdfqcd))
+	    ,Components(RooArgSet(*(aqcdGaus[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMet[ipt]->plotOn(awmframe
+	    //,Components(RooArgSet(*apdfqcd))
+	    ,Components(RooArgSet(*(aqcdGaus[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }
+      apdfMet[ipt]->plotOn(awmframe
+	  ,Components(RooArgSet(*apdfWm[ipt])),LineColor(linecolorW),LineStyle(2));
+      antiMet[ipt]->plotOn(awmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      
+      if (ipt<10)
+        sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
+      else
+	sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMet->GetBinWidth(1));
+      sprintf(histName,"fitAntiMet_%d",ipt);
+      plotAntiMet=new CPlot (histName,awmframe,"","",ylabel);
+      plotAntiMet->setOutDir(CPlot::sOutDir);
+      plotAntiMet->SetLegend(0.68,0.57,0.93,0.77);
+      plotAntiMet->GetLegend()->AddEntry(hDummyData,"data","PL");
+      plotAntiMet->GetLegend()->AddEntry(hDummyW,"W#rightarrow e#nu","F");
+      plotAntiMet->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+      plotAntiMet->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+      plotAntiMet->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+      plotAntiMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+      if (ipt<10)
+        plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
+      else
+	plotAntiMet->SetYRange(0.1,1.5*(hHighWpTAnti_DataMet->GetMaximum()));
+      plotAntiMet->Draw(c,kFALSE,format,1);
+      
+      plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+      plotAntiMetDiff->setOutDir(CPlot::sOutDir);
+      plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
+      plotAntiMetDiff->SetYRange(-8,8);
+      plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+      plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+      plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+      plotAntiMetDiff->Draw(c,kTRUE,format,2);
+      
+      sprintf(histName,"fitAntiMetLog_%d",ipt);
+      plotAntiMet->SetName(histName);
+      plotAntiMet->SetLogy();
+      if (ipt<10)
+        plotAntiMet->SetYRange(1e-3*(hAntiDataMet[ipt]->GetMaximum()),10*(hAntiDataMet[ipt]->GetMaximum()));
+      else
+	plotAntiMet->SetYRange(1e-3*(hHighWpTAnti_DataMet->GetMaximum()),10*(hHighWpTAnti_DataMet->GetMaximum()));
+      plotAntiMet->Draw(c,kTRUE,format,1);
+    }
+    //
+    // W+ MET plot Signal region
+    //
+    wmpframe = pfmet.frame(Bins(NBINS));
+    wmpframe->GetYaxis()->SetNdivisions(505);
+    dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+    pdfMetp[ipt]->plotOn(wmpframe,FillColor(fillcolorW),DrawOption("F"));
+    pdfMetp[ipt]->plotOn(wmpframe,LineColor(linecolorW));
+    if (ipt<4){
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcdp[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcdp[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*(qcdp[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  ,Components(RooArgSet(*(qcdp[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else{
+      pdfMetp[ipt]->plotOn(wmpframe
+	  //,Components(RooArgSet(*pdfEWKp,*pdfqcdp))
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcdGausp[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  //,Components(RooArgSet(*pdfEWKp,*pdfqcdp))
+	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcdGausp[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  //,Components(RooArgSet(*pdfqcdp))
+	  ,Components(RooArgSet(*(qcdGausp[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetp[ipt]->plotOn(wmpframe
+	  //,Components(RooArgSet(*pdfqcdp))
+	  ,Components(RooArgSet(*(qcdGausp[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }
+    pdfMetp[ipt]->plotOn(wmpframe
+	,Components(RooArgSet(*pdfWmp[ipt]))
+	,LineColor(linecolorW),LineStyle(2));
+    dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
+    
+    sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
+    sprintf(histName,"fitMetP_%d",ipt);
+    plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
+    plotMetp->setOutDir(CPlot::sOutDir);
+    plotMetp->SetLegend(0.68,0.57,0.93,0.77);
+    plotMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
+    plotMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
+    plotMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    plotMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotMetp->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+    plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
+    plotMetp->Draw(c,kFALSE,format,1);
+
+    plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetpDiff->setOutDir(CPlot::sOutDir);
+    plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
+    plotMetpDiff->SetYRange(-8,8);
+    plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+    plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    plotMetpDiff->Draw(c,kTRUE,format,2);
+    
+    sprintf(histName,"fitMetPLog_%d",ipt);
+    plotMetp->SetName(histName);
+    plotMetp->SetLogy();
+    plotMetp->SetYRange(1e-3*(hDataMetp[ipt]->GetMaximum()),10*(hDataMetp[ipt]->GetMaximum()));
+    plotMetp->Draw(c,kTRUE,format,1);
+
+    // W+ MET plot Control region
+    if ( ipt < 14 ){
+      awmpframe = pfmet.frame(Bins(NBINS));
+      antiMetp[ipt]->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      apdfMetp[ipt]->plotOn(awmpframe,FillColor(fillcolorW),DrawOption("F"));
+      apdfMetp[ipt]->plotOn(awmpframe,LineColor(linecolorW));
+      if (ipt<4){
+        apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcdp[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcdp[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*(aqcdp[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    ,Components(RooArgSet(*(aqcdp[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }else{
+        apdfMetp[ipt]->plotOn(awmpframe
+	    //,Components(RooArgSet(*apdfEWKp,*apdfqcdp))
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcdGausp[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    //,Components(RooArgSet(*apdfEWKp,*apdfqcdp))
+	    ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcdGausp[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    //,Components(RooArgSet(*apdfqcdp))
+	    ,Components(RooArgSet(*(aqcdGausp[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMetp[ipt]->plotOn(awmpframe
+	    //,Components(RooArgSet(*apdfqcdp))
+	    ,Components(RooArgSet(*(aqcdGausp[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }
+      apdfMetp[ipt]->plotOn(awmpframe
+	  ,Components(RooArgSet(*apdfWmp[ipt]))
+	  ,LineColor(linecolorW),LineStyle(2));
+      antiMetp[ipt]->plotOn(awmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      
+      if (ipt<10)
+        sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
+      else
+	sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetp->GetBinWidth(1));
+      sprintf(histName,"fitAntiMetP_%d",ipt);
+      plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
+      plotAntiMetp->setOutDir(CPlot::sOutDir);
+      plotAntiMetp->SetLegend(0.68,0.57,0.93,0.77);
+      plotAntiMetp->GetLegend()->AddEntry(hDummyData,"data","PL");
+      plotAntiMetp->GetLegend()->AddEntry(hDummyW,"W^{+}#rightarrow e^{+}#nu","F");
+      plotAntiMetp->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+      plotAntiMetp->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+      plotAntiMetp->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+      plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+      if (ipt<10)
+        plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
+      else
+	plotAntiMetp->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetp->GetMaximum()));
+      plotAntiMetp->Draw(c,kFALSE,format,1);
+      
+      plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+      plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
+      plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
+      plotAntiMetpDiff->SetYRange(-8,8);
+      plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+      plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+      plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+      plotAntiMetpDiff->Draw(c,kTRUE,format,2);
+      
+      sprintf(histName,"fitAntiMetPLog_%d",ipt);
+      plotAntiMetp->SetName(histName);
+      plotAntiMetp->SetLogy();
+      if (ipt<10)
+        plotAntiMetp->SetYRange(1e-3*(hAntiDataMetp[ipt]->GetMaximum()),10*(hAntiDataMetp[ipt]->GetMaximum()));
+      else
+	plotAntiMetp->SetYRange(1e-3*(hHighWpTAnti_DataMetp->GetMaximum()),10*(hHighWpTAnti_DataMetp->GetMaximum()));
+      plotAntiMetp->Draw(c,kTRUE,format,1);
+    }
+    //
+    // W- MET plot Signal region
+    //
+
+    wmmframe = pfmet.frame(Bins(NBINS));
+    wmmframe->GetYaxis()->SetNdivisions(505);
+    dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+    pdfMetm[ipt]->plotOn(wmmframe,FillColor(fillcolorW),DrawOption("F"));
+    pdfMetm[ipt]->plotOn(wmmframe,LineColor(linecolorW));
+    if (ipt<4){
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcdm[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcdm[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*(qcdm[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  ,Components(RooArgSet(*(qcdm[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }else{
+      pdfMetm[ipt]->plotOn(wmmframe
+	  //,Components(RooArgSet(*pdfEWKm,*pdfqcdm))
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcdGausm[ipt]->model)))
+	  ,FillColor(fillcolorEWK),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  //,Components(RooArgSet(*pdfEWKm,*pdfqcdm))
+	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcdGausm[ipt]->model)))
+	  ,LineColor(linecolorEWK));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  //,Components(RooArgSet(*pdfqcdm))
+	  ,Components(RooArgSet(*(qcdGausm[ipt]->model)))
+	  ,FillColor(fillcolorQCD),DrawOption("F"));
+      pdfMetm[ipt]->plotOn(wmmframe
+	  //,Components(RooArgSet(*pdfqcdm))
+	  ,Components(RooArgSet(*(qcdGausm[ipt]->model)))
+	  ,LineColor(linecolorQCD));
+    }
+    pdfMetm[ipt]->plotOn(wmmframe
+	,Components(RooArgSet(*pdfWmm[ipt]))
+	,LineColor(linecolorW),LineStyle(2));
+    dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+    
+    sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
+    sprintf(histName,"fitMetM_%d",ipt);
+    plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
+    plotMetm->setOutDir(CPlot::sOutDir);
+    plotMetm->SetLegend(0.68,0.57,0.93,0.77);
+    plotMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
+    plotMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+    plotMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+    plotMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+    plotMetm->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+    plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+    plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
+    plotMetm->Draw(c,kFALSE,format,1);
+
+    plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetmDiff->setOutDir(CPlot::sOutDir);
+    plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
+    plotMetmDiff->SetYRange(-8,8);
+    plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+    plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    plotMetmDiff->Draw(c,kTRUE,format,2);
+    
+    sprintf(histName,"fitMetMLog_%d",ipt);
+    plotMetm->SetName(histName);
+    plotMetm->SetLogy();
+    plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
+    plotMetm->Draw(c,kTRUE,format,1);
+
+    // W- MET plot Control region
+    if ( ipt < 14 ){
+      awmmframe = pfmet.frame(Bins(NBINS));
+      antiMetm[ipt]->plotOn(awmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      apdfMetm[ipt]->plotOn(awmmframe,FillColor(fillcolorW),DrawOption("F"));
+      apdfMetm[ipt]->plotOn(awmmframe,LineColor(linecolorW));
+      if (ipt<4){
+        apdfMetm[ipt]->plotOn(awmmframe
+	    ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcdm[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcdm[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    ,Components(RooArgSet(*(aqcdm[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    ,Components(RooArgSet(*(aqcdm[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }else{
+        apdfMetm[ipt]->plotOn(awmmframe
+	    //,Components(RooArgSet(*apdfEWKm,*apdfqcdm))
+	    ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcdGausm[ipt]->model)))
+	    ,FillColor(fillcolorEWK),DrawOption("F"));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    //,Components(RooArgSet(*apdfEWKm,*apdfqcdm))
+	    ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcdGausm[ipt]->model)))
+	    ,LineColor(linecolorEWK));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    //,Components(RooArgSet(*apdfqcdm))
+	    ,Components(RooArgSet(*(aqcdGausm[ipt]->model)))
+	    ,FillColor(fillcolorQCD),DrawOption("F"));
+        apdfMetm[ipt]->plotOn(awmmframe
+	    //,Components(RooArgSet(*apdfqcdm))
+	    ,Components(RooArgSet(*(aqcdGausm[ipt]->model)))
+	    ,LineColor(linecolorQCD));
+      }
+      apdfMetm[ipt]->plotOn(awmmframe
+	  ,Components(RooArgSet(*apdfWmm[ipt]))
+	  ,LineColor(linecolorW),LineStyle(2));
+      antiMetm[ipt]->plotOn(awmmframe
+	  ,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
+      
+      if (ipt<10)
+        sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
+      else
+	sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetm->GetBinWidth(1));
+      sprintf(histName,"fitAntiMetM_%d",ipt);
+      plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
+      plotAntiMetm->setOutDir(CPlot::sOutDir);
+      plotAntiMetm->SetLegend(0.68,0.57,0.93,0.77);
+      plotAntiMetm->GetLegend()->AddEntry(hDummyData,"data","PL");
+      plotAntiMetm->GetLegend()->AddEntry(hDummyW,"W^{-}#rightarrow e^{-}#bar{#nu}","F");
+      plotAntiMetm->GetLegend()->AddEntry(hDummyEWK,"EWK+t#bar{t}","F");
+      plotAntiMetm->GetLegend()->AddEntry(hDummyQCD,"QCD","F");
+      plotAntiMetm->AddTextBox(lumitext,0.55,0.80,0.90,0.86,0);
+      plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
+      if (ipt<10)
+        plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
+      else
+	plotAntiMetm->SetYRange(0.1,1.5*(hHighWpTAnti_DataMetm->GetMaximum()));
+      plotAntiMetm->Draw(c,kFALSE,format,1);
+      
+      plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+      plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
+      plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
+      plotAntiMetmDiff->SetYRange(-8,8);
+      plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
+      plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+      plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+      plotAntiMetmDiff->Draw(c,kTRUE,format,2);
+      
+      sprintf(histName,"fitAntiMetMLog_%d",ipt);
+      plotAntiMetm->SetName(histName);
+      plotAntiMetm->SetLogy();
+      if (ipt<10)
+        plotAntiMetm->SetYRange(1e-3*(hAntiDataMetm[ipt]->GetMaximum()),10*(hAntiDataMetm[ipt]->GetMaximum()));
+      else
+	plotAntiMetm->SetYRange(1e-3*(hHighWpTAnti_DataMetm->GetMaximum()),10*(hHighWpTAnti_DataMetm->GetMaximum()));
+      plotAntiMetm->Draw(c,kTRUE,format,1);
+    }
+    
+    //----------------------------
+    // Output
+    //============================
+     
+    cout << "*****************************************" << endl;
+    cout << "* SUMMARY" << endl;
+    cout << "*****************************************" << endl;  
+    
+    //
+    // Write fit results
+    //
+    
+    flags = allyields.flags();
+    allyields<<fixed<<setprecision(1);
+    allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    allyields.flags(flags);
+
+    flags = allyieldsp.flags();
+    allyieldsp<<fixed<<setprecision(1);
+    allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    allyieldsp.flags(flags);
+
+    flags = allyieldsm.flags();
+    allyieldsm<<fixed<<setprecision(1);
+    allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    allyieldsm.flags(flags);
+
+    chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
+    chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
+    ksprob   = hDataMet[ipt]->KolmogorovTest(hPdfMet);
+    ksprobpe = hDataMet[ipt]->KolmogorovTest(hPdfMet,"DX");
+
+    flags = Wmfile.flags();
+    if (ipt==0)
+      Wmfile<<"==================================== [0, 600] Bin - "<<ipt<<" ================================"<<endl;
+    else
+      Wmfile<<"==================================== ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<<ipt<<" =============================================="<<endl;
+    Wmfile<<endl;
+    Wmfile<<fixed<<setprecision(4);
+    Wmfile<<"Selected: "<<hDataMet[ipt]->Integral()<<endl;
+    Wmfile<<"  Signal: "<<nSig[ipt]->getVal()<<" +/- "<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wmfile<<"     QCD: "<<nQCD[ipt]->getVal()<<" +/- "<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wmfile<<"   Other: "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
+    Wmfile<<"   Total: "<<nSig[ipt]->getVal()+nQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<endl;
+    Wmfile<<endl;
+    Wmfile.flags(flags);
+    
+    fitRes[ipt]->printStream(Wmfile,RooPrintable::kValue,RooPrintable::kVerbose);
+    Wmfile<<endl;
+    printCorrelations(Wmfile, fitRes[ipt]);
+    Wmfile<<endl;
+    printChi2AndKSResults(Wmfile, chi2prob, chi2ndf, ksprob, ksprobpe);
+    
+    chi2prob = hDataMetp[ipt]->Chi2Test(hPdfMetp,"PUW");
+    chi2ndf  = hDataMetp[ipt]->Chi2Test(hPdfMetp,"CHI2/NDFUW");
+    ksprob   = hDataMetp[ipt]->KolmogorovTest(hPdfMetp);
+    ksprobpe = hDataMetp[ipt]->KolmogorovTest(hPdfMetp,"DX");  
+    
+    flags = Wmpfile.flags();
+    if (ipt==0)
+      Wmpfile<<"================================= [0, 600] Bin - "<<ipt<<" =================================="<<endl;
+    else
+      Wmpfile<<"================================= ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<<ipt<<" =============================================="<<endl;
+    Wmpfile<<fixed<<setprecision(4);
+    Wmpfile<<endl;
+    Wmpfile<<"Selected: "<<hDataMetp[ipt]->Integral()<<endl;
+    Wmpfile<<"  Signal: "<<nSigp[ipt]->getVal()<<" +/- "<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wmpfile<<"     QCD: "<<nQCDp[ipt]->getVal()<<" +/- "<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wmpfile<<"   Other: "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
+    Wmpfile<<"   Total: "<<nSigp[ipt]->getVal()+nQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<endl;
+    Wmpfile<<endl; 
+    Wmpfile.flags(flags);
+    
+    fitResp[ipt]->printStream(Wmpfile,RooPrintable::kValue,RooPrintable::kVerbose);
+    Wmpfile<<endl;
+    printCorrelations(Wmpfile, fitResp[ipt]);
+    Wmpfile<<endl;
+    printChi2AndKSResults(Wmpfile, chi2prob, chi2ndf, ksprob, ksprobpe);
+
+    chi2prob = hDataMetm[ipt]->Chi2Test(hPdfMetm,"PUW");
+    chi2ndf  = hDataMetm[ipt]->Chi2Test(hPdfMetm,"CHI2/NDFUW");
+    ksprob   = hDataMetm[ipt]->KolmogorovTest(hPdfMetm);
+    ksprobpe = hDataMetm[ipt]->KolmogorovTest(hPdfMetm,"DX");  
+
+    flags = Wmmfile.flags();
+    if (ipt==0)
+      Wmmfile<<"================================= [0, 600] Bin - "<<ipt<<" =================================="<<endl;
+    else
+      Wmmfile<<"================================= ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<<ipt<<" ========================"<<endl;
+    Wmmfile<<endl;
+    Wmmfile<<fixed<<setprecision(4);
+    Wmmfile<<"Selected: "<<hDataMetm[ipt]->Integral()<<endl;
+    Wmmfile<<"  Signal: "<<nSigm[ipt]->getVal()<<" +/- "<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wmmfile<<"     QCD: "<<nQCDm[ipt]->getVal()<<" +/- "<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wmmfile<<"   Other: "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
+    Wmmfile<<"   Total: "<<nSigm[ipt]->getVal()+nQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<endl;
+    Wmmfile<<endl;
+    Wmmfile.flags(flags);
+    
+    fitResm[ipt]->printStream(Wmmfile,RooPrintable::kValue,RooPrintable::kVerbose);
+    Wmmfile<<endl;
+    printCorrelations(Wmmfile, fitResm[ipt]);
+    Wmmfile<<endl;
+    printChi2AndKSResults(Wmmfile, chi2prob, chi2ndf, ksprob, ksprobpe);
+
+    flags = qcdfile.flags();
+    qcdfile<<"======================================================================================"<<endl;
+    qcdfile<<"*** Bin "<<ipt<<"***"<<endl;
+    qcdfile<<"======================================================================================"<<endl;
+    qcdfile<<"Signal region: Normalization factors"<<endl;
+    qcdfile<<"Sig="<<nSig[ipt]->getValV()<<"\t SigP="<<nSigp[ipt]->getValV()<<"\t SigM="<<nSigm[ipt]->getValV()<<"\t QCD="<<nQCD[ipt] ->getValV()<<"\t QCDP="<<nQCDp[ipt] ->getValV()<<"\t QCDM="<<nQCDm[ipt] ->getValV()<<endl;
+    qcdfile<<"cewk="<<cewk[ipt]->getVal()<<"\t cewkp="<<cewkp[ipt]->getVal()<<"\t cewkm="<<cewkm[ipt]->getVal()<<endl;
+    qcdfile<<"Control region: Normalization factors"<<endl;
+    qcdfile <<"AntiSig="<<nAntiSig[ipt]->getValV()<<"\t AntiSigP="<<nAntiSigp[ipt]->getValV()<<"\t AntiSigM="<<nAntiSigm[ipt]->getValV()<<"\t AntiQCD="<<nAntiQCD[ipt] ->getValV()<<"\t AntiQCDP="<<nAntiQCDp[ipt] ->getValV()<<"\t AntiQCDM="<<nAntiQCDm[ipt] ->getValV()<<endl;
+    qcdfile<<"dewk="<<dewk[ipt]->getVal()
+     <<"\t dewkp="<<dewkp[ipt]->getVal()<<"\t dewkm="
+     <<dewkm[ipt]->getVal()<<endl;
+
+    if (ipt<4){
+      qcdfile<<"Signal region: Mod. Rayleigh func. parameters"<<endl;
+      qcdfile<<"Mean=" <<qcd[ipt]->mean->getValV() <<"\t Sigma=" <<qcd[ipt] ->sigma->getValV()<<"\t Sigma1=" <<qcd[ipt]->a1->getValV()<<endl;
+      qcdfile<<"MeanP="<<qcdp[ipt]->mean->getValV()<<"\t SigmaP="<<qcdp[ipt]->sigma->getValV()<<"\t Sigma1P="<<qcdp[ipt]->a1->getValV()<<endl;
+      qcdfile<<"MeanM="<<qcdm[ipt]->mean->getValV()<<"\t SigmaM="<<qcdm[ipt]->sigma->getValV()<<"\t Sigma1M="<<qcdm[ipt]->a1->getValV()<<endl;
+    }else{
+      qcdfile<<"Signal region: Rayleigh+Gauss func. parameters"<<endl;
+      qcdfile<<"qcdsigma=" <<qcdGaus[ipt]->sigma->getValV()<<"\t qcdPsigma="  <<qcdGausp[ipt]->sigma->getValV()<<"\t qcdMsigma="    <<qcdGausm[ipt]->sigma->getValV()<<endl;
+      qcdfile<<"qcdsigma1="<<qcdGaus[ipt]->a1->getValV()<<"\t qcdPsigma1="    <<qcdGausp[ipt]->a1->getValV()<<"\t qcdMsigma1="      <<qcdGausm[ipt]->a1->getValV()<<endl;
+      qcdfile<<"Gmean="    <<qcdGaus[ipt]->gau_mean->getValV()<<"\t\t GmeanP="<<qcdGausp[ipt]->gau_mean->getValV()<<"\t\t GmeanM="  <<qcdGausm[ipt]->gau_mean->getValV()<<endl;
+      qcdfile<<"Gsigma="   <<qcdGaus[ipt]->gau_sigma->getValV()<<"\t GsigmaP="<<qcdGausp[ipt]->gau_sigma->getValV()<<"\t\t GsigmaM="<<qcdGausm[ipt]->gau_sigma->getValV()<<endl;
+      qcdfile<<"Frac="     <<qcdGaus[ipt]->frac->getValV()<<"\t\t\t FracP="   <<qcdGausp[ipt]->frac->getValV()<<"\t\t\t FracM="     <<qcdGausm[ipt]->frac->getValV()<<endl;
+    }
+    qcdfile<<endl;
+    qcdfile.flags(flags);
+
+
+    flags = InValfile.flags();
+    InValfile<<"}else if (ipt == "<<ipt<<"){"<<endl;
+    InValfile<<"nSig[ipt]  -> setVal("<<nSig[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nSigp[ipt] -> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nSigm[ipt] -> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nQCD[ipt]  -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nQCDp[ipt] -> setVal("<<nQCDp[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nQCDm[ipt] -> setVal("<<nQCDm[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiSig[ipt]  -> setVal("<<nAntiSig[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigp[ipt] -> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigm[ipt] -> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCD[ipt]  -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDp[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDm[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    if (ipt<4){
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"qcdPmean[ipt]->setVal("<<qcdp[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"qcdMmean[ipt]->setVal("<<qcdm[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma[ipt]->setVal("<<qcdp[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma[ipt]->setVal("<<qcdm[ipt] ->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->a1->getValV()<<");"<<endl;
+    }else{
+      InValfile<<"qcdsigma[ipt] ->setVal("<<qcdGaus[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma[ipt]->setVal("<<qcdGausp[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma[ipt]->setVal("<<qcdGausm[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcdGaus[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdGausp[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdGausm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"Gsigma[ipt] ->setVal("<<qcdGaus[ipt]->gau_sigma->getValV()<<");"<<endl;
+      InValfile<<"GsigmaP[ipt]->setVal("<<qcdGausp[ipt]->gau_sigma->getValV()<<");"<<endl;
+      InValfile<<"GsigmaM[ipt]->setVal("<<qcdGausm[ipt]->gau_sigma->getValV()<<");"<<endl;
+      InValfile<<"Gmean[ipt] ->setVal("<<qcdGaus[ipt]->gau_mean->getValV()<<");"<<endl;
+      InValfile<<"GmeanP[ipt]->setVal("<<qcdGausp[ipt]->gau_mean->getValV()<<");"<<endl;
+      InValfile<<"GmeanM[ipt]->setVal("<<qcdGausm[ipt]->gau_mean->getValV()<<");"<<endl;
+      InValfile<<"Frac[ipt] ->setVal("<<qcdGaus[ipt]->frac->getValV()<<");"<<endl;
+      InValfile<<"FracP[ipt]->setVal("<<qcdGaus[ipt]->frac->getValV()<<");"<<endl;
+      InValfile<<"FracM[ipt]->setVal("<<qcdGaus[ipt]->frac->getValV()<<");"<<endl;
+    }
+    InValfile<<endl;
+    InValfile.flags(flags);
+
+    metplotsfile<<"<hr />"<<endl;
+    if (ipt==0)
+      metplotsfile<<"<p align=\"center\"> [0, 600] Bin - "<<ipt<<"</p>"<<endl;
+    else
+      metplotsfile<<"<p align=\"center\"> ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<<ipt<<"</p>"<<endl;
+    metplotsfile<<"<table border=\"0\" cellspacing=\"5\" width=\"900\" align=\"center\">"<<endl; 
+    metplotsfile<<"<tr>"<<endl;
+    metplotsfile<<"<td width=\"100\"></td>"<<endl;
+    metplotsfile<<"<td width=\"400\" colspan=\"2\"><p align=\"center\" style=\"font-size:small\"> Signal </p></td>"<<endl;
+    metplotsfile<<"<td width=\"400\" colspan=\"2\"><p align=\"center\" style=\"font-size:small\"> Side </p></td>"<<endl;
+    metplotsfile<<"</tr>"<<endl;
+    metplotsfile<<"<tr>"<<endl;
+    metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W </p></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMet_"<<ipt <<".png\"><img src=\"fitMet_"<<ipt <<".png\" width=\"200\" alt=\"fitMet_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetLog_"<<ipt <<".png\"><img src=\"fitMetLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMet_"<<ipt <<".png\"><img src=\"fitAntiMet_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMet_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetLog_"<<ipt <<".png\"><img src=\"fitAntiMetLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"</tr>"<<endl;
+    metplotsfile<<"<tr>"<<endl;
+    metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>+</sup> </p></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetP_"<<ipt <<".png\"><img src=\"fitMetP_"<<ipt <<".png\" width=\"200\" alt=\"fitMetP_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetPLog_"<<ipt <<".png\"><img src=\"fitMetPLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetPLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetP_"<<ipt <<".png\"><img src=\"fitAntiMetP_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetP_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetPLog_"<<ipt <<".png\"><img src=\"fitAntiMetPLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetPLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"</tr>"<<endl;
+    metplotsfile<<"<tr>"<<endl;
+    metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>-</sup></p></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetM_"<<ipt <<".png\"><img src=\"fitMetM_"<<ipt <<".png\" width=\"200\" alt=\"fitMetM_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetMLog_"<<ipt <<".png\"><img src=\"fitMetMLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetMLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetM_"<<ipt <<".png\"><img src=\"fitAntiMetM_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetM_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetMLog_"<<ipt <<".png\"><img src=\"fitAntiMetMLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetMLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"</tr>"<<endl;
+    metplotsfile<<"</table>"<<endl;
+
+    if (ipt==0)
+      tablefile<<"<p align=\"center\">  [0, 600] Bin - "<< ipt <<" Yields </p>"<<endl;
+    else
+      tablefile<<"<p align=\"center\"> ["<<WptBins[ipt-1]<<", "<<WptBins[ipt]<<"] Bin - "<< ipt <<" Yields </p>"<<endl;
+    tablefile<<"<table border=\"1\" style=\"border-collapse: collapse\" bordercolor=\"black\" cellspacing=\"6\" width=\"880\" align=\"center\">"<<endl;
+    tablefile<<"<tr>"<<endl;
+    tablefile<<"<td width=\"60\"></td>"<<endl;
+    tablefile<<"<td width=\"100\"><p> Selected</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p> Total</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p> Signal</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p> QCD</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p> Others</p></td>"<<endl;
+    tablefile<<"</tr>"<<endl;
+    tablefile<<fixed<<setprecision(1);
+    tablefile<<"<tr>"<<endl;
+    tablefile<<"<td width=\"60\"><p> W</p></td>"<<endl;
+    tablefile<<"<td width=\"100\"><p>"<< hDataMet[ipt]->Integral() <<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSig[ipt]->getVal()+nQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<" &plusmn; "<<sqrt(nSig[ipt]->getPropagatedError(*fitRes[ipt])*nSig[ipt]->getPropagatedError(*fitRes[ipt])+nQCD[ipt]->getPropagatedError(*fitRes[ipt])*nQCD[ipt]->getPropagatedError(*fitRes[ipt])+nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEWK[ipt]->getPropagatedError(*fitRes[ipt]))<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSig[ipt]->getVal()<<" &plusmn; "<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nQCD[ipt]->getVal()<<" &plusmn; "<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nEWK[ipt]->getVal()<<" &plusmn; "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
+    tablefile<<"</tr>"<<endl;
+    tablefile<<"<tr>"<<endl;
+    tablefile<<"<td width=\"60\"><p> W <sup>+</sup></p></td>"<<endl;
+    tablefile<<"<td width=\"100\"><p>"<< hDataMetp[ipt]->Integral() <<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSigp[ipt]->getVal()+nQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSigp[ipt]->getVal()<<" &plusmn; "<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nQCDp[ipt]->getVal()<<" &plusmn; "<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nEWKp[ipt]->getVal()<<" &plusmn; "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
+    tablefile<<"</tr>"<<endl;
+    tablefile<<"<tr>"<<endl;
+    tablefile<<"<td width=\"60\"><p> W <sup>-</sup></p></td>"<<endl;
+    tablefile<<"<td width=\"100\"><p>"<< hDataMetm[ipt]->Integral() <<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSigm[ipt]->getVal()+nQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nSigm[ipt]->getVal()<<" &plusmn; "<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nQCDm[ipt]->getVal()<<" &plusmn; "<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
+    tablefile<<"<td width=\"180\"><p>"<< nEWKm[ipt]->getVal()<<" &plusmn; "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
+    tablefile<<"</tr>"<<endl;
+    tablefile<<"</table>"<<endl;
+    tablefile<<"<hr />"<<endl;
+
+    cout<<endl;
+    cout<<"  <> Output saved in "<<outputDir<<"/"<<endl;    
+    cout<<endl;
+
+    if (ipt>0){
+      hSigWpt -> SetBinContent(ipt, nSig[ipt]->getVal());
+      hSigWpt -> SetBinError(ipt, nSig[ipt]->getPropagatedError(*fitRes[ipt]));
+      hSigWPpt-> SetBinContent(ipt, nSigp[ipt]->getVal());
+      hSigWPpt-> SetBinError(ipt, nSigp[ipt]->getPropagatedError(*fitResp[ipt]));
+      hSigWMpt-> SetBinContent(ipt, nSigm[ipt]->getVal());
+      hSigWMpt-> SetBinError(ipt, nSigm[ipt]->getPropagatedError(*fitResm[ipt]));
+      hQCDWpt -> SetBinContent(ipt, nQCD[ipt]->getVal());
+      hQCDWPpt-> SetBinContent(ipt, nQCDp[ipt]->getVal());
+      hQCDWMpt-> SetBinContent(ipt, nQCDm[ipt]->getVal());
+      
+      
+      hQCD_SigPlus-> SetBinContent(ipt, nQCDp[ipt]->getVal()/nSigp[ipt]->getVal());
+      hQCD_SigMinus-> SetBinContent(ipt, nQCDm[ipt]->getVal()/nSigm[ipt]->getVal());
+      hQCD_SigQCDPlus-> SetBinContent(ipt,  nQCDp[ipt]->getVal()/(  nQCDp[ipt]->getVal()+ nSigp[ipt]->getVal()  )  );
+      hQCD_SigQCDMinus-> SetBinContent(ipt, nQCDm[ipt]->getVal()/(  nQCDm[ipt]->getVal()+ nSigm[ipt]->getVal()  )  );
+      
+     
+      
+      double total = nEventDYToMuMu[ipt]+nEventDYToTauTau[ipt]+nEventTTJets[ipt]+nEventWToTauNu[ipt];
+      double totalp = nEventDYToMuMuP[ipt]+nEventDYToTauTauP[ipt]+nEventTTJetsP[ipt]+nEventWToTauNuP[ipt];
+      double totalm = nEventDYToMuMuM[ipt]+nEventDYToTauTauM[ipt]+nEventTTJetsM[ipt]+nEventWToTauNuM[ipt];
+      hDYToMuMu   -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToMuMu[ipt]/total);
+      hWToTauTau  -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventWToTauNu[ipt]/total);
+      hTTJets     -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventTTJets[ipt]/total);
+      hDYToTauTau -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToTauTau[ipt]/total);
+      hDYToMuMuP  -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToMuMuP[ipt]/totalp);
+      hWToTauTauP -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventWToTauNuP[ipt]/totalp);
+      hTTJetsP    -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventTTJetsP[ipt]/totalp);
+      hDYToTauTauP-> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToTauTauP[ipt]/totalp);
+      hDYToMuMuM  -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToMuMuM[ipt]/totalm);
+      hWToTauTauM -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventWToTauNuM[ipt]/totalm);
+      hTTJetsM    -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventTTJetsM[ipt]/totalm);
+      hDYToTauTauM-> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToTauTauM[ipt]/totalm);
+    }
   }
 
   Wmfile.close();
   Wmpfile.close();
   Wmmfile.close();
   qcdfile.close();
+  InValfile.close();
 
-  tablefile << "</body>" << endl;
-  tablefile << "</html>" << endl;
+  tablefile<<"</body>"<<endl;
+  tablefile<<"</html>"<<endl;
   tablefile.close();
 
-  metplotsfile << "</body>" << endl;
-  metplotsfile << "</html>" << endl;
+  metplotsfile<<"</body>"<<endl;
+  metplotsfile<<"</html>"<<endl;
   metplotsfile.close();  
 
   allyields.close();
@@ -1637,7 +2628,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hSigWPpt-> Write();
   hSigWMpt-> Write();
   
-  
+/*  
   TF1 *f111 = new TF1("f111","[0]*TMath::Exp(-x/[1])+[2]",50.,600.);
   f111->SetParameter(0,1);
   f111->SetParameter(1,0.3);
@@ -1652,7 +2643,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hQCD_SigQCDPlus-> Write();
   hQCD_SigQCDMinus->Fit("f111","L","",50.,600.);
   hQCD_SigQCDMinus-> Write();
-
+*/
   
   nsigfile->Close();
 
@@ -1660,6 +2651,9 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   TH1D* hWptDiff;
   TH1D* hWptDiff_p;
   TH1D* hWptDiff_m;
+  TH1D* hWptDiffLog;
+  TH1D* hWPptDiffLog;
+  TH1D* hWMptDiffLog;
 
   CPlot* plotWpt;
   CPlot* plotWptDiff;
@@ -1667,6 +2661,13 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   CPlot* plotWptDiff_p;
   CPlot* plotWpt_m;
   CPlot* plotWptDiff_m;
+
+  CPlot* plotWptLog;
+  CPlot* plotWPptLog;
+  CPlot* plotWMptLog;
+  CPlot* plotWptDiffLog;
+  CPlot* plotWPptDiffLog;
+  CPlot* plotWMptDiffLog;
 
 //Inclusive W pt distribution
   TH1D* hWptMC = (TH1D*)hDYToTauTau->Clone("hWptMC");
@@ -1703,11 +2704,71 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff->Draw(c,kTRUE,format,2);
 
+  double WptBinsLog[14]={0.1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  double x1,x2,x3,x4,x5,x6,x7,err;
+  TH1D *hDYToTauTauLog = new TH1D("hDYToTauTauLog","",13,WptBinsLog);
+  TH1D *hTTJetsLog = new TH1D("hTTJetsLog","",13,WptBinsLog);
+  TH1D *hWToTauTauLog = new TH1D("hWToTauTauLog","",13,WptBinsLog);
+  TH1D *hDYToMuMuLog = new TH1D("hDYToMuMuLog","",13,WptBinsLog);
+  TH1D *hQCDWptLog = new TH1D("hQCDWptLog","",13,WptBinsLog);
+  TH1D *hSigWptLog = new TH1D("hSigWptLog","",13,WptBinsLog);
+  TH1D *hdataWptLog = new TH1D("hdataWptLog","",13,WptBinsLog);
+  TAxis *xaxis = hSigWpt->GetXaxis();
+  for (int i=1; i<=hSigWpt->GetNbinsX(); i++){
+    x1=hDYToTauTau->GetBinContent(i);
+    x2=hTTJets->GetBinContent(i);
+    x3=hWToTauTau->GetBinContent(i);
+    x4=hDYToMuMu->GetBinContent(i);
+    x5=hQCDWpt->GetBinContent(i);
+    x6=hSigWpt->GetBinContent(i);
+    x7=hdataWpt->GetBinContent(i);
+    err = hdataWpt->GetBinError(i);
+    hDYToTauTauLog->Fill(xaxis->GetBinCenter(i),x1);
+    hTTJetsLog->Fill(xaxis->GetBinCenter(i),x2);
+    hWToTauTauLog->Fill(xaxis->GetBinCenter(i),x3);
+    hDYToMuMuLog->Fill(xaxis->GetBinCenter(i),x4);
+    hQCDWptLog->Fill(xaxis->GetBinCenter(i),x5);
+    hSigWptLog->Fill(xaxis->GetBinCenter(i),x6);
+    hdataWptLog->Fill(xaxis->GetBinCenter(i),x7);
+    hdataWptLog->SetBinError(i,err);
+  }
+  
+  TH1D* hWptMCLog = (TH1D*)hDYToTauTauLog->Clone("hWptMCLog");
+  hWptMCLog->Add(hTTJetsLog);
+  hWptMCLog->Add(hWToTauTauLog);
+  hWptMCLog->Add(hDYToMuMuLog);
+  hWptMCLog->Add(hQCDWptLog);
+  hWptMCLog->Add(hSigWptLog);
+  hWptDiffLog = makeDiffHistWptLog(hdataWptLog,hWptMCLog,"hWptDiffLog");
+  hWptDiffLog->SetMarkerStyle(kFullCircle);
+  hWptDiffLog->SetMarkerSize(0.9);
+
   sprintf(histName,"WMu_ptLog");
-  plotWpt->SetName(histName);
-  plotWpt->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
-  plotWpt->SetLogy();
-  plotWpt->Draw(c,kTRUE,format,1);
+  plotWptLog=new CPlot(histName,"","","Events");
+  plotWptLog->setOutDir(CPlot::sOutDir);
+  plotWptLog->AddToStack(hDYToTauTauLog,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
+  plotWptLog->AddToStack(hTTJetsLog,"t#bar{t}",kAzure-5,kAzure-1);
+  plotWptLog->AddToStack(hWToTauTauLog,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWptLog->AddToStack(hDYToMuMuLog,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWptLog->AddToStack(hQCDWptLog,"QCD",fillcolorQCD,linecolorQCD);
+  plotWptLog->AddToStack(hSigWptLog,"W#rightarrow e#nu",fillcolorW,linecolorW);
+  plotWptLog->AddHist1D(hdataWptLog,"Data","E");
+  plotWptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWptLog->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
+  plotWptLog->SetLogx();
+  plotWptLog->SetLogy();
+  plotWptLog->Draw(c,kFALSE,format,1);
+  gPad->RedrawAxis();
+  
+  plotWptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWptDiffLog->setOutDir(CPlot::sOutDir);
+  plotWptDiffLog->AddHist1D(hWptDiffLog,"EX0",ratioColor);
+  plotWptDiffLog->SetYRange(-0.1,0.1);
+  plotWptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
+  plotWptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  plotWptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  plotWptDiffLog->SetLogx();
+  plotWptDiffLog->Draw(c,kTRUE,format,2);
 
 //W plus pt distribution
   TH1D* hWptMC_p = (TH1D*)hDYToTauTauP->Clone("hWptMC_p");
@@ -1743,12 +2804,69 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff_p->AddLine(0, 0.05,600, 0.05,kBlack,3);
   plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_p->Draw(c,kTRUE,format,2);
-
+  
+  TH1D *hDYToTauTauLogP = new TH1D("hDYToTauTauLogP","",13,WptBinsLog);
+  TH1D *hTTJetsLogP = new TH1D("hTTJetsLogP","",13,WptBinsLog);
+  TH1D *hWToTauTauLogP = new TH1D("hWToTauTauLogP","",13,WptBinsLog);
+  TH1D *hDYToMuMuLogP = new TH1D("hDYToMuMuLogP","",13,WptBinsLog);
+  TH1D *hQCDWptLogP = new TH1D("hQCDWptLogP","",13,WptBinsLog);
+  TH1D *hSigWptLogP = new TH1D("hSigWptLogP","",13,WptBinsLog);
+  TH1D *hdataWptLogP = new TH1D("hdataWptLogP","",13,WptBinsLog);
+  for (int i=1; i<=hSigWPpt->GetNbinsX(); i++){
+    x1=hDYToTauTauP->GetBinContent(i);
+    x2=hTTJetsP->GetBinContent(i);
+    x3=hWToTauTauP->GetBinContent(i);
+    x4=hDYToMuMuP->GetBinContent(i);
+    x5=hQCDWPpt->GetBinContent(i);
+    x6=hSigWPpt->GetBinContent(i);
+    x7=hdataWPpt->GetBinContent(i);
+    err = hdataWPpt->GetBinError(i);
+    hDYToTauTauLogP->Fill(xaxis->GetBinCenter(i),x1);
+    hTTJetsLogP->Fill(xaxis->GetBinCenter(i),x2);
+    hWToTauTauLogP->Fill(xaxis->GetBinCenter(i),x3);
+    hDYToMuMuLogP->Fill(xaxis->GetBinCenter(i),x4);
+    hQCDWptLogP->Fill(xaxis->GetBinCenter(i),x5);
+    hSigWptLogP->Fill(xaxis->GetBinCenter(i),x6);
+    hdataWptLogP->Fill(xaxis->GetBinCenter(i),x7);
+    hdataWptLogP->SetBinError(i,err);
+  }
+  
+  TH1D* hWPptMCLog = (TH1D*)hDYToTauTauLogP->Clone("hWPptMCLog");
+  hWPptMCLog->Add(hTTJetsLogP);
+  hWPptMCLog->Add(hWToTauTauLogP);
+  hWPptMCLog->Add(hDYToMuMuLogP);
+  hWPptMCLog->Add(hQCDWptLogP);
+  hWPptMCLog->Add(hSigWptLogP);
+  hWPptDiffLog = makeDiffHistWptLog(hdataWptLogP,hWPptMCLog,"hWPptDiffLog");
+  hWPptDiffLog->SetMarkerStyle(kFullCircle);
+  hWPptDiffLog->SetMarkerSize(0.9);
+  
   sprintf(histName,"WpMu_ptLog");
-  plotWpt_p->SetName(histName);
-  plotWpt_p->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
-  plotWpt_p->SetLogy();
-  plotWpt_p->Draw(c,kTRUE,format,1);
+  plotWPptLog=new CPlot(histName,"","","Events");
+  plotWPptLog->setOutDir(CPlot::sOutDir);
+  plotWPptLog->AddToStack(hDYToTauTauLogP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
+  plotWPptLog->AddToStack(hTTJetsLogP,"t#bar{t}",kAzure-5,kAzure-1);
+  plotWPptLog->AddToStack(hWToTauTauLogP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWPptLog->AddToStack(hDYToMuMuLogP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWPptLog->AddToStack(hQCDWptLogP,"QCD",fillcolorQCD,linecolorQCD);
+  plotWPptLog->AddToStack(hSigWptLogP,"W^{+}#rightarrow e^{+}#nu",fillcolorW,linecolorW);
+  plotWPptLog->AddHist1D(hdataWptLogP,"Data","E");
+  plotWPptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWPptLog->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
+  plotWPptLog->SetLogx();
+  plotWPptLog->SetLogy();
+  plotWPptLog->Draw(c,kFALSE,format,1);
+  gPad->RedrawAxis();
+  
+  plotWPptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWPptDiffLog->setOutDir(CPlot::sOutDir);
+  plotWPptDiffLog->AddHist1D(hWPptDiffLog,"EX0",ratioColor);
+  plotWPptDiffLog->SetYRange(-0.1,0.1);
+  plotWPptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
+  plotWPptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  plotWPptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  plotWPptDiffLog->SetLogx();
+  plotWPptDiffLog->Draw(c,kTRUE,format,2);
 
 //W minus pt distribution
   TH1D* hWptMC_m = (TH1D*)hDYToTauTauM->Clone("hWptMC_m");
@@ -1785,12 +2903,69 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_m->Draw(c,kTRUE,format,2);
 
+  TH1D *hDYToTauTauLogM = new TH1D("hDYToTauTauLogM","",13,WptBinsLog);
+  TH1D *hTTJetsLogM = new TH1D("hTTJetsLogM","",13,WptBinsLog);
+  TH1D *hWToTauTauLogM = new TH1D("hWToTauTauLogM","",13,WptBinsLog);
+  TH1D *hDYToMuMuLogM = new TH1D("hDYToMuMuLogM","",13,WptBinsLog);
+  TH1D *hQCDWptLogM = new TH1D("hQCDWptLogM","",13,WptBinsLog);
+  TH1D *hSigWptLogM = new TH1D("hSigWptLogM","",13,WptBinsLog);
+  TH1D *hdataWptLogM = new TH1D("hdataWptLogM","",13,WptBinsLog);
+  for (int i=1; i<=hSigWMpt->GetNbinsX(); i++){
+    x1=hDYToTauTauM->GetBinContent(i);
+    x2=hTTJetsM->GetBinContent(i);
+    x3=hWToTauTauM->GetBinContent(i);
+    x4=hDYToMuMuM->GetBinContent(i);
+    x5=hQCDWMpt->GetBinContent(i);
+    x6=hSigWMpt->GetBinContent(i);
+    x7=hdataWMpt->GetBinContent(i);
+    err = hdataWMpt->GetBinError(i);
+    hDYToTauTauLogM->Fill(xaxis->GetBinCenter(i),x1);
+    hTTJetsLogM->Fill(xaxis->GetBinCenter(i),x2);
+    hWToTauTauLogM->Fill(xaxis->GetBinCenter(i),x3);
+    hDYToMuMuLogM->Fill(xaxis->GetBinCenter(i),x4);
+    hQCDWptLogM->Fill(xaxis->GetBinCenter(i),x5);
+    hSigWptLogM->Fill(xaxis->GetBinCenter(i),x6);
+    hdataWptLogM->Fill(xaxis->GetBinCenter(i),x7);
+    hdataWptLogM->SetBinError(i,err);
+  }
+  
+  TH1D* hWMptMCLog = (TH1D*)hDYToTauTauLogM->Clone("hWMptMCLog");
+  hWMptMCLog->Add(hTTJetsLogM);
+  hWMptMCLog->Add(hWToTauTauLogM);
+  hWMptMCLog->Add(hDYToMuMuLogM);
+  hWMptMCLog->Add(hQCDWptLogM);
+  hWMptMCLog->Add(hSigWptLogM);
+  hWMptDiffLog = makeDiffHistWptLog(hdataWptLogM,hWMptMCLog,"hWMptDiffLog");
+  hWMptDiffLog->SetMarkerStyle(kFullCircle);
+  hWMptDiffLog->SetMarkerSize(0.9);
+  
   sprintf(histName,"WmMu_ptLog");
-  plotWpt_m->SetName(histName);
-  plotWpt_m->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
-  plotWpt_m->SetLogy();
-  plotWpt_m->Draw(c,kTRUE,format,1);
+  plotWMptLog=new CPlot(histName,"","","Events");
+  plotWMptLog->setOutDir(CPlot::sOutDir);
+  plotWMptLog->AddToStack(hDYToTauTauLogM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
+  plotWMptLog->AddToStack(hTTJetsLogM,"t#bar{t}",kAzure-5,kAzure-1);
+  plotWMptLog->AddToStack(hWToTauTauLogM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWMptLog->AddToStack(hDYToMuMuLogM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
+  plotWMptLog->AddToStack(hQCDWptLogM,"QCD",fillcolorQCD,linecolorQCD);
+  plotWMptLog->AddToStack(hSigWptLogM,"W^{-}#rightarrow e^{-} #bar{#nu}",fillcolorW,linecolorW);
+  plotWMptLog->AddHist1D(hdataWptLogM,"Data","E");
+  plotWMptLog->SetLegend(0.78,0.65,.98,0.88);
+  plotWMptLog->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
+  plotWMptLog->SetLogx();
+  plotWMptLog->SetLogy();
+  plotWMptLog->Draw(c,kFALSE,format,1);
+  gPad->RedrawAxis();
 
+  plotWMptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWMptDiffLog->setOutDir(CPlot::sOutDir);
+  plotWMptDiffLog->AddHist1D(hWMptDiffLog,"EX0",ratioColor);
+  plotWMptDiffLog->SetYRange(-0.1,0.1);
+  plotWMptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
+  plotWMptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  plotWMptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  plotWMptDiffLog->SetLogx();
+  plotWMptDiffLog->Draw(c,kTRUE,format,2);
+		    
   makeHTML(outputDir);
   gBenchmark->Show("fitWEleMetRayleighGausSimult");
 }
@@ -1801,7 +2976,9 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 //--------------------------------------------------------------------------------------------------
 TH1D *makeDiffHist(TH1D* hData, TH1D* hFit, const TString name)
 {
-  TH1D *hDiff = new TH1D(name,"",hData->GetNbinsX(),hData->GetXaxis()->GetXmin(),hData->GetXaxis()->GetXmax());
+//  double WptBins[14]={0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+//  TH1D *hDiff = new TH1D(name,"",45,0,100);
+   TH1D *hDiff = new TH1D(name,"",hData->GetNbinsX(),hData->GetXaxis()->GetXmin(),hData->GetXaxis()->GetXmax());
   for(Int_t ibin=1; ibin<=hData->GetNbinsX(); ibin++) {
     
     Double_t diff = (hData->GetBinContent(ibin)-hFit->GetBinContent(ibin));
@@ -1841,6 +3018,38 @@ TH1D *makeDiffHistWpt(TH1D* hData, TH1D* hFit, const TString name)
     hDiff->SetBinError(ibin,1);
   }
 
+  hDiff->GetYaxis()->SetTitleOffset(0.42);
+  hDiff->GetYaxis()->SetTitleSize(0.13);
+  hDiff->GetYaxis()->SetLabelSize(0.10);
+  hDiff->GetYaxis()->SetNdivisions(104);
+  hDiff->GetYaxis()->CenterTitle();
+  hDiff->GetXaxis()->SetTitleOffset(1.2);
+  hDiff->GetXaxis()->SetTitleSize(0.13);
+  hDiff->GetXaxis()->SetLabelSize(0.12);
+  hDiff->GetXaxis()->CenterTitle();
+  
+  return hDiff;
+}
+
+//--------------------------------------------------------------------------------------------------
+TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name)
+{
+  double WptBins[14]={0.1,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+  TH1D *hDiff = new TH1D(name,"",13,WptBins);
+  TAxis *xaxis = hData->GetXaxis();
+  for(int ibin=1; ibin<=hData->GetNbinsX(); ibin++) {
+    cout << "Data: " << hData->GetBinContent(ibin) << " MC: " << hFit->GetBinContent(ibin) << endl;
+    Double_t diff = (hData->GetBinContent(ibin)-hFit->GetBinContent(ibin));
+    
+    Double_t err = sqrt(hData->GetBinContent(ibin));
+    if(err==0) err= sqrt(hFit->GetBinContent(ibin));
+    
+    if(err>0) hDiff->Fill(xaxis->GetBinCenter(ibin),diff/err);
+    else      hDiff->Fill(xaxis->GetBinCenter(ibin),0);
+    Double_t errDiff = sqrt(hData->GetBinError(ibin)*hData->GetBinError(ibin)+hFit->GetBinError(ibin)*hFit->GetBinError(ibin));
+    hDiff->SetBinError(ibin,errDiff);
+  }
+  
   hDiff->GetYaxis()->SetTitleOffset(0.42);
   hDiff->GetYaxis()->SetTitleSize(0.13);
   hDiff->GetYaxis()->SetLabelSize(0.10);
@@ -1900,7 +3109,7 @@ void makeHTML(const TString outDir)
   htmlfile << "<!DOCTYPE html" << endl;
   htmlfile << "    PUBLIC \"-//W3C//DTD HTML 3.2//EN\">" << endl;
   htmlfile << "<html>" << endl;
-  htmlfile << "<head><title>W --> mu nu</title></head>" << endl;
+  htmlfile << "<head><title>W --> e nu</title></head>" << endl;
   htmlfile << "<body bgcolor=\"white\">" << endl;
   htmlfile << "<hr />" << endl;
   htmlfile << " <p> <a target=\"_blank\" href=\"fitMetPlots.html\">[Wpt All Bins MET Fit distributions]</a>" <<  "&nbsp; <a target=\"_blank\" href=\"AllYieldsTable.html\">[All Bins Yields Table]</a> </p>" << endl;

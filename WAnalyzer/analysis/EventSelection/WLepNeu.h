@@ -2925,7 +2925,7 @@ Int_t WLepNeu::TauCut(int i)
      }
 
      if( (*W_Lept1_hasConversion)[i] ) return -1;
-     if( (*W_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
+     //if( (*W_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
 
      //       if( (*W_Neut_pt)[i] < 25 ) return -1;
      //          if( (*W_Mt)[i] < 40 ) return -1;
