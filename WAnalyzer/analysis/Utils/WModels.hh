@@ -215,7 +215,8 @@ CPepeModel1::CPepeModel1(const char *name, RooRealVar &x, RooRealVar *s, RooReal
     sigma = s;
   } else {
     sprintf(sigmaName,"sigma_%s",name);
-    sigma = new RooRealVar(sigmaName,sigmaName,10,5,20);
+    //sigma = new RooRealVar(sigmaName,sigmaName,25,5,75);
+    sigma = new RooRealVar(sigmaName,sigmaName,25,0,75);
   }
   char a1Name[50];
   if(sigma1) {
@@ -246,7 +247,8 @@ CPepeGaus::CPepeGaus(const char *name, RooRealVar &x, RooRealVar *s, RooRealVar 
     sigma = s;
   } else {
     sprintf(sigmaName,"sigma_%s",name);
-    sigma = new RooRealVar(sigmaName,sigmaName,25,5,75);
+    sigma = new RooRealVar(sigmaName,sigmaName,25,0,75);
+    //sigma = new RooRealVar(sigmaName,sigmaName,25,5,75);
   }
   char a1Name[50];
   if(sigma1) {
@@ -270,7 +272,8 @@ CPepeGaus::CPepeGaus(const char *name, RooRealVar &x, RooRealVar *s, RooRealVar 
     gau_sigma = t_gau_sigma;
   }else{
     sprintf(gau_sigmaName,"gau_sigma_%s",name);
-    gau_sigma = new RooRealVar(gau_sigmaName,gau_sigmaName,25,5,75);
+    //gau_sigma = new RooRealVar(gau_sigmaName,gau_sigmaName,25,5,75);
+    gau_sigma = new RooRealVar(gau_sigmaName,gau_sigmaName,25,0,75);
   }
   char fracName[50];
   if(t_frac)
@@ -278,7 +281,8 @@ CPepeGaus::CPepeGaus(const char *name, RooRealVar &x, RooRealVar *s, RooRealVar 
     frac = t_frac;
   }else{
     sprintf(fracName,"frac_%s",name);
-    frac = new RooRealVar(fracName,fracName,0.5,0.001,1);
+    //frac = new RooRealVar(fracName,fracName,0.5,0.001,1);
+    frac = new RooRealVar(fracName,fracName,0.5,0.001,25);
   }
   // f(x) = x*exp[-x^2 / (s + ax)^2] = x*exp[-x*x/(s*s + 2*a*x + a*a*x*x)]
   char formula[500];
