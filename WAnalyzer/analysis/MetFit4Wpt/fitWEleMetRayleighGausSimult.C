@@ -210,8 +210,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   
   Double_t METMAX;
   
-  //bool QCDFix(true);  // For Scale Correction Systematic Calculation
-  bool QCDFix(false); // For Other Corrections Systematic Calculation
+  bool QCDFix(false);  // For Scale Correction Systematic Calculation
+  bool QCDFix(true); // For Other Corrections Systematic Calculation
   
   //
   // Declare variables to read in ntuple
@@ -1427,67 +1427,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       dFrac2P[ipt]->setVal(0.5);
       dFrac2M[ipt]->setVal(0.5);
     }
-    if (QCDFix)
-    {
-      nQCD[ipt]		->setConstant(kTRUE);
-      nQCDp[ipt]	->setConstant(kTRUE);
-      nQCDm[ipt]	->setConstant(kTRUE);
-      nAntiQCD[ipt]	->setConstant(kTRUE);
-      nAntiQCDp[ipt]	->setConstant(kTRUE);
-      nAntiQCDm[ipt]	->setConstant(kTRUE);
-      if (ipt<4){
-	qcdmean[ipt]	->setConstant(kTRUE);
-        qcdPmean[ipt]	->setConstant(kTRUE);
-        qcdMmean[ipt]	->setConstant(kTRUE);
-        qcdsigma1[ipt]	->setConstant(kTRUE);
-        qcdPsigma1[ipt]	->setConstant(kTRUE);
-        qcdMsigma1[ipt]	->setConstant(kTRUE);
-        qcda1[ipt]	->setConstant(kTRUE);
-        qcdPa1[ipt]	->setConstant(kTRUE);
-        qcdMa1[ipt]	->setConstant(kTRUE);
-      }else if (ipt == 4){
-        qcdmean[ipt]	->setConstant(kTRUE);
-        qcdPmean[ipt]	->setConstant(kTRUE);
-        qcdMmean[ipt]	->setConstant(kTRUE);
-        qcdsigma1[ipt]	->setConstant(kTRUE);
-        qcdPsigma1[ipt]	->setConstant(kTRUE);
-        qcdMsigma1[ipt]	->setConstant(kTRUE);
-        qcda1[ipt]	->setConstant(kTRUE);
-        qcdPa1[ipt]	->setConstant(kTRUE);
-        qcdMa1[ipt]	->setConstant(kTRUE);
-        qcdsigma2[ipt]	->setConstant(kTRUE);
-        qcdPsigma2[ipt]	->setConstant(kTRUE);
-        qcdMsigma1[ipt]	->setConstant(kTRUE);
-        qcda2[ipt]	->setConstant(kTRUE);
-        qcdPa2[ipt]	->setConstant(kTRUE);
-        qcdMa2[ipt]	->setConstant(kTRUE);
-        Frac1[ipt]	->setConstant(kTRUE);
-        Frac1P[ipt]	->setConstant(kTRUE);
-        Frac1M[ipt]	->setConstant(kTRUE);
-        Frac2[ipt]	->setConstant(kTRUE);
-        Frac2P[ipt]	->setConstant(kTRUE);
-        Frac2M[ipt]	->setConstant(kTRUE);
-    }else{
-        qcdsigma1[ipt]	-> setConstant(kTRUE);
-        qcdPsigma1[ipt]	-> setConstant(kTRUE);
-        qcdMsigma1[ipt]	-> setConstant(kTRUE);
-        qcda1[ipt]	-> setConstant(kTRUE);
-        qcdPa1[ipt]	-> setConstant(kTRUE);
-        qcdMa1[ipt]	-> setConstant(kTRUE);
-        dFrac1[ipt]	-> setConstant(kTRUE);
-        dFrac1P[ipt]	-> setConstant(kTRUE);
-        dFrac1M[ipt]	-> setConstant(kTRUE);
-        qcdsigma2[ipt]	-> setConstant(kTRUE);
-        qcdPsigma2[ipt]	-> setConstant(kTRUE);
-        qcdMsigma2[ipt]	-> setConstant(kTRUE);
-        qcda2[ipt]	-> setConstant(kTRUE);
-        qcdPa2[ipt]	-> setConstant(kTRUE);
-        qcdMa2[ipt]	-> setConstant(kTRUE);
-        dFrac2[ipt]	-> setConstant(kTRUE);
-        dFrac2P[ipt]	-> setConstant(kTRUE);
-        dFrac2M[ipt]	-> setConstant(kTRUE);
-    }
-    }
     //  
     //   Construct PDFs for fitting
     //
@@ -1893,6 +1832,67 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     pdfTotalm[ipt]->addPdf(*pdfMetm[ipt], "Select");
     pdfTotalm[ipt]->addPdf(*apdfMetm[ipt],"Anti");
     
+    if (QCDFix)
+    {
+      nQCD[ipt]		->setConstant(kTRUE);
+      nQCDp[ipt]	->setConstant(kTRUE);
+      nQCDm[ipt]	->setConstant(kTRUE);
+      nAntiQCD[ipt]	->setConstant(kTRUE);
+      nAntiQCDp[ipt]	->setConstant(kTRUE);
+      nAntiQCDm[ipt]	->setConstant(kTRUE);
+      if (ipt<4){
+	qcdmean[ipt]	->setConstant(kTRUE);
+        qcdPmean[ipt]	->setConstant(kTRUE);
+        qcdMmean[ipt]	->setConstant(kTRUE);
+        qcdsigma1[ipt]	->setConstant(kTRUE);
+        qcdPsigma1[ipt]	->setConstant(kTRUE);
+        qcdMsigma1[ipt]	->setConstant(kTRUE);
+        qcda1[ipt]	->setConstant(kTRUE);
+        qcdPa1[ipt]	->setConstant(kTRUE);
+        qcdMa1[ipt]	->setConstant(kTRUE);
+      }else if (ipt == 4){
+        qcdmean[ipt]	->setConstant(kTRUE);
+        qcdPmean[ipt]	->setConstant(kTRUE);
+        qcdMmean[ipt]	->setConstant(kTRUE);
+        qcdsigma1[ipt]	->setConstant(kTRUE);
+        qcdPsigma1[ipt]	->setConstant(kTRUE);
+        qcdMsigma1[ipt]	->setConstant(kTRUE);
+        qcda1[ipt]	->setConstant(kTRUE);
+        qcdPa1[ipt]	->setConstant(kTRUE);
+        qcdMa1[ipt]	->setConstant(kTRUE);
+        qcdsigma2[ipt]	->setConstant(kTRUE);
+        qcdPsigma2[ipt]	->setConstant(kTRUE);
+        qcdMsigma1[ipt]	->setConstant(kTRUE);
+        qcda2[ipt]	->setConstant(kTRUE);
+        qcdPa2[ipt]	->setConstant(kTRUE);
+        qcdMa2[ipt]	->setConstant(kTRUE);
+        Frac1[ipt]	->setConstant(kTRUE);
+        Frac1P[ipt]	->setConstant(kTRUE);
+        Frac1M[ipt]	->setConstant(kTRUE);
+        Frac2[ipt]	->setConstant(kTRUE);
+        Frac2P[ipt]	->setConstant(kTRUE);
+        Frac2M[ipt]	->setConstant(kTRUE);
+    }else{
+        qcdsigma1[ipt]	-> setConstant(kTRUE);
+        qcdPsigma1[ipt]	-> setConstant(kTRUE);
+        qcdMsigma1[ipt]	-> setConstant(kTRUE);
+        qcda1[ipt]	-> setConstant(kTRUE);
+        qcdPa1[ipt]	-> setConstant(kTRUE);
+        qcdMa1[ipt]	-> setConstant(kTRUE);
+        dFrac1[ipt]	-> setConstant(kTRUE);
+        dFrac1P[ipt]	-> setConstant(kTRUE);
+        dFrac1M[ipt]	-> setConstant(kTRUE);
+        qcdsigma2[ipt]	-> setConstant(kTRUE);
+        qcdPsigma2[ipt]	-> setConstant(kTRUE);
+        qcdMsigma2[ipt]	-> setConstant(kTRUE);
+        qcda2[ipt]	-> setConstant(kTRUE);
+        qcdPa2[ipt]	-> setConstant(kTRUE);
+        qcdMa2[ipt]	-> setConstant(kTRUE);
+        dFrac2[ipt]	-> setConstant(kTRUE);
+        dFrac2P[ipt]	-> setConstant(kTRUE);
+        dFrac2M[ipt]	-> setConstant(kTRUE);
+    }
+    }
     // Perform fits
     fitRes[ipt]  = pdfTotal[ipt] ->fitTo(*dataTotal[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
     fitResp[ipt] = pdfTotalp[ipt]->fitTo(*dataTotalp[ipt],Extended(),Minos(kTRUE),Save(kTRUE));
