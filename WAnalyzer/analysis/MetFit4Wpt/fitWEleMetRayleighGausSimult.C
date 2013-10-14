@@ -211,7 +211,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   Double_t METMAX;
   
   bool QCDFix(false);  // For Scale Correction Systematic Calculation
-  bool QCDFix(true); // For Other Corrections Systematic Calculation
+  //bool QCDFix(true); // For Other Corrections Systematic Calculation
   
   //
   // Declare variables to read in ntuple
@@ -724,7 +724,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   InValfile.open(InValfname);
   assert(InValfile.is_open());
   
-  //Merge Bins 10-13
+  //Merge Side Band Bins 10-13
   TH1D *hHighWpTAnti_DataMet ;
   TH1D *hHighWpTAnti_DataMetm;
   TH1D *hHighWpTAnti_DataMetp;
@@ -760,8 +760,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(11);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(13);ipt<14;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1003,7 +1001,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcda1[ipt] ->setVal(0.14601);
       qcdPa1[ipt]->setVal(0.147688);
       qcdMa1[ipt]->setVal(0.142555);
-
     }else if (ipt == 1){
       nSig[ipt]  -> setVal(14643.2);
       nSigp[ipt] -> setVal(8721.98);
@@ -1048,7 +1045,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcda1[ipt] ->setVal(0.137884);
       qcdPa1[ipt]->setVal(0.198584);
       qcdMa1[ipt]->setVal(0.16139);
-
     }else if (ipt == 3){
       nSig[ipt]  -> setVal(11955.5);
       nSigp[ipt] -> setVal(7080.16);
@@ -1086,24 +1082,18 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       nAntiQCDm[ipt] -> setVal(5460.06);
       qcdmean[ipt] ->setVal(5.3863);
       qcdPmean[ipt]->setVal(5.48942);
-      //qcdMmean[ipt]->setVal(2.60192);
       qcdMmean[ipt]->setVal(1.60192);
       qcdsigma1[ipt] ->setVal(4.31829);
       qcdPsigma1[ipt]->setVal(4.34105);
-      //qcdMsigma1[ipt]->setVal(14.4607);
       qcdMsigma1[ipt]->setVal(11.8607);
       qcda1[ipt] ->setVal(0.215662);
       qcdPa1[ipt]->setVal(0.211923);
-      //qcdMa1[ipt]->setVal(0.0496092);
-      ////qcdMa1[ipt]->setVal(0.0296092);
       qcdMa1[ipt]->setVal(0.1186092);
       qcdsigma2[ipt] ->setVal(9.27829);
       qcdPsigma2[ipt]->setVal(9.03575);
-      //qcdMsigma1[ipt]->setVal(19.945);
       qcdMsigma1[ipt]->setVal(12.045);
       qcda2[ipt] ->setVal(0.163322);
       qcdPa2[ipt]->setVal(0.173797);
-      //qcdMa2[ipt]->setVal(-0.50473);
       qcdMa2[ipt]->setVal(-0.28472);
       Frac1[ipt] ->setVal(0.168463);
       Frac1P[ipt]->setVal(0.168463);
@@ -1174,37 +1164,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       dFrac2P[ipt]->setVal(0.224752);
       dFrac2M[ipt]->setVal(0.224752);
     }else if (ipt == 7){
-      //nSig[ipt]  -> setVal(3405.17);
-      //nSigp[ipt] -> setVal(2010.41);
-      //nSigm[ipt] -> setVal(1412.32);
-      //nQCD[ipt]  -> setVal(10191.7);
-      //nQCDp[ipt] -> setVal(5122.72);
-      //nQCDm[ipt] -> setVal(5040.76);
-      //nAntiSig[ipt]  -> setVal(14.9389);
-      //nAntiSigp[ipt] -> setVal(3.8398);
-      //nAntiSigm[ipt] -> setVal(2.67701);
-      //nAntiQCD[ipt]  -> setVal(7352.4);
-      //nAntiQCDp[ipt] -> setVal(7352.4);
-      //nAntiQCDm[ipt] -> setVal(7352.4);
-      //qcdsigma1[ipt] ->setVal(30.8355);
-      //qcdPsigma1[ipt]->setVal(37.4793);
-      //qcdMsigma1[ipt]->setVal(28.9796);
-      //qcda1[ipt] ->setVal(-0.641636);
-      //qcdPa1[ipt]->setVal(-0.373985);
-      //qcdMa1[ipt]->setVal(-0.210201);
-      //dFrac1[ipt] ->setVal(0.5);
-      //dFrac1P[ipt]->setVal(0.5);
-      //dFrac1M[ipt]->setVal(0.5);
-      //qcdsigma2[ipt] ->setVal(18.6293);
-      //qcdPsigma2[ipt]->setVal(29.9);
-      //qcdMsigma2[ipt]->setVal(30.4649);
-      //qcda2[ipt] ->setVal(-0.0803192);
-      //qcdPa2[ipt]->setVal(-0.607587);
-      //qcdMa2[ipt]->setVal(-0.61549);
-      //dFrac2[ipt] ->setVal(0.499999);
-      //dFrac2P[ipt]->setVal(0.499999);
-      //dFrac2M[ipt]->setVal(0.499999);
-      
       nSig[ipt]  -> setVal(3404.95);
       nSigp[ipt] -> setVal(2010.36);
       nSigm[ipt] -> setVal(1412.55);
@@ -1346,19 +1305,15 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdMsigma1[ipt]->setVal(5.65162);
       qcda1[ipt] ->setVal(0.279209);
       qcdPa1[ipt]->setVal(-0.348706);
-      //qcdMa1[ipt]->setVal(-0.393445);
       qcdMa1[ipt]->setVal(-0.293445);
       dFrac1[ipt] ->setVal(0.5);
       dFrac1P[ipt]->setVal(0.5);
       dFrac1M[ipt]->setVal(0.5);
       qcdsigma2[ipt] ->setVal(15.3439);
       qcdPsigma2[ipt]->setVal(10.1928);
-      //qcdMsigma2[ipt]->setVal(11.91099);
       qcdMsigma2[ipt]->setVal(12.61099);
       qcda2[ipt] ->setVal(0.160141);
       qcdPa2[ipt]->setVal(0.227439);
-      //qcdPa2[ipt]->setVal(0.187439);
-      //qcdMa2[ipt]->setVal(0.266761);
       qcdMa2[ipt]->setVal(0.2106761);
       dFrac2[ipt] ->setVal(0.5);
       dFrac2P[ipt]->setVal(0.5);
@@ -1418,7 +1373,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       dFrac1M[ipt]->setVal(0.5);
       qcdsigma2[ipt] ->setVal(14.4477);
       qcdPsigma2[ipt]->setVal(10.9817);
-      //qcdMsigma2[ipt]->setVal(8.61397);
       qcdMsigma2[ipt]->setVal(8.21397);
       qcda2[ipt] ->setVal(0.174866);
       qcdPa2[ipt]->setVal(0.219717);
@@ -1563,6 +1517,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     //QCD PDFs
     if (ipt<4){
       //Modified Rayleigh Function - Bins 0-3
+      
       //sprintf(histName,"qcd_%d",ipt);
       //qcd[ipt] =new CPepeModelMean(histName, pfmet);
       //sprintf(histName,"qcdp_%d",ipt);
@@ -1611,6 +1566,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
           ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcdm[ipt]->model))
           ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
     }else if (ipt == 4){
+      //Rayleigh Plus Modified Rayleigh - Bin 4
+      
       //sprintf(histName,"qcd1_%d",ipt);
       //qcd1[ipt]  = new CPepePlusMod(histName,pfmet);
       //sprintf(histName,"qcd1p_%d",ipt);
@@ -1714,6 +1671,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       }
     //}else if (ipt > 3){
     }else if (ipt > 4){
+      // Double Rayleigh - Bins 5-13
+ 
       //sprintf(histName,"qcd2_%d",ipt);
       //qcd2[ipt]  = new CPepeDouble(histName,pfmet);
       //sprintf(histName,"qcd2p_%d",ipt);
@@ -2902,7 +2861,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   allyieldsp.close();
   allyieldsm.close();
 //Write Signal numbers to file
-  gSystem->mkdir("RstElectron",kTRUE);
+  gSystem->mkdir(outputDir+"/RstElectron",kTRUE);
   TString Yields = "RstElectron/SigYields_"+filetype+".root";
   TFile *nsigfile = new TFile(Yields,"RECREATE");
   hSigWpt -> Write();
