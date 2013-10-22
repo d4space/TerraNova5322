@@ -894,10 +894,10 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     sprintf(histName,"nAntiEWK_%d",ipt);
     nAntiEWK[ipt] = new RooFormulaVar(histName,histName
 	,"@0*@1",RooArgList(*nAntiSig[ipt],*dewk[ipt]));
-    sprintf(histName,"nAntiEWK_%d",ipt);
+    sprintf(histName,"nAntiEWKp_%d",ipt);
     nAntiEWKp[ipt] = new RooFormulaVar(histName,histName
 	,"@0*@1",RooArgList(*nAntiSigp[ipt],*dewkp[ipt]));
-    sprintf(histName,"nAntiEWK_%d",ipt);
+    sprintf(histName,"nAntiEWKm_%d",ipt);
     nAntiEWKm[ipt] = new RooFormulaVar(histName,histName
 	,"@0*@1",RooArgList(*nAntiSigm[ipt],*dewkm[ipt]));
 
