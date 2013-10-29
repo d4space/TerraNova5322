@@ -9,6 +9,8 @@
 #define NBINS_1 60 
 #define NBINS_2 60
 #define NBINS_3 60 
+//#define NBINS_2 60 //For Muon channel use this
+//#define NBINS_3 60 //For Muon channel use this
 //#define NBINS_1 30
 //#define NBINS_2 15
 //#define NBINS_3 15
