@@ -125,23 +125,23 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
   vector <double> nEventWToTauNuM;
 
   int ewkNumber(0);
-  fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
-  fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_DYToMuMu_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EventSelection/MuonLowPU/Muon_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
+  fnamev.push_back("../EventSelection/MuonLowPU/Muon_DYToMuMu_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EventSelection/MuonLowPU/Muon_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EventSelection/MuonLowPU/Muon_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EventSelection/MuonLowPU/Muon_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WpToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WmToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Down"){
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WpToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WmToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Down_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "BeforeRC"){
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WpToMuNu_S8_Analysis.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/MuonLowPU_Last/Muon_WmToMuNu_S8_Analysis.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Analysis.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Analysis.root"); typev.push_back(eWmMuNu);
   }
   //-------------------------
   // Main analysis code 
