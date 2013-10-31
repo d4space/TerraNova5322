@@ -173,9 +173,9 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   TH1D *hDYToMuMu	= new TH1D("hDYToMuMu","hDYToMuMu",13,WptBins);hDYToMuMu->Sumw2();
   TH1D *hDYToMuMuP	= new TH1D("hDYToMuMuP","hDYToMuMuP",13,WptBins);hDYToMuMuP->Sumw2();
   TH1D *hDYToMuMuM	= new TH1D("hDYToMuMuM","hDYToMuMuM",13,WptBins);hDYToMuMuM->Sumw2();
-  TH1D *hWToTauTau	= new TH1D("hWToTauTau","hWToTauTau",13,WptBins);hWToTauTau->Sumw2();
-  TH1D *hWToTauTauP	= new TH1D("hWToTauTauP","hWToTauTauP",13,WptBins);hWToTauTauP->Sumw2();
-  TH1D *hWToTauTauM	= new TH1D("hWToTauTauM","hWToTauTauM",13,WptBins);hWToTauTauM->Sumw2();
+  TH1D *hWToTauNu	= new TH1D("hWToTauNu","hWToTauNu",13,WptBins);hWToTauNu->Sumw2();
+  TH1D *hWToTauNuP	= new TH1D("hWToTauNuP","hWToTauNuP",13,WptBins);hWToTauNuP->Sumw2();
+  TH1D *hWToTauNuM	= new TH1D("hWToTauNuM","hWToTauNuM",13,WptBins);hWToTauNuM->Sumw2();
   TH1D *hTTJets		= new TH1D("hTTJets","hTTJets",13,WptBins);hTTJets->Sumw2();
   TH1D *hTTJetsP	= new TH1D("hTTJetsP","hTTJetsP",13,WptBins);hTTJetsP->Sumw2();
   TH1D *hTTJetsM	= new TH1D("hTTJetsM","hTTJetsM",13,WptBins);hTTJetsM->Sumw2();
@@ -1669,7 +1669,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	    ,RooArgList(*nAntiQCDm[ipt]));
 	nAntiSigm[ipt]->setVal(0);
       }
-    //}else if (ipt > 3){
     }else if (ipt > 4){
       // Double Rayleigh - Bins 5-13
  
@@ -2031,7 +2030,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	  ,Components(RooArgSet(*(qcd1[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }else if (ipt > 4){
-    //}else if (ipt > 3){
       pdfMet[ipt]->plotOn(wmframe
 	  ,Components(RooArgSet(*pdfEWK[ipt],*(qcd2[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2050,7 +2048,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     dataMet[ipt]->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMet[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitMet_%d",ipt);
+    sprintf(histName,"WMuNu_%d",ipt);
     plotMet=new CPlot(histName,wmframe,"","",ylabel);
     plotMet->setOutDir(CPlot::sOutDir);
     plotMet->SetLegend(0.68,0.57,0.93,0.77);
@@ -2072,7 +2070,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitMetLog_%d",ipt);
+    sprintf(histName,"WMuNu_%d_log",ipt);
     plotMet->SetName(histName);
     plotMet->SetLogy();
     plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
@@ -2110,7 +2108,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	    ,Components(RooArgSet(*(aqcd1[ipt]->model)))
 	    ,LineColor(linecolorQCD));
       }else if (ipt > 4){
-      //}else if (ipt > 3){
       apdfMet[ipt]->plotOn(awmframe
           ,Components(RooArgSet(*apdfEWK[ipt],*(aqcd2[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2132,7 +2129,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMet->GetBinWidth(1));
-    sprintf(histName,"fitAntiMet_%d",ipt);
+    sprintf(histName,"WMuNu_cont_%d",ipt);
     plotAntiMet=new CPlot (histName,awmframe,"","",ylabel);
     plotAntiMet->setOutDir(CPlot::sOutDir);
     plotAntiMet->SetLegend(0.68,0.57,0.93,0.77);
@@ -2157,7 +2154,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitAntiMetLog_%d",ipt);
+    sprintf(histName,"WMuNu_cont_%d_log",ipt);
     plotAntiMet->SetName(histName);
     plotAntiMet->SetLogy();
     if (ipt<10)
@@ -2200,7 +2197,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	  ,Components(RooArgSet(*(qcd1p[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }else if (ipt > 4){
-    //}else if (ipt > 3){
       pdfMetp[ipt]->plotOn(wmpframe
 	  ,Components(RooArgSet(*pdfEWKp[ipt],*(qcd2p[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2220,7 +2216,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitMetP_%d",ipt);
+    sprintf(histName,"WpMuNu_%d",ipt);
     plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
     plotMetp->setOutDir(CPlot::sOutDir);
     plotMetp->SetLegend(0.68,0.57,0.93,0.77);
@@ -2242,7 +2238,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitMetPLog_%d",ipt);
+    sprintf(histName,"WpMuNu_%d_log",ipt);
     plotMetp->SetName(histName);
     plotMetp->SetLogy();
     plotMetp->SetYRange(1e-3*(hDataMetp[ipt]->GetMaximum()),10*(hDataMetp[ipt]->GetMaximum()));
@@ -2280,7 +2276,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	    ,Components(RooArgSet(*(aqcd1p[ipt]->model)))
 	    ,LineColor(linecolorQCD));
       }else if (ipt > 4){
-      //}else if (ipt > 3){
       apdfMetp[ipt]->plotOn(awmpframe
           ,Components(RooArgSet(*apdfEWKp[ipt],*(aqcd2p[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2303,7 +2298,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetp->GetBinWidth(1));
-    sprintf(histName,"fitAntiMetP_%d",ipt);
+    sprintf(histName,"WpMuNu_cont_%d",ipt);
     plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
     plotAntiMetp->setOutDir(CPlot::sOutDir);
     plotAntiMetp->SetLegend(0.68,0.57,0.93,0.77);
@@ -2328,7 +2323,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitAntiMetPLog_%d",ipt);
+    sprintf(histName,"WpMuNu_cont_%d_log",ipt);
     plotAntiMetp->SetName(histName);
     plotAntiMetp->SetLogy();
     if (ipt<10)
@@ -2372,7 +2367,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	  ,Components(RooArgSet(*(qcd1m[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }else if (ipt > 4){
-    //}else if (ipt > 3){
       pdfMetm[ipt]->plotOn(wmmframe
 	  ,Components(RooArgSet(*pdfEWKm[ipt],*(qcd2m[ipt]->model)))
 	  ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2392,7 +2386,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
-    sprintf(histName,"fitMetM_%d",ipt);
+    sprintf(histName,"WmMuNu_%d",ipt);
     plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
     plotMetm->setOutDir(CPlot::sOutDir);
     plotMetm->SetLegend(0.68,0.57,0.93,0.77);
@@ -2414,7 +2408,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitMetMLog_%d",ipt);
+    sprintf(histName,"WmMuNu_%d_log",ipt);
     plotMetm->SetName(histName);
     plotMetm->SetLogy();
     plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
@@ -2452,7 +2446,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 	  ,Components(RooArgSet(*(aqcd1m[ipt]->model)))
 	  ,LineColor(linecolorQCD));
     }else if (ipt > 4){
-    //}else if (ipt > 3){
       apdfMetm[ipt]->plotOn(awmmframe
           ,Components(RooArgSet(*apdfEWKm[ipt],*(aqcd2m[ipt]->model)))
           ,FillColor(fillcolorEWK),DrawOption("F"));
@@ -2476,7 +2469,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetm->GetBinWidth(1));
-    sprintf(histName,"fitAntiMetM_%d",ipt);
+    sprintf(histName,"WmMuNu_cont_%d",ipt);
     plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
     plotAntiMetm->setOutDir(CPlot::sOutDir);
     plotAntiMetm->SetLegend(0.68,0.57,0.93,0.77);
@@ -2501,7 +2494,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"fitAntiMetMLog_%d",ipt);
+    sprintf(histName,"WmMuNu_cont_%d_log",ipt);
     plotAntiMetm->SetName(histName);
     plotAntiMetm->SetLogy();
     if (ipt<10)
@@ -2644,7 +2637,6 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdfile<<"Frac1="<<qcd1[ipt]->f1->getValV()<<" +/- "<<qcd1[ipt]->f1->getError()<<"\t\t\t Frac1P="   <<qcd1p[ipt]->f1->getValV()<<" +/- "<<qcd1p[ipt]->f1->getError()<<"\t\t\t Frac1M="<<qcd1m[ipt]->f1->getValV()<<" +/- "<<qcd1m[ipt]->f1->getError()<<endl;
       qcdfile<<"Frac2="<<qcd1[ipt]->f2->getValV()<<" +/- "<<qcd1[ipt]->f2->getError()<<"\t\t\t Frac2P="   <<qcd1p[ipt]->f2->getValV()<<" +/- "<<qcd1p[ipt]->f2->getError()<<"\t\t\t Frac2M="<<qcd1m[ipt]->f2->getValV()<<" +/- "<<qcd1m[ipt]->f2->getError()<<endl;
     }else if (ipt > 4){
-    //}else if (ipt > 3){
       qcdfile<<"Signal region: Double Rayleigh func. parameters"<<endl;
       qcdfile<<"qcdsigma1="<<qcd2[ipt]->sigma1->getValV()<<" +/- "<<qcd2[ipt]->sigma1->getError()<<"\t qcdPsigma1="<<qcd2p[ipt]->sigma1->getValV()<<" +/- "<<qcd2p[ipt]->sigma1->getError()<<"\t qcdMsigma1="<<qcd2m[ipt]->sigma1->getValV()<<" +/- "<<qcd2m[ipt]->sigma1->getError()<<endl;
       qcdfile<<"qcda1="        <<qcd2[ipt]->a1->getValV()<<" +/- "<<qcd2[ipt]->a1->getError()<<"\t qcdPa1="        <<qcd2p[ipt]->a1->getValV()<<" +/- "<<qcd2p[ipt]->a1->getError()<<"\t qcdMa1="        <<qcd2m[ipt]->a1->getValV()<<" +/- "<<qcd2m[ipt]->a1->getError()<<endl;
@@ -2659,70 +2651,69 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 
     flags = InValfile.flags();
     InValfile<<"}else if (ipt == "<<ipt<<"){"<<endl;
-    InValfile<<"nSig[ipt]  -> setVal("<<nSig[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nSigp[ipt] -> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nSigm[ipt] -> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nQCD[ipt]  -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nQCDp[ipt] -> setVal("<<nQCDp[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nQCDm[ipt] -> setVal("<<nQCDm[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiSig[ipt]  -> setVal("<<nAntiSig[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiSigp[ipt] -> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiSigm[ipt] -> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCD[ipt]  -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDp[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDm[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nSig[ipt] -> setVal("<<nSig[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nSigp[ipt]-> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nSigm[ipt]-> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nQCD[ipt] -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nQCDp[ipt]-> setVal("<<nQCDp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nQCDm[ipt]-> setVal("<<nQCDm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSig[ipt] -> setVal("<<nAntiSig[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigp[ipt]-> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSigm[ipt]-> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCD[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDp[ipt]-> setVal("<<nAntiQCDp[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nAntiQCDm[ipt]-> setVal("<<nAntiQCDm[ipt] ->getValV()<<");"<<endl;
     if (ipt<4){
-      InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt]->mean->getValV()<<");"<<endl;
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt] ->mean->getValV()<<");"<<endl;
       InValfile<<"qcdPmean[ipt]->setVal("<<qcdp[ipt]->mean->getValV()<<");"<<endl;
       InValfile<<"qcdMmean[ipt]->setVal("<<qcdm[ipt]->mean->getValV()<<");"<<endl;
       InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt] ->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt] ->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->sigma->getValV()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"qcdPa1[ipt]->setVal("<<qcdp[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"qcdMa1[ipt]->setVal("<<qcdm[ipt]->a1->getValV()<<");"<<endl;
     }else if (ipt == 4){
-      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt]->m1->getValV()<<");"<<endl;
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt] ->m1->getValV()<<");"<<endl;
       InValfile<<"qcdPmean[ipt]->setVal("<<qcd1p[ipt]->m1->getValV()<<");"<<endl;
       InValfile<<"qcdMmean[ipt]->setVal("<<qcd1m[ipt]->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt]->s1->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt] ->s1->getValV()<<");"<<endl;
       InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd1p[ipt]->s1->getValV()<<");"<<endl;
       InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"qcdPa1[ipt]->setVal("<<qcd1p[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"qcdMa1[ipt]->setVal("<<qcd1m[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt]->s2->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt] ->s2->getValV()<<");"<<endl;
       InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd1p[ipt]->s2->getValV()<<");"<<endl;
       InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt] ->a2->getValV()<<");"<<endl;
       InValfile<<"qcdPa2[ipt]->setVal("<<qcd1p[ipt]->a2->getValV()<<");"<<endl;
       InValfile<<"qcdMa2[ipt]->setVal("<<qcd1m[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1P[ipt]->setVal("<<qcd1[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1M[ipt]->setVal("<<qcd1[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt]->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2P[ipt]->setVal("<<qcd1[ipt]->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2M[ipt]->setVal("<<qcd1[ipt]->f2->getValV()<<");"<<endl;
+      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt] ->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac1P[ipt]->setVal("<<qcd1p[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac1M[ipt]->setVal("<<qcd1m[ipt]->f1->getValV()<<");"<<endl;
+      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt] ->f2->getValV()<<");"<<endl;
+      InValfile<<"Frac2P[ipt]->setVal("<<qcd1p[ipt]->f2->getValV()<<");"<<endl;
+      InValfile<<"Frac2M[ipt]->setVal("<<qcd1m[ipt]->f2->getValV()<<");"<<endl;
     }else if (ipt > 4){
-    //}else if (ipt > 3){
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt]->sigma1->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt] ->sigma1->getValV()<<");"<<endl;
       InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd2p[ipt]->sigma1->getValV()<<");"<<endl;
       InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd2m[ipt]->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd2[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd2[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"qcdPa1[ipt]->setVal("<<qcd2p[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"qcdMa1[ipt]->setVal("<<qcd2m[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1[ipt] ->setVal("<<qcd2[ipt]->frac1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1P[ipt]->setVal("<<qcd2[ipt]->frac1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1M[ipt]->setVal("<<qcd2[ipt]->frac1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd2[ipt]->sigma2->getValV()<<");"<<endl;
+      InValfile<<"dFrac1[ipt] ->setVal("<<qcd2[ipt] ->frac1->getValV()<<");"<<endl;
+      InValfile<<"dFrac1P[ipt]->setVal("<<qcd2p[ipt]->frac1->getValV()<<");"<<endl;
+      InValfile<<"dFrac1M[ipt]->setVal("<<qcd2m[ipt]->frac1->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd2[ipt] ->sigma2->getValV()<<");"<<endl;
       InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd2p[ipt]->sigma2->getValV()<<");"<<endl;
       InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd2m[ipt]->sigma2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt]->a2->getValV()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt] ->a2->getValV()<<");"<<endl;
       InValfile<<"qcdPa2[ipt]->setVal("<<qcd2p[ipt]->a2->getValV()<<");"<<endl;
       InValfile<<"qcdMa2[ipt]->setVal("<<qcd2m[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2[ipt] ->setVal("<<qcd2[ipt]->frac2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2P[ipt]->setVal("<<qcd2[ipt]->frac2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2M[ipt]->setVal("<<qcd2[ipt]->frac2->getValV()<<");"<<endl;
+      InValfile<<"dFrac2[ipt] ->setVal("<<qcd2[ipt] ->frac2->getValV()<<");"<<endl;
+      InValfile<<"dFrac2P[ipt]->setVal("<<qcd2p[ipt]->frac2->getValV()<<");"<<endl;
+      InValfile<<"dFrac2M[ipt]->setVal("<<qcd2m[ipt]->frac2->getValV()<<");"<<endl;
     }
     InValfile<<endl;
     InValfile.flags(flags);
@@ -2740,24 +2731,24 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMet_"<<ipt <<".png\"><img src=\"fitMet_"<<ipt <<".png\" width=\"200\" alt=\"fitMet_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetLog_"<<ipt <<".png\"><img src=\"fitMetLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetLog_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMet_"<<ipt <<".png\"><img src=\"fitAntiMet_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMet_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetLog_"<<ipt <<".png\"><img src=\"fitAntiMetLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<".png\"><img src=\"WMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<"_log.png\"><img src=\"WMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<".png\"><img src=\"WMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>+</sup> </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetP_"<<ipt <<".png\"><img src=\"fitMetP_"<<ipt <<".png\" width=\"200\" alt=\"fitMetP_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetPLog_"<<ipt <<".png\"><img src=\"fitMetPLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetPLog_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetP_"<<ipt <<".png\"><img src=\"fitAntiMetP_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetP_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetPLog_"<<ipt <<".png\"><img src=\"fitAntiMetPLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetPLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<".png\"><img src=\"WpMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<"_log.png\"><img src=\"WpMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<".png\"><img src=\"WpMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WpMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>-</sup></p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetM_"<<ipt <<".png\"><img src=\"fitMetM_"<<ipt <<".png\" width=\"200\" alt=\"fitMetM_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitMetMLog_"<<ipt <<".png\"><img src=\"fitMetMLog_"<<ipt <<".png\" width=\"200\" alt=\"fitMetMLog_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetM_"<<ipt <<".png\"><img src=\"fitAntiMetM_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetM_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"fitAntiMetMLog_"<<ipt <<".png\"><img src=\"fitAntiMetMLog_"<<ipt <<".png\" width=\"200\" alt=\"fitAntiMetMLog_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<".png\"><img src=\"WmMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<"_log.png\"><img src=\"WmMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<".png\"><img src=\"WmMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WmMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"</table>"<<endl;
 
@@ -2814,32 +2805,44 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       hSigWMpt-> SetBinContent(ipt, nSigm[ipt]->getVal());
       hSigWMpt-> SetBinError(ipt, nSigm[ipt]->getPropagatedError(*fitResm[ipt]));
       hQCDWpt -> SetBinContent(ipt, nQCD[ipt]->getVal());
+      hQCDWpt -> SetBinError(ipt, nQCD[ipt]->getPropagatedError(*fitRes[ipt]));
       hQCDWPpt-> SetBinContent(ipt, nQCDp[ipt]->getVal());
+      hQCDWPpt-> SetBinError(ipt, nQCDp[ipt]->getPropagatedError(*fitResp[ipt]));
       hQCDWMpt-> SetBinContent(ipt, nQCDm[ipt]->getVal());
+      hQCDWMpt-> SetBinError(ipt, nQCDm[ipt]->getPropagatedError(*fitResm[ipt]));
       
-      
-      hQCD_SigPlus-> SetBinContent(ipt, nQCDp[ipt]->getVal()/nSigp[ipt]->getVal());
-      hQCD_SigMinus-> SetBinContent(ipt, nQCDm[ipt]->getVal()/nSigm[ipt]->getVal());
-      hQCD_SigQCDPlus-> SetBinContent(ipt,  nQCDp[ipt]->getVal()/(  nQCDp[ipt]->getVal()+ nSigp[ipt]->getVal()  )  );
-      hQCD_SigQCDMinus-> SetBinContent(ipt, nQCDm[ipt]->getVal()/(  nQCDm[ipt]->getVal()+ nSigm[ipt]->getVal()  )  );
-      
-     
+      hQCD_SigPlus    -> SetBinContent(ipt,nQCDp[ipt]->getVal()/nSigp[ipt]->getVal());
+      hQCD_SigMinus   -> SetBinContent(ipt,nQCDm[ipt]->getVal()/nSigm[ipt]->getVal());
+      hQCD_SigQCDPlus -> SetBinContent(ipt,nQCDp[ipt]->getVal()/(nQCDp[ipt]->getVal()+ nSigp[ipt]->getVal()));
+      hQCD_SigQCDMinus-> SetBinContent(ipt,nQCDm[ipt]->getVal()/(nQCDm[ipt]->getVal()+ nSigm[ipt]->getVal()));
       
       double total = nEventDYToMuMu[ipt]+nEventDYToTauTau[ipt]+nEventTTJets[ipt]+nEventWToTauNu[ipt];
       double totalp = nEventDYToMuMuP[ipt]+nEventDYToTauTauP[ipt]+nEventTTJetsP[ipt]+nEventWToTauNuP[ipt];
       double totalm = nEventDYToMuMuM[ipt]+nEventDYToTauTauM[ipt]+nEventTTJetsM[ipt]+nEventWToTauNuM[ipt];
       hDYToMuMu   -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToMuMu[ipt]/total);
-      hWToTauTau  -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventWToTauNu[ipt]/total);
+      hDYToMuMu   -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventDYToMuMu[ipt]/total);
+      hWToTauNu   -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventWToTauNu[ipt]/total);
+      hWToTauNu   -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventWToTauNu[ipt]/total);
       hTTJets     -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventTTJets[ipt]/total);
+      hTTJets     -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventTTJets[ipt]/total);
       hDYToTauTau -> SetBinContent(ipt,nEWK[ipt]->getVal()*nEventDYToTauTau[ipt]/total);
+      hDYToTauTau -> SetBinError(ipt,nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEventDYToTauTau[ipt]/total);
       hDYToMuMuP  -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToMuMuP[ipt]/totalp);
-      hWToTauTauP -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventWToTauNuP[ipt]/totalp);
+      hDYToMuMuP  -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventDYToMuMuP[ipt]/totalp);
+      hWToTauNuP  -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventWToTauNuP[ipt]/totalp);
+      hWToTauNuP  -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventWToTauNuP[ipt]/totalp);
       hTTJetsP    -> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventTTJetsP[ipt]/totalp);
+      hTTJetsP    -> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventTTJetsP[ipt]/totalp);
       hDYToTauTauP-> SetBinContent(ipt,nEWKp[ipt]->getVal()*nEventDYToTauTauP[ipt]/totalp);
+      hDYToTauTauP-> SetBinError(ipt,nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEventDYToTauTauP[ipt]/totalp);
       hDYToMuMuM  -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToMuMuM[ipt]/totalm);
-      hWToTauTauM -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventWToTauNuM[ipt]/totalm);
+      hDYToMuMuM  -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventDYToMuMuM[ipt]/totalm);
+      hWToTauNuM  -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventWToTauNuM[ipt]/totalm);
+      hWToTauNuM  -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventWToTauNuM[ipt]/totalm);
       hTTJetsM    -> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventTTJetsM[ipt]/totalm);
+      hTTJetsM    -> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventTTJetsM[ipt]/totalm);
       hDYToTauTauM-> SetBinContent(ipt,nEWKm[ipt]->getVal()*nEventDYToTauTauM[ipt]/totalm);
+      hDYToTauTauM-> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventDYToTauTauM[ipt]/totalm);
     }
   }
 
@@ -2910,7 +2913,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 //Inclusive W pt distribution
   TH1D* hWptMC = (TH1D*)hDYToTauTau->Clone("hWptMC");
   hWptMC->Add(hTTJets);
-  hWptMC->Add(hWToTauTau);
+  hWptMC->Add(hWToTauNu);
   hWptMC->Add(hDYToMuMu);
   hWptMC->Add(hQCDWpt);
   hWptMC->Add(hSigWpt);
@@ -2918,12 +2921,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hWptDiff->SetMarkerStyle(kFullCircle);
   hWptDiff->SetMarkerSize(0.9);
 
-  sprintf(histName,"WMu_pt");
+  sprintf(histName,"FitWDistribution_Muon");
   plotWpt=new CPlot(histName,"","","Events");
   plotWpt->setOutDir(CPlot::sOutDir);
   plotWpt->AddToStack(hDYToTauTau,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt->AddToStack(hTTJets,"t#bar{t}",kAzure-5,kAzure-1);
-  plotWpt->AddToStack(hWToTauTau,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWpt->AddToStack(hWToTauNu,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   plotWpt->AddToStack(hDYToMuMu,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   plotWpt->AddToStack(hQCDWpt,"QCD",fillcolorQCD,linecolorQCD);
   plotWpt->AddToStack(hSigWpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
@@ -2943,7 +2946,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff->Draw(c,kTRUE,format,2);
 
-  sprintf(histName,"WMu_ptLog");
+  sprintf(histName,"FitWDistribution_MuonLog");
   plotWpt->SetName(histName);
   plotWpt->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
   plotWpt->SetLogy();
@@ -2953,7 +2956,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //double x1,x2,x3,x4,x5,x6,x7,err;
   //TH1D *hDYToTauTauLog = new TH1D("hDYToTauTauLog","",13,WptBinsLog);
   //TH1D *hTTJetsLog = new TH1D("hTTJetsLog","",13,WptBinsLog);
-  //TH1D *hWToTauTauLog = new TH1D("hWToTauTauLog","",13,WptBinsLog);
+  //TH1D *hWToTauNuLog = new TH1D("hWToTauNuLog","",13,WptBinsLog);
   //TH1D *hDYToMuMuLog = new TH1D("hDYToMuMuLog","",13,WptBinsLog);
   //TH1D *hQCDWptLog = new TH1D("hQCDWptLog","",13,WptBinsLog);
   //TH1D *hSigWptLog = new TH1D("hSigWptLog","",13,WptBinsLog);
@@ -2962,7 +2965,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //for (int i=1; i<=hSigWpt->GetNbinsX(); i++){
   //  x1=hDYToTauTau->GetBinContent(i);
   //  x2=hTTJets->GetBinContent(i);
-  //  x3=hWToTauTau->GetBinContent(i);
+  //  x3=hWToTauNu->GetBinContent(i);
   //  x4=hDYToMuMu->GetBinContent(i);
   //  x5=hQCDWpt->GetBinContent(i);
   //  x6=hSigWpt->GetBinContent(i);
@@ -2970,7 +2973,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //  err = hdataWpt->GetBinError(i);
   //  hDYToTauTauLog->Fill(xaxis->GetBinCenter(i),x1);
   //  hTTJetsLog->Fill(xaxis->GetBinCenter(i),x2);
-  //  hWToTauTauLog->Fill(xaxis->GetBinCenter(i),x3);
+  //  hWToTauNuLog->Fill(xaxis->GetBinCenter(i),x3);
   //  hDYToMuMuLog->Fill(xaxis->GetBinCenter(i),x4);
   //  hQCDWptLog->Fill(xaxis->GetBinCenter(i),x5);
   //  hSigWptLog->Fill(xaxis->GetBinCenter(i),x6);
@@ -2980,7 +2983,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //
   //TH1D* hWptMCLog = (TH1D*)hDYToTauTauLog->Clone("hWptMCLog");
   //hWptMCLog->Add(hTTJetsLog);
-  //hWptMCLog->Add(hWToTauTauLog);
+  //hWptMCLog->Add(hWToTauNuLog);
   //hWptMCLog->Add(hDYToMuMuLog);
   //hWptMCLog->Add(hQCDWptLog);
   //hWptMCLog->Add(hSigWptLog);
@@ -2988,12 +2991,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //hWptDiffLog->SetMarkerStyle(kFullCircle);
   //hWptDiffLog->SetMarkerSize(0.9);
 
-  //sprintf(histName,"WMu_ptLog");
+  //sprintf(histName,"FitWDistribution_MuonLog");
   //plotWptLog=new CPlot(histName,"","","Events");
   //plotWptLog->setOutDir(CPlot::sOutDir);
   //plotWptLog->AddToStack(hDYToTauTauLog,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   //plotWptLog->AddToStack(hTTJetsLog,"t#bar{t}",kAzure-5,kAzure-1);
-  //plotWptLog->AddToStack(hWToTauTauLog,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  //plotWptLog->AddToStack(hWToTauNuLog,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   //plotWptLog->AddToStack(hDYToMuMuLog,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   //plotWptLog->AddToStack(hQCDWptLog,"QCD",fillcolorQCD,linecolorQCD);
   //plotWptLog->AddToStack(hSigWptLog,"W#rightarrow e#nu",fillcolorW,linecolorW);
@@ -3018,7 +3021,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 //W plus pt distribution
   TH1D* hWptMC_p = (TH1D*)hDYToTauTauP->Clone("hWptMC_p");
   hWptMC_p->Add(hTTJetsP);
-  hWptMC_p->Add(hWToTauTauP);
+  hWptMC_p->Add(hWToTauNuP);
   hWptMC_p->Add(hDYToMuMuP);
   hWptMC_p->Add(hQCDWPpt);
   hWptMC_p->Add(hSigWPpt);
@@ -3026,12 +3029,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hWptDiff_p->SetMarkerStyle(kFullCircle);
   hWptDiff_p->SetMarkerSize(0.9);
 
-  sprintf(histName,"WpMu_pt");
+  sprintf(histName,"FitWDistribution_MuonP");
   plotWpt_p=new CPlot(histName,"","","Events");
   plotWpt_p->setOutDir(CPlot::sOutDir);
   plotWpt_p->AddToStack(hDYToTauTauP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt_p->AddToStack(hTTJetsP,"t#bar{t}",kAzure-5,kAzure-1);
-  plotWpt_p->AddToStack(hWToTauTauP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWpt_p->AddToStack(hWToTauNuP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   plotWpt_p->AddToStack(hDYToMuMuP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   plotWpt_p->AddToStack(hQCDWPpt,"QCD",fillcolorQCD,linecolorQCD);
   plotWpt_p->AddToStack(hSigWPpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
@@ -3051,7 +3054,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_p->Draw(c,kTRUE,format,2);
   
-  sprintf(histName,"WpMu_ptLog");
+  sprintf(histName,"FitWDistribution_MuonPLog");
   plotWpt_p->SetName(histName);
   plotWpt_p->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   plotWpt_p->SetLogy();
@@ -3059,7 +3062,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   
   //TH1D *hDYToTauTauLogP = new TH1D("hDYToTauTauLogP","",13,WptBinsLog);
   //TH1D *hTTJetsLogP = new TH1D("hTTJetsLogP","",13,WptBinsLog);
-  //TH1D *hWToTauTauLogP = new TH1D("hWToTauTauLogP","",13,WptBinsLog);
+  //TH1D *hWToTauNuLogP = new TH1D("hWToTauNuLogP","",13,WptBinsLog);
   //TH1D *hDYToMuMuLogP = new TH1D("hDYToMuMuLogP","",13,WptBinsLog);
   //TH1D *hQCDWptLogP = new TH1D("hQCDWptLogP","",13,WptBinsLog);
   //TH1D *hSigWptLogP = new TH1D("hSigWptLogP","",13,WptBinsLog);
@@ -3067,7 +3070,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //for (int i=1; i<=hSigWPpt->GetNbinsX(); i++){
   //  x1=hDYToTauTauP->GetBinContent(i);
   //  x2=hTTJetsP->GetBinContent(i);
-  //  x3=hWToTauTauP->GetBinContent(i);
+  //  x3=hWToTauNuP->GetBinContent(i);
   //  x4=hDYToMuMuP->GetBinContent(i);
   //  x5=hQCDWPpt->GetBinContent(i);
   //  x6=hSigWPpt->GetBinContent(i);
@@ -3075,7 +3078,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //  err = hdataWPpt->GetBinError(i);
   //  hDYToTauTauLogP->Fill(xaxis->GetBinCenter(i),x1);
   //  hTTJetsLogP->Fill(xaxis->GetBinCenter(i),x2);
-  //  hWToTauTauLogP->Fill(xaxis->GetBinCenter(i),x3);
+  //  hWToTauNuLogP->Fill(xaxis->GetBinCenter(i),x3);
   //  hDYToMuMuLogP->Fill(xaxis->GetBinCenter(i),x4);
   //  hQCDWptLogP->Fill(xaxis->GetBinCenter(i),x5);
   //  hSigWptLogP->Fill(xaxis->GetBinCenter(i),x6);
@@ -3085,7 +3088,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //
   //TH1D* hWPptMCLog = (TH1D*)hDYToTauTauLogP->Clone("hWPptMCLog");
   //hWPptMCLog->Add(hTTJetsLogP);
-  //hWPptMCLog->Add(hWToTauTauLogP);
+  //hWPptMCLog->Add(hWToTauNuLogP);
   //hWPptMCLog->Add(hDYToMuMuLogP);
   //hWPptMCLog->Add(hQCDWptLogP);
   //hWPptMCLog->Add(hSigWptLogP);
@@ -3093,12 +3096,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //hWPptDiffLog->SetMarkerStyle(kFullCircle);
   //hWPptDiffLog->SetMarkerSize(0.9);
   //
-  //sprintf(histName,"WpMu_ptLog");
+  //sprintf(histName,"FitWDistribution_MuonPLog");
   //plotWPptLog=new CPlot(histName,"","","Events");
   //plotWPptLog->setOutDir(CPlot::sOutDir);
   //plotWPptLog->AddToStack(hDYToTauTauLogP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   //plotWPptLog->AddToStack(hTTJetsLogP,"t#bar{t}",kAzure-5,kAzure-1);
-  //plotWPptLog->AddToStack(hWToTauTauLogP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  //plotWPptLog->AddToStack(hWToTauNuLogP,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   //plotWPptLog->AddToStack(hDYToMuMuLogP,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   //plotWPptLog->AddToStack(hQCDWptLogP,"QCD",fillcolorQCD,linecolorQCD);
   //plotWPptLog->AddToStack(hSigWptLogP,"W^{+}#rightarrow e^{+}#nu",fillcolorW,linecolorW);
@@ -3123,7 +3126,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 //W minus pt distribution
   TH1D* hWptMC_m = (TH1D*)hDYToTauTauM->Clone("hWptMC_m");
   hWptMC_m->Add(hTTJetsM);
-  hWptMC_m->Add(hWToTauTauM);
+  hWptMC_m->Add(hWToTauNuM);
   hWptMC_m->Add(hDYToMuMuM);
   hWptMC_m->Add(hQCDWMpt);
   hWptMC_m->Add(hSigWMpt);
@@ -3131,12 +3134,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   hWptDiff_m->SetMarkerStyle(kFullCircle);
   hWptDiff_m->SetMarkerSize(0.9);
 
-  sprintf(histName,"WmMu_pt");
+  sprintf(histName,"FitWDistribution_MuonM");
   plotWpt_m=new CPlot(histName,"","","Events");
   plotWpt_m->setOutDir(CPlot::sOutDir);
   plotWpt_m->AddToStack(hDYToTauTauM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   plotWpt_m->AddToStack(hTTJetsM,"t#bar{t}",kAzure-5,kAzure-1);
-  plotWpt_m->AddToStack(hWToTauTauM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  plotWpt_m->AddToStack(hWToTauNuM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   plotWpt_m->AddToStack(hDYToMuMuM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   plotWpt_m->AddToStack(hQCDWMpt,"QCD",fillcolorQCD,linecolorQCD);
   plotWpt_m->AddToStack(hSigWMpt,"W#rightarrow e#nu",fillcolorW,linecolorW);
@@ -3156,7 +3159,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_m->Draw(c,kTRUE,format,2);
   
-  sprintf(histName,"WmMu_ptLog");
+  sprintf(histName,"FitWDistribution_MuonMLog");
   plotWpt_m->SetName(histName);
   plotWpt_m->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   plotWpt_m->SetLogy();
@@ -3164,7 +3167,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
 
   //TH1D *hDYToTauTauLogM = new TH1D("hDYToTauTauLogM","",13,WptBinsLog);
   //TH1D *hTTJetsLogM = new TH1D("hTTJetsLogM","",13,WptBinsLog);
-  //TH1D *hWToTauTauLogM = new TH1D("hWToTauTauLogM","",13,WptBinsLog);
+  //TH1D *hWToTauNuLogM = new TH1D("hWToTauNuLogM","",13,WptBinsLog);
   //TH1D *hDYToMuMuLogM = new TH1D("hDYToMuMuLogM","",13,WptBinsLog);
   //TH1D *hQCDWptLogM = new TH1D("hQCDWptLogM","",13,WptBinsLog);
   //TH1D *hSigWptLogM = new TH1D("hSigWptLogM","",13,WptBinsLog);
@@ -3172,7 +3175,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //for (int i=1; i<=hSigWMpt->GetNbinsX(); i++){
   //  x1=hDYToTauTauM->GetBinContent(i);
   //  x2=hTTJetsM->GetBinContent(i);
-  //  x3=hWToTauTauM->GetBinContent(i);
+  //  x3=hWToTauNuM->GetBinContent(i);
   //  x4=hDYToMuMuM->GetBinContent(i);
   //  x5=hQCDWMpt->GetBinContent(i);
   //  x6=hSigWMpt->GetBinContent(i);
@@ -3180,7 +3183,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //  err = hdataWMpt->GetBinError(i);
   //  hDYToTauTauLogM->Fill(xaxis->GetBinCenter(i),x1);
   //  hTTJetsLogM->Fill(xaxis->GetBinCenter(i),x2);
-  //  hWToTauTauLogM->Fill(xaxis->GetBinCenter(i),x3);
+  //  hWToTauNuLogM->Fill(xaxis->GetBinCenter(i),x3);
   //  hDYToMuMuLogM->Fill(xaxis->GetBinCenter(i),x4);
   //  hQCDWptLogM->Fill(xaxis->GetBinCenter(i),x5);
   //  hSigWptLogM->Fill(xaxis->GetBinCenter(i),x6);
@@ -3190,7 +3193,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //
   //TH1D* hWMptMCLog = (TH1D*)hDYToTauTauLogM->Clone("hWMptMCLog");
   //hWMptMCLog->Add(hTTJetsLogM);
-  //hWMptMCLog->Add(hWToTauTauLogM);
+  //hWMptMCLog->Add(hWToTauNuLogM);
   //hWMptMCLog->Add(hDYToMuMuLogM);
   //hWMptMCLog->Add(hQCDWptLogM);
   //hWMptMCLog->Add(hSigWptLogM);
@@ -3198,12 +3201,12 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //hWMptDiffLog->SetMarkerStyle(kFullCircle);
   //hWMptDiffLog->SetMarkerSize(0.9);
   //
-  //sprintf(histName,"WmMu_ptLog");
+  //sprintf(histName,"FitWDistribution_MuonMLog");
   //plotWMptLog=new CPlot(histName,"","","Events");
   //plotWMptLog->setOutDir(CPlot::sOutDir);
   //plotWMptLog->AddToStack(hDYToTauTauLogM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
   //plotWMptLog->AddToStack(hTTJetsLogM,"t#bar{t}",kAzure-5,kAzure-1);
-  //plotWMptLog->AddToStack(hWToTauTauLogM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
+  //plotWMptLog->AddToStack(hWToTauNuLogM,"W#rightarrow#tau#nu",kCyan-9,kCyan-6);
   //plotWMptLog->AddToStack(hDYToMuMuLogM,"Z/#gamma^{*}#rightarrow ee",fillcolorEWK,linecolorEWK);
   //plotWMptLog->AddToStack(hQCDWptLogM,"QCD",fillcolorQCD,linecolorQCD);
   //plotWMptLog->AddToStack(hSigWptLogM,"W^{-}#rightarrow e^{-} #bar{#nu}",fillcolorW,linecolorW);
@@ -3385,16 +3388,16 @@ void makeHTML(const TString outDir)
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WMu_pt.png\"><img src=\"WMu_pt.png\" alt=\"WMu_pt.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WpMu_pt.png\"><img src=\"WpMu_pt.png\" alt=\"WpMu_pt.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WmMu_pt.png\"><img src=\"WmMu_pt.png\" alt=\"WmMu_pt.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_Muon.png\"><img src=\"FitWDistribution_Muon.png\" alt=\"FitWDistribution_Muon.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonP.png\"><img src=\"FitWDistribution_MuonP.png\" alt=\"FitWDistribution_MuonP.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonM.png\"><img src=\"FitWDistribution_MuonM.png\" alt=\"FitWDistribution_MuonM.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WMu_ptLog.png\"><img src=\"WMu_ptLog.png\" alt=\"WMu_ptLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WpMu_ptLog.png\"><img src=\"WpMu_ptLog.png\" alt=\"WpMu_ptLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"WmMu_ptLog.png\"><img src=\"WmMu_ptLog.png\" alt=\"WmMu_ptLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonLog.png\"><img src=\"FitWDistribution_MuonLog.png\" alt=\"FitWDistribution_MuonLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonPLog.png\"><img src=\"FitWDistribution_MuonPLog.png\" alt=\"FitWDistribution_MuonPLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonMLog.png\"><img src=\"FitWDistribution_MuonMLog.png\" alt=\"FitWDistribution_MuonMLog.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "</table>" << endl;
