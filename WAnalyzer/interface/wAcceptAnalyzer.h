@@ -464,6 +464,8 @@ void clear()
   EventData.weightplus	= -999;
   EventData.weightminus	= -999;
 
+  FSRph.weightFSR = 1.;
+
   EventData.vtx_isFake->clear();
   EventData.vtx_ndof->clear();
   EventData.vtx_z->clear();
@@ -1180,12 +1182,12 @@ virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     if (lepton.status()!=3) continue;
     int leptonId = lepton.pdgId();
     if(Channel == "Muon")
-      if (abs(leptonId)!=13) continue;
+      if (fabs(leptonId)!=13) continue;
       else if(Channel == "Electron")
-	if (abs(leptonId)!=11) continue;
+	if (fabs(leptonId)!=11) continue;
     if (lepton.numberOfMothers()!=1) continue;
     const reco::Candidate *boson = lepton.mother();
-    int bosonId = abs(boson->pdgId());
+    int bosonId = fabs(boson->pdgId());
     if (bosonId!=24) continue;
     acceptFT = true;
     double bosonMass = boson->mass();
