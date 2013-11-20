@@ -133,6 +133,8 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
   if (filetype == "Nominal"){
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
+    //fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_FSR_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
+    //fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_FSR_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
@@ -762,6 +764,8 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
+  //for( int ipt(9);ipt<NWptBinPlus;ipt++)
+  //for( int ipt(7);ipt<10;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -869,23 +873,20 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
 	,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
 
     //High WpT - QCD/Signal ratio
-    if (ipt>9){
+    if (ipt>8){
       sprintf(histName,"cqcd_%d",ipt);
-      cqcd[ipt] = new RooRealVar(histName,histName,0.5,0.3,1);
-      //cqcd[ipt]->setVal(10.3749*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/16.2080)+0.107672);
-      cqcd[ipt]->setVal(10.3748*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/16.2080)+0.107678);
+      cqcd[ipt] = new RooRealVar(histName,histName,0.14,0,1);
+      cqcd[ipt]->setVal(10.3748*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/(2.*16.2080))+0.107678);
       cqcd[ipt]->setConstant(kTRUE);
       
       sprintf(histName,"cqcdp_%d",ipt);
-      cqcdp[ipt] = new RooRealVar(histName,histName,0.5,0.3,1);
-      //cqcdp[ipt]->setVal(9.48187*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/16.9649)+0.0072961);
-      cqcdp[ipt]->setVal(8.76357*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/17.4542)+0.00762632);
+      cqcdp[ipt] = new RooRealVar(histName,histName,0.02,0,1);
+      cqcdp[ipt]->setVal(8.76357*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/(2.*17.4542))+0.00762632);
       cqcdp[ipt]->setConstant(kTRUE);
       
       sprintf(histName,"cqcdm_%d",ipt);
-      cqcdm[ipt] = new RooRealVar(histName,histName,0.5,0.3,1);
-      //cqcdm[ipt]->setVal(10.1269*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/16.1065)+0.239577);
-      cqcdm[ipt]->setVal(9.92166*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/16.2575)+0.236426);
+      cqcdm[ipt] = new RooRealVar(histName,histName,0.3,0,1);
+      cqcdm[ipt]->setVal(9.92166*TMath::Exp(-(WptBins[ipt-1]+WptBins[ipt])/(2.*16.2575))+0.236426);
       cqcdm[ipt]->setConstant(kTRUE);
       
       sprintf(histName,"nHighQCD_%d",ipt);
@@ -1203,6 +1204,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
       qcdMsigma1[ipt]->setVal(8.7478);
       qcda1[ipt] ->setVal(0.0314533);
       qcdPa1[ipt]->setVal(-0.758904);
+      //qcdPa1[ipt]->setVal(-0.558904);
       qcdMa1[ipt]->setVal(-0.55411);
       qcdsigma2[ipt] ->setVal(36.8508);
       qcdPsigma2[ipt]->setVal(36.296);
@@ -1214,7 +1216,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
       Frac1P[ipt]->setVal(0.999789);
       Frac1M[ipt]->setVal(0.981211);
       Frac2[ipt] ->setVal(0.00113697);
-      Frac2P[ipt]->setVal(0.000192565);
+      Frac2P[ipt]->setVal(0.00192565);
       Frac2M[ipt]->setVal(0.087209);
     }else if (ipt == 8){
       nSig[ipt]  -> setVal(4017.66);
@@ -1251,73 +1253,76 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
       Frac2P[ipt]->setVal(0.0253852);
       Frac2M[ipt]->setVal(0.082933);
     }else if (ipt == 9){
-      nSig[ipt]  -> setVal(2556.28);
-      nSigp[ipt] -> setVal(1556.54);
-      nSigm[ipt] -> setVal(964.642);
-      nAntiSig[ipt]  -> setVal(9.94427);
-      nAntiSigp[ipt] -> setVal(15.0998);
-      nAntiSigm[ipt] -> setVal(263.491);
-      nQCD[ipt]  -> setVal(336.724);
-      nQCDp[ipt] -> setVal(64.5846);
-      nQCDm[ipt] -> setVal(313.949);
-      nAntiQCD[ipt]  -> setVal(1024.8);
-      nAntiQCDp[ipt] -> setVal(488.901);
-      nAntiQCDm[ipt] -> setVal(97.4234);
-      qcdmean[ipt] ->setVal(34.2812);
-      qcdPmean[ipt]->setVal(33.4052);
-      qcdMmean[ipt]->setVal(17.9884);
-      qcdsigma1[ipt] ->setVal(20.0326);
-      qcdPsigma1[ipt]->setVal(18.3208);
-      qcdMsigma1[ipt]->setVal(18.541302);
-      qcda1[ipt] ->setVal(0.0536559);
-      qcdPa1[ipt]->setVal(-0.17025);
-      qcdMa1[ipt]->setVal(-0.0405047);
-      qcdsigma2[ipt] ->setVal(71.7696);
-      qcdPsigma2[ipt]->setVal(31.9107);
-      qcdMsigma1[ipt]->setVal(72.05546);
-      qcda2[ipt] ->setVal(-0.669469);
-      qcdPa2[ipt]->setVal(0.00816517);
-      qcdMa2[ipt]->setVal(-0.0449539);
-      Frac1[ipt] ->setVal(0.921071);
-      Frac1P[ipt]->setVal(0.789787);
-      Frac1M[ipt]->setVal(0.999962);
-      Frac2[ipt] ->setVal(0.128477);
-      Frac2P[ipt]->setVal(0.32673);
-      Frac2M[ipt]->setVal(0.0313892);
-    }else if (ipt == 10){
-      nSig[ipt]  -> setVal(498.978);
-      nSigp[ipt] -> setVal(224.77);
-      nSigm[ipt] -> setVal(130.846);
-      nQCD[ipt]  -> setVal(196.645);
-      nQCDp[ipt] -> setVal(182.668);
-      nQCDm[ipt] -> setVal(201.083);
-      nAntiSig[ipt]  -> setVal(36.6372);
-      nAntiSigp[ipt] -> setVal(4.50496e-05);
-      nAntiSigm[ipt] -> setVal(6.7521);
-      nAntiQCD[ipt]  -> setVal(12.8979);
-      nAntiQCDp[ipt] -> setVal(12.8979);
-      nAntiQCDm[ipt] -> setVal(12.8979);
-      qcdmean[ipt] ->setVal(30.0005302);
-      qcdPmean[ipt]->setVal(30);
-      qcdMmean[ipt]->setVal(36.6447);
-      qcdsigma1[ipt] ->setVal(65.7851);
-      qcdPsigma1[ipt]->setVal(53.02015);
-      qcdMsigma1[ipt]->setVal(51.41436);
-      qcda1[ipt] ->setVal(-0.0564232);
-      qcdPa1[ipt]->setVal(-0.15164);
-      qcdMa1[ipt]->setVal(-0.0347623);
-      qcdsigma2[ipt] ->setVal(0.377904);
-      qcdPsigma2[ipt]->setVal(4.9994);
-      qcdMsigma1[ipt]->setVal(4.42718);
-      qcda2[ipt] ->setVal(0.0232243);
-      qcdPa2[ipt]->setVal(-0.0246571);
-      qcdMa2[ipt]->setVal(-0.0414784);
-      Frac1[ipt] ->setVal(0.999999);
-      Frac1P[ipt]->setVal(0.999999);
-      Frac1M[ipt]->setVal(0.999999);
-      Frac2[ipt] ->setVal(0.999999);
-      Frac2P[ipt]->setVal(0.999999);
-      Frac2M[ipt]->setVal(0.999999);
+      nSig[ipt]  -> setVal(2525.4);
+      nSigp[ipt] -> setVal(1533.91);
+      nSigm[ipt] -> setVal(999.505);
+      nAntiSig[ipt]  -> setVal(9.85209);
+      nAntiSigp[ipt] -> setVal(12.6862);
+      nAntiSigm[ipt] -> setVal(2.67655);
+      nQCD[ipt]  -> setVal(373.497);
+      nQCDp[ipt] -> setVal(89.1631);
+      nQCDm[ipt] -> setVal(275.407);
+      nAntiQCD[ipt]  -> setVal(1024.83);
+      nAntiQCDp[ipt] -> setVal(492.314);
+      nAntiQCDm[ipt] -> setVal(524.695);
+      qcdmean[ipt] ->setVal(34.3667);
+      qcdPmean[ipt]->setVal(32.2194);
+      //qcdMmean[ipt]->setVal(49.9025);
+      qcdMmean[ipt]->setVal(35.9025);
+      qcdsigma1[ipt] ->setVal(19.9619);
+      qcdPsigma1[ipt]->setVal(18.8156);
+      qcdMsigma1[ipt]->setVal(19.114368);
+      qcda1[ipt] ->setVal(0.0535953);
+      qcdPa1[ipt]->setVal(-0.136775);
+      //qcdMa1[ipt]->setVal(-0.226408);
+      qcdMa1[ipt]->setVal(-0.326408);
+      qcdsigma2[ipt] ->setVal(71.9336);
+      qcdPsigma2[ipt]->setVal(26.9837);
+      qcdMsigma1[ipt]->setVal(67.6217);
+      qcda2[ipt] ->setVal(-0.671186);
+      qcdPa2[ipt]->setVal(0.0737053);
+      qcdMa2[ipt]->setVal(-0.432886);
+      Frac1[ipt] ->setVal(0.749699);
+      Frac1P[ipt]->setVal(0.982042);
+      Frac1M[ipt]->setVal(0.990108);
+      Frac2[ipt] ->setVal(0.399756);
+      Frac2P[ipt]->setVal(0.0280642);
+      Frac2M[ipt]->setVal(0.031);
+
+    //}else if (ipt == 10){
+    //  nSig[ipt]  -> setVal(498.978);
+    //  nSigp[ipt] -> setVal(224.77);
+    //  nSigm[ipt] -> setVal(130.846);
+    //  nQCD[ipt]  -> setVal(196.645);
+    //  nQCDp[ipt] -> setVal(182.668);
+    //  nQCDm[ipt] -> setVal(201.083);
+    //  nAntiSig[ipt]  -> setVal(36.6372);
+    //  nAntiSigp[ipt] -> setVal(4.50496e-05);
+    //  nAntiSigm[ipt] -> setVal(6.7521);
+    //  nAntiQCD[ipt]  -> setVal(12.8979);
+    //  nAntiQCDp[ipt] -> setVal(12.8979);
+    //  nAntiQCDm[ipt] -> setVal(12.8979);
+    //  qcdmean[ipt] ->setVal(30.0005302);
+    //  qcdPmean[ipt]->setVal(30);
+    //  qcdMmean[ipt]->setVal(36.6447);
+    //  qcdsigma1[ipt] ->setVal(65.7851);
+    //  qcdPsigma1[ipt]->setVal(53.02015);
+    //  qcdMsigma1[ipt]->setVal(51.41436);
+    //  qcda1[ipt] ->setVal(-0.0564232);
+    //  qcdPa1[ipt]->setVal(-0.15164);
+    //  qcdMa1[ipt]->setVal(-0.0347623);
+    //  qcdsigma2[ipt] ->setVal(0.377904);
+    //  qcdPsigma2[ipt]->setVal(4.9994);
+    //  qcdMsigma1[ipt]->setVal(4.42718);
+    //  qcda2[ipt] ->setVal(0.0232243);
+    //  qcdPa2[ipt]->setVal(-0.0246571);
+    //  qcdMa2[ipt]->setVal(-0.0414784);
+    //  Frac1[ipt] ->setVal(0.999999);
+    //  Frac1P[ipt]->setVal(0.999999);
+    //  Frac1M[ipt]->setVal(0.999999);
+    //  Frac2[ipt] ->setVal(0.999999);
+    //  Frac2P[ipt]->setVal(0.999999);
+    //  Frac2M[ipt]->setVal(0.999999);
     }
     //  
     //   Construct PDFs for fitting
@@ -1558,7 +1563,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
           ,qcd1m[ipt]->m1,qcd1m[ipt]->s1,qcd1m[ipt]->a1,qcd1m[ipt]->f1,qcd1m[ipt]->s2,qcd1m[ipt]->a2,qcd1m[ipt]->f2);
       
       // Signal + Background PDFs
-      if (ipt<10){
+      if (ipt<9){
 	sprintf(histName,"pdfMet_%d",ipt);
         pdfMet[ipt] =new RooAddPdf(histName,histName
             ,RooArgList(*pdfWm[ipt],*pdfEWK[ipt],*(qcd1[ipt]->model))
@@ -1572,7 +1577,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
             ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcd1m[ipt]->model))
             ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nQCDm[ipt]));
         
-        if(hAntiWmunuMet[ipt]->Integral())
+        if(hAntiWmunuMet[ipt]->Integral() > 0)
         {
           sprintf(histName,"apdfMet_%d",ipt);
           apdfMet[ipt] =new RooAddPdf(histName,histName
@@ -1649,13 +1654,13 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
 	    ,RooArgList(*pdfWmm[ipt],*pdfEWKm[ipt],*(qcd1m[ipt]->model))
 	    ,RooArgList(*nSigm[ipt],*nEWKm[ipt],*nHighQCDm[ipt]));
 	
-	if(hHighWpTAnti_EWKMet->Integral() > 0)
+	if(hAntiWmunuMet[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMet->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMet_%d",ipt);
 	  apdfMet[ipt] =new RooAddPdf(histName,histName
 	      ,RooArgList(*apdfWm[ipt],*apdfEWK[ipt],*(aqcd1[ipt]->model))
 	      ,RooArgList(*nAntiSig[ipt],*nAntiEWK[ipt],*nAntiQCD[ipt]));
-	}else if(hHighWpTAnti_EWKMet->Integral() > 0)
+	}else if(hAntiEWKMet[ipt]->Integral() > 0 || hHighWpTAnti_EWKMet->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMet_%d",ipt);
 	  apdfMet[ipt] =new RooAddPdf(histName,histName
@@ -1670,13 +1675,13 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
 	  nAntiSig[ipt]->setVal(0);
 	}
 	
-	if(hHighWpTAnti_EWKMetp->Integral() > 0)
+	if(hAntiWmunuMetp[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetp->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMetp_%d",ipt);
 	  apdfMetp[ipt] =new RooAddPdf(histName,histName
 	      ,RooArgList(*apdfWmp[ipt],*apdfEWKp[ipt],*(aqcd1p[ipt]->model))
 	      ,RooArgList(*nAntiSigp[ipt],*nAntiEWKp[ipt],*nAntiQCDp[ipt]));
-	}else if(hHighWpTAnti_EWKMetp->Integral() > 0)
+	}else if(hAntiEWKMetp[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetp->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMetp_%d",ipt);
 	  apdfMetp[ipt] =new RooAddPdf(histName,histName
@@ -1691,13 +1696,13 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
 	  nAntiSigp[ipt]->setVal(0);
 	}
 	
-	if(hHighWpTAnti_EWKMetm->Integral() > 0)
+	if(hAntiWmunuMetm[ipt]->Integral() > 0 || hHighWpTAnti_WmunuMetm->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMetm_%d",ipt);
 	  apdfMetm[ipt] =new RooAddPdf(histName,histName
 	      ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcd1m[ipt]->model))
 	      ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
-	}else if(hHighWpTAnti_EWKMetm->Integral() > 0)
+	}else if(hAntiEWKMetm[ipt]->Integral() > 0 || hHighWpTAnti_EWKMetm->Integral() > 0)
 	{
 	  sprintf(histName,"apdfMetm_%d",ipt);
 	  apdfMetm[ipt] =new RooAddPdf(histName,histName
@@ -1845,7 +1850,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     // Use histogram version of fitted PDFs to make ratio plots
     // (Will also use PDF histograms later for Chi^2 and KS tests)
     hPdfMet = (TH1D*)(pdfMet[ipt]->createHistogram("hPdfMet", pfmet));
-    if (ipt>9)
+    if (ipt>8)
       hPdfMet->Scale(
 	  (nSig[ipt]->getVal()+nEWK[ipt]->getVal()+nHighQCD[ipt]->getVal())/hPdfMet->Integral());
     else
@@ -1856,7 +1861,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     hMetDiff->SetMarkerSize(0.9);
      
     hPdfMetp = (TH1D*)(pdfMetp[ipt]->createHistogram("hPdfMetp", pfmet));
-    if (ipt>9)
+    if (ipt>8)
       hPdfMetp->Scale(
 	  (nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nHighQCDp[ipt]->getVal())/hPdfMetp->Integral());
     else
@@ -1867,7 +1872,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     hMetpDiff->SetMarkerSize(0.9);
       
     hPdfMetm = (TH1D*)(pdfMetm[ipt]->createHistogram("hPdfMetm", pfmet));
-    if (ipt>9)
+    if (ipt>8)
       hPdfMetm->Scale(
 	  (nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nHighQCDm[ipt]->getVal())/hPdfMetm->Integral());
     else
@@ -2543,12 +2548,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     Wmfile<<fixed<<setprecision(4);
     Wmfile<<"Selected: "<<hDataMet[ipt]->Integral()<<endl;
     Wmfile<<"  Signal: "<<nSig[ipt]->getVal()<<" +/- "<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmfile<<"     QCD: "<<nHighQCD[ipt]->getVal()<<" +/- "<<nHighQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
     else
       Wmfile<<"     QCD: "<<nQCD[ipt]->getVal()<<" +/- "<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
     Wmfile<<"   Other: "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmfile<<"   Total: "<<nSig[ipt]->getVal()+nHighQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<endl;
     else
       Wmfile<<"   Total: "<<nSig[ipt]->getVal()+nQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<endl;
@@ -2575,12 +2580,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     Wmpfile<<endl;
     Wmpfile<<"Selected: "<<hDataMetp[ipt]->Integral()<<endl;
     Wmpfile<<"  Signal: "<<nSigp[ipt]->getVal()<<" +/- "<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmpfile<<"     QCD: "<<nHighQCDp[ipt]->getVal()<<" +/- "<<nHighQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
     else
       Wmpfile<<"     QCD: "<<nQCDp[ipt]->getVal()<<" +/- "<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
     Wmpfile<<"   Other: "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmpfile<<"   Total: "<<nSigp[ipt]->getVal()+nHighQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<endl;
     else
       Wmpfile<<"   Total: "<<nSigp[ipt]->getVal()+nQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<endl;
@@ -2607,12 +2612,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     Wmmfile<<fixed<<setprecision(4);
     Wmmfile<<"Selected: "<<hDataMetm[ipt]->Integral()<<endl;
     Wmmfile<<"  Signal: "<<nSigm[ipt]->getVal()<<" +/- "<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmmfile<<"     QCD: "<<nHighQCDm[ipt]->getVal()<<" +/- "<<nHighQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
     else
       Wmmfile<<"     QCD: "<<nQCDm[ipt]->getVal()<<" +/- "<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
     Wmmfile<<"   Other: "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
-    if (ipt>9)
+    if (ipt>8)
       Wmmfile<<"   Total: "<<nSigm[ipt]->getVal()+nHighQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<endl;
     else
       Wmmfile<<"   Total: "<<nSigm[ipt]->getVal()+nQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<endl;
@@ -2630,7 +2635,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     qcdfile<<"*** Bin "<<ipt<<"***"<<endl;
     qcdfile<<"======================================================================================"<<endl;
     qcdfile<<"Signal region: Normalization factors"<<endl;
-    if (ipt>9){
+    if (ipt>8){
       qcdfile<<"Sig="<<nSig[ipt]->getValV()<<"+/-"<<nSig[ipt]->getError()<<"\t SigP="<<nSigp[ipt]->getValV()<<"+/-"<<nSigp[ipt]->getError()<<"\t SigM="<<nSigm[ipt]->getValV()<<"+/-"<<nSigm[ipt]->getError()<<"\t QCD="<<nHighQCD[ipt] ->getValV()<<"\t QCDP="<<nHighQCDp[ipt] ->getValV()<<"\t QCDM="<<nHighQCDm[ipt] ->getValV()<<endl;
       qcdfile<<"cqcd="<<cqcd[ipt]->getVal()<<"\t cqcdp="<<cqcdp[ipt]->getVal()<<"\t cqcdm="<<cqcdm[ipt]->getVal()<<endl;
     }else
@@ -2677,7 +2682,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     InValfile<<"nAntiSig[ipt]  -> setVal("<<nAntiSig[ipt] ->getValV()<<");"<<endl;
     InValfile<<"nAntiSigp[ipt] -> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
     InValfile<<"nAntiSigm[ipt] -> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
-    if (ipt>9){
+    if (ipt>8){
       InValfile<<"nQCD[ipt]  -> setVal("<<nHighQCD[ipt] ->getValV()<<");"<<endl;
       InValfile<<"nQCDp[ipt] -> setVal("<<nHighQCDp[ipt] ->getValV()<<");"<<endl;
       InValfile<<"nQCDm[ipt] -> setVal("<<nHighQCDm[ipt] ->getValV()<<");"<<endl;
@@ -2836,12 +2841,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     tablefile<<"<tr>"<<endl;
     tablefile<<"<td width=\"60\"><p> W</p></td>"<<endl;
     tablefile<<"<td width=\"100\"><p>"<< hDataMet[ipt]->Integral() <<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nSig[ipt]->getVal()+nHighQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<" &plusmn; "<<sqrt(nSig[ipt]->getPropagatedError(*fitRes[ipt])*nSig[ipt]->getPropagatedError(*fitRes[ipt])+nHighQCD[ipt]->getPropagatedError(*fitRes[ipt])*nHighQCD[ipt]->getPropagatedError(*fitRes[ipt])+nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEWK[ipt]->getPropagatedError(*fitRes[ipt]))<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nSig[ipt]->getVal()+nQCD[ipt]->getVal()+nEWK[ipt]->getVal()<<" &plusmn; "<<sqrt(nSig[ipt]->getPropagatedError(*fitRes[ipt])*nSig[ipt]->getPropagatedError(*fitRes[ipt])+nQCD[ipt]->getPropagatedError(*fitRes[ipt])*nQCD[ipt]->getPropagatedError(*fitRes[ipt])+nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEWK[ipt]->getPropagatedError(*fitRes[ipt]))<<"</p></td>"<<endl;
     tablefile<<"<td width=\"180\"><p>"<< nSig[ipt]->getVal()<<" &plusmn; "<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nHighQCD[ipt]->getVal()<<" &plusmn; "<<nHighQCD[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nQCD[ipt]->getVal()<<" &plusmn; "<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<"</p></td>"<<endl;
@@ -2850,12 +2855,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     tablefile<<"<tr>"<<endl;
     tablefile<<"<td width=\"60\"><p> W <sup>+</sup></p></td>"<<endl;
     tablefile<<"<td width=\"100\"><p>"<< hDataMetp[ipt]->Integral() <<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nSigp[ipt]->getVal()+nHighQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nHighQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nHighQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nSigp[ipt]->getVal()+nQCDp[ipt]->getVal()+nEWKp[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"</p></td>"<<endl;
     tablefile<<"<td width=\"180\"><p>"<< nSigp[ipt]->getVal()<<" &plusmn; "<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nHighQCDp[ipt]->getVal()<<" &plusmn; "<<nHighQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nQCDp[ipt]->getVal()<<" &plusmn; "<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<"</p></td>"<<endl;
@@ -2864,12 +2869,12 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
     tablefile<<"<tr>"<<endl;
     tablefile<<"<td width=\"60\"><p> W <sup>-</sup></p></td>"<<endl;
     tablefile<<"<td width=\"100\"><p>"<< hDataMetm[ipt]->Integral() <<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nSigm[ipt]->getVal()+nHighQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nHighQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nHighQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nSigm[ipt]->getVal()+nQCDm[ipt]->getVal()+nEWKm[ipt]->getVal()<<" &plusmn; "<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"</p></td>"<<endl;
     tablefile<<"<td width=\"180\"><p>"<< nSigm[ipt]->getVal()<<" &plusmn; "<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
-    if (ipt>9)
+    if (ipt>8)
       tablefile<<"<td width=\"180\"><p>"<< nHighQCDm[ipt]->getVal()<<" &plusmn; "<<nHighQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
     else
       tablefile<<"<td width=\"180\"><p>"<< nQCDm[ipt]->getVal()<<" &plusmn; "<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<"</p></td>"<<endl;
@@ -2889,7 +2894,7 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
       hSigWPpt-> SetBinError(ipt, nSigp[ipt]->getPropagatedError(*fitResp[ipt]));
       hSigWMpt-> SetBinContent(ipt, nSigm[ipt]->getVal());
       hSigWMpt-> SetBinError(ipt, nSigm[ipt]->getPropagatedError(*fitResm[ipt]));
-      if (ipt>9){
+      if (ipt>8){
 	hQCDWpt -> SetBinContent(ipt, nHighQCD[ipt]->getVal());
 	hQCDWpt -> SetBinError(ipt, nHighQCD[ipt]->getPropagatedError(*fitRes[ipt]));
 	hQCDWPpt-> SetBinContent(ipt, nHighQCDp[ipt]->getVal());
@@ -3030,21 +3035,26 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
   allyieldsp.close();
   allyieldsm.close();
 //Write Signal numbers to file
-  //gSystem->mkdir(outputDir+"/RstMuon",kTRUE);
-  //TString Yields = outputDir+"/RstMuon/SigYields_"+filetype+".root";
-  gSystem->mkdir("RstMuon",kTRUE);
-  TString Yields = "RstMuon/SigYields_"+filetype+".root";
+  gSystem->mkdir(outputDir+"/RstMuon",kTRUE);
+  TString Yields = outputDir+"/RstMuon/SigYields_"+filetype+".root";
+  //gSystem->mkdir("RstMuon",kTRUE);
+  //TString Yields = "RstMuon/SigYields_"+filetype+".root";
   TFile *nsigfile = new TFile(Yields,"RECREATE");
   hSigWpt -> Write();
   hSigWPpt-> Write();
   hSigWMpt-> Write();
+  
+  hQCDWpt -> Write();
+  hQCDWPpt-> Write();
+  hQCDWMpt-> Write();
+  
   hQCD_Sig-> Write();
   hQCD_SigPlus-> Write();
   hQCD_SigMinus-> Write();
   
-  hAntiQCD_Sig-> Write();
-  hAntiQCD_SigPlus-> Write();
-  hAntiQCD_SigMinus-> Write();
+  //hAntiQCD_Sig-> Write();
+  //hAntiQCD_SigPlus-> Write();
+  //hAntiQCD_SigMinus-> Write();
   
   //TF1 *fincl = new TF1("fincl","[0]*TMath::Exp(-x/[1])+[2]",40,110);
   //TF1 *fp = new TF1("fp","[0]*TMath::Exp(-x/[1])+[2]",40,110);
