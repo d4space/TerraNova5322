@@ -150,6 +150,15 @@ void WLepNeu::Loop()
 
   bool Debug(false);
 
+  TString resultDir = AnaChannel;
+//  TString resultDir = "results";
+  gSystem->mkdir(resultDir);
+  
+  //ofstream FSRout;
+  //TString FSRName;
+  //FSRName = resultDir+"/FSR_Summary.txt";
+  //FSRout.open(FSRName);
+
   for (int i(0); i<Ntries;i++)
 //  for (int i(0); i<2;i++)
   {
@@ -168,6 +177,10 @@ void WLepNeu::Loop()
     //===========================
     InitVar4Evt();
 
+    //FSRout<<"FSR: "<<weightFSR<<endl;
+    //cout<<"FSR: "<<weightFSR<<endl;
+    //FSRout<<"TT weight: "<<TTW<<endl;
+if(Debug)cout<<"check point 6"<<endl;
 if(Debug)cout<<"check point 2"<<endl;
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
@@ -230,11 +243,13 @@ if(Debug)cout<<"check point 5"<<endl;
       TTW = 1;
     }else{
       //TTW= LumiWeight*weightin; //weight is right but S8 strange
+      //if (weightFSR<0) weightFSR=1.;
+      //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
       TTW= LumiWeight; //weight is right but S8 strange
       if(AnaChannel == "ElectronHighPU")
       {TTW= LumiWeight*weight;} //reweighting value for S10
     }
-if(Debug)cout<<"check point 6"<<endl;
+    
     //cout<<"TT weight: "<<TTW<<endl;
     //cout<<"Muon size: "<<wMuons.pt->size()<<endl;
     //cout<<"W    size: "<<W_pt->size()<<endl;
@@ -283,20 +298,20 @@ if(Debug)cout<<"check point 6-3"<<endl;
 	wCand.Mt = (*W_Mt)[iw];
 	wCand.Met = (*W_Neut_pt)[iw];
 // MVAnoPUMETana study
-	if (Mode=="MVAnoPUMEt")
-	{
-	  W_Met = (*W_Neut_pt)[iw];
-	  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
-	  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
-	  if (abs((*GenW_BornLept1_id)[0])==16)
-	  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-	  else if (abs((*GenW_BornLept2_id)[0])==16)
-	  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-//	  W_Gen_Met = (*W_Neut_pt)[iw];
-	  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
-	    //cout << "There is no genMEt" << endl;
-	  metCnt++;
-	}
+	//if (Mode=="MVAnoPUMEt")
+	//{
+	//  W_Met = (*W_Neut_pt)[iw];
+	//  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
+	//  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
+	//  if (abs((*GenW_BornLept1_id)[0])==16)
+	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+	//  else if (abs((*GenW_BornLept2_id)[0])==16)
+	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+//	//  W_Gen_Met = (*W_Neut_pt)[iw];
+	//  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
+	//    //cout << "There is no genMEt" << endl;
+	//  metCnt++;
+	//}
 	wCand.lep_pt = (*W_Lept1_pt)[iw];
 	wCand.lep_phi = (*W_Lept1_phi)[iw];
 	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
@@ -546,15 +561,15 @@ if(Debug)cout<<"check point 11"<<endl;
       Z_pass=true;
 
 //MVAnoPUMETana study
-      if (Mode=="MVAnoPUMEt")
-      {
-	Z_Met = (*Z_Neut_pt)[iz];
-	Z_NoPU_Met = (*Z_NoPU_Neut_pt)[iz];
-	Z_MVA_Met = (*Z_MVA_Neut_pt)[iz];
-	if( fabs(Channel) != GenType::kTau)
-	Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem, in that case use next line
-//	Z_Gen_Met = 1;
-      }
+      //if (Mode=="MVAnoPUMEt")
+      //{
+      //  Z_Met = (*Z_Neut_pt)[iz];
+      //  Z_NoPU_Met = (*Z_NoPU_Neut_pt)[iz];
+      //  Z_MVA_Met = (*Z_MVA_Neut_pt)[iz];
+      //  if( fabs(Channel) != GenType::kTau)
+      //  Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem, in that case use next line
+//    //  Z_Gen_Met = 1;
+      //}
       if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
       {
 	diLeptVtxProb = tmpVar;
@@ -752,13 +767,13 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_W_Neut_pt1->Fill(wCand.Met,TTW);
       
 // MVAnoPUMETana study
-      if (Mode=="MVAnoPUMEt")
-      {
-	h1_W_Met->Fill(W_Met,TTW);
-	h1_W_NoPU_Met->Fill(W_NoPU_Met,TTW);
-	h1_W_MVA_Met->Fill(W_MVA_Met,TTW);
-	h1_W_Gen_Met->Fill(W_Gen_Met,TTW);
-      }
+      //if (Mode=="MVAnoPUMEt")
+      //{
+      //  h1_W_Met->Fill(W_Met,TTW);
+      //  h1_W_NoPU_Met->Fill(W_NoPU_Met,TTW);
+      //  h1_W_MVA_Met->Fill(W_MVA_Met,TTW);
+      //  h1_W_Gen_Met->Fill(W_Gen_Met,TTW);
+      //}
 
     if(AnaChannel == "ElectronHighPU" )
     {
@@ -1096,13 +1111,13 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_Zmass->Fill(Zmass,TTW);
 
 // MVAnoPUMETana study
-      if (Mode=="MVAnoPUMEt")
-      {
-	h1_Z_Met->Fill(Z_Met);
-	h1_Z_NoPU_Met->Fill(Z_NoPU_Met);
-	h1_Z_MVA_Met->Fill(Z_MVA_Met);
-	h1_Z_Gen_Met->Fill(Z_Gen_Met);
-      }
+      //if (Mode=="MVAnoPUMEt")
+      //{
+      //  h1_Z_Met->Fill(Z_Met);
+      //  h1_Z_NoPU_Met->Fill(Z_NoPU_Met);
+      //  h1_Z_MVA_Met->Fill(Z_MVA_Met);
+      //  h1_Z_Gen_Met->Fill(Z_Gen_Met);
+      //}
 
       //MisChargeStudy
   //    if(AnaChannel =="ElectronHighPU"){
@@ -1158,9 +1173,9 @@ if(Debug)cout<<"check point 11"<<endl;
   cout<<"Z (beforeCut): "<<evtCnt_Z_beforeCut<<"   Z (afterCut): "<<evtCnt_Z_afterCut<<endl;
   //Results======================
 
-  TString resultDir = AnaChannel;
-//  TString resultDir = "results";
-  gSystem->mkdir(resultDir);
+//  TString resultDir = AnaChannel;
+////  TString resultDir = "results";
+//  gSystem->mkdir(resultDir);
   TFile *myFile;
   if(ETARANGE > -999)
   {
@@ -1350,6 +1365,7 @@ if(Debug)cout<<"check point 11"<<endl;
     h1_Truth_Post_Even->Write();
     h1_Truth_Post_Odd->Write();
     h1_Truth_Post_EffCorr->Write();
+    h1_Truth_Post_EffCorr_weightFSR->Write();
     h2_Truth_Rec_AP_Post->Write();
     //for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
     //{
@@ -1368,6 +1384,7 @@ if(Debug)cout<<"check point 11"<<endl;
     h1_Post_PostFid->Write();
     h1_Post_PostFid_Even->Write();
     h1_Post_BothFid->Write();
+    h1_Post_BothFid_weightFSR->Write();
     h1_Post_BothFid_Even->Write();
 
     h2_PostBorn_BothFid->Write();
@@ -1394,13 +1411,13 @@ if(Debug)cout<<"check point 11"<<endl;
   h1_Vtx_Good1->Write();
   
 // MVAnoPUMETana study
-  if (Mode=="MVAnoPUMEt")
-  {
-    h1_W_Met->Write();
-    h1_W_NoPU_Met->Write();
-    h1_W_MVA_Met->Write();
-    h1_W_Gen_Met->Write();
-  }
+  //if (Mode=="MVAnoPUMEt")
+  //{
+  //  h1_W_Met->Write();
+  //  h1_W_NoPU_Met->Write();
+  //  h1_W_MVA_Met->Write();
+  //  h1_W_Gen_Met->Write();
+  //}
 
   if(AnaChannel == "ElectronHighPU" )
   {
@@ -1479,13 +1496,13 @@ if(Debug)cout<<"check point 11"<<endl;
   h2_Zpt_ZLep2->Write();
 
 // MVAnoPUMETana study
-  if ("Mode==NoPUMEt")
-  {
-    h1_Z_Met->Write();
-    h1_Z_NoPU_Met->Write();
-    h1_Z_MVA_Met->Write();
-    h1_Z_Gen_Met->Write();
-  }
+  //if ("Mode==NoPUMEt")
+  //{
+  //  h1_Z_Met->Write();
+  //  h1_Z_NoPU_Met->Write();
+  //  h1_Z_MVA_Met->Write();
+  //  h1_Z_Gen_Met->Write();
+  //}
   if(Mode == "RecoilRD" || Mode == "RecoilMC")
   for( int i(0);i<u1Bin;i++)
   {
@@ -1524,6 +1541,7 @@ if(Debug)cout<<"check point 11"<<endl;
     }
   }
   Fout.close();
+  //FSRout.close();
   myFile->Write();
   gBenchmark->Show("WLepNeu");
 }

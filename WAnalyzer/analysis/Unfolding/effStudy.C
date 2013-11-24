@@ -65,7 +65,15 @@ int effStudy()
   TString resultDir = "Result"+BaseName;
   char tmpName[30];
   TString tmpTStr;
+  
+  ofstream Fout;
+  Fout.open(resultDir+"/FSRweightSyst.txt");
 
+  Fout << "FSRweight Syst"<< endl;
+  Fout << "=============================================================" << endl;
+  //Fout <<fixed<<setprecision(4);
+  Fout << "Bin" << "\t" << "Systematics" << endl;
+  
   //ofstream of_Post_WpT_PostFid;
 
   TFile *f_Acc[4];
@@ -85,6 +93,7 @@ int effStudy()
 
   // Unfolding to Post
   TH1D *h1_Truth_Post_EffCorr[4];
+  TH1D *h1_Truth_Post_EffCorr_weightFSR[4];
 
   // Acceptance
   TH1D*	h1_Born_AP[4];
@@ -94,8 +103,10 @@ int effStudy()
 
   TH1D*	h1_Post_PostFid[4];
   TH1D*	h1_Post_BothFid[4];
+  TH1D*	h1_Post_BothFid_weightFSR[4];
 
   TH1D* h1_Post_BothOvTruth[4];
+  TH1D* h1_Post_BothOvTruth_weightFSR[4];
   TH1D* h1_Post_PostOvBoth[4];
   TH1D* h1_Born_BothOvBorn[4];
 
@@ -113,8 +124,12 @@ int effStudy()
   {
     // Get the Histograms from files
     sprintf(tmpName,"h1_Truth_Post_EffCorr");
-    h1_Truth_Post_EffCorr[i]	= (TH1D*)f_Rec[i]->Get(tmpName)->Clone(tmpName);
-    h1_Truth_Post_EffCorr[i]->Sumw2();
+    h1_Truth_Post_EffCorr[i] = (TH1D*)f_Rec[i]->Get(tmpName)->Clone(tmpName);
+    h1_Truth_Post_EffCorr[i] -> Sumw2();
+
+    sprintf(tmpName,"h1_Truth_Post_EffCorr_weightFSR");
+    h1_Truth_Post_EffCorr_weightFSR[i] = (TH1D*)f_Rec[i]->Get(tmpName)->Clone(tmpName);
+    h1_Truth_Post_EffCorr_weightFSR[i] -> Sumw2();
 
     sprintf(tmpName,"h1_Born_AP");
     h1_Born_AP[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
@@ -123,6 +138,7 @@ int effStudy()
     sprintf(tmpName,"h1_Born_BornFid");
     h1_Born_BornFid[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
     h1_Born_BornFid[i]->Sumw2();
+    
     sprintf(tmpName,"h1_Born_BothFid");
     h1_Born_BothFid[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
     h1_Born_BothFid[i]->Sumw2();
@@ -130,16 +146,25 @@ int effStudy()
     sprintf(tmpName,"h1_Post_PostFid");
     h1_Post_PostFid[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
     h1_Post_PostFid[i]->Sumw2();
+    
     sprintf(tmpName,"h1_Post_BothFid");
     h1_Post_BothFid[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
     h1_Post_BothFid[i]->Sumw2();
   
+    sprintf(tmpName,"h1_Post_BothFid_weightFSR");
+    h1_Post_BothFid_weightFSR[i] = (TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
+    h1_Post_BothFid_weightFSR[i]->Sumw2();
+  
     // Ratio calculation
-
     sprintf(tmpName,"h1_Post_BothOvTruth_%d",i);
     h1_Post_BothOvTruth[i] = (TH1D*)h1_Post_BothFid[i]->Clone(tmpName);
     h1_Post_BothOvTruth[i]->Sumw2();
     h1_Post_BothOvTruth[i]->Divide(h1_Truth_Post_EffCorr[i]);
+    
+    sprintf(tmpName,"h1_Post_BothOvTruth_weightFSR_%d",i);
+    h1_Post_BothOvTruth_weightFSR[i] = (TH1D*)h1_Post_BothFid_weightFSR[i]->Clone(tmpName);
+    h1_Post_BothOvTruth_weightFSR[i]->Sumw2();
+    h1_Post_BothOvTruth_weightFSR[i]->Divide(h1_Truth_Post_EffCorr_weightFSR[i]);
     
     sprintf(tmpName,"h1_Post_PostOvBoth_%d",i);
     h1_Post_PostOvBoth[i] = (TH1D*)h1_Post_PostFid[i]->Clone(tmpName);
@@ -154,23 +179,97 @@ int effStudy()
     switch (i){
       case 0:
 	h1_Post_BothOvTruth[0]->Write("h1_WpMu_BothOvTruth");
+	h1_Post_BothOvTruth[0]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpMu_BothOvTruth.png");
+
+	h1_Post_BothOvTruth_weightFSR[0]->Write("h1_WpMu_BothOvTruth_weightFSR");
+	h1_Post_BothOvTruth_weightFSR[0]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpMu_BothOvTruth_weightFSR.png");
+
 	h1_Post_PostOvBoth[0] ->Write("h1_WpMu_PostOvBoth");
+	h1_Post_PostOvBoth[0]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpMu_PostOvBoth.png");
+
 	h1_Born_BothOvBorn[0] ->Write("h1_WpMu_BothOvBorn");
+	h1_Born_BothOvBorn[0] ->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpMu_BothOvBorn.png");
+
+	Fout << "============================ WpToMuNu =================================" << endl;
+	for( int ipt(1);ipt<=h1_Post_BothOvTruth[0]->GetNbinsX(); ipt++)
+	{
+	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[0]->GetBinContent(ipt) - h1_Post_BothOvTruth[0]->GetBinContent(ipt))/h1_Post_BothOvTruth[0]->GetBinContent(ipt)<<endl;
+	}
+
 	break;
       case 1:
 	h1_Post_BothOvTruth[1]->Write("h1_WmMu_BothOvTruth");
+	h1_Post_BothOvTruth[1]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmMu_BothOvTruth.png");
+
+	h1_Post_BothOvTruth_weightFSR[1]->Write("h1_WmMu_BothOvTruth_weightFSR");
+	h1_Post_BothOvTruth_weightFSR[1]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmMu_BothOvTruth_weightFSR.png");
+
 	h1_Post_PostOvBoth[1] ->Write("h1_WmMu_PostOvBoth");
+	h1_Post_PostOvBoth[1]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmMu_PostOvBoth.png");
+
 	h1_Born_BothOvBorn[1] ->Write("h1_WmMu_BothOvBorn");
+	h1_Born_BothOvBorn[1] ->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmMu_BothOvBorn.png");
+	
+	Fout << "============================ WmToMuNu =================================" << endl;
+	for( int ipt(1);ipt<=h1_Post_BothOvTruth[1]->GetNbinsX(); ipt++)
+	{
+	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[1]->GetBinContent(ipt) - h1_Post_BothOvTruth[1]->GetBinContent(ipt))/h1_Post_BothOvTruth[1]->GetBinContent(ipt)<<endl;
+	}
+
 	break;
       case 2:
 	h1_Post_BothOvTruth[2]->Write("h1_WpEl_BothOvTruth");
+	h1_Post_BothOvTruth[2]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpEl_BothOvTruth.png");
+
+	h1_Post_BothOvTruth_weightFSR[2]->Write("h1_WpEl_BothOvTruth_weightFSR");
+	h1_Post_BothOvTruth_weightFSR[2]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpEl_BothOvTruth_weightFSR.png");
+
 	h1_Post_PostOvBoth[2] ->Write("h1_WpEl_PostOvBoth");
+	h1_Post_PostOvBoth[2]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpEl_PostOvBoth.png");
+
 	h1_Born_BothOvBorn[2] ->Write("h1_WpEl_BothOvBorn");
+	h1_Born_BothOvBorn[2] ->Draw();
+	myCan->SaveAs(resultDir+"/h1_WpEl_BothOvBorn.png");
+	
+	Fout << "============================ WpToEleNu =================================" << endl;
+	for( int ipt(1);ipt<=h1_Post_BothOvTruth[2]->GetNbinsX(); ipt++)
+	{
+	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[2]->GetBinContent(ipt) - h1_Post_BothOvTruth[2]->GetBinContent(ipt))/h1_Post_BothOvTruth[2]->GetBinContent(ipt)<<endl;
+	}
 	break;
       case 3:
 	h1_Post_BothOvTruth[3]->Write("h1_WmEl_BothOvTruth");
+	h1_Post_BothOvTruth[3]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmEl_BothOvTruth.png");
+
+	h1_Post_BothOvTruth_weightFSR[3]->Write("h1_WmEl_BothOvTruth_weightFSR");
+	h1_Post_BothOvTruth_weightFSR[3]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmEl_BothOvTruth_weightFSR.png");
+
 	h1_Post_PostOvBoth[3] ->Write("h1_WmEl_PostOvBoth");
+	h1_Post_PostOvBoth[3]->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmEl_PostOvBoth.png");
+
 	h1_Born_BothOvBorn[3] ->Write("h1_WmEl_BothOvBorn");
+	h1_Born_BothOvBorn[3] ->Draw();
+	myCan->SaveAs(resultDir+"/h1_WmEl_BothOvBorn.png");
+	
+	Fout << "============================ WmToEleMuNu =================================" << endl;
+	for( int ipt(1);ipt<=h1_Post_BothOvTruth[3]->GetNbinsX(); ipt++)
+	{
+	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[3]->GetBinContent(ipt) - h1_Post_BothOvTruth[3]->GetBinContent(ipt))/h1_Post_BothOvTruth[3]->GetBinContent(ipt)<<endl;
+	}
 	break;
       default:
 	cout<<"Error: which case huh?"<<endl;

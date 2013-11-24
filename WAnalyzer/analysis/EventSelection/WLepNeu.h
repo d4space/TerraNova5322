@@ -86,6 +86,7 @@ public :
    vector<double>  *vtx_z;
    vector<double>  *vtx_Rho;
    Double_t        weightFSR;
+
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_version;
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1prescale;
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1fired;
@@ -109,10 +110,10 @@ public :
    vector<double>  *Z_Lept1_phIso04;
    vector<double>  *Z_Lept1_pcIso03;
    vector<double>  *Z_Lept1_pcIso04;
-   vector<double>  *Z_Lept1_relIsoCom03;
-   vector<double>  *Z_Lept1_relIsoCom04;
-   vector<double>  *Z_Lept1_relIsoBeta03;
-   vector<double>  *Z_Lept1_relIsoBeta04;
+   //vector<double>  *Z_Lept1_relIsoCom03;
+   //vector<double>  *Z_Lept1_relIsoCom04;
+   //vector<double>  *Z_Lept1_relIsoBeta03;
+   //vector<double>  *Z_Lept1_relIsoBeta04;
    vector<double>  *Z_Lept1_relIsoRho03;
    vector<double>  *Z_Lept1_RelisolPtTrks03;
    vector<double>  *Z_Lept1_RelisoEm03;
@@ -125,18 +126,18 @@ public :
    vector<double>  *Z_Lept2_phIso04;
    vector<double>  *Z_Lept2_pcIso03;
    vector<double>  *Z_Lept2_pcIso04;
-   vector<double>  *Z_Lept2_relIsoCom03;
-   vector<double>  *Z_Lept2_relIsoCom04;
-   vector<double>  *Z_Lept2_relIsoBeta03;
-   vector<double>  *Z_Lept2_relIsoBeta04;
+   //vector<double>  *Z_Lept2_relIsoCom03;
+   //vector<double>  *Z_Lept2_relIsoCom04;
+   //vector<double>  *Z_Lept2_relIsoBeta03;
+   //vector<double>  *Z_Lept2_relIsoBeta04;
    vector<double>  *Z_Lept2_relIsoRho03;
    vector<double>  *Z_Lept2_RelisolPtTrks03;
    vector<double>  *Z_Lept2_RelisoEm03;
    vector<double>  *Z_Lept2_RelisoHad03;
    vector<bool>    *Z_Lept1_isGlobal;
    vector<bool>    *Z_Lept1_isTrker;
-   vector<double>  *Z_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept1_decModFind;
+   //vector<double>  *Z_Lept1_MedComIsoDelBetCorr3Hits;
+   //vector<double>  *Z_Lept1_decModFind;
    vector<double>  *Z_Lept1_pt;
    vector<double>  *Z_Lept1_et;
    vector<double>  *Z_Lept1_charge;
@@ -150,8 +151,8 @@ public :
    vector<double>  *Z_Lept1_dB;
    vector<bool>    *Z_Lept2_isGlobal;
    vector<bool>    *Z_Lept2_isTrker;
-   vector<double>  *Z_Lept2_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept2_decModFind;
+   //vector<double>  *Z_Lept2_MedComIsoDelBetCorr3Hits;
+   //vector<double>  *Z_Lept2_decModFind;
    vector<double>  *Z_Lept2_pt;
    vector<double>  *Z_Lept2_et;
    vector<double>  *Z_Lept2_charge;
@@ -189,10 +190,10 @@ public :
    vector<double>  *Z_Lept1_AEff03;
    vector<bool>    *Z_Lept1_hasConversion;
    vector<int>     *Z_Lept1_mHits;
-   vector<double>  *Z_Lept1_SCcharge;
-   vector<double>  *Z_Lept1_TKcharge;
-   vector<double>  *Z_Lept1_GSFcharge;
-   vector<double>  *Z_Lept1_GsfCtfScPixchargeConsistentcheck;
+   //vector<double>  *Z_Lept1_SCcharge;
+   //vector<double>  *Z_Lept1_TKcharge;
+   //vector<double>  *Z_Lept1_GSFcharge;
+   //vector<double>  *Z_Lept1_GsfCtfScPixchargeConsistentcheck;
    vector<double>  *Z_Lept2_etaSC;
    vector<double>  *Z_Lept2_phiSC;
    vector<double>  *Z_Lept2_dEtaIn;
@@ -207,10 +208,10 @@ public :
    vector<double>  *Z_Lept2_AEff03;
    vector<bool>    *Z_Lept2_hasConversion;
    vector<int>     *Z_Lept2_mHits;
-   vector<double>  *Z_Lept2_SCcharge;
-   vector<double>  *Z_Lept2_TKcharge;
-   vector<double>  *Z_Lept2_GSFcharge;
-   vector<double>  *Z_Lept2_GsfCtfScPixchargeConsistentcheck;
+   //vector<double>  *Z_Lept2_SCcharge;
+   //vector<double>  *Z_Lept2_TKcharge;
+   //vector<double>  *Z_Lept2_GSFcharge;
+   //vector<double>  *Z_Lept2_GsfCtfScPixchargeConsistentcheck;
    vector<int>     *Z_Lept1_genIdxMatch;
    vector<double>  *Z_Lept1_genDeltaR;
    vector<double>  *Z_Lept1_genDPtRel;
@@ -229,14 +230,14 @@ public :
    vector<double>  *Z_Neut_phi;
    vector<double>  *Z_Neut_px;
    vector<double>  *Z_Neut_py;
-   vector<double>  *Z_NoPU_Neut_pt;
-   vector<double>  *Z_NoPU_Neut_phi;
-   vector<double>  *Z_NoPU_Neut_px;
-   vector<double>  *Z_NoPU_Neut_py;
-   vector<double>  *Z_MVA_Neut_pt;
-   vector<double>  *Z_MVA_Neut_phi;
-   vector<double>  *Z_MVA_Neut_px;
-   vector<double>  *Z_MVA_Neut_py;
+   //vector<double>  *Z_NoPU_Neut_pt;
+   //vector<double>  *Z_NoPU_Neut_phi;
+   //vector<double>  *Z_NoPU_Neut_px;
+   //vector<double>  *Z_NoPU_Neut_py;
+   //vector<double>  *Z_MVA_Neut_pt;
+   //vector<double>  *Z_MVA_Neut_phi;
+   //vector<double>  *Z_MVA_Neut_px;
+   //vector<double>  *Z_MVA_Neut_py;
    vector<double>  *Z_Sign;
    vector<double>  *W_Lept1_chIso03;
    vector<double>  *W_Lept1_chIso04;
@@ -246,18 +247,18 @@ public :
    vector<double>  *W_Lept1_phIso04;
    vector<double>  *W_Lept1_pcIso03;
    vector<double>  *W_Lept1_pcIso04;
-   vector<double>  *W_Lept1_relIsoCom03;
-   vector<double>  *W_Lept1_relIsoCom04;
-   vector<double>  *W_Lept1_relIsoBeta03;
-   vector<double>  *W_Lept1_relIsoBeta04;
+   //vector<double>  *W_Lept1_relIsoCom03;
+   //vector<double>  *W_Lept1_relIsoCom04;
+   //vector<double>  *W_Lept1_relIsoBeta03;
+   //vector<double>  *W_Lept1_relIsoBeta04;
    vector<double>  *W_Lept1_relIsoRho03;
    vector<double>  *W_Lept1_RelisolPtTrks03;
    vector<double>  *W_Lept1_RelisoEm03;
    vector<double>  *W_Lept1_RelisoHad03;
    vector<bool>    *W_Lept1_isGlobal;
    vector<bool>    *W_Lept1_isTrker;
-   vector<double>  *W_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *W_Lept1_decModFind;
+   //vector<double>  *W_Lept1_MedComIsoDelBetCorr3Hits;
+   //vector<double>  *W_Lept1_decModFind;
    vector<double>  *W_Lept1_pt;
    vector<double>  *W_Lept1_et;
    vector<double>  *W_Lept1_charge;
@@ -289,10 +290,10 @@ public :
    vector<double>  *W_Lept1_AEff03;
    vector<bool>    *W_Lept1_hasConversion;
    vector<int>     *W_Lept1_mHits;
-   vector<double>  *W_Lept1_SCcharge;
-   vector<double>  *W_Lept1_TKcharge;
-   vector<double>  *W_Lept1_GSFcharge;
-   vector<double>  *W_Lept1_GsfCtfScPixchargeConsistentcheck;
+   //vector<double>  *W_Lept1_SCcharge;
+   //vector<double>  *W_Lept1_TKcharge;
+   //vector<double>  *W_Lept1_GSFcharge;
+   //vector<double>  *W_Lept1_GsfCtfScPixchargeConsistentcheck;
    vector<int>     *W_Lept1_genIdxMatch;
    vector<double>  *W_Lept1_genDeltaR;
    vector<double>  *W_Lept1_genDPtRel;
@@ -301,14 +302,14 @@ public :
    vector<double>  *W_Neut_phi;
    vector<double>  *W_Neut_px;
    vector<double>  *W_Neut_py;
-   vector<double>  *W_NoPU_Neut_pt;
-   vector<double>  *W_NoPU_Neut_phi;
-   vector<double>  *W_NoPU_Neut_px;
-   vector<double>  *W_NoPU_Neut_py;
-   vector<double>  *W_MVA_Neut_pt;
-   vector<double>  *W_MVA_Neut_phi;
-   vector<double>  *W_MVA_Neut_px;
-   vector<double>  *W_MVA_Neut_py;
+   //vector<double>  *W_NoPU_Neut_pt;
+   //vector<double>  *W_NoPU_Neut_phi;
+   //vector<double>  *W_NoPU_Neut_px;
+   //vector<double>  *W_NoPU_Neut_py;
+   //vector<double>  *W_MVA_Neut_pt;
+   //vector<double>  *W_MVA_Neut_phi;
+   //vector<double>  *W_MVA_Neut_px;
+   //vector<double>  *W_MVA_Neut_py;
    vector<double>  *W_pt;
    vector<double>  *W_eta;
    vector<double>  *W_phi;
@@ -433,10 +434,10 @@ public :
    TBranch        *b_Z_Lept1_phIso04;   //!
    TBranch        *b_Z_Lept1_pcIso03;   //!
    TBranch        *b_Z_Lept1_pcIso04;   //!
-   TBranch        *b_Z_Lept1_relIsoCom03;   //!
-   TBranch        *b_Z_Lept1_relIsoCom04;   //!
-   TBranch        *b_Z_Lept1_relIsoBeta03;   //!
-   TBranch        *b_Z_Lept1_relIsoBeta04;   //!
+   //TBranch        *b_Z_Lept1_relIsoCom03;   //!
+   //TBranch        *b_Z_Lept1_relIsoCom04;   //!
+   //TBranch        *b_Z_Lept1_relIsoBeta03;   //!
+   //TBranch        *b_Z_Lept1_relIsoBeta04;   //!
    TBranch        *b_Z_Lept1_relIsoRho03;   //!
    TBranch        *b_Z_Lept1_RelisolPtTrks03;   //!
    TBranch        *b_Z_Lept1_RelisoEm03;   //!
@@ -449,18 +450,18 @@ public :
    TBranch        *b_Z_Lept2_phIso04;   //!
    TBranch        *b_Z_Lept2_pcIso03;   //!
    TBranch        *b_Z_Lept2_pcIso04;   //!
-   TBranch        *b_Z_Lept2_relIsoCom03;   //!
-   TBranch        *b_Z_Lept2_relIsoCom04;   //!
-   TBranch        *b_Z_Lept2_relIsoBeta03;   //!
-   TBranch        *b_Z_Lept2_relIsoBeta04;   //!
+   //TBranch        *b_Z_Lept2_relIsoCom03;   //!
+   //TBranch        *b_Z_Lept2_relIsoCom04;   //!
+   //TBranch        *b_Z_Lept2_relIsoBeta03;   //!
+   //TBranch        *b_Z_Lept2_relIsoBeta04;   //!
    TBranch        *b_Z_Lept2_relIsoRho03;   //!
    TBranch        *b_Z_Lept2_RelisolPtTrks03;   //!
    TBranch        *b_Z_Lept2_RelisoEm03;   //!
    TBranch        *b_Z_Lept2_RelisoHad03;   //!
    TBranch        *b_Z_Lept1_isGlobal;   //!
    TBranch        *b_Z_Lept1_isTrker;   //!
-   TBranch        *b_Z_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept1_decModFind;   //!
+   //TBranch        *b_Z_Lept1_MedComIsoDelBetCorr3Hits;   //!
+   //TBranch        *b_Z_Lept1_decModFind;   //!
    TBranch        *b_Z_Lept1_pt;   //!
    TBranch        *b_Z_Lept1_et;   //!
    TBranch        *b_Z_Lept1_charge;   //!
@@ -474,8 +475,8 @@ public :
    TBranch        *b_Z_Lept1_dB;   //!
    TBranch        *b_Z_Lept2_isGlobal;   //!
    TBranch        *b_Z_Lept2_isTrker;   //!
-   TBranch        *b_Z_Lept2_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept2_decModFind;   //!
+   //TBranch        *b_Z_Lept2_MedComIsoDelBetCorr3Hits;   //!
+   //TBranch        *b_Z_Lept2_decModFind;   //!
    TBranch        *b_Z_Lept2_pt;   //!
    TBranch        *b_Z_Lept2_et;   //!
    TBranch        *b_Z_Lept2_charge;   //!
@@ -513,10 +514,10 @@ public :
    TBranch        *b_Z_Lept1_AEff03;   //!
    TBranch        *b_Z_Lept1_hasConversion;   //!
    TBranch        *b_Z_Lept1_mHits;   //!
-   TBranch        *b_Z_Lept1_SCcharge;   //!
-   TBranch        *b_Z_Lept1_TKcharge;   //!
-   TBranch        *b_Z_Lept1_GSFcharge;   //!
-   TBranch        *b_Z_Lept1_GsfCtfScPixchargeConsistentcheck;   //!
+   //TBranch        *b_Z_Lept1_SCcharge;   //!
+   //TBranch        *b_Z_Lept1_TKcharge;   //!
+   //TBranch        *b_Z_Lept1_GSFcharge;   //!
+   //TBranch        *b_Z_Lept1_GsfCtfScPixchargeConsistentcheck;   //!
    TBranch        *b_Z_Lept2_etaSC;   //!
    TBranch        *b_Z_Lept2_phiSC;   //!
    TBranch        *b_Z_Lept2_dEtaIn;   //!
@@ -531,10 +532,10 @@ public :
    TBranch        *b_Z_Lept2_AEff03;   //!
    TBranch        *b_Z_Lept2_hasConversion;   //!
    TBranch        *b_Z_Lept2_mHits;   //!
-   TBranch        *b_Z_Lept2_SCcharge;   //!
-   TBranch        *b_Z_Lept2_TKcharge;   //!
-   TBranch        *b_Z_Lept2_GSFcharge;   //!
-   TBranch        *b_Z_Lept2_GsfCtfScPixchargeConsistentcheck;   //!
+   //TBranch        *b_Z_Lept2_SCcharge;   //!
+   //TBranch        *b_Z_Lept2_TKcharge;   //!
+   //TBranch        *b_Z_Lept2_GSFcharge;   //!
+   //TBranch        *b_Z_Lept2_GsfCtfScPixchargeConsistentcheck;   //!
    TBranch        *b_Z_Lept1_genIdxMatch;   //!
    TBranch        *b_Z_Lept1_genDeltaR;   //!
    TBranch        *b_Z_Lept1_genDPtRel;   //!
@@ -553,14 +554,14 @@ public :
    TBranch        *b_Z_Neut_phi;   //!
    TBranch        *b_Z_Neut_px;   //!
    TBranch        *b_Z_Neut_py;   //!
-   TBranch        *b_Z_NoPU_Neut_pt;   //!
-   TBranch        *b_Z_NoPU_Neut_phi;   //!
-   TBranch        *b_Z_NoPU_Neut_px;   //!
-   TBranch        *b_Z_NoPU_Neut_py;   //!
-   TBranch        *b_Z_MVA_Neut_pt;   //!
-   TBranch        *b_Z_MVA_Neut_phi;   //!
-   TBranch        *b_Z_MVA_Neut_px;   //!
-   TBranch        *b_Z_MVA_Neut_py;   //!
+   //TBranch        *b_Z_NoPU_Neut_pt;   //!
+   //TBranch        *b_Z_NoPU_Neut_phi;   //!
+   //TBranch        *b_Z_NoPU_Neut_px;   //!
+   //TBranch        *b_Z_NoPU_Neut_py;   //!
+   //TBranch        *b_Z_MVA_Neut_pt;   //!
+   //TBranch        *b_Z_MVA_Neut_phi;   //!
+   //TBranch        *b_Z_MVA_Neut_px;   //!
+   //TBranch        *b_Z_MVA_Neut_py;   //!
    TBranch        *b_Z_Sign;   //!
    TBranch        *b_W_Lept1_chIso03;   //!
    TBranch        *b_W_Lept1_chIso04;   //!
@@ -570,18 +571,18 @@ public :
    TBranch        *b_W_Lept1_phIso04;   //!
    TBranch        *b_W_Lept1_pcIso03;   //!
    TBranch        *b_W_Lept1_pcIso04;   //!
-   TBranch        *b_W_Lept1_relIsoCom03;   //!
-   TBranch        *b_W_Lept1_relIsoCom04;   //!
-   TBranch        *b_W_Lept1_relIsoBeta03;   //!
-   TBranch        *b_W_Lept1_relIsoBeta04;   //!
+   //TBranch        *b_W_Lept1_relIsoCom03;   //!
+   //TBranch        *b_W_Lept1_relIsoCom04;   //!
+   //TBranch        *b_W_Lept1_relIsoBeta03;   //!
+   //TBranch        *b_W_Lept1_relIsoBeta04;   //!
    TBranch        *b_W_Lept1_relIsoRho03;   //!
    TBranch        *b_W_Lept1_RelisolPtTrks03;   //!
    TBranch        *b_W_Lept1_RelisoEm03;   //!
    TBranch        *b_W_Lept1_RelisoHad03;   //!
    TBranch        *b_W_Lept1_isGlobal;   //!
    TBranch        *b_W_Lept1_isTrker;   //!
-   TBranch        *b_W_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_W_Lept1_decModFind;   //!
+   //TBranch        *b_W_Lept1_MedComIsoDelBetCorr3Hits;   //!
+   //TBranch        *b_W_Lept1_decModFind;   //!
    TBranch        *b_W_Lept1_pt;   //!
    TBranch        *b_W_Lept1_et;   //!
    TBranch        *b_W_Lept1_charge;   //!
@@ -613,10 +614,10 @@ public :
    TBranch        *b_W_Lept1_AEff03;   //!
    TBranch        *b_W_Lept1_hasConversion;   //!
    TBranch        *b_W_Lept1_mHits;   //!
-   TBranch        *b_W_Lept1_SCcharge;   //!
-   TBranch        *b_W_Lept1_TKcharge;   //!
-   TBranch        *b_W_Lept1_GSFcharge;   //!
-   TBranch        *b_W_Lept1_GsfCtfScPixchargeConsistentcheck;   //!
+   //TBranch        *b_W_Lept1_SCcharge;   //!
+   //TBranch        *b_W_Lept1_TKcharge;   //!
+   //TBranch        *b_W_Lept1_GSFcharge;   //!
+   //TBranch        *b_W_Lept1_GsfCtfScPixchargeConsistentcheck;   //!
    TBranch        *b_W_Lept1_genIdxMatch;   //!
    TBranch        *b_W_Lept1_genDeltaR;   //!
    TBranch        *b_W_Lept1_genDPtRel;   //!
@@ -625,14 +626,14 @@ public :
    TBranch        *b_W_Neut_phi;   //!
    TBranch        *b_W_Neut_px;   //!
    TBranch        *b_W_Neut_py;   //!
-   TBranch        *b_W_NoPU_Neut_pt;   //!
-   TBranch        *b_W_NoPU_Neut_phi;   //!
-   TBranch        *b_W_NoPU_Neut_px;   //!
-   TBranch        *b_W_NoPU_Neut_py;   //!
-   TBranch        *b_W_MVA_Neut_pt;   //!
-   TBranch        *b_W_MVA_Neut_phi;   //!
-   TBranch        *b_W_MVA_Neut_px;   //!
-   TBranch        *b_W_MVA_Neut_py;   //!
+   //TBranch        *b_W_NoPU_Neut_pt;   //!
+   //TBranch        *b_W_NoPU_Neut_phi;   //!
+   //TBranch        *b_W_NoPU_Neut_px;   //!
+   //TBranch        *b_W_NoPU_Neut_py;   //!
+   //TBranch        *b_W_MVA_Neut_pt;   //!
+   //TBranch        *b_W_MVA_Neut_phi;   //!
+   //TBranch        *b_W_MVA_Neut_px;   //!
+   //TBranch        *b_W_MVA_Neut_py;   //!
    TBranch        *b_W_pt;   //!
    TBranch        *b_W_eta;   //!
    TBranch        *b_W_phi;   //!
@@ -792,6 +793,7 @@ public :
    TH1D*	h1_Post_PostFid;
    TH1D*	h1_Post_PostFid_Even;
    TH1D*	h1_Post_BothFid;
+   TH1D*	h1_Post_BothFid_weightFSR;
    TH1D*	h1_Post_BothFid_Even;
 
    TH2D*	h2_PostBorn_BothFid;
@@ -805,6 +807,7 @@ public :
    TH1D*	h1_Truth_Post_Even;
    TH1D*	h1_Truth_Post_Odd;
    TH1D*	h1_Truth_Post_EffCorr;
+   TH1D*	h1_Truth_Post_EffCorr_weightFSR;
    TH2D*	h2_Truth_Rec_AP_Post;
 
    TH1D*	h1_W_pt_RecoPreFsrGenRes[NWptBinPlus];
@@ -1065,10 +1068,10 @@ void WLepNeu::Init(TTree *tree)
    Z_Lept1_phIso04 = 0;
    Z_Lept1_pcIso03 = 0;
    Z_Lept1_pcIso04 = 0;
-   Z_Lept1_relIsoCom03 = 0;
-   Z_Lept1_relIsoCom04 = 0;
-   Z_Lept1_relIsoBeta03 = 0;
-   Z_Lept1_relIsoBeta04 = 0;
+   //Z_Lept1_relIsoCom03 = 0;
+   //Z_Lept1_relIsoCom04 = 0;
+   //Z_Lept1_relIsoBeta03 = 0;
+   //Z_Lept1_relIsoBeta04 = 0;
    Z_Lept1_relIsoRho03 = 0;
    Z_Lept1_RelisolPtTrks03 = 0;
    Z_Lept1_RelisoEm03 = 0;
@@ -1081,18 +1084,18 @@ void WLepNeu::Init(TTree *tree)
    Z_Lept2_phIso04 = 0;
    Z_Lept2_pcIso03 = 0;
    Z_Lept2_pcIso04 = 0;
-   Z_Lept2_relIsoCom03 = 0;
-   Z_Lept2_relIsoCom04 = 0;
-   Z_Lept2_relIsoBeta03 = 0;
-   Z_Lept2_relIsoBeta04 = 0;
+   //Z_Lept2_relIsoCom03 = 0;
+   //Z_Lept2_relIsoCom04 = 0;
+   //Z_Lept2_relIsoBeta03 = 0;
+   //Z_Lept2_relIsoBeta04 = 0;
    Z_Lept2_relIsoRho03 = 0;
    Z_Lept2_RelisolPtTrks03 = 0;
    Z_Lept2_RelisoEm03 = 0;
    Z_Lept2_RelisoHad03 = 0;
    Z_Lept1_isGlobal = 0;
    Z_Lept1_isTrker = 0;
-   Z_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept1_decModFind = 0;
+   //Z_Lept1_MedComIsoDelBetCorr3Hits = 0;
+   //Z_Lept1_decModFind = 0;
    Z_Lept1_pt = 0;
    Z_Lept1_et = 0;
    Z_Lept1_charge = 0;
@@ -1106,8 +1109,8 @@ void WLepNeu::Init(TTree *tree)
    Z_Lept1_dB = 0;
    Z_Lept2_isGlobal = 0;
    Z_Lept2_isTrker = 0;
-   Z_Lept2_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept2_decModFind = 0;
+   //Z_Lept2_MedComIsoDelBetCorr3Hits = 0;
+   //Z_Lept2_decModFind = 0;
    Z_Lept2_pt = 0;
    Z_Lept2_et = 0;
    Z_Lept2_charge = 0;
@@ -1145,10 +1148,10 @@ void WLepNeu::Init(TTree *tree)
    Z_Lept1_AEff03 = 0;
    Z_Lept1_hasConversion = 0;
    Z_Lept1_mHits = 0;
-   Z_Lept1_SCcharge = 0;
-   Z_Lept1_TKcharge = 0;
-   Z_Lept1_GSFcharge = 0;
-   Z_Lept1_GsfCtfScPixchargeConsistentcheck = 0;
+   //Z_Lept1_SCcharge = 0;
+   //Z_Lept1_TKcharge = 0;
+   //Z_Lept1_GSFcharge = 0;
+   //Z_Lept1_GsfCtfScPixchargeConsistentcheck = 0;
    Z_Lept2_etaSC = 0;
    Z_Lept2_phiSC = 0;
    Z_Lept2_dEtaIn = 0;
@@ -1163,10 +1166,10 @@ void WLepNeu::Init(TTree *tree)
    Z_Lept2_AEff03 = 0;
    Z_Lept2_hasConversion = 0;
    Z_Lept2_mHits = 0;
-   Z_Lept2_SCcharge = 0;
-   Z_Lept2_TKcharge = 0;
-   Z_Lept2_GSFcharge = 0;
-   Z_Lept2_GsfCtfScPixchargeConsistentcheck = 0;
+   //Z_Lept2_SCcharge = 0;
+   //Z_Lept2_TKcharge = 0;
+   //Z_Lept2_GSFcharge = 0;
+   //Z_Lept2_GsfCtfScPixchargeConsistentcheck = 0;
    Z_Lept1_genIdxMatch = 0;
    Z_Lept1_genDeltaR = 0;
    Z_Lept1_genDPtRel = 0;
@@ -1185,14 +1188,14 @@ void WLepNeu::Init(TTree *tree)
    Z_Neut_phi = 0;
    Z_Neut_px = 0;
    Z_Neut_py = 0;
-   Z_NoPU_Neut_pt = 0;
-   Z_NoPU_Neut_phi = 0;
-   Z_NoPU_Neut_px = 0;
-   Z_NoPU_Neut_py = 0;
-   Z_MVA_Neut_pt = 0;
-   Z_MVA_Neut_phi = 0;
-   Z_MVA_Neut_px = 0;
-   Z_MVA_Neut_py = 0;
+   //Z_NoPU_Neut_pt = 0;
+   //Z_NoPU_Neut_phi = 0;
+   //Z_NoPU_Neut_px = 0;
+   //Z_NoPU_Neut_py = 0;
+   //Z_MVA_Neut_pt = 0;
+   //Z_MVA_Neut_phi = 0;
+   //Z_MVA_Neut_px = 0;
+   //Z_MVA_Neut_py = 0;
    Z_Sign = 0;
    W_Lept1_chIso03 = 0;
    W_Lept1_chIso04 = 0;
@@ -1202,18 +1205,18 @@ void WLepNeu::Init(TTree *tree)
    W_Lept1_phIso04 = 0;
    W_Lept1_pcIso03 = 0;
    W_Lept1_pcIso04 = 0;
-   W_Lept1_relIsoCom03 = 0;
-   W_Lept1_relIsoCom04 = 0;
-   W_Lept1_relIsoBeta03 = 0;
-   W_Lept1_relIsoBeta04 = 0;
+   //W_Lept1_relIsoCom03 = 0;
+   //W_Lept1_relIsoCom04 = 0;
+   //W_Lept1_relIsoBeta03 = 0;
+   //W_Lept1_relIsoBeta04 = 0;
    W_Lept1_relIsoRho03 = 0;
    W_Lept1_RelisolPtTrks03 = 0;
    W_Lept1_RelisoEm03 = 0;
    W_Lept1_RelisoHad03 = 0;
    W_Lept1_isGlobal = 0;
    W_Lept1_isTrker = 0;
-   W_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   W_Lept1_decModFind = 0;
+   //W_Lept1_MedComIsoDelBetCorr3Hits = 0;
+   //W_Lept1_decModFind = 0;
    W_Lept1_pt = 0;
    W_Lept1_et = 0;
    W_Lept1_charge = 0;
@@ -1245,10 +1248,10 @@ void WLepNeu::Init(TTree *tree)
    W_Lept1_AEff03 = 0;
    W_Lept1_hasConversion = 0;
    W_Lept1_mHits = 0;
-   W_Lept1_SCcharge = 0;
-   W_Lept1_TKcharge = 0;
-   W_Lept1_GSFcharge = 0;
-   W_Lept1_GsfCtfScPixchargeConsistentcheck = 0;
+   //W_Lept1_SCcharge = 0;
+   //W_Lept1_TKcharge = 0;
+   //W_Lept1_GSFcharge = 0;
+   //W_Lept1_GsfCtfScPixchargeConsistentcheck = 0;
    W_Lept1_genIdxMatch = 0;
    W_Lept1_genDeltaR = 0;
    W_Lept1_genDPtRel = 0;
@@ -1257,14 +1260,14 @@ void WLepNeu::Init(TTree *tree)
    W_Neut_phi = 0;
    W_Neut_px = 0;
    W_Neut_py = 0;
-   W_NoPU_Neut_pt = 0;
-   W_NoPU_Neut_phi = 0;
-   W_NoPU_Neut_px = 0;
-   W_NoPU_Neut_py = 0;
-   W_MVA_Neut_pt = 0;
-   W_MVA_Neut_phi = 0;
-   W_MVA_Neut_px = 0;
-   W_MVA_Neut_py = 0;
+   //W_NoPU_Neut_pt = 0;
+   //W_NoPU_Neut_phi = 0;
+   //W_NoPU_Neut_px = 0;
+   //W_NoPU_Neut_py = 0;
+   //W_MVA_Neut_pt = 0;
+   //W_MVA_Neut_phi = 0;
+   //W_MVA_Neut_px = 0;
+   //W_MVA_Neut_py = 0;
    W_pt = 0;
    W_eta = 0;
    W_phi = 0;
@@ -1393,10 +1396,10 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_phIso04", &Z_Lept1_phIso04, &b_Z_Lept1_phIso04);
    fChain->SetBranchAddress("Z_Lept1_pcIso03", &Z_Lept1_pcIso03, &b_Z_Lept1_pcIso03);
    fChain->SetBranchAddress("Z_Lept1_pcIso04", &Z_Lept1_pcIso04, &b_Z_Lept1_pcIso04);
-   fChain->SetBranchAddress("Z_Lept1_relIsoCom03", &Z_Lept1_relIsoCom03, &b_Z_Lept1_relIsoCom03);
-   fChain->SetBranchAddress("Z_Lept1_relIsoCom04", &Z_Lept1_relIsoCom04, &b_Z_Lept1_relIsoCom04);
-   fChain->SetBranchAddress("Z_Lept1_relIsoBeta03", &Z_Lept1_relIsoBeta03, &b_Z_Lept1_relIsoBeta03);
-   fChain->SetBranchAddress("Z_Lept1_relIsoBeta04", &Z_Lept1_relIsoBeta04, &b_Z_Lept1_relIsoBeta04);
+   //fChain->SetBranchAddress("Z_Lept1_relIsoCom03", &Z_Lept1_relIsoCom03, &b_Z_Lept1_relIsoCom03);
+   //fChain->SetBranchAddress("Z_Lept1_relIsoCom04", &Z_Lept1_relIsoCom04, &b_Z_Lept1_relIsoCom04);
+   //fChain->SetBranchAddress("Z_Lept1_relIsoBeta03", &Z_Lept1_relIsoBeta03, &b_Z_Lept1_relIsoBeta03);
+   //fChain->SetBranchAddress("Z_Lept1_relIsoBeta04", &Z_Lept1_relIsoBeta04, &b_Z_Lept1_relIsoBeta04);
    fChain->SetBranchAddress("Z_Lept1_relIsoRho03", &Z_Lept1_relIsoRho03, &b_Z_Lept1_relIsoRho03);
    fChain->SetBranchAddress("Z_Lept1_RelisolPtTrks03", &Z_Lept1_RelisolPtTrks03, &b_Z_Lept1_RelisolPtTrks03);
    fChain->SetBranchAddress("Z_Lept1_RelisoEm03", &Z_Lept1_RelisoEm03, &b_Z_Lept1_RelisoEm03);
@@ -1409,18 +1412,18 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept2_phIso04", &Z_Lept2_phIso04, &b_Z_Lept2_phIso04);
    fChain->SetBranchAddress("Z_Lept2_pcIso03", &Z_Lept2_pcIso03, &b_Z_Lept2_pcIso03);
    fChain->SetBranchAddress("Z_Lept2_pcIso04", &Z_Lept2_pcIso04, &b_Z_Lept2_pcIso04);
-   fChain->SetBranchAddress("Z_Lept2_relIsoCom03", &Z_Lept2_relIsoCom03, &b_Z_Lept2_relIsoCom03);
-   fChain->SetBranchAddress("Z_Lept2_relIsoCom04", &Z_Lept2_relIsoCom04, &b_Z_Lept2_relIsoCom04);
-   fChain->SetBranchAddress("Z_Lept2_relIsoBeta03", &Z_Lept2_relIsoBeta03, &b_Z_Lept2_relIsoBeta03);
-   fChain->SetBranchAddress("Z_Lept2_relIsoBeta04", &Z_Lept2_relIsoBeta04, &b_Z_Lept2_relIsoBeta04);
+   //fChain->SetBranchAddress("Z_Lept2_relIsoCom03", &Z_Lept2_relIsoCom03, &b_Z_Lept2_relIsoCom03);
+   //fChain->SetBranchAddress("Z_Lept2_relIsoCom04", &Z_Lept2_relIsoCom04, &b_Z_Lept2_relIsoCom04);
+   //fChain->SetBranchAddress("Z_Lept2_relIsoBeta03", &Z_Lept2_relIsoBeta03, &b_Z_Lept2_relIsoBeta03);
+   //fChain->SetBranchAddress("Z_Lept2_relIsoBeta04", &Z_Lept2_relIsoBeta04, &b_Z_Lept2_relIsoBeta04);
    fChain->SetBranchAddress("Z_Lept2_relIsoRho03", &Z_Lept2_relIsoRho03, &b_Z_Lept2_relIsoRho03);
    fChain->SetBranchAddress("Z_Lept2_RelisolPtTrks03", &Z_Lept2_RelisolPtTrks03, &b_Z_Lept2_RelisolPtTrks03);
    fChain->SetBranchAddress("Z_Lept2_RelisoEm03", &Z_Lept2_RelisoEm03, &b_Z_Lept2_RelisoEm03);
    fChain->SetBranchAddress("Z_Lept2_RelisoHad03", &Z_Lept2_RelisoHad03, &b_Z_Lept2_RelisoHad03);
    fChain->SetBranchAddress("Z_Lept1_isGlobal", &Z_Lept1_isGlobal, &b_Z_Lept1_isGlobal);
    fChain->SetBranchAddress("Z_Lept1_isTrker", &Z_Lept1_isTrker, &b_Z_Lept1_isTrker);
-   fChain->SetBranchAddress("Z_Lept1_MedComIsoDelBetCorr3Hits", &Z_Lept1_MedComIsoDelBetCorr3Hits, &b_Z_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept1_decModFind", &Z_Lept1_decModFind, &b_Z_Lept1_decModFind);
+   //fChain->SetBranchAddress("Z_Lept1_MedComIsoDelBetCorr3Hits", &Z_Lept1_MedComIsoDelBetCorr3Hits, &b_Z_Lept1_MedComIsoDelBetCorr3Hits);
+   //fChain->SetBranchAddress("Z_Lept1_decModFind", &Z_Lept1_decModFind, &b_Z_Lept1_decModFind);
    fChain->SetBranchAddress("Z_Lept1_pt", &Z_Lept1_pt, &b_Z_Lept1_pt);
    fChain->SetBranchAddress("Z_Lept1_et", &Z_Lept1_et, &b_Z_Lept1_et);
    fChain->SetBranchAddress("Z_Lept1_charge", &Z_Lept1_charge, &b_Z_Lept1_charge);
@@ -1434,8 +1437,8 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_dB", &Z_Lept1_dB, &b_Z_Lept1_dB);
    fChain->SetBranchAddress("Z_Lept2_isGlobal", &Z_Lept2_isGlobal, &b_Z_Lept2_isGlobal);
    fChain->SetBranchAddress("Z_Lept2_isTrker", &Z_Lept2_isTrker, &b_Z_Lept2_isTrker);
-   fChain->SetBranchAddress("Z_Lept2_MedComIsoDelBetCorr3Hits", &Z_Lept2_MedComIsoDelBetCorr3Hits, &b_Z_Lept2_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept2_decModFind", &Z_Lept2_decModFind, &b_Z_Lept2_decModFind);
+   //fChain->SetBranchAddress("Z_Lept2_MedComIsoDelBetCorr3Hits", &Z_Lept2_MedComIsoDelBetCorr3Hits, &b_Z_Lept2_MedComIsoDelBetCorr3Hits);
+   //fChain->SetBranchAddress("Z_Lept2_decModFind", &Z_Lept2_decModFind, &b_Z_Lept2_decModFind);
    fChain->SetBranchAddress("Z_Lept2_pt", &Z_Lept2_pt, &b_Z_Lept2_pt);
    fChain->SetBranchAddress("Z_Lept2_et", &Z_Lept2_et, &b_Z_Lept2_et);
    fChain->SetBranchAddress("Z_Lept2_charge", &Z_Lept2_charge, &b_Z_Lept2_charge);
@@ -1473,10 +1476,10 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_AEff03", &Z_Lept1_AEff03, &b_Z_Lept1_AEff03);
    fChain->SetBranchAddress("Z_Lept1_hasConversion", &Z_Lept1_hasConversion, &b_Z_Lept1_hasConversion);
    fChain->SetBranchAddress("Z_Lept1_mHits", &Z_Lept1_mHits, &b_Z_Lept1_mHits);
-   fChain->SetBranchAddress("Z_Lept1_SCcharge", &Z_Lept1_SCcharge, &b_Z_Lept1_SCcharge);
-   fChain->SetBranchAddress("Z_Lept1_TKcharge", &Z_Lept1_TKcharge, &b_Z_Lept1_TKcharge);
-   fChain->SetBranchAddress("Z_Lept1_GSFcharge", &Z_Lept1_GSFcharge, &b_Z_Lept1_GSFcharge);
-   fChain->SetBranchAddress("Z_Lept1_GsfCtfScPixchargeConsistentcheck", &Z_Lept1_GsfCtfScPixchargeConsistentcheck, &b_Z_Lept1_GsfCtfScPixchargeConsistentcheck);
+   //fChain->SetBranchAddress("Z_Lept1_SCcharge", &Z_Lept1_SCcharge, &b_Z_Lept1_SCcharge);
+   //fChain->SetBranchAddress("Z_Lept1_TKcharge", &Z_Lept1_TKcharge, &b_Z_Lept1_TKcharge);
+   //fChain->SetBranchAddress("Z_Lept1_GSFcharge", &Z_Lept1_GSFcharge, &b_Z_Lept1_GSFcharge);
+   //fChain->SetBranchAddress("Z_Lept1_GsfCtfScPixchargeConsistentcheck", &Z_Lept1_GsfCtfScPixchargeConsistentcheck, &b_Z_Lept1_GsfCtfScPixchargeConsistentcheck);
    fChain->SetBranchAddress("Z_Lept2_etaSC", &Z_Lept2_etaSC, &b_Z_Lept2_etaSC);
    fChain->SetBranchAddress("Z_Lept2_phiSC", &Z_Lept2_phiSC, &b_Z_Lept2_phiSC);
    fChain->SetBranchAddress("Z_Lept2_dEtaIn", &Z_Lept2_dEtaIn, &b_Z_Lept2_dEtaIn);
@@ -1491,10 +1494,10 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept2_AEff03", &Z_Lept2_AEff03, &b_Z_Lept2_AEff03);
    fChain->SetBranchAddress("Z_Lept2_hasConversion", &Z_Lept2_hasConversion, &b_Z_Lept2_hasConversion);
    fChain->SetBranchAddress("Z_Lept2_mHits", &Z_Lept2_mHits, &b_Z_Lept2_mHits);
-   fChain->SetBranchAddress("Z_Lept2_SCcharge", &Z_Lept2_SCcharge, &b_Z_Lept2_SCcharge);
-   fChain->SetBranchAddress("Z_Lept2_TKcharge", &Z_Lept2_TKcharge, &b_Z_Lept2_TKcharge);
-   fChain->SetBranchAddress("Z_Lept2_GSFcharge", &Z_Lept2_GSFcharge, &b_Z_Lept2_GSFcharge);
-   fChain->SetBranchAddress("Z_Lept2_GsfCtfScPixchargeConsistentcheck", &Z_Lept2_GsfCtfScPixchargeConsistentcheck, &b_Z_Lept2_GsfCtfScPixchargeConsistentcheck);
+   //fChain->SetBranchAddress("Z_Lept2_SCcharge", &Z_Lept2_SCcharge, &b_Z_Lept2_SCcharge);
+   //fChain->SetBranchAddress("Z_Lept2_TKcharge", &Z_Lept2_TKcharge, &b_Z_Lept2_TKcharge);
+   //fChain->SetBranchAddress("Z_Lept2_GSFcharge", &Z_Lept2_GSFcharge, &b_Z_Lept2_GSFcharge);
+   //fChain->SetBranchAddress("Z_Lept2_GsfCtfScPixchargeConsistentcheck", &Z_Lept2_GsfCtfScPixchargeConsistentcheck, &b_Z_Lept2_GsfCtfScPixchargeConsistentcheck);
    fChain->SetBranchAddress("Z_Lept1_genIdxMatch", &Z_Lept1_genIdxMatch, &b_Z_Lept1_genIdxMatch);
    fChain->SetBranchAddress("Z_Lept1_genDeltaR", &Z_Lept1_genDeltaR, &b_Z_Lept1_genDeltaR);
    fChain->SetBranchAddress("Z_Lept1_genDPtRel", &Z_Lept1_genDPtRel, &b_Z_Lept1_genDPtRel);
@@ -1513,14 +1516,14 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Neut_phi", &Z_Neut_phi, &b_Z_Neut_phi);
    fChain->SetBranchAddress("Z_Neut_px", &Z_Neut_px, &b_Z_Neut_px);
    fChain->SetBranchAddress("Z_Neut_py", &Z_Neut_py, &b_Z_Neut_py);
-   fChain->SetBranchAddress("Z_NoPU_Neut_pt", &Z_NoPU_Neut_pt, &b_Z_NoPU_Neut_pt);
-   fChain->SetBranchAddress("Z_NoPU_Neut_phi", &Z_NoPU_Neut_phi, &b_Z_NoPU_Neut_phi);
-   fChain->SetBranchAddress("Z_NoPU_Neut_px", &Z_NoPU_Neut_px, &b_Z_NoPU_Neut_px);
-   fChain->SetBranchAddress("Z_NoPU_Neut_py", &Z_NoPU_Neut_py, &b_Z_NoPU_Neut_py);
-   fChain->SetBranchAddress("Z_MVA_Neut_pt", &Z_MVA_Neut_pt, &b_Z_MVA_Neut_pt);
-   fChain->SetBranchAddress("Z_MVA_Neut_phi", &Z_MVA_Neut_phi, &b_Z_MVA_Neut_phi);
-   fChain->SetBranchAddress("Z_MVA_Neut_px", &Z_MVA_Neut_px, &b_Z_MVA_Neut_px);
-   fChain->SetBranchAddress("Z_MVA_Neut_py", &Z_MVA_Neut_py, &b_Z_MVA_Neut_py);
+   //fChain->SetBranchAddress("Z_NoPU_Neut_pt", &Z_NoPU_Neut_pt, &b_Z_NoPU_Neut_pt);
+   //fChain->SetBranchAddress("Z_NoPU_Neut_phi", &Z_NoPU_Neut_phi, &b_Z_NoPU_Neut_phi);
+   //fChain->SetBranchAddress("Z_NoPU_Neut_px", &Z_NoPU_Neut_px, &b_Z_NoPU_Neut_px);
+   //fChain->SetBranchAddress("Z_NoPU_Neut_py", &Z_NoPU_Neut_py, &b_Z_NoPU_Neut_py);
+   //fChain->SetBranchAddress("Z_MVA_Neut_pt", &Z_MVA_Neut_pt, &b_Z_MVA_Neut_pt);
+   //fChain->SetBranchAddress("Z_MVA_Neut_phi", &Z_MVA_Neut_phi, &b_Z_MVA_Neut_phi);
+   //fChain->SetBranchAddress("Z_MVA_Neut_px", &Z_MVA_Neut_px, &b_Z_MVA_Neut_px);
+   //fChain->SetBranchAddress("Z_MVA_Neut_py", &Z_MVA_Neut_py, &b_Z_MVA_Neut_py);
    fChain->SetBranchAddress("Z_Sign", &Z_Sign, &b_Z_Sign);
    fChain->SetBranchAddress("W_Lept1_chIso03", &W_Lept1_chIso03, &b_W_Lept1_chIso03);
    fChain->SetBranchAddress("W_Lept1_chIso04", &W_Lept1_chIso04, &b_W_Lept1_chIso04);
@@ -1530,18 +1533,18 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("W_Lept1_phIso04", &W_Lept1_phIso04, &b_W_Lept1_phIso04);
    fChain->SetBranchAddress("W_Lept1_pcIso03", &W_Lept1_pcIso03, &b_W_Lept1_pcIso03);
    fChain->SetBranchAddress("W_Lept1_pcIso04", &W_Lept1_pcIso04, &b_W_Lept1_pcIso04);
-   fChain->SetBranchAddress("W_Lept1_relIsoCom03", &W_Lept1_relIsoCom03, &b_W_Lept1_relIsoCom03);
-   fChain->SetBranchAddress("W_Lept1_relIsoCom04", &W_Lept1_relIsoCom04, &b_W_Lept1_relIsoCom04);
-   fChain->SetBranchAddress("W_Lept1_relIsoBeta03", &W_Lept1_relIsoBeta03, &b_W_Lept1_relIsoBeta03);
-   fChain->SetBranchAddress("W_Lept1_relIsoBeta04", &W_Lept1_relIsoBeta04, &b_W_Lept1_relIsoBeta04);
+   //fChain->SetBranchAddress("W_Lept1_relIsoCom03", &W_Lept1_relIsoCom03, &b_W_Lept1_relIsoCom03);
+   //fChain->SetBranchAddress("W_Lept1_relIsoCom04", &W_Lept1_relIsoCom04, &b_W_Lept1_relIsoCom04);
+   //fChain->SetBranchAddress("W_Lept1_relIsoBeta03", &W_Lept1_relIsoBeta03, &b_W_Lept1_relIsoBeta03);
+   //fChain->SetBranchAddress("W_Lept1_relIsoBeta04", &W_Lept1_relIsoBeta04, &b_W_Lept1_relIsoBeta04);
    fChain->SetBranchAddress("W_Lept1_relIsoRho03", &W_Lept1_relIsoRho03, &b_W_Lept1_relIsoRho03);
    fChain->SetBranchAddress("W_Lept1_RelisolPtTrks03", &W_Lept1_RelisolPtTrks03, &b_W_Lept1_RelisolPtTrks03);
    fChain->SetBranchAddress("W_Lept1_RelisoEm03", &W_Lept1_RelisoEm03, &b_W_Lept1_RelisoEm03);
    fChain->SetBranchAddress("W_Lept1_RelisoHad03", &W_Lept1_RelisoHad03, &b_W_Lept1_RelisoHad03);
    fChain->SetBranchAddress("W_Lept1_isGlobal", &W_Lept1_isGlobal, &b_W_Lept1_isGlobal);
    fChain->SetBranchAddress("W_Lept1_isTrker", &W_Lept1_isTrker, &b_W_Lept1_isTrker);
-   fChain->SetBranchAddress("W_Lept1_MedComIsoDelBetCorr3Hits", &W_Lept1_MedComIsoDelBetCorr3Hits, &b_W_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("W_Lept1_decModFind", &W_Lept1_decModFind, &b_W_Lept1_decModFind);
+   //fChain->SetBranchAddress("W_Lept1_MedComIsoDelBetCorr3Hits", &W_Lept1_MedComIsoDelBetCorr3Hits, &b_W_Lept1_MedComIsoDelBetCorr3Hits);
+   //fChain->SetBranchAddress("W_Lept1_decModFind", &W_Lept1_decModFind, &b_W_Lept1_decModFind);
    fChain->SetBranchAddress("W_Lept1_pt", &W_Lept1_pt, &b_W_Lept1_pt);
    fChain->SetBranchAddress("W_Lept1_et", &W_Lept1_et, &b_W_Lept1_et);
    fChain->SetBranchAddress("W_Lept1_charge", &W_Lept1_charge, &b_W_Lept1_charge);
@@ -1573,10 +1576,10 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("W_Lept1_AEff03", &W_Lept1_AEff03, &b_W_Lept1_AEff03);
    fChain->SetBranchAddress("W_Lept1_hasConversion", &W_Lept1_hasConversion, &b_W_Lept1_hasConversion);
    fChain->SetBranchAddress("W_Lept1_mHits", &W_Lept1_mHits, &b_W_Lept1_mHits);
-   fChain->SetBranchAddress("W_Lept1_SCcharge", &W_Lept1_SCcharge, &b_W_Lept1_SCcharge);
-   fChain->SetBranchAddress("W_Lept1_TKcharge", &W_Lept1_TKcharge, &b_W_Lept1_TKcharge);
-   fChain->SetBranchAddress("W_Lept1_GSFcharge", &W_Lept1_GSFcharge, &b_W_Lept1_GSFcharge);
-   fChain->SetBranchAddress("W_Lept1_GsfCtfScPixchargeConsistentcheck", &W_Lept1_GsfCtfScPixchargeConsistentcheck, &b_W_Lept1_GsfCtfScPixchargeConsistentcheck);
+   //fChain->SetBranchAddress("W_Lept1_SCcharge", &W_Lept1_SCcharge, &b_W_Lept1_SCcharge);
+   //fChain->SetBranchAddress("W_Lept1_TKcharge", &W_Lept1_TKcharge, &b_W_Lept1_TKcharge);
+   //fChain->SetBranchAddress("W_Lept1_GSFcharge", &W_Lept1_GSFcharge, &b_W_Lept1_GSFcharge);
+   //fChain->SetBranchAddress("W_Lept1_GsfCtfScPixchargeConsistentcheck", &W_Lept1_GsfCtfScPixchargeConsistentcheck, &b_W_Lept1_GsfCtfScPixchargeConsistentcheck);
    fChain->SetBranchAddress("W_Lept1_genIdxMatch", &W_Lept1_genIdxMatch, &b_W_Lept1_genIdxMatch);
    fChain->SetBranchAddress("W_Lept1_genDeltaR", &W_Lept1_genDeltaR, &b_W_Lept1_genDeltaR);
    fChain->SetBranchAddress("W_Lept1_genDPtRel", &W_Lept1_genDPtRel, &b_W_Lept1_genDPtRel);
@@ -1585,14 +1588,14 @@ void WLepNeu::Init(TTree *tree)
    fChain->SetBranchAddress("W_Neut_phi", &W_Neut_phi, &b_W_Neut_phi);
    fChain->SetBranchAddress("W_Neut_px", &W_Neut_px, &b_W_Neut_px);
    fChain->SetBranchAddress("W_Neut_py", &W_Neut_py, &b_W_Neut_py);
-   fChain->SetBranchAddress("W_NoPU_Neut_pt", &W_NoPU_Neut_pt, &b_W_NoPU_Neut_pt);
-   fChain->SetBranchAddress("W_NoPU_Neut_phi", &W_NoPU_Neut_phi, &b_W_NoPU_Neut_phi);
-   fChain->SetBranchAddress("W_NoPU_Neut_px", &W_NoPU_Neut_px, &b_W_NoPU_Neut_px);
-   fChain->SetBranchAddress("W_NoPU_Neut_py", &W_NoPU_Neut_py, &b_W_NoPU_Neut_py);
-   fChain->SetBranchAddress("W_MVA_Neut_pt", &W_MVA_Neut_pt, &b_W_MVA_Neut_pt);
-   fChain->SetBranchAddress("W_MVA_Neut_phi", &W_MVA_Neut_phi, &b_W_MVA_Neut_phi);
-   fChain->SetBranchAddress("W_MVA_Neut_px", &W_MVA_Neut_px, &b_W_MVA_Neut_px);
-   fChain->SetBranchAddress("W_MVA_Neut_py", &W_MVA_Neut_py, &b_W_MVA_Neut_py);
+   //fChain->SetBranchAddress("W_NoPU_Neut_pt", &W_NoPU_Neut_pt, &b_W_NoPU_Neut_pt);
+   //fChain->SetBranchAddress("W_NoPU_Neut_phi", &W_NoPU_Neut_phi, &b_W_NoPU_Neut_phi);
+   //fChain->SetBranchAddress("W_NoPU_Neut_px", &W_NoPU_Neut_px, &b_W_NoPU_Neut_px);
+   //fChain->SetBranchAddress("W_NoPU_Neut_py", &W_NoPU_Neut_py, &b_W_NoPU_Neut_py);
+   //fChain->SetBranchAddress("W_MVA_Neut_pt", &W_MVA_Neut_pt, &b_W_MVA_Neut_pt);
+   //fChain->SetBranchAddress("W_MVA_Neut_phi", &W_MVA_Neut_phi, &b_W_MVA_Neut_phi);
+   //fChain->SetBranchAddress("W_MVA_Neut_px", &W_MVA_Neut_px, &b_W_MVA_Neut_px);
+   //fChain->SetBranchAddress("W_MVA_Neut_py", &W_MVA_Neut_py, &b_W_MVA_Neut_py);
    fChain->SetBranchAddress("W_pt", &W_pt, &b_W_pt);
    fChain->SetBranchAddress("W_eta", &W_eta, &b_W_eta);
    fChain->SetBranchAddress("W_phi", &W_phi, &b_W_phi);
@@ -1763,6 +1766,7 @@ void WLepNeu::Init(TTree *tree)
    h1_Post_PostFid=new TH1D("h1_Post_PostFid","Post WpT at PostFid",NWptBinPlus-1,Bins);
    h1_Post_PostFid_Even=new TH1D("h1_Post_PostFid_Even","Post WpT at PostFid",NWptBinPlus-1,Bins);
    h1_Post_BothFid=new TH1D("h1_Post_BothFid","Post WpT at BothFid",NWptBinPlus-1,Bins);
+   h1_Post_BothFid_weightFSR=new TH1D("h1_Post_BothFid_weightFSR","Post WpT at BothFid weightFSR",NWptBinPlus-1,Bins);
    h1_Post_BothFid_Even=new TH1D("h1_Post_BothFid_Even","Post WpT at BothFid",NWptBinPlus-1,Bins);
    h2_PostBorn_BothFid=new TH2D("h2_PostBorn_BothFid","Post vs Born at BothFid",NWptBinPlus-1,Bins, NWptBinPlus-1,Bins);
 
@@ -1793,6 +1797,7 @@ void WLepNeu::Init(TTree *tree)
    h1_Truth_Post_Even	=new TH1D("h1_Truth_Post_Even","Post Wpt Truth_Even",NWptBinPlus-1,Bins);
    h1_Truth_Post_Odd	=new TH1D("h1_Truth_Post_Odd" ,"Post Wpt Truth_Odd",NWptBinPlus-1,Bins);
    h1_Truth_Post_EffCorr=new TH1D("h1_Truth_Post_EffCorr","Post Wpt Truth EffCorr",NWptBinPlus-1,Bins);
+   h1_Truth_Post_EffCorr_weightFSR=new TH1D("h1_Truth_Post_EffCorr_weightFSR","Post Wpt Truth EffCorr weightFSR",NWptBinPlus-1,Bins);
    h2_Truth_Rec_AP_Post	=new TH2D("h2_Truth_Rec_AP_Post" ,"Truth Rec All Phase Post",NWptBinPlus-1,Bins,NWptBinPlus-1, Bins);
 
    h1_Wp_pt	= new TH1D("h1_Wp_pt","WplusPt",NWptBinPlus-1,Bins);
@@ -2580,8 +2585,8 @@ Int_t WLepNeu::FillMuZmassDaughEta(int etaRange1, int etaRange2)
 
 Int_t WLepNeu::TauCut(int i)
 {
-  if( (*W_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
-  if( (*W_Lept1_decModFind)[i] < 0.5 )return -1;
+  //if( (*W_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
+  //if( (*W_Lept1_decModFind)[i] < 0.5 )return -1;
   if( fabs((*W_Lept1_eta)[i]) > 2.3 )return -1;
   if( fabs((*W_Lept1_pt)[i]) < 20 )return -1;
   return 1;
@@ -3094,10 +3099,10 @@ Int_t WLepNeu::TauCut(int i)
 Int_t WLepNeu::TauCutZ(int i)
 {
   if( (*Z_Sign)[i] != 0 ) return -1;
-  if( (*Z_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
-  if( (*Z_Lept2_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
-  if( (*Z_Lept1_decModFind)[i] < 0.5 )return -1;
-  if( (*Z_Lept2_decModFind)[i] < 0.5 )return -1;
+  //if( (*Z_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
+  //if( (*Z_Lept2_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
+  //if( (*Z_Lept1_decModFind)[i] < 0.5 )return -1;
+  //if( (*Z_Lept2_decModFind)[i] < 0.5 )return -1;
   if( fabs((*Z_Lept1_eta)[i]) > 2.3 )return -1;
   if( fabs((*Z_Lept2_eta)[i]) > 2.3 )return -1;
   if( fabs((*Z_Lept1_pt)[i]) < 20 )return -1;
@@ -3693,6 +3698,8 @@ Int_t WLepNeu::FillAcceptInfo()
   {
     h1_Born_BothFid->Fill(genInfo.BornW_pt,TTW);
     h1_Post_BothFid->Fill(genInfo.PostW_pt,TTW);
+    if(weightFSR<0) weightFSR=1;
+    h1_Post_BothFid_weightFSR->Fill(genInfo.PostW_pt,TTW*weightFSR);
     h2_PostBorn_BothFid
       ->Fill(genInfo.PostW_pt,genInfo.BornW_pt,TTW);
     if( evtCnt % 2 == 0 )
@@ -3751,7 +3758,8 @@ Int_t WLepNeu::FillUnfoldInfo()
       h1_Truth_Rec_Odd->Fill(wCand.pt,TTW);
       h1_Truth_Post_Odd->Fill(genInfo.PostW_pt,TTW);
     }
-    h2_Truth_Rec_AP_Post->Fill(wCand.pt,genInfo.PostW_pt,TTW);
+    //h2_Truth_Rec_AP_Post->Fill(wCand.pt,genInfo.PostW_pt,TTW);
+    h2_Truth_Rec_AP_Post->Fill(wCand.pt,genInfo.PostW_pt);
 
     unfoldInfo.recoPreFsrGenWptRes = (wCand.pt-genInfo.BornW_pt)/genInfo.BornW_pt;
     unfoldInfo.recoPstFsrGenWptRes = (wCand.pt-genInfo.PostW_pt)/genInfo.PostW_pt;
@@ -3793,6 +3801,8 @@ Int_t WLepNeu::FillUnfoldInfo()
       }
     }
     h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,TTW*SF);
+    if(weightFSR<0) weightFSR=1;
+    h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,TTW*SF*weightFSR);
     return 0;
 }
 Int_t WLepNeu::DoRecoilCorr()
