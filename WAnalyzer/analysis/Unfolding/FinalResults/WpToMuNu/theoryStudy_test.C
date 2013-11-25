@@ -116,15 +116,17 @@ void plotHelpComp(std::string iRVar,std::string iVar,std::string iRCut,std::stri
 
   TH1D *h1_Powheg;
   TH1D *h1_data;
+  TH1D *lData;
 //  TH1D *lResbos=new TH1D("lResbos","lResbos",nptBins,xbins_pt);lResbos->Sumw2();
 //  TH1D *lData=new TH1D("lData","lData",nptBins,xbins_pt); lData->Sumw2();
 //  TH1D *lPowheg = new TH1D("lPowheg","lPowheg",nptBins,xbins_pt);lPowheg->Sumw2();
   TH1D *lResbos=new TH1D("lResbos","lResbos",nptBins,0,nptBins);lResbos->Sumw2();
-  TH1D *lData=new TH1D("lData","lData",nptBins,0,nptBins); lData->Sumw2();
+  //TH1D *lData=new TH1D("lData","lData",nptBins,0,nptBins); lData->Sumw2();
   TH1D *lPowheg = new TH1D("lPowheg","lPowheg",nptBins,0,nptBins);lPowheg->Sumw2();
   TH1D *lFEWZ = new TH1D("lFEWZ","lFEWZ",nptBins,0,nptBins);lPowheg->Sumw2();
   h1_Powheg =(TH1D*)lCFile->Get("SVD_Born.Gen")->Clone();
   h1_data =(TH1D*)lCFile->Get("BornEffCorr")->Clone();
+  lData =(TH1D*)lCFile->Get("BornEffCorr")->Clone();
 
   lRTree->Draw(lRDraw.str().c_str(),iRCut.c_str()); 
 //  lCTree->Draw(lCDraw.str().c_str(),iCCut.c_str());
@@ -151,12 +153,14 @@ void plotHelpComp(std::string iRVar,std::string iVar,std::string iRCut,std::stri
     lPowheg -> SetBinError(ipt,h1_Powheg->GetBinError(ipt));
     lFEWZ -> SetBinContent(ipt,h_FEWZ->GetBinContent(ipt));
     lFEWZ -> SetBinError(ipt,sqrt(h_FEWZ->GetBinContent(ipt)));
-    lData -> SetBinContent(ipt,h1_data->GetBinContent(ipt));
+    //lData -> SetBinContent(ipt,h1_data->GetBinContent(ipt));
     //lData -> SetBinError(ipt,h1_data->GetBinError(ipt)+h_Total_Syst->GetBinError(ipt));
     //lData -> SetBinError(ipt,h1_data->GetBinError(ipt));
-    lData -> SetBinError(ipt,h1_data->GetBinContent(ipt)*derr[ipt]/100.);
+    //lData -> SetBinError(ipt,h1_data->GetBinContent(ipt)*derr[ipt]/100.);
+    cout<<"ErrorChecking: "<< lData->GetBinError(ipt)<<"\t"<<h1_data->GetBinContent(ipt)*derr[ipt]/100.<<endl;
+    //lData -> SetBinError(ipt,h1_data->GetBinContent(ipt)*derr[ipt]/100.);
     //cout<<ipt<<"\t"<<h1_data->GetBinContent(ipt)*derr[ipt]/100.<<"\t Data: "<<lData -> GetBinError(ipt)<<endl;
-    cout<<ipt<<"\t"<<h1_data->GetBinContent(ipt)<<endl;
+    //cout<<ipt<<"\t"<<h1_data->GetBinContent(ipt)<<endl;
   }
   lData->Scale(1./18.429); 
   lPowheg->Scale(1./18.429);
@@ -277,7 +281,8 @@ void plotHelpComp(std::string iRVar,std::string iVar,std::string iRCut,std::stri
   lData->Draw("E1 SAME");
 */  
 
-  powheg->GetYaxis()->SetRangeUser(0.,1600);
+  //powheg->GetYaxis()->SetRangeUser(0.,1600);
+  powheg->GetYaxis()->SetRangeUser(0.,1800);
   powheg->SetTitle("");
   powheg->GetYaxis()->SetTitle("Xsec [pb]");
   powheg->GetYaxis()->SetTitleOffset(1.2);

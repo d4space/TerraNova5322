@@ -30,7 +30,7 @@
 //#define TSVDSelfTestPost
 
 int wPtUnfoldStudy
-(TString UnfoldFile,TString AcceptFile,TString DataFile, TString DataYieldFile, TString BaseName)
+(TString UnfoldFile,TString AcceptFile,TString DataFile,TString BaseName)
 {
   double Bins[NWptBinPlus];
   // Final Bins
@@ -67,7 +67,6 @@ int wPtUnfoldStudy
   TFile *f_Unfold    = new TFile(UnfoldFile);
   TFile *f_Accept    = new TFile(AcceptFile);
   TFile *f_Data      = new TFile(DataFile);
-  TFile *f_DataYield = new TFile(DataYieldFile);
 
   TFile *f_RecoScaleCovMat;
   TFile *f_RecoEffiCovMat;
@@ -111,15 +110,12 @@ int wPtUnfoldStudy
   
   TFile *f_RecoLumiUpCovMat;
   TFile *f_RecoLumiDownCovMat;
-  TFile *f_RecoFSRCovMat;
   
   f_RecoLumiUpCovMat   = new TFile("RecoCovMatrix/SigYields_Lumi_Up.root");
   f_RecoLumiDownCovMat = new TFile("RecoCovMatrix/SigYields_Lumi_Down.root");
-  f_RecoFSRCovMat      = new TFile("RecoCovMatrix/SigYields_Muon_FSR.root");
   
   TH1D* h1_SigWptLumiUp;
   TH1D* h1_SigWptLumiDown;
-  TH1D* h1_SigWptFSR;
   TH1D *h1_Post_BothFidAccept;
   TH1D *h1_Post_BothFidAcceptFSR;
 
@@ -153,8 +149,6 @@ int wPtUnfoldStudy
     TH2D *uTauCov;
     TH2D *uInvCov;
 
-    TH2D *BstatCov;
-    TH2D *BstatCorr;
     TH2D *BstatCorr_uTotal; //Total Correlation Matrix
     TH2D *AbsNormCorrErr; //Absolute Normilazed Correlated Error Matrix
     
@@ -163,7 +157,6 @@ int wPtUnfoldStudy
     TH2D *RecoSmearCovMat;
     TH2D *RecoRecoilCovMat;
     TH2D *RecoLumiCovMat;
-    TH2D *RecoFSRCovMat;
     TH2D *RecoStatisticCovMat;
     TH2D *RecoQCDRatioCovMat;
     TH2D *TotalRecoCovMat;
@@ -176,21 +169,21 @@ int wPtUnfoldStudy
     TH2D *uRecoSmearCovMat;
     TH2D *uRecoRecoilCovMat;
     TH2D *uRecoLumiCovMat;
-    TH2D *uRecoFSRCovMat;
     TH2D *uRecoStatisticCovMat;
     TH2D *uRecoQCDRatioCovMat;
     TH2D *uRecoRespCovMat;
 
     TH2D *uTotalRecoCovMat;
     TH2D *AcceptFSRCovMat;
-    TH2D *EffFSRCovMat; //Make FSR Covariance Matrix from MC Eff.
+    TH2D *MCEventEffFSRCovMat; //Make FSR Covariance Matrix from MC Eff.
+    TH2D *uMCEventEffFSRCovMat;
 
     TH2D *Eff_uRecoEffiCovMat;
     TH2D *Eff_uRecoScaleCovMat;
     TH2D *Eff_uRecoSmearCovMat;
     TH2D *Eff_uRecoRecoilCovMat;
     TH2D *Eff_uRecoLumiCovMat;
-    TH2D *Eff_uRecoFSRCovMat;
+    TH2D *Eff_uMCEventEffFSRCovMat;
     TH2D *Eff_uRecoStatisticCovMat;
     TH2D *Eff_DetectUnfStatisticCovMat;
     TH2D *Eff_uRecoQCDRatioCovMat;
@@ -242,32 +235,10 @@ int wPtUnfoldStudy
   TH1D* EqBin_Post_PostFid_Even;
 
   // Data
-  double XMean[13]={0.0};
-  double YMean[13];
-  
-  int NumOfSamples=500;
-  //TH1D* h1_Data_Yield[500];
-  TH1D* h1_Data_Yield[501];
-      
-  double Xcontent[13][500]={{0.0},{0.0}};
-  //  double Total[13][100]={{0.0},{0.0}};
-  double Total[13][500]={0.0};
-  double CovMult[13][500]={{1.0},{1.0}};
-  
-  double XMeanMinusXBinCont[500]={0.0};
-  
-  double XMeanMinusXBinContSum[169]={0.0};
-  double XMeanMinusXBinContSumTwo[14][14];
-  //TH1D* XMeanMinusXBinCont[100];
-  TH1D* YMeanMinusYBinCont[500];
+  double TotalStat[NWptBinPlus]={0.};
+  double TotalError[NWptBinPlus]={0.};
   
   TH1D* h1_Data_SigYild;
-  TH1D* h1_SVD_Post_data[501];
-  TH1D* h1_SVD_Born_EffCorr[501];
-  TH1D* h1_SVD_Born_Gen[501];
-  TH1D* h1_SVD_Post_True[501];
-  TH1D* h1_SVD_Post_unfRes[501];
-  TH1D* h1_SVD_Post_Gen[501];
 
   // Define Histo
   h1_Post_BothOvTruth_eqBin=
@@ -285,18 +256,11 @@ int wPtUnfoldStudy
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.statCov = new TH2D("SVD_Post.statCov","Covariance matrix"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.BstatCov = new TH2D("SVD_Post.BstatCov","Covariance matrix"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  //SVD_Post.BstatCov =
-  //  new TH2D("SVD_Post.BstatCov","Covariance matrix",
-  //	100,0,100,100,0,100);
-  SVD_Post.BstatCorr = new TH2D("SVD_Post.BstatCorr","Correlation matrix"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.BstatCorr_uTotal = new TH2D("SVD_Post.BstatCorr_uTotal","Total Correlation matrix after D_Unf"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.AbsNormCorrErr = new TH2D("SVD_Post.AbsNormCorrErr","Absolute Normalized Correlated Error Matrix D_Unf"
+  SVD_Post.AbsNormCorrErr = new TH2D("SVD_Post.AbsNormCorrErr","Absolute Normalized Covariance Error Matrix D_Unf"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Born.AbsNormCorrErr = new TH2D("SVD_Born.AbsNormCorrErr","Absolute Normalized Correlated Error Matrix FSR_Unf"
+  SVD_Born.AbsNormCorrErr = new TH2D("SVD_Born.AbsNormCorrErr","Absolute Normalized Covariance Error Matrix FSR_Unf"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.RecoEffiCovMat = new TH2D("SVD_Post.RecoEffiCovMat","Reco Stage Effi Covariace matrix"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
@@ -336,15 +300,11 @@ int wPtUnfoldStudy
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.Eff_uRecoRespCovMat = new TH2D("SVD_Post.Eff_uRecoRespCovMat","Eff apllied Response Covariace matrix after Detector unfolding"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.RecoFSRCovMat = new TH2D("SVD_Post.RecoFSRCovMat","Reco Stage FSR Covariace matrix"
+  SVD_Post.MCEventEffFSRCovMat = new TH2D("SVD_Post.MCEventEffFSRCovMat","FSR CovMat from MC Eff h1_Post_BothOvTruth_weightFSR"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  TH2D* h2_RecoFSRCovMat = new TH2D("h2_RecoFSRCovMat","Reco Stage FSR Covariace matrix"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.Eff_uRecoFSRCovMat = new TH2D("SVD_Post.Eff_uRecoFSRCovMat","Eff applied FSR Covariace matrix Detector unfolding"
+  SVD_Post.Eff_uMCEventEffFSRCovMat = new TH2D("SVD_Post.Eff_uMCEventEffFSRCovMat","Eff applied FSR Covariace matrix Detector unfolding"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.AcceptFSRCovMat = new TH2D("SVD_Post.AcceptFSRCovMat","FSR CovMat from Acceptance h1_Post_BothFid"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.EffFSRCovMat = new TH2D("SVD_Post.EffFSRCovMat","FSR CovMat from MC Eff h1_Post_BothOvTruth_weightFSR"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.RecoStatisticCovMat = new TH2D("SVD_Post.RecoStatisticCovMat","Reco Stage Statistic Covariace matrix"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
@@ -576,27 +536,6 @@ int wPtUnfoldStudy
     cout<<"Nominal: "<<h1_Data_SigYild->GetBinContent(i)<<"\t"<<h1_Data_SigYild->GetBinError(i)<<endl;
   }
 
-  for(int i(1); i<=NumOfSamples; i++)
-  {
-    if( BaseName == "WpToEleNu" || BaseName == "WpToMuNu")
-    {
-      sprintf(tmpName,"hSigWPpt%d",i);
-      h1_Data_Yield[i]	=(TH1D*)f_DataYield->Get(tmpName)->Clone(tmpName);
-    }else if( BaseName == "WmToEleNu" || BaseName == "WmToMuNu"){
-      sprintf(tmpName,"hSigWMpt%d",i);
-      h1_Data_Yield[i]	=(TH1D*)f_DataYield->Get(tmpName)->Clone(tmpName);
-    }else{
-      cout<<"Error: Check the HistoName in DataYieldFile !!!!!!!!!!!!!!!!!!!!!!!!"<<endl;
-      exit(-1);
-    }
-  }
-  
-  for(int i(1);i<=h1_Data_Yield[1]->GetNbinsX();i++)
-  {
-    cout<<h1_Data_Yield[500]->GetBinContent(i)<<"\t"<<h1_Data_Yield[500]->GetBinError(i)<<endl;
-  }
-
-   
    // Histo for SVD
   double checkNumber(0);
   for(int i(1);i<=nbins;i++)//simul idx
@@ -618,9 +557,6 @@ int wPtUnfoldStudy
     //TODO data from real
     SVD_Post.data->SetBinContent(i,h1_Data_SigYild->GetBinContent(i));
     SVD_Post.data->  SetBinError(i,h1_Data_SigYild->GetBinError(i));
-    /// 500 loop for 500 unfolding
-    //SVD_Post.data->SetBinContent(i,h1_Data_Yield[k]->GetBinContent(i));
-    //SVD_Post.data->  SetBinError(i,h1_Data_Yield[k]->GetBinError(i));
 
     SVD_Post.True->SetBinContent(i,h1_Truth_Post_Lumi->GetBinContent(i));
     SVD_Post.True->  SetBinError(i,h1_Truth_Post_Lumi->GetBinError(i));
@@ -669,558 +605,13 @@ int wPtUnfoldStudy
   for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
   {
     cout<<SVD_Post.data->GetBinContent(i)<<"\t"<<SVD_Post.data->GetBinError(i)<<endl;
-  }
-  
- 
-
-
-
-  for( int i(0); i< 13; i++)
-  {
-    for( int k(0); k<NumOfSamples; k++)
-    {
-      //Xcontent[i][k]=Xcontent[i][k] + h1_Data_Yield[k+1]->GetBinContent(i+1) ;
-
-      Xcontent[i][k]= h1_Data_Yield[k+1]->GetBinContent(i+1) ;
-      cout<<"Xcontent[i][k]:  "<<"  i =  "<<i<<" k =  "<<k<<"  "<<Xcontent[i][k]<<endl;
-
-    }
-  }
-  cout<<"Xcontent[0][3]:  "<<Xcontent[0][3]<<endl;
-  
-
-  
-  
-  
-  for( int i(0); i< 13; i++)
-  {
-    for( int k(0); k<NumOfSamples ; k++)
-    {
-    
-      //XMean[i]=h1_Data_SigYild->GetBinContent(i+1);
-      XMean[i]=XMean[i]+Xcontent[i][k]/NumOfSamples;
-    }
-  }
-  
-  
-  
-  for( int i(0); i< 13; i++)
-  {
-    cout<<"XMean[i]:  "<<i<<"  "<<XMean[i]<<endl;
-  }
-
- 
-
-
-
-  
-  for( int k(1); k<= NumOfSamples; k++)
-  {
-
-
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[0]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[0] - Xcontent[0][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples<<endl;
-	XMeanMinusXBinContSum[0]= XMeanMinusXBinContSum[0] + (XMean[0]- Xcontent[0][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[0] :  "<<"  i =0"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[0]<<endl;
-
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[1]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[1] - Xcontent[1][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )*( XMean[1] - Xcontent[1][k-1])<<endl;
-	XMeanMinusXBinContSum[1]= XMeanMinusXBinContSum[1] + (XMean[0]- Xcontent[0][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[1] :  "<<"  i =1"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[1]<<endl;
-
-	XMeanMinusXBinContSum[2]= XMeanMinusXBinContSum[2] + (XMean[0]- Xcontent[0][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[3]= XMeanMinusXBinContSum[3] + (XMean[0]- Xcontent[0][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[4]= XMeanMinusXBinContSum[4] + (XMean[0]- Xcontent[0][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[5]= XMeanMinusXBinContSum[5] + (XMean[0]- Xcontent[0][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[6]= XMeanMinusXBinContSum[6] + (XMean[0]- Xcontent[0][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[7]= XMeanMinusXBinContSum[7] + (XMean[0]- Xcontent[0][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[8]= XMeanMinusXBinContSum[8] + (XMean[0]- Xcontent[0][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[9]= XMeanMinusXBinContSum[9] + (XMean[0]- Xcontent[0][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[10]= XMeanMinusXBinContSum[10] + (XMean[0]- Xcontent[0][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[11]= XMeanMinusXBinContSum[11] + (XMean[0]- Xcontent[0][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[12]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[12] - Xcontent[12][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =0  "<<" k =  "<<k-1<<"  "<<(XMean[0]- Xcontent[0][k-1] )*( XMean[12] - Xcontent[12][k-1])<<endl;
-	XMeanMinusXBinContSum[12]= XMeanMinusXBinContSum[12] + (XMean[0]- Xcontent[0][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[12] :  "<<"  i =0"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[12]<<endl;
-
-	XMeanMinusXBinContSum[13]= XMeanMinusXBinContSum[13] + (XMean[1]- Xcontent[1][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[14]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[1]- Xcontent[1][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[1] - Xcontent[1][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =1  "<<" k =  "<<k-1<<"  "<<(XMean[1]- Xcontent[1][k-1] )*( XMean[1] - Xcontent[1][k-1])<<endl;
-	XMeanMinusXBinContSum[14]= XMeanMinusXBinContSum[14] + (XMean[1]- Xcontent[1][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[14] :  "<<"  i =1"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[14]<<endl;
-	
-	XMeanMinusXBinContSum[15]= XMeanMinusXBinContSum[15] + (XMean[1]- Xcontent[1][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[16]= XMeanMinusXBinContSum[16] + (XMean[1]- Xcontent[1][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[17]= XMeanMinusXBinContSum[17] + (XMean[1]- Xcontent[1][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[18]= XMeanMinusXBinContSum[18] + (XMean[1]- Xcontent[1][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[19]= XMeanMinusXBinContSum[19] + (XMean[1]- Xcontent[1][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[20]= XMeanMinusXBinContSum[20] + (XMean[1]- Xcontent[1][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[21]= XMeanMinusXBinContSum[21] + (XMean[1]- Xcontent[1][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[22]= XMeanMinusXBinContSum[22] + (XMean[1]- Xcontent[1][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[23]= XMeanMinusXBinContSum[23] + (XMean[1]- Xcontent[1][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[24]= XMeanMinusXBinContSum[24] + (XMean[1]- Xcontent[1][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[25]= XMeanMinusXBinContSum[25] + (XMean[1]- Xcontent[1][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[26]= XMeanMinusXBinContSum[26] + (XMean[2]- Xcontent[2][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[27]= XMeanMinusXBinContSum[27] + (XMean[2]- Xcontent[2][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[28]= XMeanMinusXBinContSum[28] + (XMean[2]- Xcontent[2][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[29]= XMeanMinusXBinContSum[29] + (XMean[2]- Xcontent[2][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[30]= XMeanMinusXBinContSum[30] + (XMean[2]- Xcontent[2][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[31]= XMeanMinusXBinContSum[31] + (XMean[2]- Xcontent[2][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[32]= XMeanMinusXBinContSum[32] + (XMean[2]- Xcontent[2][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[33]= XMeanMinusXBinContSum[33] + (XMean[2]- Xcontent[2][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[34]= XMeanMinusXBinContSum[34] + (XMean[2]- Xcontent[2][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[35]= XMeanMinusXBinContSum[35] + (XMean[2]- Xcontent[2][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[36]= XMeanMinusXBinContSum[36] + (XMean[2]- Xcontent[2][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[37]= XMeanMinusXBinContSum[37] + (XMean[2]- Xcontent[2][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[38]= XMeanMinusXBinContSum[38] + (XMean[2]- Xcontent[2][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[39]= XMeanMinusXBinContSum[39] + (XMean[3]- Xcontent[3][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[40]= XMeanMinusXBinContSum[40] + (XMean[3]- Xcontent[3][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[41]= XMeanMinusXBinContSum[41] + (XMean[3]- Xcontent[3][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[42]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[3]- Xcontent[3][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[3]- Xcontent[3][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[3]- Xcontent[3][k-1] )*( XMean[3] - Xcontent[3][k-1])<<endl;
-	XMeanMinusXBinContSum[42]= XMeanMinusXBinContSum[42] + (XMean[3]- Xcontent[3][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[42] :  "<<"  i =3"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[42]<<endl;
-	
-	XMeanMinusXBinContSum[43]= XMeanMinusXBinContSum[43] + (XMean[3]- Xcontent[3][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[44]= XMeanMinusXBinContSum[44] + (XMean[3]- Xcontent[3][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[45]= XMeanMinusXBinContSum[45] + (XMean[3]- Xcontent[3][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[46]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[3]- Xcontent[3][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[7]- Xcontent[7][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =3  "<<" k =  "<<k-1<<"  "<<(XMean[3]- Xcontent[3][k-1] )*( XMean[7] - Xcontent[7][k-1])<<endl;
-	XMeanMinusXBinContSum[46]= XMeanMinusXBinContSum[46] + (XMean[3]- Xcontent[3][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[46] :  "<<"  i =3"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[46]<<endl;
-	
-	XMeanMinusXBinContSum[47]= XMeanMinusXBinContSum[47] + (XMean[3]- Xcontent[3][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[48]= XMeanMinusXBinContSum[48] + (XMean[3]- Xcontent[3][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[49]= XMeanMinusXBinContSum[49] + (XMean[3]- Xcontent[3][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[50]= XMeanMinusXBinContSum[50] + (XMean[3]- Xcontent[3][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[51]= XMeanMinusXBinContSum[51] + (XMean[3]- Xcontent[3][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[52]= XMeanMinusXBinContSum[52] + (XMean[4]- Xcontent[4][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[53]= XMeanMinusXBinContSum[53] + (XMean[4]- Xcontent[4][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[54]= XMeanMinusXBinContSum[54] + (XMean[4]- Xcontent[4][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[55]= XMeanMinusXBinContSum[55] + (XMean[4]- Xcontent[4][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-
-	cout<<"XMeanMinusXBin before    :  "<<"  i =4  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[56]<<endl;
-	cout<<"<X0>-Xi0                 :  "<<"  i =4  "<<" k =  "<<k-1<<"  "<<(XMean[4]- Xcontent[4][k-1] )<<endl;
-	cout<<"<X1>-Xi1                 :  "<<"  i =4  "<<" k =  "<<k-1<<"  "<<(XMean[4]- Xcontent[4][k-1])<<endl;
-	cout<<"<Multiply                :  "<<"  i =4  "<<" k =  "<<k-1<<"  "<<(XMean[4]- Xcontent[4][k-1] )*( XMean[4] - Xcontent[4][k-1])<<endl;
-	XMeanMinusXBinContSum[56]= XMeanMinusXBinContSum[56] + (XMean[4]- Xcontent[4][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	cout<<"XMeanMinusXBinContSum[56] :  "<<"  i =4"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[56]<<endl;
-	
-	XMeanMinusXBinContSum[57]= XMeanMinusXBinContSum[57] + (XMean[4]- Xcontent[4][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[58]= XMeanMinusXBinContSum[58] + (XMean[4]- Xcontent[4][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[59]= XMeanMinusXBinContSum[59] + (XMean[4]- Xcontent[4][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[60]= XMeanMinusXBinContSum[60] + (XMean[4]- Xcontent[4][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[61]= XMeanMinusXBinContSum[61] + (XMean[4]- Xcontent[4][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[62]= XMeanMinusXBinContSum[62] + (XMean[4]- Xcontent[4][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[63]= XMeanMinusXBinContSum[63] + (XMean[4]- Xcontent[4][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[64]= XMeanMinusXBinContSum[64] + (XMean[4]- Xcontent[4][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[65]= XMeanMinusXBinContSum[65] + (XMean[5]- Xcontent[5][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[66]= XMeanMinusXBinContSum[66] + (XMean[5]- Xcontent[5][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[67]= XMeanMinusXBinContSum[67] + (XMean[5]- Xcontent[5][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[68]= XMeanMinusXBinContSum[68] + (XMean[5]- Xcontent[5][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[69]= XMeanMinusXBinContSum[69] + (XMean[5]- Xcontent[5][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =5  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[70]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =5  "<<" k =  "<<k-1<<"  "<<(XMean[5]- Xcontent[5][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =5  "<<" k =  "<<k-1<<"  "<<(XMean[5]- Xcontent[5][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =5  "<<" k =  "<<k-1<<"  "<<(XMean[5]- Xcontent[5][k-1] )*( XMean[5] - Xcontent[5][k-1])<<endl;
-	XMeanMinusXBinContSum[70]= XMeanMinusXBinContSum[70] + (XMean[5]- Xcontent[5][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[70] :  "<<"  i =5"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[70]<<endl;
-	
-	XMeanMinusXBinContSum[71]= XMeanMinusXBinContSum[71] + (XMean[5]- Xcontent[5][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[72]= XMeanMinusXBinContSum[72] + (XMean[5]- Xcontent[5][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[73]= XMeanMinusXBinContSum[73] + (XMean[5]- Xcontent[5][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[74]= XMeanMinusXBinContSum[74] + (XMean[5]- Xcontent[5][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[75]= XMeanMinusXBinContSum[75] + (XMean[5]- Xcontent[5][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[76]= XMeanMinusXBinContSum[76] + (XMean[5]- Xcontent[5][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[77]= XMeanMinusXBinContSum[77] + (XMean[5]- Xcontent[5][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[78]= XMeanMinusXBinContSum[78] + (XMean[6]- Xcontent[6][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[79]= XMeanMinusXBinContSum[79] + (XMean[6]- Xcontent[6][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[80]= XMeanMinusXBinContSum[80] + (XMean[6]- Xcontent[6][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[81]= XMeanMinusXBinContSum[81] + (XMean[6]- Xcontent[6][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[82]= XMeanMinusXBinContSum[82] + (XMean[6]- Xcontent[6][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[83]= XMeanMinusXBinContSum[83] + (XMean[6]- Xcontent[6][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	
-//	cout<<"XMeanMinusXBin before    :  "<<"  i =6  "<<" k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[84]<<endl;
-//	cout<<"<X0>-Xi0                 :  "<<"  i =6  "<<" k =  "<<k-1<<"  "<<(XMean[6]- Xcontent[6][k-1] )<<endl;
-//	cout<<"<X1>-Xi1                 :  "<<"  i =6  "<<" k =  "<<k-1<<"  "<<(XMean[6]- Xcontent[6][k-1])<<endl;
-//	cout<<"<Multiply                :  "<<"  i =6  "<<" k =  "<<k-1<<"  "<<(XMean[6]- Xcontent[6][k-1] )*( XMean[6] - Xcontent[6][k-1])<<endl;
-	XMeanMinusXBinContSum[84]= XMeanMinusXBinContSum[84] + (XMean[6]- Xcontent[6][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-//	cout<<"XMeanMinusXBinContSum[84] :  "<<"  i =6"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[84]<<endl;
-	
-	XMeanMinusXBinContSum[85]= XMeanMinusXBinContSum[85] + (XMean[6]- Xcontent[6][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[86]= XMeanMinusXBinContSum[86] + (XMean[6]- Xcontent[6][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[87]= XMeanMinusXBinContSum[87] + (XMean[6]- Xcontent[6][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[88]= XMeanMinusXBinContSum[88] + (XMean[6]- Xcontent[6][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[89]= XMeanMinusXBinContSum[89] + (XMean[6]- Xcontent[6][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[90]= XMeanMinusXBinContSum[90] + (XMean[6]- Xcontent[6][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[91]= XMeanMinusXBinContSum[91] + (XMean[7]- Xcontent[7][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[92]= XMeanMinusXBinContSum[92] + (XMean[7]- Xcontent[7][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[93]= XMeanMinusXBinContSum[93] + (XMean[7]- Xcontent[7][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[94]= XMeanMinusXBinContSum[94] + (XMean[7]- Xcontent[7][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[95]= XMeanMinusXBinContSum[95] + (XMean[7]- Xcontent[7][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[96]= XMeanMinusXBinContSum[96] + (XMean[7]- Xcontent[7][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[97]= XMeanMinusXBinContSum[97] + (XMean[7]- Xcontent[7][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[98]= XMeanMinusXBinContSum[98] + (XMean[7]- Xcontent[7][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[99]= XMeanMinusXBinContSum[99] + (XMean[7]- Xcontent[7][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[100]= XMeanMinusXBinContSum[100] + (XMean[7]- Xcontent[7][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[101]= XMeanMinusXBinContSum[101] + (XMean[7]- Xcontent[7][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[102]= XMeanMinusXBinContSum[102] + (XMean[7]- Xcontent[7][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[103]= XMeanMinusXBinContSum[103] + (XMean[7]- Xcontent[7][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[104]= XMeanMinusXBinContSum[104] + (XMean[8]- Xcontent[8][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[105]= XMeanMinusXBinContSum[105] + (XMean[8]- Xcontent[8][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[106]= XMeanMinusXBinContSum[106] + (XMean[8]- Xcontent[8][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[107]= XMeanMinusXBinContSum[107] + (XMean[8]- Xcontent[8][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[108]= XMeanMinusXBinContSum[108] + (XMean[8]- Xcontent[8][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[109]= XMeanMinusXBinContSum[109] + (XMean[8]- Xcontent[8][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[110]= XMeanMinusXBinContSum[110] + (XMean[8]- Xcontent[8][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[111]= XMeanMinusXBinContSum[111] + (XMean[8]- Xcontent[8][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[112]= XMeanMinusXBinContSum[112] + (XMean[8]- Xcontent[8][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[113]= XMeanMinusXBinContSum[113] + (XMean[8]- Xcontent[8][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[114]= XMeanMinusXBinContSum[114] + (XMean[8]- Xcontent[8][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[115]= XMeanMinusXBinContSum[115] + (XMean[8]- Xcontent[8][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[116]= XMeanMinusXBinContSum[116] + (XMean[8]- Xcontent[8][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[117]= XMeanMinusXBinContSum[117] + (XMean[9]- Xcontent[9][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[118]= XMeanMinusXBinContSum[118] + (XMean[9]- Xcontent[9][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[119]= XMeanMinusXBinContSum[119] + (XMean[9]- Xcontent[9][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[120]= XMeanMinusXBinContSum[120] + (XMean[9]- Xcontent[9][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[121]= XMeanMinusXBinContSum[121] + (XMean[9]- Xcontent[9][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[122]= XMeanMinusXBinContSum[122] + (XMean[9]- Xcontent[9][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[123]= XMeanMinusXBinContSum[123] + (XMean[9]- Xcontent[9][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[124]= XMeanMinusXBinContSum[124] + (XMean[9]- Xcontent[9][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[125]= XMeanMinusXBinContSum[125] + (XMean[9]- Xcontent[9][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[126]= XMeanMinusXBinContSum[126] + (XMean[9]- Xcontent[9][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[127]= XMeanMinusXBinContSum[127] + (XMean[9]- Xcontent[9][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[128]= XMeanMinusXBinContSum[128] + (XMean[9]- Xcontent[9][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[129]= XMeanMinusXBinContSum[129] + (XMean[9]- Xcontent[9][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[130]= XMeanMinusXBinContSum[130] + (XMean[10]- Xcontent[10][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[131]= XMeanMinusXBinContSum[131] + (XMean[10]- Xcontent[10][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[132]= XMeanMinusXBinContSum[132] + (XMean[10]- Xcontent[10][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[133]= XMeanMinusXBinContSum[133] + (XMean[10]- Xcontent[10][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[134]= XMeanMinusXBinContSum[134] + (XMean[10]- Xcontent[10][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[135]= XMeanMinusXBinContSum[135] + (XMean[10]- Xcontent[10][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[136]= XMeanMinusXBinContSum[136] + (XMean[10]- Xcontent[10][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[137]= XMeanMinusXBinContSum[137] + (XMean[10]- Xcontent[10][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[138]= XMeanMinusXBinContSum[138] + (XMean[10]- Xcontent[10][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[139]= XMeanMinusXBinContSum[139] + (XMean[10]- Xcontent[10][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[140]= XMeanMinusXBinContSum[140] + (XMean[10]- Xcontent[10][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[141]= XMeanMinusXBinContSum[141] + (XMean[10]- Xcontent[10][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[142]= XMeanMinusXBinContSum[142] + (XMean[10]- Xcontent[10][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[143]= XMeanMinusXBinContSum[143] + (XMean[11]- Xcontent[11][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[144]= XMeanMinusXBinContSum[144] + (XMean[11]- Xcontent[11][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[145]= XMeanMinusXBinContSum[145] + (XMean[11]- Xcontent[11][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[146]= XMeanMinusXBinContSum[146] + (XMean[11]- Xcontent[11][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[147]= XMeanMinusXBinContSum[147] + (XMean[11]- Xcontent[11][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[148]= XMeanMinusXBinContSum[148] + (XMean[11]- Xcontent[11][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[149]= XMeanMinusXBinContSum[149] + (XMean[11]- Xcontent[11][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[150]= XMeanMinusXBinContSum[150] + (XMean[11]- Xcontent[11][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[151]= XMeanMinusXBinContSum[151] + (XMean[11]- Xcontent[11][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[152]= XMeanMinusXBinContSum[152] + (XMean[11]- Xcontent[11][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[153]= XMeanMinusXBinContSum[153] + (XMean[11]- Xcontent[11][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[154]= XMeanMinusXBinContSum[154] + (XMean[11]- Xcontent[11][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[155]= XMeanMinusXBinContSum[155] + (XMean[11]- Xcontent[11][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-
-	XMeanMinusXBinContSum[156]= XMeanMinusXBinContSum[156] + (XMean[12]- Xcontent[12][k-1] )*( XMean[0] - Xcontent[0][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[157]= XMeanMinusXBinContSum[157] + (XMean[12]- Xcontent[12][k-1] )*( XMean[1] - Xcontent[1][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[158]= XMeanMinusXBinContSum[158] + (XMean[12]- Xcontent[12][k-1] )*( XMean[2] - Xcontent[2][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[159]= XMeanMinusXBinContSum[159] + (XMean[12]- Xcontent[12][k-1] )*( XMean[3] - Xcontent[3][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[160]= XMeanMinusXBinContSum[160] + (XMean[12]- Xcontent[12][k-1] )*( XMean[4] - Xcontent[4][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[161]= XMeanMinusXBinContSum[161] + (XMean[12]- Xcontent[12][k-1] )*( XMean[5] - Xcontent[5][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[162]= XMeanMinusXBinContSum[162] + (XMean[12]- Xcontent[12][k-1] )*( XMean[6] - Xcontent[6][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[163]= XMeanMinusXBinContSum[163] + (XMean[12]- Xcontent[12][k-1] )*( XMean[7] - Xcontent[7][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[164]= XMeanMinusXBinContSum[164] + (XMean[12]- Xcontent[12][k-1] )*( XMean[8] - Xcontent[8][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[165]= XMeanMinusXBinContSum[165] + (XMean[12]- Xcontent[12][k-1] )*( XMean[9] - Xcontent[9][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[166]= XMeanMinusXBinContSum[166] + (XMean[12]- Xcontent[12][k-1] )*( XMean[10] - Xcontent[10][k-1])/NumOfSamples;
-	XMeanMinusXBinContSum[167]= XMeanMinusXBinContSum[167] + (XMean[12]- Xcontent[12][k-1] )*( XMean[11] - Xcontent[11][k-1])/NumOfSamples;
-	
-	XMeanMinusXBinContSum[168]= XMeanMinusXBinContSum[168] + (XMean[12]- Xcontent[12][k-1] )*( XMean[12] - Xcontent[12][k-1])/NumOfSamples;
-	//cout<<"XMeanMinusXBinContSum[168] :  "<<"  i =168"<<"   k =  "<<k-1<<"  "<<XMeanMinusXBinContSum[168]<<endl;
-
-	
-  }
-
-
-	 XMeanMinusXBinContSumTwo[1][1]= XMeanMinusXBinContSum[0];
-	  cout<<"XMeanMinusXBinContSumTwo[1][1]"<<XMeanMinusXBinContSumTwo[1][1]<<endl;
-	 XMeanMinusXBinContSumTwo[1][2]= XMeanMinusXBinContSum[1];
-	  cout<<"XMeanMinusXBinContSumTwo[1][2]"<<XMeanMinusXBinContSumTwo[1][2]<<endl;
-	 XMeanMinusXBinContSumTwo[1][3]= XMeanMinusXBinContSum[2];
-	 XMeanMinusXBinContSumTwo[1][4]= XMeanMinusXBinContSum[3];
-	 XMeanMinusXBinContSumTwo[1][5]= XMeanMinusXBinContSum[4];
-	 XMeanMinusXBinContSumTwo[1][6]= XMeanMinusXBinContSum[5];
-	 XMeanMinusXBinContSumTwo[1][7]= XMeanMinusXBinContSum[6];
-	 XMeanMinusXBinContSumTwo[1][8]= XMeanMinusXBinContSum[7];
-	 XMeanMinusXBinContSumTwo[1][9]= XMeanMinusXBinContSum[8];
-	 XMeanMinusXBinContSumTwo[1][10]= XMeanMinusXBinContSum[9];
-	 XMeanMinusXBinContSumTwo[1][11]= XMeanMinusXBinContSum[10];
-	 XMeanMinusXBinContSumTwo[1][12]= XMeanMinusXBinContSum[11];
-	 XMeanMinusXBinContSumTwo[1][13]= XMeanMinusXBinContSum[12];
-
-	 XMeanMinusXBinContSumTwo[2][1]= XMeanMinusXBinContSum[13];
-	 XMeanMinusXBinContSumTwo[2][2]= XMeanMinusXBinContSum[14];
-	 XMeanMinusXBinContSumTwo[2][3]= XMeanMinusXBinContSum[15];
-	 XMeanMinusXBinContSumTwo[2][4]= XMeanMinusXBinContSum[16];
-	 XMeanMinusXBinContSumTwo[2][5]= XMeanMinusXBinContSum[17];
-	 XMeanMinusXBinContSumTwo[2][6]= XMeanMinusXBinContSum[18];
-	 XMeanMinusXBinContSumTwo[2][7]= XMeanMinusXBinContSum[19];
-	 XMeanMinusXBinContSumTwo[2][8]= XMeanMinusXBinContSum[20];
-	 XMeanMinusXBinContSumTwo[2][9]= XMeanMinusXBinContSum[21];
-	 XMeanMinusXBinContSumTwo[2][10]= XMeanMinusXBinContSum[22];
-	 XMeanMinusXBinContSumTwo[2][11]= XMeanMinusXBinContSum[23];
-	 XMeanMinusXBinContSumTwo[2][12]= XMeanMinusXBinContSum[24];
-	 XMeanMinusXBinContSumTwo[2][13]= XMeanMinusXBinContSum[25];
-
-	 XMeanMinusXBinContSumTwo[3][1]= XMeanMinusXBinContSum[26];
-	 XMeanMinusXBinContSumTwo[3][2]= XMeanMinusXBinContSum[27];
-	 XMeanMinusXBinContSumTwo[3][3]= XMeanMinusXBinContSum[28];
-	 XMeanMinusXBinContSumTwo[3][4]= XMeanMinusXBinContSum[29];
-	 XMeanMinusXBinContSumTwo[3][5]= XMeanMinusXBinContSum[30];
-	 XMeanMinusXBinContSumTwo[3][6]= XMeanMinusXBinContSum[31];
-	 XMeanMinusXBinContSumTwo[3][7]= XMeanMinusXBinContSum[32];
-	 XMeanMinusXBinContSumTwo[3][8]= XMeanMinusXBinContSum[33];
-	 XMeanMinusXBinContSumTwo[3][9]= XMeanMinusXBinContSum[34];
-	 XMeanMinusXBinContSumTwo[3][10]= XMeanMinusXBinContSum[35];
-	 XMeanMinusXBinContSumTwo[3][11]= XMeanMinusXBinContSum[36];
-	 XMeanMinusXBinContSumTwo[3][12]= XMeanMinusXBinContSum[37];
-	 XMeanMinusXBinContSumTwo[3][13]= XMeanMinusXBinContSum[38];
-
-	 XMeanMinusXBinContSumTwo[4][1]= XMeanMinusXBinContSum[39];
-	 XMeanMinusXBinContSumTwo[4][2]= XMeanMinusXBinContSum[40];
-	 XMeanMinusXBinContSumTwo[4][3]= XMeanMinusXBinContSum[41];
-	 XMeanMinusXBinContSumTwo[4][4]= XMeanMinusXBinContSum[42];
-	 XMeanMinusXBinContSumTwo[4][5]= XMeanMinusXBinContSum[43];
-	 XMeanMinusXBinContSumTwo[4][6]= XMeanMinusXBinContSum[44];
-	 XMeanMinusXBinContSumTwo[4][7]= XMeanMinusXBinContSum[45];
-	 XMeanMinusXBinContSumTwo[4][8]= XMeanMinusXBinContSum[46];
-	 XMeanMinusXBinContSumTwo[4][9]= XMeanMinusXBinContSum[47];
-	 XMeanMinusXBinContSumTwo[4][10]= XMeanMinusXBinContSum[48];
-	 XMeanMinusXBinContSumTwo[4][11]= XMeanMinusXBinContSum[49];
-	 XMeanMinusXBinContSumTwo[4][12]= XMeanMinusXBinContSum[50];
-	 XMeanMinusXBinContSumTwo[4][13]= XMeanMinusXBinContSum[51];
-
-	 XMeanMinusXBinContSumTwo[5][1]= XMeanMinusXBinContSum[52];
-	 XMeanMinusXBinContSumTwo[5][2]= XMeanMinusXBinContSum[53];
-	 XMeanMinusXBinContSumTwo[5][3]= XMeanMinusXBinContSum[54];
-	 XMeanMinusXBinContSumTwo[5][4]= XMeanMinusXBinContSum[55];
-	 XMeanMinusXBinContSumTwo[5][5]= XMeanMinusXBinContSum[56];
-	 XMeanMinusXBinContSumTwo[5][6]= XMeanMinusXBinContSum[57];
-	 XMeanMinusXBinContSumTwo[5][7]= XMeanMinusXBinContSum[58];
-	 XMeanMinusXBinContSumTwo[5][8]= XMeanMinusXBinContSum[59];
-	 XMeanMinusXBinContSumTwo[5][9]= XMeanMinusXBinContSum[60];
-	 XMeanMinusXBinContSumTwo[5][10]= XMeanMinusXBinContSum[61];
-	 XMeanMinusXBinContSumTwo[5][11]= XMeanMinusXBinContSum[62];
-	 XMeanMinusXBinContSumTwo[5][12]= XMeanMinusXBinContSum[63];
-	 XMeanMinusXBinContSumTwo[5][13]= XMeanMinusXBinContSum[64];
-
-	 XMeanMinusXBinContSumTwo[6][1]= XMeanMinusXBinContSum[65];
-	 XMeanMinusXBinContSumTwo[6][2]= XMeanMinusXBinContSum[66];
-	 XMeanMinusXBinContSumTwo[6][3]= XMeanMinusXBinContSum[67];
-	 XMeanMinusXBinContSumTwo[6][4]= XMeanMinusXBinContSum[68];
-	 XMeanMinusXBinContSumTwo[6][5]= XMeanMinusXBinContSum[69];
-	 XMeanMinusXBinContSumTwo[6][6]= XMeanMinusXBinContSum[70];
-	 XMeanMinusXBinContSumTwo[6][7]= XMeanMinusXBinContSum[71];
-	 XMeanMinusXBinContSumTwo[6][8]= XMeanMinusXBinContSum[72];
-	 XMeanMinusXBinContSumTwo[6][9]= XMeanMinusXBinContSum[73];
-	 XMeanMinusXBinContSumTwo[6][10]= XMeanMinusXBinContSum[74];
-	 XMeanMinusXBinContSumTwo[6][11]= XMeanMinusXBinContSum[75];
-	 XMeanMinusXBinContSumTwo[6][12]= XMeanMinusXBinContSum[76];
-	 XMeanMinusXBinContSumTwo[6][13]= XMeanMinusXBinContSum[77];
-
-	 XMeanMinusXBinContSumTwo[7][1]= XMeanMinusXBinContSum[78];
-	 XMeanMinusXBinContSumTwo[7][2]= XMeanMinusXBinContSum[79];
-	 XMeanMinusXBinContSumTwo[7][3]= XMeanMinusXBinContSum[80];
-	 XMeanMinusXBinContSumTwo[7][4]= XMeanMinusXBinContSum[81];
-	 XMeanMinusXBinContSumTwo[7][5]= XMeanMinusXBinContSum[82];
-	 XMeanMinusXBinContSumTwo[7][6]= XMeanMinusXBinContSum[83];
-	 XMeanMinusXBinContSumTwo[7][7]= XMeanMinusXBinContSum[84];
-	 XMeanMinusXBinContSumTwo[7][8]= XMeanMinusXBinContSum[85];
-	 XMeanMinusXBinContSumTwo[7][9]= XMeanMinusXBinContSum[86];
-	 XMeanMinusXBinContSumTwo[7][10]= XMeanMinusXBinContSum[87];
-	 XMeanMinusXBinContSumTwo[7][11]= XMeanMinusXBinContSum[88];
-	 XMeanMinusXBinContSumTwo[7][12]= XMeanMinusXBinContSum[89];
-	 XMeanMinusXBinContSumTwo[7][13]= XMeanMinusXBinContSum[90];
-
-	 XMeanMinusXBinContSumTwo[8][1]= XMeanMinusXBinContSum[91];
-	 XMeanMinusXBinContSumTwo[8][2]= XMeanMinusXBinContSum[92];
-	 XMeanMinusXBinContSumTwo[8][3]= XMeanMinusXBinContSum[93];
-	 XMeanMinusXBinContSumTwo[8][4]= XMeanMinusXBinContSum[94];
-	 XMeanMinusXBinContSumTwo[8][5]= XMeanMinusXBinContSum[95];
-	 XMeanMinusXBinContSumTwo[8][6]= XMeanMinusXBinContSum[96];
-	 XMeanMinusXBinContSumTwo[8][7]= XMeanMinusXBinContSum[97];
-	 XMeanMinusXBinContSumTwo[8][8]= XMeanMinusXBinContSum[98];
-	 XMeanMinusXBinContSumTwo[8][9]= XMeanMinusXBinContSum[99];
-	 XMeanMinusXBinContSumTwo[8][10]= XMeanMinusXBinContSum[100];
-	 XMeanMinusXBinContSumTwo[8][11]= XMeanMinusXBinContSum[101];
-	 XMeanMinusXBinContSumTwo[8][12]= XMeanMinusXBinContSum[102];
-	 XMeanMinusXBinContSumTwo[8][13]= XMeanMinusXBinContSum[103];
-
-	 XMeanMinusXBinContSumTwo[9][1]= XMeanMinusXBinContSum[104];
-	 XMeanMinusXBinContSumTwo[9][2]= XMeanMinusXBinContSum[105];
-	 XMeanMinusXBinContSumTwo[9][3]= XMeanMinusXBinContSum[106];
-	 XMeanMinusXBinContSumTwo[9][4]= XMeanMinusXBinContSum[107];
-	 XMeanMinusXBinContSumTwo[9][5]= XMeanMinusXBinContSum[108];
-	 XMeanMinusXBinContSumTwo[9][6]= XMeanMinusXBinContSum[109];
-	 XMeanMinusXBinContSumTwo[9][7]= XMeanMinusXBinContSum[110];
-	 XMeanMinusXBinContSumTwo[9][8]= XMeanMinusXBinContSum[111];
-	 XMeanMinusXBinContSumTwo[9][9]= XMeanMinusXBinContSum[112];
-	 XMeanMinusXBinContSumTwo[9][10]= XMeanMinusXBinContSum[113];
-	 XMeanMinusXBinContSumTwo[9][11]= XMeanMinusXBinContSum[114];
-	 XMeanMinusXBinContSumTwo[9][12]= XMeanMinusXBinContSum[115];
-	 XMeanMinusXBinContSumTwo[9][13]= XMeanMinusXBinContSum[116];
-
-	 XMeanMinusXBinContSumTwo[10][1]= XMeanMinusXBinContSum[117];
-	 XMeanMinusXBinContSumTwo[10][2]= XMeanMinusXBinContSum[118];
-	 XMeanMinusXBinContSumTwo[10][3]= XMeanMinusXBinContSum[119];
-	 XMeanMinusXBinContSumTwo[10][4]= XMeanMinusXBinContSum[120];
-	 XMeanMinusXBinContSumTwo[10][5]= XMeanMinusXBinContSum[121];
-	 XMeanMinusXBinContSumTwo[10][6]= XMeanMinusXBinContSum[122];
-	 XMeanMinusXBinContSumTwo[10][7]= XMeanMinusXBinContSum[123];
-	 XMeanMinusXBinContSumTwo[10][8]= XMeanMinusXBinContSum[124];
-	 XMeanMinusXBinContSumTwo[10][9]= XMeanMinusXBinContSum[125];
-	 XMeanMinusXBinContSumTwo[10][10]= XMeanMinusXBinContSum[126];
-	 XMeanMinusXBinContSumTwo[10][11]= XMeanMinusXBinContSum[127];
-	 XMeanMinusXBinContSumTwo[10][12]= XMeanMinusXBinContSum[128];
-	 XMeanMinusXBinContSumTwo[10][13]= XMeanMinusXBinContSum[129];
-
-	 XMeanMinusXBinContSumTwo[11][1]= XMeanMinusXBinContSum[130];
-	 XMeanMinusXBinContSumTwo[11][2]= XMeanMinusXBinContSum[131];
-	 XMeanMinusXBinContSumTwo[11][3]= XMeanMinusXBinContSum[132];
-	 XMeanMinusXBinContSumTwo[11][4]= XMeanMinusXBinContSum[133];
-	 XMeanMinusXBinContSumTwo[11][5]= XMeanMinusXBinContSum[134];
-	 XMeanMinusXBinContSumTwo[11][6]= XMeanMinusXBinContSum[135];
-	 XMeanMinusXBinContSumTwo[11][7]= XMeanMinusXBinContSum[136];
-	 XMeanMinusXBinContSumTwo[11][8]= XMeanMinusXBinContSum[137];
-	 XMeanMinusXBinContSumTwo[11][9]= XMeanMinusXBinContSum[138];
-	 XMeanMinusXBinContSumTwo[11][10]= XMeanMinusXBinContSum[139];
-	 XMeanMinusXBinContSumTwo[11][11]= XMeanMinusXBinContSum[140];
-	 XMeanMinusXBinContSumTwo[11][12]= XMeanMinusXBinContSum[141];
-	 XMeanMinusXBinContSumTwo[11][13]= XMeanMinusXBinContSum[142];
-
-	 XMeanMinusXBinContSumTwo[12][1]= XMeanMinusXBinContSum[143];
-	 XMeanMinusXBinContSumTwo[12][2]= XMeanMinusXBinContSum[144];
-	 XMeanMinusXBinContSumTwo[12][3]= XMeanMinusXBinContSum[145];
-	 XMeanMinusXBinContSumTwo[12][4]= XMeanMinusXBinContSum[146];
-	 XMeanMinusXBinContSumTwo[12][5]= XMeanMinusXBinContSum[147];
-	 XMeanMinusXBinContSumTwo[12][6]= XMeanMinusXBinContSum[148];
-	 XMeanMinusXBinContSumTwo[12][7]= XMeanMinusXBinContSum[149];
-	 XMeanMinusXBinContSumTwo[12][8]= XMeanMinusXBinContSum[150];
-	 XMeanMinusXBinContSumTwo[12][9]= XMeanMinusXBinContSum[151];
-	 XMeanMinusXBinContSumTwo[12][10]= XMeanMinusXBinContSum[152];
-	 XMeanMinusXBinContSumTwo[12][11]= XMeanMinusXBinContSum[153];
-	 XMeanMinusXBinContSumTwo[12][12]= XMeanMinusXBinContSum[154];
-	 XMeanMinusXBinContSumTwo[12][13]= XMeanMinusXBinContSum[155];
-
-	 XMeanMinusXBinContSumTwo[13][1]= XMeanMinusXBinContSum[156];
-	 XMeanMinusXBinContSumTwo[13][2]= XMeanMinusXBinContSum[157];
-	 XMeanMinusXBinContSumTwo[13][3]= XMeanMinusXBinContSum[158];
-	 XMeanMinusXBinContSumTwo[13][4]= XMeanMinusXBinContSum[159];
-	 XMeanMinusXBinContSumTwo[13][5]= XMeanMinusXBinContSum[160];
-	 XMeanMinusXBinContSumTwo[13][6]= XMeanMinusXBinContSum[161];
-	 XMeanMinusXBinContSumTwo[13][7]= XMeanMinusXBinContSum[162];
-	 XMeanMinusXBinContSumTwo[13][8]= XMeanMinusXBinContSum[163];
-	 XMeanMinusXBinContSumTwo[13][9]= XMeanMinusXBinContSum[164];
-	 XMeanMinusXBinContSumTwo[13][10]= XMeanMinusXBinContSum[165];
-	 XMeanMinusXBinContSumTwo[13][11]= XMeanMinusXBinContSum[166];
-	 XMeanMinusXBinContSumTwo[13][12]= XMeanMinusXBinContSum[167];
-	 XMeanMinusXBinContSumTwo[13][13]= XMeanMinusXBinContSum[168];
-	  cout<<"XMeanMinusXBinContSumTwo[13][13]"<<XMeanMinusXBinContSumTwo[13][13]<<endl;
-
-   for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-   {
-     for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
-     {
-       if (i==j)
-	 SVD_Post.RecoStatisticCovMat->SetBinContent(i,i, h1_Data_SigYild->GetBinError(i)*h1_Data_SigYild->GetBinError(i)   );
-       else
-	 SVD_Post.RecoStatisticCovMat->SetBinContent(i,j, 0.,0. );
-     }
-   }
-
-  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-  {
     for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
-        {
-	  //SVD_Post.BstatCov->SetBinContent(i,j, fabs(XMeanMinusXBinContSumTwo[i][j])  );
-	  
-	  SVD_Post.BstatCov->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  
-	  
-	 // h2_RecoScaleCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  //h2_RecoEffiCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  //h2_RecoSmearCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  //h2_RecoRecoilCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  //if (i<9 || j<9)
-	  //{
-	  //  h2_RecoQCDRatioCovMat->SetBinContent(i,j, 0.);
-	  //}else
-	  //{
-	  //  h2_RecoQCDRatioCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  //}
-	 //h2_RecoFSRCovMat->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]  );
-	  
-	  
-	  cout<<"XMeanMinusXBinContSumTwo[i][j]:   "<<" i = "<<i<<" j = "<<j<<"  "<<XMeanMinusXBinContSumTwo[i][j]<<endl;
-	  //cout<<"XMeanMinusXBinContSumTwo[i][j]:   "<<" i = "<<i<<" j = "<<j<<"  "<<fabs(XMeanMinusXBinContSumTwo[i][j])<<endl;
-	}
-  }
-
-  
-  // h2_RecoScaleCovMat->Write();
-   //h2_RecoEffiCovMat->Write();
-   //h2_RecoSmearCovMat->Write();
-   //h2_RecoRecoilCovMat->Write();
-   //h2_RecoQCDRatioCovMat->Write();
-   //h2_RecoFSRCovMat->Write();
-
-
-  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-  {
-    for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
-        {
-	  SVD_Post.BstatCorr->SetBinContent(i,j, fabs(XMeanMinusXBinContSumTwo[i][j])/sqrt(fabs(XMeanMinusXBinContSumTwo[i][i])*fabs(XMeanMinusXBinContSumTwo[j][j]))  );
-	  //SVD_Post.BstatCorr->SetBinContent(i,j, XMeanMinusXBinContSumTwo[i][j]/sqrt((XMeanMinusXBinContSumTwo[i][i])*(XMeanMinusXBinContSumTwo[j][j]))  );
-	  //SVD_Post.BstatCorr->SetBinContent(i,j, SVD_Post.BstatCov->GetBinContent(i)/sqrt()  );
-	  
-	}
-  }
-
-
-
-  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-  {
-
-    //cout<<"XMeanMinusXBinContSumTwo[i][i]  : "<<i<<""<<i<<"    "<<XMeanMinusXBinContSumTwo[i][i]<<endl;
-    cout<<"Recon stage CovMatrix_i_i         : "<<i<<""<<i<<"    "<<XMeanMinusXBinContSumTwo[i][i]<<endl;
-    cout<<"Square root of CovMatrix_i_i      :          "<<TMath::Sqrt(XMeanMinusXBinContSumTwo[i][i])<<endl;
-   // cout<<"Syst presentage %               : "<<i<<"         "<<(XMeanMinusXBinContSumTwo[i][i])/XMean[i-1]*100<<endl;
-    cout<<"Recon stage Systematics%          : "<<"              "<<TMath::Sqrt(XMeanMinusXBinContSumTwo[i][i])/h1_Data_SigYild->GetBinContent(i)*100<<"  % "<<endl;
-	  
+    {
+      if (i==j)
+	SVD_Post.RecoStatisticCovMat->SetBinContent(i,i, h1_Data_SigYild->GetBinError(i)*h1_Data_SigYild->GetBinError(i));
+      else
+	SVD_Post.RecoStatisticCovMat->SetBinContent(i,j, 0.,0. );
+    }
   }
   
   SVD_Post.RecoEffiCovMat =(TH2D*)f_RecoEffiCovMat->Get("h2_RecoEffiCovMat")->Clone();
@@ -1231,30 +622,6 @@ int wPtUnfoldStudy
     SVD_Post.RecoQCDRatioCovMat =(TH2D*)f_RecoQCDRatioCovMat->Get("h2_RecoQCDRatioCovMat")->Clone();
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     SVD_Post.RecoScaleCovMat =(TH2D*)f_RecoScaleCovMat->Get("h2_RecoScaleCovMat")->Clone();
-  if(BaseName == "WpToEleNu" || BaseName == "WpToMuNu" )
-  {
-    sprintf(tmpName,"hSigWPpt");
-    h1_SigWptFSR     =(TH1D*)f_RecoFSRCovMat->Get(tmpName)->Clone(tmpName);
-  }else if(BaseName == "WmToEleNu"|| BaseName == "WmToMuNu" )
-  {
-    sprintf(tmpName,"hSigWMpt");
-    h1_SigWptFSR     =(TH1D*)f_RecoFSRCovMat->Get(tmpName)->Clone(tmpName);
-  }
-  
-  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-  {
-    cout<<"h1_SigWptFSR:   "<<h1_SigWptFSR->GetBinContent(i)<<endl;
-  }
-  
-  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
-  {
-    for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
-    {
-      //cout<<"Nominal :    "<<h1_Data_SigYild->GetBinContent(i)<<"     FSR   "<<h1_SigWptFSR->GetBinContent(i)<<"  Deviation   "<<TMath::Abs(h1_Data_SigYild->GetBinContent(i)-h1_SigWptFSR->GetBinContent(i))<<endl;
-      //SVD_Post.RecoFSRCovMat->SetBinContent(i,j, TMath::Abs(h1_Data_SigYild->GetBinContent(i)-h1_SigWptFSR->GetBinContent(i))*TMath::Abs(h1_Data_SigYild->GetBinContent(j)-h1_SigWptFSR->GetBinContent(j))   );
-      SVD_Post.RecoFSRCovMat->SetBinContent(i,j, (h1_Data_SigYild->GetBinContent(i)-h1_SigWptFSR->GetBinContent(i))*(h1_Data_SigYild->GetBinContent(j)-h1_SigWptFSR->GetBinContent(j)));
-    }
-  }
   
 //Statistic Covariance Matrix
   gStyle->SetPaintTextFormat("4.2f"); 
@@ -1311,19 +678,9 @@ int wPtUnfoldStudy
     pltRecoScaleCov = new CPlot(tmpTStr,"Recon Scale Covariance Matrix","","");
     pltRecoScaleCov->setOutDir(resultDir);
     gPad->SetLogz();
-    //pltRecoScaleCov->AddHist2D(SVD_Post.BstatCov,"COLZ",kWhite,kBlack);
     pltRecoScaleCov->AddHist2D(SVD_Post.RecoScaleCovMat,"COLZ",kWhite,kBlack);
     pltRecoScaleCov->Draw(myCan,kTRUE,"png");
   }
-
-//FSR Covariance Matrix
-  //tmpTStr = "RecoFSRCovMat_"+BaseName;
-  //pltRecoFSRCov = new CPlot(tmpTStr,"Recon FSR Covariance Matrix","","");
-  //pltRecoFSRCov -> setOutDir(resultDir);
-  //gPad->SetLogz(0);
-  //SVD_Post.RecoFSRCovMat -> SetMarkerSize(0.8);
-  //pltRecoFSRCov -> AddHist2D(SVD_Post.RecoFSRCovMat,"COLTEXTZ",kWhite,kBlack);
-  //pltRecoFSRCov -> Draw(myCan,kTRUE,"png");
 
   Fout << "Effi Reco stage Syst"<< endl;
   Fout <<fixed<<setprecision(4);
@@ -1334,7 +691,6 @@ int wPtUnfoldStudy
     Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoEffiCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
   }
   
-
   Fout << "Smear Reco stage Syst"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1342,7 +698,7 @@ int wPtUnfoldStudy
   {
     Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoSmearCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
   }
-
+  
   Fout << "Recoil Reco stage Syst"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1350,23 +706,7 @@ int wPtUnfoldStudy
   {
     Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoRecoilCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
   }
-  
-//  Fout << "Lumi Reco stage Syst"<< endl;
-//  Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-//  Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-//  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-//  {
-//   Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoLumiCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoLumiCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoLumiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
-//  }
-  
-  //Fout << "FSR Reco stage Syst"<< endl;
-  //Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-  //Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-  //for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-  //{
-  //  Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoFSRCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
-  //}
-  
+
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
     Fout << "QCDRatio Reco stage"<< endl;
     Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
@@ -1404,23 +744,22 @@ int wPtUnfoldStudy
   Fout << ""<< endl;
   Fout << ""<< endl;
   Fout << "Systematics "<< endl;
-  //Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "Scale Syst" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Lumi Syst" << "\t\t" <<  "FSR Syst" << "\t\t" <<endl;
   
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "FSR Syst" << "\t\t" <<  "QCDvsSignalRaio Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" << "QCDvsSignalRaio Syst" <<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "FSR Syst" << "\t\t" <<  "Scale Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "Scale Syst" <<endl;
   
   Fout << "" << "\t\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << "\t\t"<< "0" <<TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
     }
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << "\t\t"<< "0" <<TMath::Sqrt(SVD_Post.RecoScaleCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoScaleCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
     }
   
   Fout << ""<< endl;
@@ -1437,12 +776,14 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i)*100 <<endl;
+      TotalStat[i]=100*TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i);
+      Fout<<TotalStat[i]<<endl;
     }
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoScaleCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i)*100 <<endl;
+      TotalStat[i]=100*TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoScaleCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i);
+      Fout<<TotalStat[i]<<endl;
     }
   
   //SVD_Post.RecoStatisticCovMat->Write();
@@ -1451,7 +792,6 @@ int wPtUnfoldStudy
   //SVD_Post.RecoSmearCovMat->Write();
   //SVD_Post.RecoRecoilCovMat->Write();
   //SVD_Post.RecoLumiCovMat->Write();
-  //SVD_Post.RecoFSRCovMat->Write();
 
 
   SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoStatisticCovMat );
@@ -1461,10 +801,6 @@ int wPtUnfoldStudy
   SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoRecoilCovMat );
   //SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoQCDRatioCovMat);
   
-  
-  //SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoFSRCovMat );
-
- 
   SVD_Post.TotalRecoCovMat->Write();
 
    for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
@@ -1503,16 +839,12 @@ int wPtUnfoldStudy
   //SVD_Post.statCov = tsvdData->GetBCov();
   tsvdData->SetNormalize( kFALSE );
   SVD_Post.unfRes = tsvdData->Unfold(4); 
-  //SVD_Post.unfRes = tsvdData->Unfold(6); 
-  //SVD_Post.unfRes = tsvdData->Unfold(7); 
-  //SVD_Post.unfRes = tsvdData->Unfold(9); 
   SVD_Post.dDist = tsvdData->GetD();
   SVD_Post.svDist = tsvdData->GetSV();
   
   SVD_Post.uStatCov = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 1000);
   //SVD_Post.uTotalCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 100);
   SVD_Post.uTotalCovMat = (TH2D*)SVD_Post.uStatCov->Clone("uTotalCovMat");
-  //SVD_Post.uStatCov = tsvdData->GetUnfoldCovMatrix( SVD_Post.BstatCov, 100);
   
   
   SVD_Post.uRecoEffiCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoEffiCovMat, 1000);
@@ -1521,7 +853,6 @@ int wPtUnfoldStudy
   SVD_Post.uRecoSmearCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoSmearCovMat, 1000);
   SVD_Post.uRecoRecoilCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoRecoilCovMat, 1000);
   //SVD_Post.uRecoLumiCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoLumiCovMat, 100);
-  //SVD_Post.uRecoFSRCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoFSRCovMat, 100);
   SVD_Post.uRecoStatisticCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 1000);
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     SVD_Post.uRecoQCDRatioCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoQCDRatioCovMat, 1000);
@@ -1549,7 +880,7 @@ int wPtUnfoldStudy
 
 //Absolute Normalized correlated error matrix 
   tmpTStr = "uAbsNormCorrErrMat_D_Unf_"+BaseName;
-  pltUnfPost_AbsNormCorrErr = new CPlot(tmpTStr,"D_Unf Absolute Normalized correlated error matrix","","");
+  pltUnfPost_AbsNormCorrErr = new CPlot(tmpTStr,"D_Unf Absolute Normalized Covariance error matrix","","");
   pltUnfPost_AbsNormCorrErr -> setOutDir(resultDir);
   gPad->SetLogz(0);
   SVD_Post.AbsNormCorrErr -> SetMarkerSize(0.8);
@@ -1571,8 +902,6 @@ int wPtUnfoldStudy
    //SVD_Post.uRecoSmearCovMat->Write();
    //SVD_Post.uRecoRecoilCovMat->Write();
    //SVD_Post.uRecoLumiCovMat->Write();
-   //SVD_Post.uRecoFSRCovMat->Write();
-
 
    for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
    {
@@ -1655,14 +984,6 @@ int wPtUnfoldStudy
  //   Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoLumiCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoLumiCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoLumiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
  // }
   
-  //Fout << "FSR Detector Unfolding stage Syst"<< endl;
-  //Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-  //Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-  //for( int i(1);i<=SVD_Post.unfRes->GetNbinsX(); i++)
-  //{
-  //  Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoFSRCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
-  //}
-
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
     Fout << "QCDRatio Detector Unfolding stage"<< endl;
     Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
@@ -1694,23 +1015,23 @@ int wPtUnfoldStudy
   Fout << ""<< endl;
   Fout << ""<< endl;
   Fout << "Systematics"<< endl;
-    //Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "Scale Syst" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Lumi Syst" << "\t\t" <<  "FSR Syst" << "\t\t" <<endl;
+    //Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "Scale Syst" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Lumi Syst" << "\t\t" << endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" <<  "FSR Syst" << "\t\t" <<  "QCDvsSignalRatio Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "QCDvsSignalRatio Syst" <<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" <<  "FSR Syst" << "\t\t" <<  "Scale Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Scale Syst" <<endl;
   
   Fout << "" << "\t\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" "\t\t"<< "0" << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
   cout<<"Check8"<<endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" "\t\t"<< "0" << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
   cout<<"Check9"<<endl;
   
@@ -1776,13 +1097,6 @@ int wPtUnfoldStudy
  // pltReconLumi_cov->AddHist2D(SVD_Post.uRecoLumiCovMat,"COLZ",kWhite,kBlack);
  // pltReconLumi_cov->Draw(myCan,kTRUE,"png");
  
-  //tmpTStr = "RecoFSRCovMat_cov_AfterPost"+BaseName;
-  //pltReconFSR_cov = new CPlot(tmpTStr,"ReconFSR Covariance matrix AfterPost","","");
-  //pltReconFSR_cov->setOutDir(resultDir);
-  //gPad->SetLogz();
-  //pltReconFSR_cov->AddHist2D(SVD_Post.uRecoFSRCovMat,"COLZ",kWhite,kBlack);
-  //pltReconFSR_cov->Draw(myCan,kTRUE,"png");
-
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
     tmpTStr = "RecoQCDRatioCovMat_cov_AfterPost"+BaseName;
     pltReconQCDRatio_cov = new CPlot(tmpTStr,"ReconQCDRatio Covariance matrix AfterPost","","");
@@ -1850,7 +1164,6 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoQCDRatioCovMat);
  // SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoLumiCovMat );
-  //SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoFSRCovMat );
   SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uTauCov );
   
   SVD_Post.uTotalRecoCovMat->Write();
@@ -1876,21 +1189,29 @@ int wPtUnfoldStudy
   {
     for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
     {
-      SVD_Post.EffFSRCovMat->SetBinContent(i,j, SVD_Post.unfRes->GetBinContent(i)*SVD_Post.unfRes->GetBinContent(j)
+      SVD_Post.MCEventEffFSRCovMat->SetBinContent(i,j, SVD_Post.unfRes->GetBinContent(i)*SVD_Post.unfRes->GetBinContent(j)
 	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(i) - h1_Post_BothOvTruth_eqBin->GetBinContent(i))
 	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(j) - h1_Post_BothOvTruth_eqBin->GetBinContent(j)));
     }
   }
   
-  SVD_Post.EffFSRCovMat->Write();
+  SVD_Post.MCEventEffFSRCovMat->Write();
+
+  Fout << "FSR Syst Checking ===> Different from effStudy.C results!!!"<< endl;
+  Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
+  Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
+  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+  {
+    Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.RecoStatisticCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.unfRes->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
+  }
 
   //FSR Covariance Matrix
   tmpTStr = "EffFSRCovMat_"+BaseName;
   pltEffFSRCov = new CPlot(tmpTStr,"FSR Covariance Matrix from Event Efficiency","","");
   pltEffFSRCov -> setOutDir(resultDir);
   gPad->SetLogz(0);
-  SVD_Post.EffFSRCovMat -> SetMarkerSize(0.8);
-  pltEffFSRCov -> AddHist2D(SVD_Post.EffFSRCovMat,"COLTEXTZ",kWhite,kBlack);
+  SVD_Post.MCEventEffFSRCovMat -> SetMarkerSize(0.8);
+  pltEffFSRCov -> AddHist2D(SVD_Post.MCEventEffFSRCovMat,"COLTEXTZ",kWhite,kBlack);
   pltEffFSRCov -> Draw(myCan,kTRUE,"png");
 
   SVD_Post.EffCorr = (TH1D*)SVD_Post.unfRes->Clone("PostEffCorr");
@@ -1917,7 +1238,7 @@ int wPtUnfoldStudy
        SVD_Post.Eff_uRecoSmearCovMat->SetBinContent(i,j, SVD_Post.uRecoSmearCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        SVD_Post.Eff_uRecoRecoilCovMat->SetBinContent(i,j, SVD_Post.uRecoRecoilCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        //SVD_Post.Eff_uRecoLumiCovMat->SetBinContent(i,j, SVD_Post.uRecoLumiCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
-       //SVD_Post.Eff_uRecoFSRCovMat->SetBinContent(i,j, SVD_Post.uRecoFSRCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
+       //SVD_Post.Eff_uMCEventEffFSRCovMat->SetBinContent(i,j, SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
 	 SVD_Post.Eff_uRecoQCDRatioCovMat->SetBinContent(i,j, SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        SVD_Post.Eff_uTauCov->SetBinContent(i,j, SVD_Post.uTauCov->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
@@ -2010,7 +1331,7 @@ int wPtUnfoldStudy
   //Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
   //for( int i(1);i<=SVD_Post.EffCorr->GetNbinsX(); i++)
   //{
-  //  Fout << i << "\t" <<SVD_Post.EffCorr->GetBinContent(i) << "\t\t" << SVD_Post.Eff_uRecoFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.Eff_uRecoFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.Eff_uRecoFSRCovMat->GetBinContent(i,i))/SVD_Post.EffCorr->GetBinContent(i)*100 << endl;
+  //  Fout << i << "\t" <<SVD_Post.EffCorr->GetBinContent(i) << "\t\t" << SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Post.EffCorr->GetBinContent(i)*100 << endl;
   //}
   
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
@@ -2038,6 +1359,11 @@ int wPtUnfoldStudy
     Fout << i << "\t" << SVD_Post.EffCorr->GetBinContent(i) << "\t\t" << SVD_Post.Eff_DetectUnfStatisticCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.Eff_DetectUnfStatisticCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.Eff_DetectUnfStatisticCovMat->GetBinContent(i,i))/SVD_Post.EffCorr->GetBinContent(i)*100 << endl;
   }
   
+  for( int ipt(1);ipt<=h1_Post_BothOvTruth->GetNbinsX(); ipt++)
+  {
+    Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR->GetBinContent(ipt) - h1_Post_BothOvTruth->GetBinContent(ipt))/h1_Post_BothOvTruth->GetBinContent(ipt)<<endl;
+  }
+
   SVD_Post.Eff_uRecoStatisticCovMat->Write();
   SVD_Post.Eff_uRecoEffiCovMat->Write();
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -2047,7 +1373,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     SVD_Post.Eff_uRecoQCDRatioCovMat->Write();
  //  SVD_Post.Eff_uRecoLumiCovMat->Write();
-  //SVD_Post.Eff_uRecoFSRCovMat->Write();
+  //SVD_Post.Eff_uMCEventEffFSRCovMat->Write();
   
   SVD_Post.Eff_DetectUnfStatisticCovMat->Write();
  
@@ -2056,7 +1382,7 @@ int wPtUnfoldStudy
  //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uRecoEffiCovMat );
  //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uRecoSmearCovMat );
  //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uRecoRecoilCovMat );
- //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uRecoFSRCovMat );
+ //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uMCEventEffFSRCovMat );
  //  SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uTauCov );
   
   // SVD_Post.Eff_uTotalRecoCovMat->Add(SVD_Post.Eff_uRecoLumiCovMat );
@@ -2084,10 +1410,14 @@ int wPtUnfoldStudy
   //cout<<"LumiWeight_Muon_WpToMuNu_S8: "<<LumiWeight_Muon_WpToMuNu_S8<<endl;
   
   //tmpTStr = "Post_cov_"+BaseName;
-  tmpTStr = "Post_uTotalCov_"+BaseName;
-  pltUnfPost_uTotalCov = new CPlot(tmpTStr,"TSVDUnfold Total Covariance matrix","","");
+  //tmpTStr = "Post_uTotalCov_"+BaseName;
+  tmpTStr = "uTotalAfterDetUnfCovMat__"+BaseName;
+  pltUnfPost_uTotalCov = new CPlot(tmpTStr,"TSVDUnfold TotalCovMat after Det Unfolding","","");
   pltUnfPost_uTotalCov->setOutDir(resultDir);
-  pltUnfPost_uTotalCov->AddHist2D(SVD_Post.uTotalCovMat,"COLZ",kWhite,kBlack);
+  gPad->SetLogz(0);
+  SVD_Post.uTotalCovMat->SetMarkerSize(0.8);
+  //pltUnfPost_uTotalCov->AddHist2D(SVD_Post.uTotalCovMat,"COLZ",kWhite,kBlack);
+  pltUnfPost_uTotalCov->AddHist2D(SVD_Post.uTotalCovMat,"COLTEXTZ",kWhite,kBlack);
   pltUnfPost_uTotalCov->Draw(myCan,kTRUE,"png");
 
   tmpTStr = "Post_uTotalSystCov_"+BaseName;
@@ -2144,7 +1474,7 @@ int wPtUnfoldStudy
   SVD_Post.AcceptFSRCovMat->Write();
   
   //SVD_Born.InputCovMat->Add(SVD_Post.uTotalCovMat );
-  SVD_Born.InputCovMat->Add(SVD_Post.EffFSRCovMat );
+  SVD_Born.InputCovMat->Add(SVD_Post.MCEventEffFSRCovMat );
 
   //InputCovMat to FSR Unfolding
   tmpTStr = "InputCovMatToFSRUnf_"+BaseName;
@@ -2168,7 +1498,7 @@ int wPtUnfoldStudy
  //     SVD_Born.data, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
   
   //TSVDUnfold *svdBorn = new TSVDUnfold(
-  //    SVD_Born.data,SVD_Post.Eff_uRecoFSRCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
+  //    SVD_Born.data,SVD_Post.Eff_uMCEventEffFSRCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
   
   //TSVDUnfold *svdBorn = new TSVDUnfold(
   //    SVD_Born.data,SVD_Post.Eff_uTotalRecoCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
@@ -2182,8 +1512,11 @@ int wPtUnfoldStudy
   SVD_Born.statCov = svdBorn->GetBCov();
   svdBorn->SetNormalize( kFALSE );
   SVD_Born.unfRes = svdBorn->Unfold(4);
-  //SVD_Born.unfRes = svdBorn->Unfold(5); //Wplus Ele
-  //SVD_Born.unfRes = svdBorn->Unfold(7); //Wminus Ele
+  //SVD_Born.unfRes = svdBorn->Unfold(5);
+  //SVD_Born.unfRes = svdBorn->Unfold(6);
+  //SVD_Born.unfRes = svdBorn->Unfold(7);
+  //SVD_Born.unfRes = svdBorn->Unfold(8);
+  //SVD_Born.unfRes = svdBorn->Unfold(9);
   SVD_Born.dDist = svdBorn->GetD();
   SVD_Born.svDist = svdBorn->GetSV();
   SVD_Born.uStatCov = svdBorn->GetUnfoldCovMatrix( SVD_Born.statCov, 1000);
@@ -2199,8 +1532,9 @@ int wPtUnfoldStudy
  // SVD_Born.uRecoLumiCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoLumiCovMat, 100);
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     SVD_Born.uRecoQCDRatioCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoQCDRatioCovMat, 1000);
-  //SVD_Born.uRecoFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoFSRCovMat, 100);
-  SVD_Born.uRecoFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.AcceptFSRCovMat, 1000);
+  //SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uMCEventEffFSRCovMat, 100);
+  //SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.AcceptFSRCovMat, 1000);
+  SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.MCEventEffFSRCovMat, 1000);
   //SVD_Born.uRecoStatisticCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_DetectUnfStatisticCovMat, 1000);
   SVD_Born.uRecoStatisticCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoStatisticCovMat, 1000);
   //SVD_Born.uRecoStatisticCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 100);
@@ -2217,9 +1551,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoQCDRatioCovMat);
   SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoRespCovMat);
-  
-  //SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoFSRCovMat );
-
+  SVD_Born.uTotalCovMat->Add(SVD_Born.uMCEventEffFSRCovMat );
 
   //for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
   //{
@@ -2290,7 +1622,7 @@ int wPtUnfoldStudy
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
   for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
   {
-    Fout << i << "\t" << SVD_Born.unfRes->GetBinContent(i) << "\t\t" << SVD_Born.uRecoFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << endl;
+    Fout << i << "\t" << SVD_Born.unfRes->GetBinContent(i) << "\t\t" << SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << endl;
   }
 
   Fout << "Statistic"<< endl;
@@ -2325,12 +1657,12 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
 
   Fout << ""<< endl;
@@ -2346,12 +1678,12 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
 
   Fout << ""<< endl;
@@ -2367,12 +1699,12 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   Fout << ""<< endl;
@@ -2388,12 +1720,12 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   Fout << ""<< endl;
@@ -2409,12 +1741,12 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoScaleCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uRecoFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   SVD_Born.uAdetCov = svdBorn->GetAdetCovMatrix( 1000);
@@ -2426,7 +1758,7 @@ int wPtUnfoldStudy
   SVD_Born.uTauCov->Add( SVD_Born.uAdetCov);
 
   //TotalCovMat after FSR Unfolding
-  tmpTStr = "uTotalAfterFSRCovMat_"+BaseName;
+  tmpTStr = "uTotalAfterFSRUnfCovMat_"+BaseName;
   pltUnfBorn_uTotalCov = new CPlot(tmpTStr,"TotalCovMat after FSR Unfolding","","");
   pltUnfBorn_uTotalCov -> setOutDir(resultDir);
   gPad->SetLogz(0);
@@ -2454,7 +1786,7 @@ int wPtUnfoldStudy
 
 //Absolute Normalized correlated error matrix 
   tmpTStr = "uAbsNormCorrErrMat_FSR_Unf_"+BaseName;
-  pltUnfBorn_AbsNormCorrErr = new CPlot(tmpTStr,"FSR_Unf Absolute Normalized correlated error matrix","","");
+  pltUnfBorn_AbsNormCorrErr = new CPlot(tmpTStr,"FSR_Unf Absolute Normalized Covariance error matrix","","");
   pltUnfBorn_AbsNormCorrErr -> setOutDir(resultDir);
   gPad->SetLogz(0);
   SVD_Born.AbsNormCorrErr -> SetMarkerSize(0.8);
@@ -2548,42 +1880,38 @@ int wPtUnfoldStudy
    // cout<<TMath::Sqrt(SVD_Born.uStatCov->GetBinContent(i,i)) /SVD_Born.EffCorr->GetBinContent(i)*100 <<endl;
  // }
 
+  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+    for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+    {
+      TotalError[i]=100*TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i)+SVD_Post.RecoEffiCovMat->GetBinContent(i,i)
+	  +SVD_Post.RecoSmearCovMat->GetBinContent(i,i)+SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)
+	  +SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)+SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i)
+	  +TMath::Power(0.026*h1_Data_SigYild->GetBinContent(i),2))/h1_Data_SigYild->GetBinContent(i);
+      Fout<<"TotalError = "<<TotalError[i]<<endl;
+      SVD_Born.EffCorr->SetBinError(i,0.01*TotalError[i]*SVD_Born.EffCorr->GetBinContent(i));
+    }
+  else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
+    for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+    {
+      TotalError[i]=100*TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i)+SVD_Post.RecoEffiCovMat->GetBinContent(i,i)
+	  +SVD_Post.RecoSmearCovMat->GetBinContent(i,i)+SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)
+	  +SVD_Post.RecoScaleCovMat->GetBinContent(i,i)+SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i)
+	  +TMath::Power(0.026*h1_Data_SigYild->GetBinContent(i),2))/h1_Data_SigYild->GetBinContent(i);
+      Fout<<"TotalError = "<<TotalError[i]<<endl;
+      SVD_Born.EffCorr->SetBinError(i,0.01*TotalError[i]*SVD_Born.EffCorr->GetBinContent(i));
+    }
+  
   // Write to root file
   SVD_Post.data->Write();
-//  sprintf(tmpName,"h1_SVD_Post_data_%d",k);
-//  h1_SVD_Post_data[k] = (TH1D*)SVD_Post.data->Clone(tmpName);
-//  h1_SVD_Post_data[k]->Sumw2();
-//  h1_SVD_Post_data[k]->Write();
 
   SVD_Born.EffCorr->Write();
-//  sprintf(tmpName,"h1_SVD_Born_EffCorr_%d",k);
-//  h1_SVD_Born_EffCorr[k] = (TH1D*)SVD_Born.EffCorr->Clone(tmpName);
-//  h1_SVD_Born_EffCorr[k]->Sumw2();
-//  h1_SVD_Born_EffCorr[k]->Write();
 
   SVD_Born.Gen->Write();
-//  sprintf(tmpName,"h1_SVD_Born_Gen_%d",k);
-//  h1_SVD_Born_Gen[k] = (TH1D*)SVD_Born.Gen->Clone(tmpName);
-//  h1_SVD_Born_Gen[k]->Sumw2();
-//  h1_SVD_Born_Gen[k]->Write();
 
   SVD_Post.True->Write();
-//  sprintf(tmpName,"h1_SVD_Post_True_%d",k);
-//  h1_SVD_Post_True[k] = (TH1D*)SVD_Post.True->Clone(tmpName);
-//  h1_SVD_Post_True[k]->Sumw2();
-//  h1_SVD_Post_True[k]->Write();
-
 
   SVD_Post.unfRes->Write();
-//  sprintf(tmpName,"h1_SVD_Post_unfRes_%d",k);
-//  h1_SVD_Post_unfRes[k] = (TH1D*)SVD_Post.unfRes->Clone(tmpName);
-//  h1_SVD_Post_unfRes[k]->Sumw2();
-//  h1_SVD_Post_unfRes[k]->Write();
 
   SVD_Post.Gen->Write();
-//  sprintf(tmpName,"h1_SVD_Post_Gen_%d",k);
-//  h1_SVD_Post_Gen[k] = (TH1D*)SVD_Post.Gen->Clone(tmpName);
-//  h1_SVD_Post_Gen[k]->Sumw2();
-//  h1_SVD_Post_Gen[k]->Write();
   return 0;
 }
