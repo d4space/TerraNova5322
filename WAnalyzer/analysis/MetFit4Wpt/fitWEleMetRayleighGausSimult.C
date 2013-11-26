@@ -760,6 +760,7 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
+  //for( int ipt(11);ipt<12;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1082,16 +1083,19 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       nAntiQCDm[ipt] -> setVal(5460.06);
       qcdmean[ipt] ->setVal(5.3863);
       qcdPmean[ipt]->setVal(5.48942);
-      qcdMmean[ipt]->setVal(1.60192);
+      //qcdMmean[ipt]->setVal(1.60192);
+      qcdMmean[ipt]->setVal(5.60192);
       qcdsigma1[ipt] ->setVal(4.31829);
       qcdPsigma1[ipt]->setVal(4.34105);
-      qcdMsigma1[ipt]->setVal(11.8607);
+      //qcdMsigma1[ipt]->setVal(11.8607);
+      qcdMsigma1[ipt]->setVal(4.3607);
       qcda1[ipt] ->setVal(0.215662);
       qcdPa1[ipt]->setVal(0.211923);
       qcdMa1[ipt]->setVal(0.1186092);
       qcdsigma2[ipt] ->setVal(9.27829);
       qcdPsigma2[ipt]->setVal(9.03575);
-      qcdMsigma1[ipt]->setVal(12.045);
+      //qcdMsigma1[ipt]->setVal(12.045);
+      qcdMsigma1[ipt]->setVal(9.245);
       qcda2[ipt] ->setVal(0.163322);
       qcdPa2[ipt]->setVal(0.173797);
       qcdMa2[ipt]->setVal(-0.28472);
@@ -1305,7 +1309,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdMsigma1[ipt]->setVal(5.65162);
       qcda1[ipt] ->setVal(0.279209);
       qcdPa1[ipt]->setVal(-0.348706);
-      qcdMa1[ipt]->setVal(-0.293445);
+      //qcdMa1[ipt]->setVal(-0.293445);
+      qcdMa1[ipt]->setVal(-0.29344);
       dFrac1[ipt] ->setVal(0.5);
       dFrac1P[ipt]->setVal(0.5);
       dFrac1M[ipt]->setVal(0.5);
@@ -1314,7 +1319,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdMsigma2[ipt]->setVal(12.61099);
       qcda2[ipt] ->setVal(0.160141);
       qcdPa2[ipt]->setVal(0.227439);
-      qcdMa2[ipt]->setVal(0.2106761);
+      //qcdMa2[ipt]->setVal(0.2106761);
+      qcdMa2[ipt]->setVal(0.21067);
       dFrac2[ipt] ->setVal(0.5);
       dFrac2P[ipt]->setVal(0.5);
       dFrac2M[ipt]->setVal(0.5);
@@ -1334,7 +1340,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdsigma1[ipt] ->setVal(29.3026);
       qcdPsigma1[ipt]->setVal(33.786);
       qcdMsigma1[ipt]->setVal(5.4919);
-      qcda1[ipt] ->setVal(-0.159075);
+      //qcda1[ipt] ->setVal(-0.159075);
+      qcda1[ipt] ->setVal(-0.15907);
       qcdPa1[ipt]->setVal(-0.339526);
       qcdMa1[ipt]->setVal(-0.282001);
       dFrac1[ipt] ->setVal(0.289017);
@@ -1343,7 +1350,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdsigma2[ipt] ->setVal(9.02172);
       qcdPsigma2[ipt]->setVal(11.6925);
       qcdMsigma2[ipt]->setVal(11.2776);
-      qcda2[ipt] ->setVal(0.255279);
+      //qcda2[ipt] ->setVal(0.255279);
+      qcda2[ipt] ->setVal(0.25527);
       qcdPa2[ipt]->setVal(0.212284);
       qcdMa2[ipt]->setVal(0.245305);
       dFrac2[ipt] ->setVal(0.00453023);
@@ -2654,66 +2662,66 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
     InValfile<<"nSig[ipt] -> setVal("<<nSig[ipt] ->getValV()<<");"<<endl;
     InValfile<<"nSigp[ipt]-> setVal("<<nSigp[ipt]->getValV()<<");"<<endl;
     InValfile<<"nSigm[ipt]-> setVal("<<nSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nQCD[ipt] -> setVal("<<nQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nQCDp[ipt]-> setVal("<<nQCDp[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nQCDm[ipt]-> setVal("<<nQCDm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiSig[ipt] -> setVal("<<nAntiSig[ipt]->getValV()<<");"<<endl;
+    InValfile<<"nAntiSig[ipt] -> setVal("<<nAntiSig[ipt] ->getValV()<<");"<<endl;
     InValfile<<"nAntiSigp[ipt]-> setVal("<<nAntiSigp[ipt]->getValV()<<");"<<endl;
     InValfile<<"nAntiSigm[ipt]-> setVal("<<nAntiSigm[ipt]->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCD[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDp[ipt]-> setVal("<<nAntiQCDp[ipt] ->getValV()<<");"<<endl;
-    InValfile<<"nAntiQCDm[ipt]-> setVal("<<nAntiQCDm[ipt] ->getValV()<<");"<<endl;
+    InValfile<<"nQCD[ipt] -> setVal("<<nQCD[ipt] ->getValV()<<"+gRandom->Gaus(0,1)*"<<nQCD[ipt] ->getError()<<");"<<endl;
+    InValfile<<"nQCDp[ipt]-> setVal("<<nQCDp[ipt]->getValV()<<"+gRandom->Gaus(0,1)*"<<nQCDp[ipt]->getError()<<");"<<endl;
+    InValfile<<"nQCDm[ipt]-> setVal("<<nQCDm[ipt]->getValV()<<"+gRandom->Gaus(0,1)*"<<nQCDm[ipt]->getError()<<");"<<endl;
+    InValfile<<"nAntiQCD[ipt] -> setVal("<<nAntiQCD[ipt] ->getValV()<<"+gRandom->Gaus(0,1)*"<<nAntiQCD[ipt] ->getError()<<");"<<endl;
+    InValfile<<"nAntiQCDp[ipt]-> setVal("<<nAntiQCDp[ipt]->getValV()<<"+gRandom->Gaus(0,1)*"<<nAntiQCDp[ipt]->getError()<<");"<<endl;
+    InValfile<<"nAntiQCDm[ipt]-> setVal("<<nAntiQCDm[ipt]->getValV()<<"+gRandom->Gaus(0,1)*"<<nAntiQCDm[ipt]->getError()<<");"<<endl;
     if (ipt<4){
-      InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt] ->mean->getValV()<<");"<<endl;
-      InValfile<<"qcdPmean[ipt]->setVal("<<qcdp[ipt]->mean->getValV()<<");"<<endl;
-      InValfile<<"qcdMmean[ipt]->setVal("<<qcdm[ipt]->mean->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->sigma->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd[ipt] ->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdPa1[ipt]->setVal("<<qcdp[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdMa1[ipt]->setVal("<<qcdm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd[ipt] ->mean->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd[ipt] ->mean->getError()<<");"<<endl;
+      InValfile<<"qcdPmean[ipt]->setVal("<<qcdp[ipt]->mean->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdp[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"qcdMmean[ipt]->setVal("<<qcdm[ipt]->mean->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdm[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd[ipt] ->sigma->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd[ipt] ->sigma->getError()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcdp[ipt]->sigma->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdp[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcdm[ipt]->sigma->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdm[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd[ipt] ->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd[ipt] ->a1->getError()<<");"<<endl;
+      InValfile<<"qcdPa1[ipt]->setVal("<<qcdp[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdp[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"qcdMa1[ipt]->setVal("<<qcdm[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcdm[ipt]->a1->getError()<<");"<<endl;
     }else if (ipt == 4){
-      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt] ->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdPmean[ipt]->setVal("<<qcd1p[ipt]->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdMmean[ipt]->setVal("<<qcd1m[ipt]->m1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt] ->s1->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd1p[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s1->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt] ->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdPa1[ipt]->setVal("<<qcd1p[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdMa1[ipt]->setVal("<<qcd1m[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt] ->s2->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd1p[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt] ->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdPa2[ipt]->setVal("<<qcd1p[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdMa2[ipt]->setVal("<<qcd1m[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt] ->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1P[ipt]->setVal("<<qcd1p[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac1M[ipt]->setVal("<<qcd1m[ipt]->f1->getValV()<<");"<<endl;
-      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt] ->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2P[ipt]->setVal("<<qcd1p[ipt]->f2->getValV()<<");"<<endl;
-      InValfile<<"Frac2M[ipt]->setVal("<<qcd1m[ipt]->f2->getValV()<<");"<<endl;
+      InValfile<<"qcdmean[ipt] ->setVal("<<qcd1[ipt] ->m1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->m1->getError()<<");"<<endl;
+      InValfile<<"qcdPmean[ipt]->setVal("<<qcd1p[ipt]->m1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->m1->getError()<<");"<<endl;
+      InValfile<<"qcdMmean[ipt]->setVal("<<qcd1m[ipt]->m1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->m1->getError()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd1[ipt] ->s1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->s1->getError()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd1p[ipt]->s1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->s1->getError()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->s1->getError()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd1[ipt] ->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->a1->getError()<<");"<<endl;
+      InValfile<<"qcdPa1[ipt]->setVal("<<qcd1p[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"qcdMa1[ipt]->setVal("<<qcd1m[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd1[ipt] ->s2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->s2->getError()<<");"<<endl;
+      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd1p[ipt]->s2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->s2->getError()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd1m[ipt]->s2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->s2->getError()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd1[ipt] ->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->a2->getError()<<");"<<endl;
+      InValfile<<"qcdPa2[ipt]->setVal("<<qcd1p[ipt]->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->a2->getError()<<");"<<endl;
+      InValfile<<"qcdMa2[ipt]->setVal("<<qcd1m[ipt]->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->a2->getError()<<");"<<endl;
+      InValfile<<"Frac1[ipt] ->setVal("<<qcd1[ipt] ->f1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->f1->getError()<<");"<<endl;
+      InValfile<<"Frac1P[ipt]->setVal("<<qcd1p[ipt]->f1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->f1->getError()<<");"<<endl;
+      InValfile<<"Frac1M[ipt]->setVal("<<qcd1m[ipt]->f1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->f1->getError()<<");"<<endl;
+      InValfile<<"Frac2[ipt] ->setVal("<<qcd1[ipt] ->f2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1[ipt] ->f2->getError()<<");"<<endl;
+      InValfile<<"Frac2P[ipt]->setVal("<<qcd1p[ipt]->f2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1p[ipt]->f2->getError()<<");"<<endl;
+      InValfile<<"Frac2M[ipt]->setVal("<<qcd1m[ipt]->f2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd1m[ipt]->f2->getError()<<");"<<endl;
     }else if (ipt > 4){
-      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt] ->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd2p[ipt]->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd2m[ipt]->sigma1->getValV()<<");"<<endl;
-      InValfile<<"qcda1[ipt] ->setVal("<<qcd2[ipt] ->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdPa1[ipt]->setVal("<<qcd2p[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"qcdMa1[ipt]->setVal("<<qcd2m[ipt]->a1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1[ipt] ->setVal("<<qcd2[ipt] ->frac1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1P[ipt]->setVal("<<qcd2p[ipt]->frac1->getValV()<<");"<<endl;
-      InValfile<<"dFrac1M[ipt]->setVal("<<qcd2m[ipt]->frac1->getValV()<<");"<<endl;
-      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd2[ipt] ->sigma2->getValV()<<");"<<endl;
-      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd2p[ipt]->sigma2->getValV()<<");"<<endl;
-      InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd2m[ipt]->sigma2->getValV()<<");"<<endl;
-      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt] ->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdPa2[ipt]->setVal("<<qcd2p[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"qcdMa2[ipt]->setVal("<<qcd2m[ipt]->a2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2[ipt] ->setVal("<<qcd2[ipt] ->frac2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2P[ipt]->setVal("<<qcd2p[ipt]->frac2->getValV()<<");"<<endl;
-      InValfile<<"dFrac2M[ipt]->setVal("<<qcd2m[ipt]->frac2->getValV()<<");"<<endl;
+      InValfile<<"qcdsigma1[ipt] ->setVal("<<qcd2[ipt] ->sigma1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->sigma1->getError()<<");"<<endl;
+      InValfile<<"qcdPsigma1[ipt]->setVal("<<qcd2p[ipt]->sigma1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->sigma1->getError()<<");"<<endl;
+      InValfile<<"qcdMsigma1[ipt]->setVal("<<qcd2m[ipt]->sigma1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->sigma1->getError()<<");"<<endl;
+      InValfile<<"qcda1[ipt] ->setVal("<<qcd2[ipt] ->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->a1->getError()<<");"<<endl;
+      InValfile<<"qcdPa1[ipt]->setVal("<<qcd2p[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"qcdMa1[ipt]->setVal("<<qcd2m[ipt]->a1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"dFrac1[ipt] ->setVal("<<qcd2[ipt] ->frac1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->frac1->getError()<<");"<<endl;
+      InValfile<<"dFrac1P[ipt]->setVal("<<qcd2p[ipt]->frac1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->frac1->getError()<<");"<<endl;
+      InValfile<<"dFrac1M[ipt]->setVal("<<qcd2m[ipt]->frac1->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->frac1->getError()<<");"<<endl;
+      InValfile<<"qcdsigma2[ipt] ->setVal("<<qcd2[ipt] ->sigma2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->sigma2->getError()<<");"<<endl;
+      InValfile<<"qcdPsigma2[ipt]->setVal("<<qcd2p[ipt]->sigma2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->sigma2->getError()<<");"<<endl;
+      InValfile<<"qcdMsigma2[ipt]->setVal("<<qcd2m[ipt]->sigma2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->sigma2->getError()<<");"<<endl;
+      InValfile<<"qcda2[ipt] ->setVal("<<qcd2[ipt] ->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->a2->getError()<<");"<<endl;
+      InValfile<<"qcdPa2[ipt]->setVal("<<qcd2p[ipt]->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->a2->getError()<<");"<<endl;
+      InValfile<<"qcdMa2[ipt]->setVal("<<qcd2m[ipt]->a2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->a2->getError()<<");"<<endl;
+      InValfile<<"dFrac2[ipt] ->setVal("<<qcd2[ipt] ->frac2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2[ipt] ->frac2->getError()<<");"<<endl;
+      InValfile<<"dFrac2P[ipt]->setVal("<<qcd2p[ipt]->frac2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2p[ipt]->frac2->getError()<<");"<<endl;
+      InValfile<<"dFrac2M[ipt]->setVal("<<qcd2m[ipt]->frac2->getValV()<<"+gRandom->Gaus(0,1)*"<<qcd2m[ipt]->frac2->getError()<<");"<<endl;
     }
     InValfile<<endl;
     InValfile.flags(flags);
@@ -2865,11 +2873,15 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
   allyieldsm.close();
 //Write Signal numbers to file
   gSystem->mkdir(outputDir+"/RstElectron",kTRUE);
-  TString Yields = "RstElectron/SigYields_"+filetype+".root";
+  TString Yields = outputDir+"/RstElectron/SigYields_"+filetype+".root";
+
   TFile *nsigfile = new TFile(Yields,"RECREATE");
   hSigWpt -> Write();
   hSigWPpt-> Write();
   hSigWMpt-> Write();
+  hQCDWpt -> Write();
+  hQCDWPpt-> Write();
+  hQCDWMpt-> Write();
   
   //TF1 *f111 = new TF1("f111","[0]*TMath::Exp(-x/[1])+[2]",50.,600.);
   //f111->SetParameter(0,1);

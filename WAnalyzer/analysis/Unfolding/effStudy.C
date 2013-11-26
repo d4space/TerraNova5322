@@ -109,6 +109,8 @@ int effStudy()
   TH1D* h1_Post_BothOvTruth_weightFSR[4];
   TH1D* h1_Post_PostOvBoth[4];
   TH1D* h1_Born_BothOvBorn[4];
+  
+  TH1D *h1_MCEventFSRSyst = new TH1D("h1_MCEventFSRSyst","h1_MCEventFSRSyst",13,Bins);h1_MCEventFSRSyst->Sumw2();
 
   // Plot
   CPlot *pltEff;
@@ -125,15 +127,15 @@ int effStudy()
     // Get the Histograms from files
     sprintf(tmpName,"h1_Truth_Post_EffCorr");
     h1_Truth_Post_EffCorr[i] = (TH1D*)f_Rec[i]->Get(tmpName)->Clone(tmpName);
-    h1_Truth_Post_EffCorr[i] -> Sumw2();
+    h1_Truth_Post_EffCorr[i]-> Sumw2();
 
     sprintf(tmpName,"h1_Truth_Post_EffCorr_weightFSR");
     h1_Truth_Post_EffCorr_weightFSR[i] = (TH1D*)f_Rec[i]->Get(tmpName)->Clone(tmpName);
     h1_Truth_Post_EffCorr_weightFSR[i] -> Sumw2();
 
     sprintf(tmpName,"h1_Born_AP");
-    h1_Born_AP[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
-    h1_Born_AP[i]->Sumw2();
+    h1_Born_AP[i] = (TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
+    h1_Born_AP[i]-> Sumw2();
 
     sprintf(tmpName,"h1_Born_BornFid");
     h1_Born_BornFid[i]	=(TH1D*)f_Acc[i]->Get(tmpName)->Clone(tmpName);
@@ -197,8 +199,12 @@ int effStudy()
 	Fout << "============================ WpToMuNu =================================" << endl;
 	for( int ipt(1);ipt<=h1_Post_BothOvTruth[0]->GetNbinsX(); ipt++)
 	{
-	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[0]->GetBinContent(ipt) - h1_Post_BothOvTruth[0]->GetBinContent(ipt))/h1_Post_BothOvTruth[0]->GetBinContent(ipt)<<endl;
+	  //Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[0]->GetBinContent(ipt) - h1_Post_BothOvTruth[0]->GetBinContent(ipt))/h1_Post_BothOvTruth[0]->GetBinContent(ipt)<<endl;
+	  double FSRsyst = 100*(h1_Post_BothOvTruth_weightFSR[0]->GetBinContent(ipt) - h1_Post_BothOvTruth[0]->GetBinContent(ipt))/h1_Post_BothOvTruth[0]->GetBinContent(ipt);
+	  Fout <<ipt<<"\t"<<FSRsyst<<endl;
+	  h1_MCEventFSRSyst->SetBinContent(ipt, FSRsyst);
 	}
+	h1_MCEventFSRSyst->Write();
 
 	break;
       case 1:
@@ -221,8 +227,12 @@ int effStudy()
 	Fout << "============================ WmToMuNu =================================" << endl;
 	for( int ipt(1);ipt<=h1_Post_BothOvTruth[1]->GetNbinsX(); ipt++)
 	{
-	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[1]->GetBinContent(ipt) - h1_Post_BothOvTruth[1]->GetBinContent(ipt))/h1_Post_BothOvTruth[1]->GetBinContent(ipt)<<endl;
+	  //Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[1]->GetBinContent(ipt) - h1_Post_BothOvTruth[1]->GetBinContent(ipt))/h1_Post_BothOvTruth[1]->GetBinContent(ipt)<<endl;
+	  double FSRsyst = 100*(h1_Post_BothOvTruth_weightFSR[1]->GetBinContent(ipt) - h1_Post_BothOvTruth[1]->GetBinContent(ipt))/h1_Post_BothOvTruth[1]->GetBinContent(ipt);
+	  Fout <<ipt<<"\t"<<FSRsyst<<endl;
+	  h1_MCEventFSRSyst->SetBinContent(ipt, FSRsyst);
 	}
+	h1_MCEventFSRSyst->Write();
 
 	break;
       case 2:
@@ -245,8 +255,12 @@ int effStudy()
 	Fout << "============================ WpToEleNu =================================" << endl;
 	for( int ipt(1);ipt<=h1_Post_BothOvTruth[2]->GetNbinsX(); ipt++)
 	{
-	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[2]->GetBinContent(ipt) - h1_Post_BothOvTruth[2]->GetBinContent(ipt))/h1_Post_BothOvTruth[2]->GetBinContent(ipt)<<endl;
+	  //Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[2]->GetBinContent(ipt) - h1_Post_BothOvTruth[2]->GetBinContent(ipt))/h1_Post_BothOvTruth[2]->GetBinContent(ipt)<<endl;
+	  double FSRsyst = 100*(h1_Post_BothOvTruth_weightFSR[2]->GetBinContent(ipt) - h1_Post_BothOvTruth[2]->GetBinContent(ipt))/h1_Post_BothOvTruth[2]->GetBinContent(ipt);
+	  Fout <<ipt<<"\t"<<FSRsyst<<endl;
+	  h1_MCEventFSRSyst->SetBinContent(ipt, FSRsyst);
 	}
+	h1_MCEventFSRSyst->Write();
 	break;
       case 3:
 	h1_Post_BothOvTruth[3]->Write("h1_WmEl_BothOvTruth");
@@ -268,8 +282,12 @@ int effStudy()
 	Fout << "============================ WmToEleMuNu =================================" << endl;
 	for( int ipt(1);ipt<=h1_Post_BothOvTruth[3]->GetNbinsX(); ipt++)
 	{
-	  Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[3]->GetBinContent(ipt) - h1_Post_BothOvTruth[3]->GetBinContent(ipt))/h1_Post_BothOvTruth[3]->GetBinContent(ipt)<<endl;
+	  //Fout <<ipt<<"\t"<<100*(h1_Post_BothOvTruth_weightFSR[3]->GetBinContent(ipt) - h1_Post_BothOvTruth[3]->GetBinContent(ipt))/h1_Post_BothOvTruth[3]->GetBinContent(ipt)<<endl;
+	  double FSRsyst = 100*(h1_Post_BothOvTruth_weightFSR[3]->GetBinContent(ipt) - h1_Post_BothOvTruth[3]->GetBinContent(ipt))/h1_Post_BothOvTruth[3]->GetBinContent(ipt);
+	  Fout <<ipt<<"\t"<<FSRsyst<<endl;
+	  h1_MCEventFSRSyst->SetBinContent(ipt, FSRsyst);
 	}
+	h1_MCEventFSRSyst->Write();
 	break;
       default:
 	cout<<"Error: which case huh?"<<endl;
