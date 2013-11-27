@@ -371,6 +371,7 @@ int wPtUnfoldStudy
   CPlot *pltReconQCDRatio_cov;
  
   CPlot *pltRecon_corr;
+  CPlot *plt_DUnf_RespCov;
   
   CPlot *pltUnfPost_d;
   CPlot *pltUnfBorn;
@@ -419,14 +420,19 @@ int wPtUnfoldStudy
   cout<<"Simulated event========================="<<endl;
   int nbins = h1_Truth_Rec->GetNbinsX();
   cout<<"Nsimul N of bins: "<<nbins<<endl;
+  Fout<<"Nsimul N of bins: "<<nbins<<endl;
   double Nsimul = h1_Truth_Rec->Integral();
   cout<<"Total Events: "<<setw(20)<<setprecision(7)<<Nsimul<<endl;
+  Fout<<"Total Events: "<<setw(20)<<setprecision(7)<<Nsimul<<endl;
   double NsimulEven = h1_Truth_Rec_Even->Integral();
   cout<<"NsimulEven: "<<setw(20)<<setprecision(7)<<NsimulEven<<endl;
+  Fout<<"NsimulEven: "<<setw(20)<<setprecision(7)<<NsimulEven<<endl;
   double NsimulOdd = h1_Truth_Rec_Odd->Integral();
   cout<<"NsimulOdd: "<<setw(20)<<setprecision(7)<<NsimulOdd<<endl;
+  Fout<<"NsimulOdd: "<<setw(20)<<setprecision(7)<<NsimulOdd<<endl;
   double NdetectorResponse = h2_Truth_Rec_AP_Post->Integral();
   cout<<"NdetectorResponse: "<<NdetectorResponse<<endl;
+  Fout<<"NdetectorResponse: "<<NdetectorResponse<<endl;
   //======================
   // Histo from Acceptance 
   //======================
@@ -531,6 +537,8 @@ int wPtUnfoldStudy
     exit(-1);
   }
    
+  double RDNumb = h1_Data_SigYild->Integral();
+  Fout<<"Real Data: "<<RDNumb<<endl;
   for(int i(1);i<=h1_Data_SigYild->GetNbinsX();i++)
   {
     cout<<"Nominal: "<<h1_Data_SigYild->GetBinContent(i)<<"\t"<<h1_Data_SigYild->GetBinError(i)<<endl;
@@ -839,6 +847,11 @@ int wPtUnfoldStudy
   //SVD_Post.statCov = tsvdData->GetBCov();
   tsvdData->SetNormalize( kFALSE );
   SVD_Post.unfRes = tsvdData->Unfold(4); 
+  //SVD_Post.unfRes = tsvdData->Unfold(5); 
+  //SVD_Post.unfRes = tsvdData->Unfold(6); 
+  //SVD_Post.unfRes = tsvdData->Unfold(7); 
+  //SVD_Post.unfRes = tsvdData->Unfold(8); 
+  //SVD_Post.unfRes = tsvdData->Unfold(9); 
   SVD_Post.dDist = tsvdData->GetD();
   SVD_Post.svDist = tsvdData->GetSV();
   
@@ -910,24 +923,18 @@ int wPtUnfoldStudy
        cout<<"Systematics %                               :              "<<TMath::Sqrt(SVD_Post.uStatCov->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100<<endl;
    }
 
-
-  cout<<"Check01"<<endl;
    for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
    {
        cout<<"SVD_Post.uRecoEffiCovMat_i_i  AfterPost     :    "<<SVD_Post.uRecoEffiCovMat->GetBinContent(i,i)<<endl;
        cout<<"Square root ofSVD_Post.uRecoEffiCovMat_i_i  :           "<<TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))<<endl;
        cout<<"Systematics %                               :              "<<TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100<<endl;
    }
-  cout<<"Check02"<<endl;
-   
-   
    
    for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
    {
        cout<<"SVD_Post.unfRes->GetBinContent(i) %         :    "<<SVD_Post.unfRes->GetBinContent(i)<<endl;
        
    }
-  cout<<"Check03"<<endl;
 
    for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
    {
@@ -936,7 +943,6 @@ int wPtUnfoldStudy
        cout<<"SVD_Post.uRecoEffiCovMat_i_j  AfterPost     :    "<<SVD_Post.uRecoEffiCovMat->GetBinContent(i,j)<<endl;
      }
    }
-  cout<<"Check04"<<endl;
 
   Fout << "Effi Detector Unfolding stage Syst"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
@@ -946,7 +952,6 @@ int wPtUnfoldStudy
     Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoEffiCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
   }
 
-  cout<<"Check1"<<endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" ){
     Fout << "Scale Detector Unfolding stage Syst"<< endl;
     Fout << "Bin" << "\t" << "Wpt yield " << "\t" << "Cov_i_i" << "\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
@@ -956,7 +961,6 @@ int wPtUnfoldStudy
       Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t" << SVD_Post.uRecoScaleCovMat->GetBinContent(i,i) << "\t"<< TMath::Sqrt(SVD_Post.uRecoScaleCovMat->GetBinContent(i,i)) << "\t" << TMath::Sqrt(SVD_Post.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
     }
   }
-  cout<<"Check2"<<endl;
 
   Fout << "Smear Detector Unfolding stage Syst"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
@@ -966,7 +970,6 @@ int wPtUnfoldStudy
     Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoSmearCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
   }
 
-  cout<<"Check3"<<endl;
   Fout << "Recoil Detector Unfolding stage Syst"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -975,7 +978,6 @@ int wPtUnfoldStudy
     Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
   }
   
-  cout<<"Check4"<<endl;
  // Fout << "Lumi Detector Unfolding stage Syst"<< endl;
  // Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
  // Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1108,6 +1110,14 @@ int wPtUnfoldStudy
 
   SVD_Post.uAdetCov = tsvdData->GetAdetCovMatrix( 1000);
   SVD_Post.uTotalCovMat->Add(SVD_Post.uAdetCov);
+
+  tmpTStr = "DUnf_ResponseMat_"+BaseName;
+  plt_DUnf_RespCov = new CPlot(tmpTStr,"D_Unf Response CovMat Error Matrix","","");
+  plt_DUnf_RespCov -> setOutDir(resultDir);
+  gPad->SetLogz(0);
+  SVD_Post.uAdetCov -> SetMarkerSize(0.8);
+  plt_DUnf_RespCov->AddHist2D(SVD_Post.uAdetCov,"COLTEXTZ",kWhite,kBlack);
+  plt_DUnf_RespCov-> Draw(myCan,kTRUE,"png");
 
   SVD_Post.uTauCov = tsvdData->GetXtau();
 
