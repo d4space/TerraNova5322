@@ -1340,8 +1340,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdsigma1[ipt] ->setVal(29.3026);
       qcdPsigma1[ipt]->setVal(33.786);
       qcdMsigma1[ipt]->setVal(5.4919);
-      //qcda1[ipt] ->setVal(-0.159075);
-      qcda1[ipt] ->setVal(-0.15907);
+      qcda1[ipt] ->setVal(-0.159075);
+      //qcda1[ipt] ->setVal(-0.15907);
       qcdPa1[ipt]->setVal(-0.339526);
       qcdMa1[ipt]->setVal(-0.282001);
       dFrac1[ipt] ->setVal(0.289017);
@@ -1350,8 +1350,8 @@ void fitWEleMetRayleighGausSimult(const TString  outputDir,   // output director
       qcdsigma2[ipt] ->setVal(9.02172);
       qcdPsigma2[ipt]->setVal(11.6925);
       qcdMsigma2[ipt]->setVal(11.2776);
-      //qcda2[ipt] ->setVal(0.255279);
-      qcda2[ipt] ->setVal(0.25527);
+      qcda2[ipt] ->setVal(0.255279);
+      //qcda2[ipt] ->setVal(0.25527);
       qcdPa2[ipt]->setVal(0.212284);
       qcdMa2[ipt]->setVal(0.245305);
       dFrac2[ipt] ->setVal(0.00453023);
