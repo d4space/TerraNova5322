@@ -3663,7 +3663,7 @@ Int_t WLepNeu::FillAcceptInfo()
   if(AnaChannel == "ElectronLowPU")
   if( (*GenW_BornLept1_pt)[0] > 25 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
-  if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
+  //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
     isBornPassAcc = true;
 
   // Fiducial of Post 
@@ -3674,7 +3674,7 @@ Int_t WLepNeu::FillAcceptInfo()
   if(AnaChannel == "ElectronLowPU")
   if( (*GenW_PostLept1_pt)[0] > 25 )
   if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
-  if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
+  //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
     isPostPassAcc = true;
   // Fill Histo
   h1_Born_AP->Fill( genInfo.BornW_pt,TTW);
