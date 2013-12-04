@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 #include <fstream>
 #include <TFile.h>
 #include "TH1D.h"
@@ -8,6 +8,8 @@
 
 const int nBins = 14;
 double WptLogBins[nBins] = {1.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
+
 double ax[13]  = {4.25,10,15,20.75,27,35,45,60,90,130,170,220,425};
 double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
@@ -70,7 +72,10 @@ void drawDifference(TH1* iH0,TH1 *iH1,TGraphAsymmErrors* iH2,TH1 *iHH=0,TH1 *iHL
 
 int theoryStudy(const TString BaseName)
 {
+
   TString tmpTStr;
+  char tmpName[30],tmpName_org[30];
+  int Numb;
 
   TFile *f_Resbos;
   TFile *f_Fewz;
@@ -99,12 +104,23 @@ int theoryStudy(const TString BaseName)
   TH1D *hPowhegLog   = new TH1D("hPowhegLog","hPowhegLog",13,WptLogBins);hPowhegLog->Sumw2();
   TH1D *hDataLog     = new TH1D("hDataLog","hDataLog",13,WptLogBins);hDataLog->Sumw2();
   
+  TH1D *hDataNoLog     = new TH1D("hDataNoLog","hDataNoLog",13,WptBins);hDataNoLog->Sumw2();
+  
+  TH1D* lResbos[7];
   TH1D* lResbos30;
   TH1D* lResbos31;
   TH1D* lResbos34;
   TH1D* lFEWZ;
   TH1D* lPowheg;
   TH1D* lData;
+  
+  for( int i(0);i<7;i++)
+  {
+    Numb = 29+i;
+    sprintf(tmpName_org,"hResbos%d",Numb);
+    sprintf(tmpName,"lResbos_%d",i);
+    lResbos[i] = (TH1D*)f_Resbos->Get(tmpName_org)->Clone(tmpName);
+  }
 
   lResbos30 = (TH1D*)f_Resbos->Get("hResbos30")->Clone();
   lResbos31 = (TH1D*)f_Resbos->Get("hResbos31")->Clone();
@@ -124,25 +140,62 @@ int theoryStudy(const TString BaseName)
 
   for( int ipt(0);ipt<nBins-1;ipt++)
   {
-    resb30[ipt] = lResbos30->GetBinContent(ipt+1);
-    resb30_errHi[ipt] = lResbos31->GetBinContent(ipt+1) - lResbos30->GetBinContent(ipt+1);
-    resb30_errLo[ipt] = lResbos30->GetBinContent(ipt+1) - lResbos34->GetBinContent(ipt+1);
-    cout <<ipt<<"\t"<<resb30[ipt]<<"\t"<<resb30_errLo[ipt]<<"\t"<<resb30_errHi[ipt]<<endl;
-  }    
+    //resb30[ipt] = lResbos30->GetBinContent(ipt+1);
+    //resb30_errHi[ipt] = lResbos31->GetBinContent(ipt+1) - lResbos30->GetBinContent(ipt+1);
+    //resb30_errLo[ipt] = lResbos30->GetBinContent(ipt+1) - lResbos34->GetBinContent(ipt+1);
+    //cout <<ipt<<"\t"<<resb30[ipt]<<"\t"<<resb30_errLo[ipt]<<"\t"<<resb30_errHi[ipt]<<endl;
+  
+  
+    resb30[ipt] = lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
+    resb30_errHi[ipt] = lResbos31->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1) - lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
+    resb30_errLo[ipt] = lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1) - lResbos34->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
+    cout <<"Resbos errors(high,low): "<<ipt<<"\t"<<resb30_errHi[ipt]<<"\t"<<resb30_errLo[ipt]<<endl;
+  }
+
+  Double_t errMax[nBins-1];
+  Double_t errMin[nBins-1];
+  double tmpVal,tmpDiff;
+
+  for( int ipt(0);ipt<nBins-1;ipt++)
+  {
+    double norVal  = lResbos[1]->GetBinContent(ipt+1);
+    errMax[ipt] = -99999;
+    errMin[ipt] = 990009;
+    for (int i(0);i<7;i++)
+    {
+      tmpVal  = lResbos[i]->GetBinContent(ipt+1);
+      tmpDiff = tmpVal - norVal;
+      if( tmpDiff > errMax[ipt] ) errMax[ipt] = tmpDiff;
+      if( tmpDiff < errMin[ipt] ) errMin[ipt] = tmpDiff;
+    }
+    
+    if (errMax[ipt] < 0) errMax[ipt] = 0.;
+    if (errMin[ipt] > 0) errMin[ipt] = 0.;
+    if (errMin[ipt] < 0) errMin[ipt] = -errMin[ipt];
+    errMax[ipt] = errMax[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
+    errMin[ipt] = errMin[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
+  }
   
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
-    hResbosLog30->SetBinContent(ipt,lResbos30->GetBinContent(ipt));
+    cout<<"Bin Width   "<<ipt<<"  "<<hDataNoLog->GetXaxis()->GetBinWidth(ipt)<<endl;
+
+    hResbosLog30->SetBinContent(ipt,lResbos30->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) );
     hResbosLog31->SetBinContent(ipt,lResbos31->GetBinContent(ipt));
     hResbosLog34->SetBinContent(ipt,lResbos34->GetBinContent(ipt));
     
-    hFewzLog->SetBinContent(ipt,lFEWZ->GetBinContent(ipt));
-    hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt));
+    hFewzLog->SetBinContent(ipt,lFEWZ->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     
-    hPowhegLog->SetBinContent(ipt,lPowheg->GetBinContent(ipt));
-    hPowhegLog->SetBinError(ipt,lPowheg->GetBinError(ipt));
-    hDataLog->SetBinContent(ipt,lData->GetBinContent(ipt));
-    hDataLog->SetBinError(ipt,lData->GetBinError(ipt));
+    hPowhegLog->SetBinContent(ipt,lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    //hPowhegLog->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hPowhegLog->SetBinError(ipt,sqrt(lPowheg->GetBinContent(ipt))/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    
+    //cout<<"x-axis "<<hPowhegLog->GetBinCenter()<<endl;
+    
+    hDataLog->SetBinContent(ipt,lData->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hDataLog->SetBinError(ipt,lData->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+
     cout<<ipt<<"\t"<<hResbosLog30->GetBinContent(ipt)<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<hPowhegLog->GetBinError(ipt)<<endl;
   }
 
@@ -151,7 +204,8 @@ int theoryStudy(const TString BaseName)
   TGraphErrors *hData = new TGraphErrors(hDataLog);
   TGraphErrors *hPowheg = new TGraphErrors(hPowhegLog);
   TGraphErrors *hFewz = new TGraphErrors(hFewzLog);
-  TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, resb30_errLo, resb30_errHi);
+  //TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, resb30_errLo, resb30_errHi);
+  TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, errMin, errMax);
 
   hFewz->SetFillColor(kGreen);
   hFewz->SetFillStyle(1001);
@@ -160,11 +214,22 @@ int theoryStudy(const TString BaseName)
   hPowheg->SetFillStyle(3345);
   hResbos->SetFillColor(kBlue);
   hResbos->SetFillStyle(3354);
+ 
+
+
+ // hPowheg->Scale(1./18.429);
+ // hData->Scale(1./18.429);
+ // hFewz->Scale(1./18.429);
+ // hResbos->Scale(1./18.429);
+  
+ // cout << "Resbos Total Differentail Xsec: " << lResbos30->Integral() << endl;
+ // cout << "Data Total Differentail Xsec: " << lData->Integral() << endl;
+  
   
   TLegend *lL =new TLegend(0.6,0.65,0.92,0.85); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(hData,"Unfolded","PL");
   lL->AddEntry(hPowheg,"Powheg CT10 NLO","f");
-  lL->AddEntry(hFewz,"FEWZ CTEQ12 NNLO","f");
+ // lL->AddEntry(hFewz,"FEWZ CTEQ12 NNLO","f");
   lL->AddEntry(hResbos,"ResBos CT10 NNLO","f");
 
   TPaveText *tb = new TPaveText(0.6,0.44,0.9,0.58,"NDC");
@@ -193,6 +258,7 @@ int theoryStudy(const TString BaseName)
   lC0->cd(1)->SetRightMargin(0.07);
   lC0->cd(1)->SetTickx(1);
   lC0->cd(1)->SetTicky(1);
+  //lC0->SetLogx(1);
   gStyle->SetLineWidth(2.);
   gStyle->SetOptStat(0);
   gStyle->SetHatchesSpacing(0.75);
@@ -205,7 +271,7 @@ int theoryStudy(const TString BaseName)
   hPowheg->GetYaxis()->SetTitleOffset(1.2);
   
   hPowheg->Draw("A2");
-  hFewz->Draw("2");
+//  hFewz->Draw("2");
   hResbos->Draw("2");
   hData->Draw("p");
   lL->Draw();
@@ -220,6 +286,6 @@ int theoryStudy(const TString BaseName)
   lC0->cd(2)->SetTicky(1);
   lC0->cd(2)->SetLogx(1);
   drawDifference(hDataLog,hResbosLog30,hResbos);
-  lC0->SaveAs(BaseName+"_Result.png");
+  lC0->SaveAs(BaseName+"_Result_diffXsec.png");
   return 0;
 }
