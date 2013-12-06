@@ -444,7 +444,8 @@ CPepeModel1::CPepeModel1(const char *name, RooRealVar &x, RooRealVar *s, RooReal
   } else {
     sprintf(sigmaName,"sigma_%s",name);
     //sigma = new RooRealVar(sigmaName,sigmaName,25,5,75);
-    sigma = new RooRealVar(sigmaName,sigmaName,25,0,75);
+    //sigma = new RooRealVar(sigmaName,sigmaName,25,0,75);
+    sigma = new RooRealVar(sigmaName,sigmaName,10,5,20);
   }
   char a1Name[50];
   if(sigma1) {

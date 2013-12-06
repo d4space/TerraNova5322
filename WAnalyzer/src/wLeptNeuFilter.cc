@@ -119,7 +119,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     iEvent.getByLabel(metLabel_,MET_hand);
     MetIt = MET_hand->begin();
-
+/*
     iEvent.getByLabel(noPuMEtLabel_,NoPU_MET_hand);
     NoPU_MetIt = NoPU_MET_hand->begin();
 
@@ -134,7 +134,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     iEvent.getByLabel(genMEtCaloAndNonPromptLabel_,genMEtCaloAndNonPrompt_hand);
     genMEtCaloAndNonPrompt_MetIt = genMEtCaloAndNonPrompt_hand->begin();
-
+*/
     edm::Handle< reco::PFCandidateCollection > pfCandidates_;
     typedef reco::PFCandidateCollection::const_iterator CI;
     iEvent.getByLabel("particleFlow",pfCandidates_);
@@ -161,7 +161,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     }
 
     h_MET->Fill(MET);
-
+/*
     NoPU_MET = NoPU_MetIt->pt();
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > NoPU_corrmet;
     NoPU_corrmet.SetPxPyPzE(NoPU_MetIt->px(),NoPU_MetIt->py(),0,NoPU_MetIt->pt());
@@ -210,7 +210,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     genMEtCaloAndNonPrompt_met->push_back(genMEtCaloAndNonPrompt_corrmet);
     
     h_genMEtCaloAndNonPrompt_MET->Fill(genMEtCaloAndNonPrompt_MET);
-
+*/
     if(Channel == "Muon"){
       EventData.Channel = GenType::kMuon;
       LoopMuon(iEvent, iSetup);

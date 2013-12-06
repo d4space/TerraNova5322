@@ -25,8 +25,8 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
 //EGamma
-#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
-//#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
+//#include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
+#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #include "RecoEgamma/EgammaTools/interface/ConversionTools.h"
 
 #include "TFile.h"

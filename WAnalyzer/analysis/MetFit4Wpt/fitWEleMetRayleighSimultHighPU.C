@@ -133,13 +133,13 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   vector <double> nEventWToTauNuM;
 
   int ewkNumber(0);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_RD_HighPU_Analysis.root"); typev.push_back(eData);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_DYToEE_S10_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_DYToTauTau_S10_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_TTJets_S10_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_WToTauNu_S10_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_WpToENu_S10_Analysis.root"); typev.push_back(eWpMuNu);
-  fnamev.push_back("../EleQAsymControlPlot/backup_pt35GeV/Ele_WmToENu_S10_Analysis.root"); typev.push_back(eWmMuNu);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_RD_HighPU_Analysis.root"); typev.push_back(eData);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_DYToEE_S10_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_DYToTauTau_S10_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_TTJets_S10_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_WToTauNu_S10_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_WpToENu_S10_Analysis.root"); typev.push_back(eWpMuNu);
+  fnamev.push_back("../EleQAsymControlPlot/result/Ele_WmToENu_S10_Analysis.root"); typev.push_back(eWmMuNu);
   //-------------------------
   // Main analysis code 
   //=========================  
@@ -503,6 +503,28 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   RooAddPdf* apdfqcdm;
 
 
+  RooRealVar sigmaJM2("sigmaJM2","sigmaJM2",2,1,8);
+  RooRealVar sigmaJM3("sigmaJM3","sigmaJM3",3,1,9);
+  RooRealVar sigmaJM4("sigmaJM4","sigmaJM4",4,1,10);
+  RooRealVar sigmaJM5("sigmaJM5","sigmaJM5",5,1,10);
+  RooRealVar sigmaJM6("sigmaJM6","sigmaJM6",6,2,11);
+  RooRealVar sigmaJM7("sigmaJM7","sigmaJM7",7,3,12);
+  RooRealVar sigmaJM8("sigmaJM8","sigmaJM8",8,4,13);
+  RooRealVar sigmaJM9("sigmaJM9","sigmaJM9",9,5,14);
+  RooRealVar sigmaJM11("sigmaJM11","sigmaJM11",11,7,16);
+  RooRealVar sigmaJM12("sigmaJM12","sigmaJM12",12,8,17);
+  RooRealVar sigmaJM13("sigmaJM13","sigmaJM13",13,9,18);
+  RooRealVar sigmaJM14("sigmaJM14","sigmaJM14",14,10,19);
+  RooRealVar sigmaJM15("sigmaJM15","sigmaJM15",15,11,20);
+  RooRealVar sigmaJM16("sigmaJM16","sigmaJM16",16,12,21);
+  RooRealVar sigmaJM17("sigmaJM17","sigmaJM17",17,13,22);
+  RooRealVar sigmaJM18("sigmaJM18","sigmaJM18",18,14,23);
+  RooRealVar sigmaJM19("sigmaJM19","sigmaJM19",19,15,24);
+  RooRealVar sigmaJM20("sigmaJM20","sigmaJM20",20,16,24);
+  RooRealVar sigmaJM21("sigmaJM21","sigmaJM21",21,17,24);
+  RooRealVar sigmaJM22("sigmaJM22","sigmaJM22",22,19,24);
+  RooRealVar sigmaJM23("sigmaJM23","sigmaJM23",23,20,24);
+  RooRealVar sigmaJM24("sigmaJM24","sigmaJM24",24,21,24);
 //  RooRealVar qcdpmean;
 //  RooRealVar a1pmean;
 /*  RooRealVar qcdfrac1("qcdfrac1","qcdfrac1",0.5,0.01,1.);
@@ -705,6 +727,7 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   //Loop for each Wpt bins==============
   // 0 is the total
   //for( int ipt(0);ipt<NWqaBinPlus;ipt++)
+  //for( int ipt(0);ipt<12;ipt++)
   for( int ipt(0);ipt<12;ipt++)
   {
     nSig = new RooRealVar("nSig","nSig",0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
@@ -791,7 +814,7 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   
   // Anti-Signal PDFs
   if(hAntiWmunuMet[ipt]->Integral()==0){
-    hAntiWmunuMet[ipt]->SetBinContent(40,0.000`1);}
+    hAntiWmunuMet[ipt]->SetBinContent(40,0.0001);}
   awmunuMet =new RooDataHist("awmunuMET", "awmunuMET", RooArgSet(pfmet),hAntiWmunuMet[ipt]) ;
   cout<<"hAntiWmunuMet check = "<<hAntiWmunuMet[ipt]->Integral()<<endl;
   if(hAntiWmunuMetp[ipt]->Integral()==0){
@@ -855,9 +878,32 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
 //      qcdm =new CPepeModel1("qcdm",pfmet,&qcdpmean);
 //    }
 //cout << "abcdefg sigma =" << (* qcd->sigma) <<" & abcdefg a1= "<< (* qcd->a1) <<endl;     
+    
+  if (ipt==0){
+    aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM11,qcd->a1);
+    aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM11,qcdp->a1);
+    aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM11,qcdm->a1);
+  }else if (ipt==1){
+    aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM9,qcd->a1);
+    aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM9,qcdp->a1);
+    aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM9,qcdm->a1);
+  }else if (ipt==2){
+    aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM11,qcd->a1);
+    aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM11,qcdp->a1);
+    aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM11,qcdm->a1);
+  }else if (ipt==3){
+    aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM14,qcd->a1);
+    aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM14,qcdp->a1);
+    aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM14,qcdm->a1);
+  }else if (ipt==4){
+    aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM9,qcd->a1);
+    aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM9,qcdp->a1);
+    aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM9,qcdm->a1);
+  }else {
     aqcd =new CPepeModel1("aqcd",pfmet,qcd->sigma,qcd->a1);
     aqcdp=new CPepeModel1("aqcdp",pfmet,qcdp->sigma,qcdp->a1);
     aqcdm=new CPepeModel1("aqcdm",pfmet,qcdm->sigma,qcdm->a1);
+  }
 /*  }else if (ipt>6 && ipt<10){
 //Rayleigh+fract*Gaussian
     qcd1 =new CPepeModel1("qcd1",pfmet);/
