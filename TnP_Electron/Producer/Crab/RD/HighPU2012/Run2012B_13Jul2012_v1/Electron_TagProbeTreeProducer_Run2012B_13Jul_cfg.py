@@ -106,13 +106,13 @@ process.source = cms.Source("PoolSource",
 #    'file:/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Producer/Crab/RD/HighPU2012/20130711/Abs_Eta/DYToEE_S10.root'
 #'file:/afs/cern.ch/work/t/taehoon/public/DATA/MC/2012/Summer12_DR53X__WToENu_TuneZ2star_8TeV_pythia6_AODSIM_PU_S10_START53_V7A-v2.root'
 #'file:/afs/cern.ch/work/s/shchang/W_V004/CMSSW_5_3_7_patch4/src/KoSMP/WAnalyzer/prod/Electron/RD/Local/patTuple_skim_l1Filter.root'
-#      'file:/d1/scratch/kimtaehoon/HighPU/CMSSW_5_3_8/src/KoSMP1/TnP_Electron/Producer/Crab/RD/HighPU2012/Run2012A-13Jul2012-v1/Run2012A-13Jul2012_sample.root'
+      'file:/d1/scratch/kimtaehoon/SingleElectron_Run2012B_13Jul2012-v1_AOD.root'
 
-    pickRelValInputFiles( cmsswVersion  = os.environ['CMSSW_VERSION']
-                        , relVal        = 'RelValTTbar'
-                        , globalTag     = process.GlobalTag.globaltag.value().split(':')[0]
-                        , numberOfFiles = 1
-                        )
+#    pickRelValInputFiles( cmsswVersion  = os.environ['CMSSW_VERSION']
+#                        , relVal        = 'RelValTTbar'
+#                        , globalTag     = process.GlobalTag.globaltag.value().split(':')[0]
+#                        , numberOfFiles = 1
+#                        )
     )
 )
 #if MC_flag:
@@ -136,7 +136,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 )
 process.out.outputCommands +=pf2patEventContent
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(1000) )
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
