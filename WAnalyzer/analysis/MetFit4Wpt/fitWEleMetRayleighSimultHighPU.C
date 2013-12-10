@@ -495,6 +495,12 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   CPepeModel1* aqcd1;
   CPepeModel1* aqcd1p;
   CPepeModel1* aqcd1m;
+  CPepeDouble* qcdDB;
+  CPepeDouble* qcdpDB;
+  CPepeDouble* qcdmDB;
+  CPepeDouble* aqcdDB;
+  CPepeDouble* aqcdpDB;
+  CPepeDouble* aqcdmDB;
   RooAddPdf* pdfqcd;
   RooAddPdf* pdfqcdp;
   RooAddPdf* pdfqcdm;
@@ -728,7 +734,7 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   // 0 is the total
   //for( int ipt(0);ipt<NWqaBinPlus;ipt++)
   //for( int ipt(0);ipt<12;ipt++)
-  for( int ipt(0);ipt<12;ipt++)
+  for( int ipt(0);ipt<3;ipt++)
   {
     nSig = new RooRealVar("nSig","nSig",0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
     if (ipt==0){
@@ -820,9 +826,11 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   if(hAntiWmunuMetp[ipt]->Integral()==0){
     hAntiWmunuMetp[ipt]->SetBinContent(40,0.0001);}
   awmunuMetp=new RooDataHist("awmunuMETp","awmunuMETp",RooArgSet(pfmet),hAntiWmunuMetp[ipt]);
+  cout<<"hAntiWmunuMetp check = "<<hAntiWmunuMetp[ipt]->Integral()<<endl;
   if(hAntiWmunuMetm[ipt]->Integral()==0){
     hAntiWmunuMetm[ipt]->SetBinContent(40,0.0001);}
   awmunuMetm=new RooDataHist("awmunuMETm","awmunuMETm",RooArgSet(pfmet),hAntiWmunuMetm[ipt]);
+  cout<<"hAntiWmunuMetm check = "<<hAntiWmunuMetm[ipt]->Integral()<<endl;
   apdfWm =new RooHistPdf("awm", "awm", pfmet,*awmunuMet, 1);
   apdfWmp=new RooHistPdf("awmp","awmp",pfmet,*awmunuMetp,1);
   apdfWmm=new RooHistPdf("awmm","awmm",pfmet,*awmunuMetm,1); 
@@ -864,9 +872,13 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
       qcdm =new CPepeModel1("qcdm",pfmet,&qcdpmean,&a1pmean);
       }
     else {*/
-    qcd =new CPepeModel1("qcd",pfmet);
-    qcdp =new CPepeModel1("qcdp",pfmet);
-    qcdm =new CPepeModel1("qcdm",pfmet);
+    
+    //qcd =new CPepeModel1("qcd",pfmet);
+    //qcdp =new CPepeModel1("qcdp",pfmet);
+    //qcdm =new CPepeModel1("qcdm",pfmet);
+    qcdDB =new CPepeDouble("qcdDB",pfmet);
+    qcdpDB =new CPepeDouble("qcdpDB",pfmet);
+    qcdmDB =new CPepeDouble("qcdmDB",pfmet);
 //    }
     //    if (ipt==1 || ipt==4){
 //      qcd =new CPepeModel11("qcd",pfmet);
@@ -879,7 +891,7 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
 //    }
 //cout << "abcdefg sigma =" << (* qcd->sigma) <<" & abcdefg a1= "<< (* qcd->a1) <<endl;     
     
-  if (ipt==0){
+/*  if (ipt==0){
     aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM11,qcd->a1);
     aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM11,qcdp->a1);
     aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM11,qcdm->a1);
@@ -899,11 +911,14 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
     aqcd =new CPepeModel1("aqcd",pfmet,&sigmaJM9,qcd->a1);
     aqcdp=new CPepeModel1("aqcdp",pfmet,&sigmaJM9,qcdp->a1);
     aqcdm=new CPepeModel1("aqcdm",pfmet,&sigmaJM9,qcdm->a1);
-  }else {
-    aqcd =new CPepeModel1("aqcd",pfmet,qcd->sigma,qcd->a1);
-    aqcdp=new CPepeModel1("aqcdp",pfmet,qcdp->sigma,qcdp->a1);
-    aqcdm=new CPepeModel1("aqcdm",pfmet,qcdm->sigma,qcdm->a1);
-  }
+  }else {*/
+    //aqcd =new CPepeModel1("aqcd",pfmet,qcd->sigma,qcd->a1);
+    //aqcdp=new CPepeModel1("aqcdp",pfmet,qcdp->sigma,qcdp->a1);
+    //aqcdm=new CPepeModel1("aqcdm",pfmet,qcdm->sigma,qcdm->a1);
+    aqcdDB =new CPepeDouble("aqcdDB",pfmet,qcdDB->sigma1,qcdDB->a1,qcdDB->frac1,qcdDB->sigma2,qcdDB->a2,qcdDB->frac2);
+    aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,qcdpDB->sigma1,qcdpDB->a1,qcdpDB->frac1,qcdpDB->sigma2,qcdpDB->a2,qcdpDB->frac2);
+    aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,qcdmDB->sigma1,qcdmDB->a1,qcdmDB->frac1,qcdmDB->sigma2,qcdmDB->a2,qcdmDB->frac2);
+  //}
 /*  }else if (ipt>6 && ipt<10){
 //Rayleigh+fract*Gaussian
     qcd1 =new CPepeModel1("qcd1",pfmet);/
@@ -989,13 +1004,13 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   */
   // Signal + Background PDFs
 //  if (ipt<7){
-    pdfMet =new RooAddPdf("pdfMet", "pdfMet", RooArgList(*pdfWm, *pdfEWK, *(qcd->model)), RooArgList(*nSig, *nEWK, *nQCD));
-    pdfMetp=new RooAddPdf("pdfMetp","pdfMetp",RooArgList(*pdfWmp,*pdfEWKp,*(qcdp->model)),RooArgList(*nSigp,*nEWKp,*nQCDp));
-    pdfMetm=new RooAddPdf("pdfMetm","pdfMetm",RooArgList(*pdfWmm,*pdfEWKm,*(qcdm->model)),RooArgList(*nSigm,*nEWKm,*nQCDm));
+    pdfMet =new RooAddPdf("pdfMet", "pdfMet", RooArgList(*pdfWm, *pdfEWK, *(qcdDB->model)), RooArgList(*nSig, *nEWK, *nQCD));
+    pdfMetp=new RooAddPdf("pdfMetp","pdfMetp",RooArgList(*pdfWmp,*pdfEWKp,*(qcdpDB->model)),RooArgList(*nSigp,*nEWKp,*nQCDp));
+    pdfMetm=new RooAddPdf("pdfMetm","pdfMetm",RooArgList(*pdfWmm,*pdfEWKm,*(qcdmDB->model)),RooArgList(*nSigm,*nEWKm,*nQCDm));
    
-    apdfMet =new RooAddPdf("apdfMet", "apdfMet", RooArgList(*apdfWm,*apdfEWK,*(aqcd->model)),   RooArgList(*nAntiSig,*nAntiEWK,*nAntiQCD));
-    apdfMetp=new RooAddPdf("apdfMetp","apdfMetp",RooArgList(*apdfWmp,*apdfEWKp,*(aqcdp->model)),RooArgList(*nAntiSigp,*nAntiEWKp,*nAntiQCDp));
-    apdfMetm=new RooAddPdf("apdfMetm","apdfMetm",RooArgList(*apdfWmm,*apdfEWKm,*(aqcdm->model)),RooArgList(*nAntiSigm,*nAntiEWKm,*nAntiQCDm));
+    apdfMet =new RooAddPdf("apdfMet", "apdfMet", RooArgList(*apdfWm,*apdfEWK,*(aqcdDB->model)),   RooArgList(*nAntiSig,*nAntiEWK,*nAntiQCD));
+    apdfMetp=new RooAddPdf("apdfMetp","apdfMetp",RooArgList(*apdfWmp,*apdfEWKp,*(aqcdpDB->model)),RooArgList(*nAntiSigp,*nAntiEWKp,*nAntiQCDp));
+    apdfMetm=new RooAddPdf("apdfMetm","apdfMetm",RooArgList(*apdfWmm,*apdfEWKm,*(aqcdmDB->model)),RooArgList(*nAntiSigm,*nAntiEWKm,*nAntiQCDm));
     /*  }else if (ipt>6 && ipt<10){
     pdfqcd = new RooAddPdf("pdfqcd","pdfqcd",RooArgList(*(qcd1->model),*QCDGaus),qcdfrac1);
     pdfqcdp = new RooAddPdf("pdfqcdp","pdfqcdp",RooArgList(*(qcd1p->model),*QCDGaus_p),qcdfrac1);
@@ -1122,9 +1137,9 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   pdfEWK0Metp	= new RooAddPdf("pdfEWK0Metp","pdfEWK0Metp",RooArgList(*pdfEWKp),RooArgList(*nEWKp));
   pdfEWK0Metm	= new RooAddPdf("pdfEWK0Metm","pdfEWK0Metm",RooArgList(*pdfEWKm),RooArgList(*nEWKm));
 
-  pdfQCD0Met	= new RooAddPdf("pdfQCD0Met", "pdfQCD0Met", RooArgList(*(qcd->model)),RooArgList(*nQCD));  
-  pdfQCD0Metp	= new RooAddPdf("pdfQCD0Metp","pdfQCD0Metp",RooArgList(*(qcdp->model)),RooArgList(*nQCDp));
-  pdfQCD0Metm	= new RooAddPdf("pdfQCD0Metm","pdfQCD0Metm",RooArgList(*(qcdm->model)),RooArgList(*nQCDm));
+  pdfQCD0Met	= new RooAddPdf("pdfQCD0Met", "pdfQCD0Met", RooArgList(*(qcdDB->model)),RooArgList(*nQCD));  
+  pdfQCD0Metp	= new RooAddPdf("pdfQCD0Metp","pdfQCD0Metp",RooArgList(*(qcdpDB->model)),RooArgList(*nQCDp));
+  pdfQCD0Metm	= new RooAddPdf("pdfQCD0Metm","pdfQCD0Metm",RooArgList(*(qcdmDB->model)),RooArgList(*nQCDm));
 
   hWmunu0 = (TH1D*)(pdfWmunu0Met->createHistogram("hWmunu0", pfmet));
   hWmunu0->Scale((nSig->getVal())/hWmunu0->Integral());
@@ -1173,10 +1188,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   pdfMet->plotOn(wmframe,FillColor(fillcolorW),DrawOption("F"));
   pdfMet->plotOn(wmframe,LineColor(linecolorW));
 //  if (ipt<7){
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcd->model))),LineColor(linecolorEWK));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcd->model))),LineColor(linecolorQCD));
+    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcdDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+    pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*(qcdDB->model))),LineColor(linecolorEWK));
+    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcdDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+    pdfMet->plotOn(wmframe,Components(RooArgSet(*(qcdDB->model))),LineColor(linecolorQCD));
 /*  }else if (ipt>6 && ipt<10){
     pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*pdfqcd)),FillColor(fillcolorEWK),DrawOption("F"));
     pdfMet->plotOn(wmframe,Components(RooArgSet(*pdfEWK,*pdfqcd)),LineColor(linecolorEWK));
@@ -1226,10 +1241,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
     apdfMet->plotOn(awmframe,FillColor(fillcolorW),DrawOption("F"));
     apdfMet->plotOn(awmframe,LineColor(linecolorW));
 //    if (ipt<7){
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcd->model))),LineColor(linecolorEWK));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcd->model))),LineColor(linecolorQCD));
+      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcdDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*(aqcdDB->model))),LineColor(linecolorEWK));
+      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcdDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMet->plotOn(awmframe,Components(RooArgSet(*(aqcdDB->model))),LineColor(linecolorQCD));
 /*    }else if (ipt>6 && ipt<10){
       apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*apdfqcd)),FillColor(fillcolorEWK),DrawOption("F"));
       apdfMet->plotOn(awmframe,Components(RooArgSet(*apdfEWK,*apdfqcd)),LineColor(linecolorEWK));
@@ -1282,10 +1297,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   pdfMetp->plotOn(wmpframe,FillColor(fillcolorW),DrawOption("F"));
   pdfMetp->plotOn(wmpframe,LineColor(linecolorW));
 //  if (ipt<7){
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdp->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdp->model))),LineColor(linecolorEWK));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdp->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdp->model))),LineColor(linecolorQCD));
+    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdpDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*(qcdpDB->model))),LineColor(linecolorEWK));
+    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdpDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+    pdfMetp->plotOn(wmpframe,Components(RooArgSet(*(qcdpDB->model))),LineColor(linecolorQCD));
 /*  }else if (ipt>6 && ipt<10){
     pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*pdfqcdp)),FillColor(fillcolorEWK),DrawOption("F"));
     pdfMetp->plotOn(wmpframe,Components(RooArgSet(*pdfEWKp,*pdfqcdp)),LineColor(linecolorEWK));
@@ -1335,10 +1350,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
     apdfMetp->plotOn(awmpframe,FillColor(fillcolorW),DrawOption("F"));
     apdfMetp->plotOn(awmpframe,LineColor(linecolorW));
 //    if (ipt<7){
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdp->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdp->model))),LineColor(linecolorEWK));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdp->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdp->model))),LineColor(linecolorQCD));
+      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdpDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*(aqcdpDB->model))),LineColor(linecolorEWK));
+      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdpDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMetp->plotOn(awmpframe,Components(RooArgSet(*(aqcdpDB->model))),LineColor(linecolorQCD));
  /*   }else if (ipt>6 && ipt<10){
       apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*apdfqcdp)),FillColor(fillcolorEWK),DrawOption("F"));
       apdfMetp->plotOn(awmpframe,Components(RooArgSet(*apdfEWKp,*apdfqcdp)),LineColor(linecolorEWK));
@@ -1394,10 +1409,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   pdfMetm->plotOn(wmmframe,FillColor(fillcolorW),DrawOption("F"));
   pdfMetm->plotOn(wmmframe,LineColor(linecolorW));
 //  if (ipt<7){
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdm->model))),FillColor(fillcolorEWK),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdm->model))),LineColor(linecolorEWK));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdm->model))),FillColor(fillcolorQCD),DrawOption("F"));
-    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdm->model))),LineColor(linecolorQCD));
+    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdmDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*(qcdmDB->model))),LineColor(linecolorEWK));
+    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdmDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+    pdfMetm->plotOn(wmmframe,Components(RooArgSet(*(qcdmDB->model))),LineColor(linecolorQCD));
 /*  }else if (ipt>6 && ipt<10){
     pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*pdfqcdm)),FillColor(fillcolorEWK),DrawOption("F"));
     pdfMetm->plotOn(wmmframe,Components(RooArgSet(*pdfEWKm,*pdfqcdm)),LineColor(linecolorEWK));
@@ -1447,10 +1462,10 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
     apdfMetm->plotOn(awmmframe,FillColor(fillcolorW),DrawOption("F"));
     apdfMetm->plotOn(awmmframe,LineColor(linecolorW));
 //    if (ipt<7){
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdm->model))),FillColor(fillcolorEWK),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdm->model))),LineColor(linecolorEWK));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdm->model))),FillColor(fillcolorQCD),DrawOption("F"));
-      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdm->model))),LineColor(linecolorQCD));
+      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdmDB->model))),FillColor(fillcolorEWK),DrawOption("F"));
+      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*(aqcdmDB->model))),LineColor(linecolorEWK));
+      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdmDB->model))),FillColor(fillcolorQCD),DrawOption("F"));
+      apdfMetm->plotOn(awmmframe,Components(RooArgSet(*(aqcdmDB->model))),LineColor(linecolorQCD));
 /*    }else if (ipt>6 && ipt<10){
       apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*apdfqcdm)),FillColor(fillcolorEWK),DrawOption("F"));
       apdfMetm->plotOn(awmmframe,Components(RooArgSet(*apdfEWKm,*apdfqcdm)),LineColor(linecolorEWK));

@@ -19,7 +19,7 @@ if len(args) > 0: scenario = args[0]
 print "Will run fit for ", scenario 
 if "ElectronRayleighHPU" in scenario and "Simult" in scenario:
   print "Electron - MET fitting: Simultaneously Fit with Rayleigh function"
-  cmd_string = "root -l fitWEleMetRayleighSimultHighPU.C+\(\\\"ElectronFitResultsRayleighSimultHighPU\\\",%f,0\)" %LUMIETA
+  cmd_string = "root -l -q fitWEleMetRayleighSimultHighPU.C+\(\\\"ElectronFitResultsRayleighSimultHighPU\\\",%f,0\)" %LUMIETA
 print "command is "+cmd_string
 os.system(cmd_string)
 cmd_string = "rm *.so *.d"
