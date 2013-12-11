@@ -879,14 +879,16 @@ public :
    TH1D*	h1_u1W[u1Bin];
    TH1D*	h1_u2W[u2Bin];
    TH1D*	h1_u3W[u1Bin];
-
    //                          scale, smear
    //   TH1D*	h1_ZmassDaughEta[ScaleBins][ScaleBins];
    TH1D*        h1_ZmassDaughEta[ScElCombiBinsHighPU];
    //TH1D*        h1_ZmassDaughEta[ScElCombiBins];
    TH1D*        h1_ZmassDaughEtaMu[ScMuCombiBins];
 
-   WLepNeu(TTree *tree=0,TTree *WMuonTree=0, double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",int etaRange_=-999);//Electron
+   WLepNeu(TTree *tree=0,TTree *WMuonTree=0, double weight=1,
+       TString OutFileName = "output.root",TString Mode="analysis",
+       TString AnaChannel ="Muon",int WCHARGE, int etaRange_=-999);
+
    virtual ~WLepNeu();
    virtual Int_t    TauCut(int entry);
    virtual Int_t    MuonCut(int entry);
@@ -2028,7 +2030,9 @@ void WLepNeu::Init(TTree *tree)
    }
    Notify();
 }
-   WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,TString OutFileName_, TString mode_, TString AnaChannel_, int etaRange_) : fChain(0) 
+   WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
+       TString OutFileName_, TString mode_, TString AnaChannel_,
+       int Wcharge, int etaRange_) : fChain(0) 
 //WLepNeu::WLepNeu(TTree *tree) : fChain(0) 
   {
     // if parameter tree is not specified (or zero), connect the file
@@ -2146,6 +2150,7 @@ void WLepNeu::Init(TTree *tree)
    OutFileName = OutFileName_;
    Mode = mode_;
    AnaChannel = AnaChannel_;
+   WCHARGE = Wcharge;
    ETARANGE = etaRange_;
    Init(WLepNeuTree);
    //wMuons.Init(WLepTree);

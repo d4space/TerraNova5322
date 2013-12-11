@@ -117,13 +117,13 @@ void WLepNeu::Loop()
   if( (Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC") ||Mode =="Unfold" )
   {
     //if(AnaChannel == "MuonLowPU")
-    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+    if(AnaChannel == "MuonLowPU" )
     {
       rcoil.ZRDfilename="../Recoil/ZmmData/fits.root";
       rcoil.ZMCfilename="../Recoil/ZmmMC/fits.root";
       rcoil.Wpfilename="../Recoil/WmpMC/fits.root";
       rcoil.Wmfilename="../Recoil/WmmMC/fits.root";
-    }else if((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") || AnaChannel == "ElectronHighPU" )
+    }else if((AnaChannel == "ElectronLowPU" ) || AnaChannel == "ElectronHighPU" )
     {
       rcoil.ZRDfilename="../Recoil/ZeeData/fits.root";
       rcoil.ZMCfilename="../Recoil/ZeeMC/fits.root";
@@ -152,9 +152,9 @@ void WLepNeu::Loop()
   bool Debug(false);
 
   TString resultDir = AnaChannel;
-  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+  if(AnaChannel == "MuonLowPU" )
     TString resultDir = "MuonLowPU";
-  else if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  else if(AnaChannel == "ElectronLowPU")
     TString resultDir = "ElectronLowPU";
 
 //  TString resultDir = "results";
@@ -210,14 +210,11 @@ if(Debug)cout<<"check point 2"<<endl;
       continue;
     }
 if(Debug)cout<<"check point 3"<<endl;
-    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
+    if(AnaChannel == "MuonLowPU" )if(fabs(Channel) != GenType::kMuon) exit(-1);
     if(AnaChannel == "MuonHighPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
-    if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
+    if(AnaChannel == "ElectronLowPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
     if(AnaChannel == "ElectronHighPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
     if(AnaChannel == "TauHighPU")if(fabs(Channel) != GenType::kTau) exit(-1);
-
-    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "ElectronPlusLowPU")  {WCHARGE = 1;}
-    if(AnaChannel == "MuonMinusLowPU" || AnaChannel == "ElectronMinusLowPU"){WCHARGE = -1;}
 
 if(Debug)cout<<"check point 4"<<endl;
 
@@ -228,8 +225,8 @@ if(Debug)cout<<"check point 4"<<endl;
     //Trigger Cut
     //============
 if(Debug)cout<<"check point 4"<<endl;    //
-    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")if( HLT_Mu15_eta2p1_fired < 1) continue;
-    if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1)continue;
+    if(AnaChannel == "MuonLowPU" )if( HLT_Mu15_eta2p1_fired < 1) continue;
+    if(AnaChannel == "ElectronLowPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1)continue;
     if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1)continue;
     //Vertex Study===========================
     Vtx_nPrim = vtx_isFake->size();
@@ -280,15 +277,15 @@ if(Debug)cout<<"check point 5"<<endl;
     for(int iw(0); iw<wCand.size; iw++)
     {
       //additional lepton count
-      if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")    if(AddMuonCut(iw)>0) addLepN++;
+      if(AnaChannel == "MuonLowPU" )    if(AddMuonCut(iw)>0) addLepN++;
       if(AnaChannel == "MuonHighPU")    if(AddMuonCut(iw)>0) addLepN++;
-      if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")if(AddElectronCut(iw)>0) addLepN++;
+      if(AnaChannel == "ElectronLowPU" )if(AddElectronCut(iw)>0) addLepN++;
       if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
       if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
 if(Debug)cout<<"check point 6-1"<<endl;
-      if( ((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") && MuonCut(iw) >0)||
+      if( ((AnaChannel == "MuonLowPU" ) && MuonCut(iw) >0)||
 	  (AnaChannel =="MuonHighPU" && MuonCut(iw) >0)||
-	  ((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") && ElectronCut(iw) > 0)||
+	  ((AnaChannel == "ElectronLowPU" ) && ElectronCut(iw) > 0)||
 	  (AnaChannel =="ElectronHighPU" && ElectronCutHighPU(iw) > 0) ||
 	  (AnaChannel =="TauHighPU" && TauCut(iw) > 0)
 	  //Best Candidate selection
@@ -299,7 +296,7 @@ if(Debug)cout<<"check point 6-1"<<endl;
 	if(Mode == "Unfold")
 	  DumpUnfoldInfo(iw);
 	//Muon Variable Study----------------------
-	if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU"){
+	if(AnaChannel == "MuonLowPU" ){
 	  glbMuChi2 = (*W_Lept1_globalNormChi2)[iw];
 	  wCand.muonHit = (*W_Lept1_muonHits)[iw];
 	  wCand.matchStation = (*W_Lept1_matchStations)[iw];
@@ -339,7 +336,7 @@ if(Debug)cout<<"check point 6-3"<<endl;
 	wCand.lep_phi = (*W_Lept1_phi)[iw];
 	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
 	wCand.Nu_py=(*W_Neut_py)[iw]; //i->iw
-	if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU" )
+	if(AnaChannel == "ElectronLowPU" )
 	{
 	  wCand.lep_etaSC = (*W_Lept1_etaSC)[iw];
 	}
@@ -425,7 +422,7 @@ if(Debug)cout<<"check point 7"<<endl;
 
       if(Mode == "AllCorrectionsMC" )
       {
-	if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU" )
+	if(AnaChannel == "ElectronLowPU" )
 	{
 	  if( wCand.charge > 0)
 	  {	  
@@ -436,7 +433,7 @@ if(Debug)cout<<"check point 7"<<endl;
 	    SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
 	  }
 	}
-	if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+	if(AnaChannel == "MuonLowPU" )
 	{
 	  if( wCand.charge > 0)
 	  {
@@ -451,8 +448,8 @@ if(Debug)cout<<"check point 7"<<endl;
 
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
-      if( ((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") && MuonCutSide(iw) >0)||
-	  ((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") && ElectronCutSide(iw) > 0)||
+      if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
+	  ((AnaChannel == "ElectronLowPU" ) && ElectronCutSide(iw) > 0)||
 	  (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
       )
       //if( CutSide(iw)> 0 && lep_pt_side < (*W_Lept1_pt)[iw])
@@ -557,9 +554,9 @@ if(Debug)cout<<"check point 11"<<endl;
       evtCnt_Z_beforeCut++;
       if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
       evtCnt_Z_afterCut++;
-      if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")if( MuonCutZ(iz) == -1) continue;
+      if(AnaChannel == "MuonLowPU" )if( MuonCutZ(iz) == -1) continue;
       if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
-      if(AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")if( ElectronCutZ(iz) == -1) continue;
+      if(AnaChannel == "ElectronLowPU" )if( ElectronCutZ(iz) == -1) continue;
       if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
       if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
       if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10 )continue;
@@ -612,7 +609,7 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-	if((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") ||AnaChannel=="ElectronHighPU"){
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
 	}else{
@@ -674,7 +671,7 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-	if((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") ||AnaChannel=="ElectronHighPU"){
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
 	}else{
@@ -1009,18 +1006,18 @@ if(Debug)cout<<"check point 11"<<endl;
 	int etaRange1 = EtaRange(ZLep1etaSC);
 	int etaRange2 = EtaRange(ZLep2etaSC);
 	//      h1_ZmassDaughEta[etaRange1][etaRange2]->Fill(Zmass);
-	if( (AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") || AnaChannel=="ElectronHighPU")
+	if( (AnaChannel == "ElectronLowPU" ) || AnaChannel=="ElectronHighPU")
 	{
 	  FillEleZmassDaughEta(etaRange1,etaRange2);
 	}
 
-	if( (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+	if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
 	{
 	  FillMuZmassDaughEta(etaRange1,etaRange2);
 	}
       }
       if(Mode == "ScaleMakeMC"||Mode == "ScaleMakeRD")
-	if( (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+	if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
       {
 	if(Mode == "ScaleMakeMC")
 	{
@@ -1073,7 +1070,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }
 
       if(Mode == "ScaleMakeMC"||Mode == "ScaleMakeRD")
-	if( (AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU") || AnaChannel=="ElectronHighPU")
+	if( (AnaChannel == "ElectronLowPU" ) || AnaChannel=="ElectronHighPU")
 	{
 	  if(Mode == "ScaleMakeMC")
 	  {
@@ -1452,7 +1449,7 @@ if(Debug)cout<<"check point 11"<<endl;
     h1_WmSide_Neu_eta[i]->Write();
   }
   }
-  if((AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")|| (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") )
+  if((AnaChannel == "ElectronLowPU" )|| (AnaChannel == "MuonLowPU" ) )
   for( int i=0;i<NWptBinPlus;i++)
   {
     h1_W_Neu_pt[i]->Write();
@@ -1534,7 +1531,7 @@ if(Debug)cout<<"check point 11"<<endl;
   //Simulation Method
   if(Mode =="ScaleMakeMC" || Mode =="ScaleMakeRD")
   {
-    if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+    if( AnaChannel == "ElectronLowPU" )
     {
       for(int i(0);i<ScElCombiBins;i++)
       {
@@ -1550,7 +1547,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }
     }
 
-    if( (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+    if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
     {
       for(int i(0);i<ScMuCombiBins;i++)
       {
