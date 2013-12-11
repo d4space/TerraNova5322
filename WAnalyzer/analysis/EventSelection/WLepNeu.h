@@ -762,6 +762,8 @@ public :
    TH1D*	h1_W_pt;
    TH1D*        h1_Wp_pt;
    TH1D*        h1_Wm_pt;
+   TH1D*        h1_Wp_pt_NoLumiWeight;
+   TH1D*        h1_Wm_pt_NoLumiWeight;
    TH2D*        h2_WpT_ReconPstFsr;
 
    TH2D*        h2_WpT_lepPt;
@@ -939,6 +941,7 @@ private:
   bool TruthRecoPost;
   double SF;
   double SF1;
+  double WCHARGE;
   //Recoil Variables
   RecoilCorrector *recoilCorr;
   struct RecoilVar{
@@ -1802,6 +1805,8 @@ void WLepNeu::Init(TTree *tree)
 
    h1_Wp_pt	= new TH1D("h1_Wp_pt","WplusPt",NWptBinPlus-1,Bins);
    h1_Wm_pt	= new TH1D("h1_Wm_pt","WminusPt",NWptBinPlus-1,Bins);
+   h1_Wp_pt_NoLumiWeight = new TH1D("h1_Wp_pt_NoLumiWeight ","WplusPt",NWptBinPlus-1,Bins);
+   h1_Wm_pt_NoLumiWeight = new TH1D("h1_Wm_pt_NoLumiWeight ","WminusPt",NWptBinPlus-1,Bins);
    //for( int i(0);i<NWptBinPlus-1;i++)
    //{
    //  sprintf(histName,"h1_pstFsr2ReconW_pt_%d",i);
@@ -1996,7 +2001,7 @@ void WLepNeu::Init(TTree *tree)
      //  h1_ZmassDaughEta[i][j]=
      //	 new TH1D(histName,"ZmassDaughterEta",60,60,120);
 
-     if( AnaChannel=="ElectronLowPU")
+     if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
      {
        for(int i(0);i<ScElCombiBins;i++)
        {
@@ -2012,7 +2017,7 @@ void WLepNeu::Init(TTree *tree)
          h1_ZmassDaughEta[i]= new TH1D(histName,"ZmassDaughterEta",60,60,120);
        }
      }
-     if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+     if( (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
      {
        for(int i(0);i<ScMuCombiBins;i++)
        {
@@ -2137,6 +2142,7 @@ void WLepNeu::Init(TTree *tree)
    }else{
      cout<<"WLepNeu.h: initializing the trees"<<endl;
    LumiWeight = lumiweight;
+   cout<<"Input Value of Lumiweight = "<<lumiweight<<" Initialized as = "<<LumiWeight<<endl;
    OutFileName = OutFileName_;
    Mode = mode_;
    AnaChannel = AnaChannel_;
@@ -2318,7 +2324,7 @@ Double_t WLepNeu::MuonMinusEffiCorrection(double muonPt, double muonEta)
 Int_t WLepNeu::FillEleZmassDaughEta(int etaRange1, int etaRange2)
 {
 //ScaleSmear Electron 21 category Fill
-if(AnaChannel=="ElectronLowPU")
+if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
 {
   if( (etaRange1==0) && (etaRange2==0))
     h1_ZmassDaughEta[0]->Fill(Zmass);
@@ -3492,7 +3498,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
 {
   int lep1Range(-1);
   int lep2Range(-1);
-  if(AnaChannel=="ElectronLowPU")
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3537,7 +3543,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
     if( fabs(lep2Eta) >= 2.0   && fabs(lep2Eta) < 2.2)    lep2Range=9;
     if( fabs(lep2Eta) >= 2.2   && fabs(lep2Eta) < 2.4)    lep2Range=10;
   }
-  if(AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+  if((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3558,7 +3564,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
 Int_t WLepNeu::EtaRange(double lep1Eta)
 {
   int lep1Range(-1);
-  if(AnaChannel=="ElectronLowPU")
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3583,7 +3589,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta)
     if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.2)    lep1Range=9;
     if( fabs(lep1Eta) >= 2.2   && fabs(lep1Eta) < 2.4)    lep1Range=10;
   }
-  if(AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+  if((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3634,12 +3640,13 @@ Int_t WLepNeu::FillAcceptInfo()
   int NGenW = GenW_Born_pt->size();
   //Check W number and Lept1 id
   if( NGenW != 1) cout<<"Notice: Number of GenW is not 1 but "<<NGenW<<endl;
-  if(AnaChannel == "MuonLowPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
+  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
   {
     cout<<"Error: Muon Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
     exit(-1);
   }
-  if(AnaChannel == "ElectronLowPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kElectron)
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+    if( fabs((*GenW_BornLept1_id)[0]) != GenType::kElectron)
   {
     cout<<"Error: Electron Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
     exit(-1);
@@ -3656,28 +3663,29 @@ Int_t WLepNeu::FillAcceptInfo()
   // Acceptance
     //Full Phase Spece
   // Fiducial 
-  if(AnaChannel == "MuonLowPU")
+  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
   if( (*GenW_BornLept1_pt)[0] > 20 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
     isBornPassAcc = true;
-  if(AnaChannel == "ElectronLowPU")
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
   if( (*GenW_BornLept1_pt)[0] > 25 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
   //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
     isBornPassAcc = true;
 
   // Fiducial of Post 
-  if(AnaChannel == "MuonLowPU")
+  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
   if( (*GenW_PostLept1_pt)[0] > 20 )
   if( fabs( (*GenW_PostLept1_eta)[0]) < 2.1 )
     isPostPassAcc = true;
-  if(AnaChannel == "ElectronLowPU")
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
   if( (*GenW_PostLept1_pt)[0] > 25 )
   if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
   //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
     isPostPassAcc = true;
   // Fill Histo
   h1_Born_AP->Fill( genInfo.BornW_pt,TTW);
+  //cout <<"Checking Lumiweight = "<<TTW<<endl;
   if( isBornPassAcc )
   {
     h1_Born_BornFid->Fill(genInfo.BornW_pt,TTW);
@@ -3748,10 +3756,10 @@ Int_t WLepNeu::DumpUnfoldInfo(int i)
 
 Int_t WLepNeu::FillUnfoldInfo()
 {
-    h1_Truth_Rec->Fill(wCand.pt,TTW);
-    h1_Truth_Post->Fill(genInfo.PostW_pt,TTW);
-    if( evtCnt % 2 == 0 )
-    {
+  h1_Truth_Rec->Fill(wCand.pt,TTW);
+  h1_Truth_Post->Fill(genInfo.PostW_pt,TTW);
+  if( evtCnt % 2 == 0 )
+  {
       h1_Truth_Rec_Even->Fill(wCand.pt,TTW);
       h1_Truth_Post_Even->Fill(genInfo.PostW_pt,TTW);
     }else{              
@@ -3778,7 +3786,7 @@ Int_t WLepNeu::FillUnfoldInfo()
       //}
     }
     //We've found the gen match, and get out of here
-    if(AnaChannel == "ElectronLowPU" )
+    if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
     {
       if( wCand.charge > 0)
       {
@@ -3789,7 +3797,7 @@ Int_t WLepNeu::FillUnfoldInfo()
 	SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
       }
     }
-    if(AnaChannel == "MuonLowPU")
+    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
     {
       if( wCand.charge > 0)
       {
@@ -3809,32 +3817,32 @@ Int_t WLepNeu::DoRecoilCorr()
 {
   //Uncomment to apply scale/res corrections to MC
   //wCand.lep_pt_corr = gRandom->Gaus(wCand.lep_pt*lepScale,lepRes);
- 
-    if(AnaChannel == "ElectronLowPU")
+
+  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  {
+    //MC Smear Correction
+    if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
     {
-     //MC Smear Correction
-     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-     {
-       smearcorr=EleSmearMC(wCand.lep_etaSC);
-       PtEtaPhiMLorentzVector WeleMC_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.000511);
-       corr1 = gRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
-       WeleMC_4=corr1*WeleMC_4;
-       wCand.lep_pt_corr=WeleMC_4.Pt();
-     }else{
-       wCand.lep_pt_corr = wCand.lep_pt;
-     }
+      smearcorr=EleSmearMC(wCand.lep_etaSC);
+      PtEtaPhiMLorentzVector WeleMC_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.000511);
+      corr1 = gRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
+      WeleMC_4=corr1*WeleMC_4;
+      wCand.lep_pt_corr=WeleMC_4.Pt();
+    }else{
+      wCand.lep_pt_corr = wCand.lep_pt;
     }
-    
-    if(AnaChannel == "MuonLowPU")
+  }
+  
+  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+  {
+    //MC Smear Correction
+    if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
     {
-     //MC Smear Correction
-     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-     {
-       smearcorr= MuonSmearMC(wCand.lep_eta);
-       PtEtaPhiMLorentzVector Wmu_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.1056);
-       corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-       Wmu_4=corr1*Wmu_4;
-       wCand.lep_pt_corr=Wmu_4.Pt();
+      smearcorr= MuonSmearMC(wCand.lep_eta);
+      PtEtaPhiMLorentzVector Wmu_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.1056);
+      corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+      Wmu_4=corr1*Wmu_4;
+      wCand.lep_pt_corr=Wmu_4.Pt();
      } else{
        wCand.lep_pt_corr = wCand.lep_pt;
      }
