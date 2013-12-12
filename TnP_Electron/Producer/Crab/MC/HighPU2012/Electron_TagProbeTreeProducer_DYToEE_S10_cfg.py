@@ -6,10 +6,10 @@ process.p=cms.Path()
 # Include
 ##########################
 
-#from KoSMP.WAnalyzer.pf2pat_template_MC_cfg import *
-from KoSMP.WAnalyzer.eventContent_cff import *
-from KoSMP.WAnalyzer.tools import *
-from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+#from KNUPhy.WAnalyzer.pf2pat_template_MC_cfg import *
+from KNUPhy.WAnalyzer.eventContent_cff import *
+from KNUPhy.WAnalyzer.tools import *
+from KNUPhy.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 ## MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 #process.load("Configuration.StandardSequences.Geometry_cff")
@@ -31,17 +31,17 @@ from PhysicsTools.PatAlgos.tools.pfTools import *
 #########################
 # Constant
 #########################
-MC_flag = False
-#MC_flag = True
+#MC_flag = False
+MC_flag = True
 
 #for RD
 #GLOBAL_TAG = 'FT_53_V21_AN3::All'
 #GLOBAL_TAG = 'FT_R_53_V18::All'
-#GLOBAL_TAG = 'FT_R_53_V6::All'
+GLOBAL_TAG = 'FT53_V6C_AN3::All'
 #GLOBAL_TAG = 'GR_R_53_V19::All'
 #GLOBAL_TAG = 'GR_R_53_V21::All'
 #GLOBAL_TAG = 'FT_R_53_V6::All'
-GLOBAL_TAG = 'FT_53_V6C_AN3::All'
+#GLOBAL_TAG = 'FT_53_V6C_AN4::All'
 #GLOBAL_TAG = 'GR_H_V29::All'
 #https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions#2012_A_B_C_D_datasets_re_reco_pr
 
@@ -61,7 +61,10 @@ HLTProcessName = "HLT"
 if MC_flag:
     GLOBAL_TAG = 'START53_V18::All'
     #GLOBAL_TAG = 'START42_V12::All'
-    HLTPath = "HLT_Ele27_WP80_v8,HLT_Ele27_WP80_v9,HLT_Ele27_WP80_v10,HLT_Ele27_WP80_v11"
+    HLTPath1 = "HLT_Ele27_WP80_v8"
+    HLTPath2 = "HLT_Ele27_WP80_v9"
+    HLTPath3 = "HLT_Ele27_WP80_v10"
+    HLTPath4 = "HLT_Ele27_WP80_v11"
     HLTProcessName = "HLT"
 
 process.GlobalTag.globaltag = GLOBAL_TAG
@@ -69,7 +72,6 @@ process.GlobalTag.globaltag = GLOBAL_TAG
 #process.GlobalTag.globaltag = cms.string( 'START52_V10::All' )
 OUTPUT_FILE_NAME = "testNewWrite.root"
 
-#abseta = cms.string('abs(eta)')
 ELECTRON_ET_CUT_MIN = 30.0
 #ELECTRON_ET_CUT_MIN = 25.0
 #ELECTRON_ET_CUT_MIN = 17.0
@@ -102,12 +104,11 @@ from PhysicsTools.PatAlgos.tools.cmsswVersionTools import pickRelValInputFiles
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
 #    'file:/afs/cern.ch/user/y/ykim/public/Run2012A-13Jul2012_sample.root'
-#    'file:/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Producer/Crab/RD/HighPU2012/20130711/Abs_Eta/SingleElectron_Run2012B_13Jul2012-v1_AOD.root'
-#    'file:/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Producer/Crab/RD/HighPU2012/20130711/Abs_Eta/DYToEE_S10.root'
+#    'file:/afs/cern.ch/work/t/taehoon/public/DATA/RD/2012/SingleElectron_Run2012B_13Jul2012-v1_AOD.root'
 #'file:/afs/cern.ch/work/t/taehoon/public/DATA/MC/2012/Summer12_DR53X__WToENu_TuneZ2star_8TeV_pythia6_AODSIM_PU_S10_START53_V7A-v2.root'
-#'file:/afs/cern.ch/work/s/shchang/W_V004/CMSSW_5_3_7_patch4/src/KoSMP/WAnalyzer/prod/Electron/RD/Local/patTuple_skim_l1Filter.root'
-#      'file:/d1/scratch/kimtaehoon/Root_File/SingleElectron_Run2012B_13Jul2012-v1_AOD.root'
-
+#'file:/afs/cern.ch/work/s/shchang/W_V004/CMSSW_5_3_7_patch4/src/KNUPhy/WAnalyzer/prod/Electron/RD/Local/patTuple_skim_l1Filter.root'
+#      'file:/d1/scratch/kimtaehoon/HighPU/CMSSW_5_3_8/src/KNUPhy1/TnP_Electron/Producer/Crab/RD/HighPU2012/Run2012A-13Jul2012-v1/Run2012A-13Jul2012_sample.root'
+#      'file:/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Producer/Crab/MC/HighPU2012/DYToEE_S10.root'
     pickRelValInputFiles( cmsswVersion  = os.environ['CMSSW_VERSION']
                         , relVal        = 'RelValTTbar'
                         , globalTag     = process.GlobalTag.globaltag.value().split(':')[0]
@@ -117,12 +118,12 @@ process.source = cms.Source("PoolSource",
 )
 #if MC_flag:
 #  print "MC sample"
-#  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+#  process.load("KNUPhy.WAnalyzer.Sources.DYToEE_S8_copy_cff")
 #else:
 #  print "RD sample"
-#  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+#  process.load("KNUPhy.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
-#process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
+#process.load("KNUPhy.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
 ############################
 # Output
 ############################
@@ -136,7 +137,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 )
 process.out.outputCommands +=pf2patEventContent
 
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(100) )
+process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
@@ -390,12 +391,12 @@ process.PassingHLT = cms.EDProducer("trgMatchedGsfElectronProducer",
     matchUnprescaledTriggerOnly = cms.untracked.bool(False),
     #isTriggerOR = cms.untracked.bool(True),
                                     
-    #hltTags = cms.VInputTag(cms.InputTag(HLTPath,"", HLTProcessName)),
-    hltTags = cms.VInputTag(
-    cms.InputTag(HLTPath1,"", HLTProcessName),
-    cms.InputTag(HLTPath2,"", HLTProcessName),
-    cms.InputTag(HLTPath3,"", HLTProcessName),
-    cms.InputTag(HLTPath4,"", HLTProcessName),
+   # hltTags = cms.VInputTag(cms.InputTag(HLTPath,"", HLTProcessName)),
+   hltTags = cms.VInputTag(
+   cms.InputTag(HLTPath1,"", HLTProcessName),
+   cms.InputTag(HLTPath2,"", HLTProcessName),
+   cms.InputTag(HLTPath3,"", HLTProcessName),
+   cms.InputTag(HLTPath4,"", HLTProcessName),
     ),
     triggerEventTag = cms.untracked.InputTag("hltTriggerSummaryAOD","",HLTProcessName),
     triggerResultsTag = cms.untracked.InputTag("TriggerResults","",HLTProcessName)

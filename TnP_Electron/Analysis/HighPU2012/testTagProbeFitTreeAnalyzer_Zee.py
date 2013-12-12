@@ -20,7 +20,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 isMC = True
 #isMC = False
 
-InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Analysis/HighPU2012/Root_file/testNewWrite_Run2012A_13Jul.root"
+InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Analysis/HighPU2012/MCCrystalBall/Abs_Eta/testNewWrite_Run2012C_Ecal.root"
 
 #InputFileName = "/terranova_1/W_TnP/Ele_skim_root/RD/ReReco/testNewWrite_RD_ReReco.root"
 #InputFileName = "/terranova_1/W_TnP/Electron/mc_all_gsf.root"
@@ -30,7 +30,7 @@ HLTDef = "probe_passingHLT"
 PDFName = "pdfSignalPlusBackground"
 if isMC:
 
-  InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Analysis/HighPU2012/Root_file/testNewWrite_MC.root"
+  InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Analysis/HighPU2012MCCrystalBall/Abs_Eta/testNewWrite_HighPU_MC.root"
 
   #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/KoSMP/TnP_Electron/Producer/Local/MC/testNewWrite.root"
   # this is not working, you need to set PDFName = "" for each line
