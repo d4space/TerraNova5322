@@ -20,7 +20,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 isMC = True
 #isMC = False
 
-InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Analysis/HighPU2012/Root_file/testNewWrite_Run2012A_13Jul.root"
+InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Analysis/HighPU2012/MCCrystalBall/Abs_Eta/testNewWrite_Run2012C_Ecal.root"
 
 #InputFileName = "/terranova_1/W_TnP/Ele_skim_root/RD/ReReco/testNewWrite_RD_ReReco.root"
 #InputFileName = "/terranova_1/W_TnP/Electron/mc_all_gsf.root"
@@ -30,7 +30,7 @@ HLTDef = "probe_passingHLT"
 PDFName = "pdfSignalPlusBackground"
 if isMC:
 
-  InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KoSMP/TnP_Electron/Analysis/HighPU2012/Root_file/testNewWrite_MC.root"
+  InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Analysis/HighPU2012MCCrystalBall/Abs_Eta/testNewWrite_HighPU_MC.root"
 
   #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/KoSMP/TnP_Electron/Producer/Local/MC/testNewWrite.root"
   # this is not working, you need to set PDFName = "" for each line
@@ -66,6 +66,7 @@ charge_minus    = cms.vdouble(-1,  -0.5)
 EfficiencyBinsSC_et_tagP = cms.PSet(
     probe_sc_et  = probe_sc_et_all,
     probe_sc_eta = probe_sc_eta_one,
+#    probe_sc_abseta = probe_sc_eta_one,
     tag_charge   = charge_plus
 )
 EfficiencyBinsSC_et_tagM = EfficiencyBinsSC_et_tagP.clone()
@@ -74,6 +75,7 @@ EfficiencyBinsSC_et_tagM.tag_charge = charge_minus
 EfficiencyBinsSC_eta_tagP = EfficiencyBinsSC_et_tagP.clone()
 EfficiencyBinsSC_eta_tagP.probe_sc_et = probe_sc_et_one
 EfficiencyBinsSC_eta_tagP.probe_sc_eta = probe_sc_eta_all
+#EfficiencyBinsSC_eta_tagP.probe_sc_abseta = probe_sc_eta_all
 
 EfficiencyBinsSC_eta_tagM = EfficiencyBinsSC_eta_tagP.clone()
 EfficiencyBinsSC_eta_tagM.tag_charge = charge_minus
@@ -81,6 +83,7 @@ EfficiencyBinsSC_eta_tagM.tag_charge = charge_minus
 EfficiencyBinsSC_et_probeP = cms.PSet(
     probe_sc_et  = probe_sc_et_all,
     probe_sc_eta = probe_sc_eta_one,
+#    probe_sc_abseta = probe_sc_eta_one,
     probe_charge = charge_plus
 )
 EfficiencyBinsSC_et_probeM = EfficiencyBinsSC_et_probeP.clone()
@@ -89,6 +92,7 @@ EfficiencyBinsSC_et_probeM.probe_charge = charge_minus
 EfficiencyBinsSC_eta_probeP = cms.PSet(
     probe_sc_et = probe_sc_et_one,
     probe_sc_eta= probe_sc_eta_all,
+#    probe_sc_abseta= probe_sc_eta_all, 
     probe_charge= charge_plus
 )
 EfficiencyBinsSC_eta_probeM = EfficiencyBinsSC_eta_probeP.clone()
@@ -226,7 +230,8 @@ process.PfElectronToId_P = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
         #probe_pfEle_eta = cms.vstring("Probe #eta", "-2.5", "2.5", ""),                
         probe_sc_et = cms.vstring("Probe E_{T}", "0", "1000", "GeV/c"),
         probe_sc_eta = cms.vstring("Probe #eta", "-2.5", "2.5", ""),
-	tag_charge = cms.vstring("Tag Charge","-1","1",""),
+#	probe_sc_abseta = cms.vstring("Probe |#eta|", "0","2.5", ""),
+        tag_charge = cms.vstring("Tag Charge","-1","1",""),
 	probe_charge = cms.vstring("probe Charge","-1","1",""),
     ),
 
@@ -257,7 +262,7 @@ process.PfElectronToId_P = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
     "ZGeneratorLineShape::signalPhy(mass)", ### NLO line shape
 
     ##### erfc*Exp
-    "RooCMSShape::backgroundPass(mass, alphaPass[60.,50.,70.], betaPass[0.001, 0.,0.1], betaPass, peakPass[90.0])",
+#    "RooCMSShape::backgroundPass(mass, alphaPass[60.,50.,70.], betaPass[0.001, 0.,0.1], betaPass, peakPass[90.0])",
     "RooCMSShape::backgroundFail(mass, alphaFail[60.,50.,70.], betaFail[0.001, 0.,0.1], betaFail, peakFail[90.0])",
 #    "RooCMSShape::backgroundFail(mass, alphaFail[50.,5.,200.], betaFail[0.01, 0.,10], betaFail, peakFail[90.0])",
 
@@ -276,7 +281,7 @@ process.PfElectronToId_P = cms.EDAnalyzer("TagProbeFitTreeAnalyzer",
 #    "BreitWigner::signal(mass, mean[91.2], width[2.9, 0.5, 5.0])",
 
     ##### Exp 
-#    "RooExponential::backgroundPass(mass, cPass[-0.02,-5,0])",
+    "RooExponential::backgroundPass(mass, cPass[-0.02,-5,0])",
 #    "RooExponential::backgroundFail(mass, cFail[-0.02,-5,0])",
 
     ##### Chebychev
@@ -343,7 +348,8 @@ process.SCToPfElectron_et_M.Variables = cms.PSet(
         mass = cms.vstring("Tag-Probe Mass", "60.0", "120.0", "GeV/c^{2}"),
         probe_sc_et = cms.vstring("Probe E_{T}", "0", "1000", "GeV/c"),
         probe_sc_eta = cms.vstring("Probe #eta", "-2.5", "2.5", ""),
-	tag_charge = cms.vstring("Tag Charge","-1","1",""),
+#	probe_sc_abseta = cms.vstring("Probe |#eta|", "0", "2.5", ""),
+        tag_charge = cms.vstring("Tag Charge","-1","1",""),
 	)
 process.SCToPfElectron_et_M.Categories = cms.PSet(
     mcTrue = cms.vstring("MC true", "dummy[true=1,false=0]"),           

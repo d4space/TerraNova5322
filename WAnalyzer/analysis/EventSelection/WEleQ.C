@@ -334,6 +334,16 @@ if(Debug)cout<<"check point 6-3"<<endl;
 	wCand.lep_phi = (*W_Lept1_phi)[iw];
 	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
 	wCand.Nu_py=(*W_Neut_py)[iw]; //i->iw
+
+//////////////// Correction Function //////////////////////
+//        wCand.Nu_px_Corr = wCand.Nu_px-(0.0641418+0.292855*Vtx_nPrim);// Corr for RD
+//        wCand.Nu_py_Corr = wCand.Nu_py-(0.0967542-0.176636*Vtx_nPrim);// Corr for RD
+        wCand.Nu_px_Corr = wCand.Nu_px-(0.153496-0.0129265*Vtx_nPrim);// Corr for MC
+        wCand.Nu_py_Corr = wCand.Nu_py-(0.321572-0.179143*Vtx_nPrim);// Corr for MC
+
+        TVector2 *new_W_MET = new TVector2(wCand.Nu_px_Corr, wCand.Nu_py_Corr);
+        wCand.Met_Corr = new_W_MET->Mod();
+////////////////////////////////////////////////////////////////////////////////
 	if(AnaChannel == "ElectronLowPU" )
 	{
 	  wCand.lep_etaSC = (*W_Lept1_etaSC)[iw];
@@ -553,6 +563,26 @@ if(Debug)cout<<"check point 14"<<endl;
 	//cout<<"energy: "<<ZLep2En<<endl;
 	ZLep2Phi	= (*Z_Lept2_phi)[iz];
 
+/////////////////////////////////////////////////////////
+        if( Zmass < 60 || 120 < Zmass) continue;
+        else
+        {
+        Z_MET_pt = (*Z_Neut_pt)[iz];
+        Z_MET_phi = (*Z_Neut_phi)[iz];
+        Z_MET_px = (*Z_Neut_px)[iz];
+        Z_MET_py = (*Z_Neut_py)[iz];
+//////////////////////////////////////////////////////////
+///////////// Correction Function ////////////////////////
+//        Z_MET_px_Corr = Z_MET_px-(0.0641418+0.292855*Vtx_nPrim);// Corr for RD
+//        Z_MET_py_Corr = Z_MET_py-(0.0967542-0.176636*Vtx_nPrim);// Corr for RD   
+        Z_MET_px_Corr = Z_MET_px-(0.153496-0.0129265*Vtx_nPrim);// Corr for MC
+        Z_MET_py_Corr = Z_MET_py-(0.321572-0.179143*Vtx_nPrim);// Corr for MC 
+
+        TVector2 *new_Z_MET = new TVector2(Z_MET_px_Corr, Z_MET_py_Corr);
+        Z_MET_pt_Corr = new_Z_MET->Mod();
+        Z_MET_phi_Corr = new_Z_MET->Phi_mpi_pi(new_Z_MET->Phi());
+        }
+
 	TVector2 ZDiLep2D(
                 (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
@@ -685,6 +715,7 @@ if(Debug)cout<<"check point 16"<<endl;
       h1_W_Lept1_pt1->Fill(wCand.lep_pt,TTW);
       h1_npileup1->Fill(npileup,TTW);
       h1_W_Neut_pt1->Fill(wCand.Met,TTW);
+      h1_W_Neut_pt_Corr->Fill(wCand.Met_Corr,TTW);
 
 
     if(AnaChannel == "ElectronHighPU" )
@@ -1035,6 +1066,18 @@ if(Debug)cout<<"check point 16"<<endl;
       h2_Zpt_ZLep2->Fill(Zpt,ZLep2Pt);
 
       h1_Zmass->Fill(Zmass,TTW);
+      h1_Z_Neut_pt->Fill(Z_MET_pt,TTW);
+      h1_Z_Neut_phi->Fill(Z_MET_phi,TTW);
+      h1_Z_Neut_px->Fill(Z_MET_px,TTW);
+      h1_Z_Neut_py->Fill(Z_MET_py,TTW);
+      h1_Z_Neut_pt_Corr->Fill(Z_MET_pt_Corr,TTW);
+      h1_Z_Neut_phi_Corr->Fill(Z_MET_phi_Corr,TTW);
+      h1_Z_Neut_px_Corr->Fill(Z_MET_px_Corr,TTW);
+      h1_Z_Neut_py_Corr->Fill(Z_MET_py_Corr,TTW);
+      h2_Z_Nvtx_px->Fill(Vtx_nPrim,Z_MET_px);
+      h2_Z_Nvtx_py->Fill(Vtx_nPrim,Z_MET_py);
+      h2_Z_Nvtx_px_Corr->Fill(Vtx_nPrim,Z_MET_px_Corr);
+      h2_Z_Nvtx_py_Corr->Fill(Vtx_nPrim,Z_MET_py_Corr);
 
       //MisChargeStudy
   //    if(AnaChannel =="ElectronHighPU"){
@@ -1318,6 +1361,7 @@ if(Debug)cout<<"check point 16"<<endl;
 
   h1_W_Lept1_pt1->Write();
   h1_W_Neut_pt1->Write();
+  h1_W_Neut_pt_Corr->Write();
   h1_npileup1->Write();
   h1_Vtx_Prim1->Write();
   h1_Vtx_Good1->Write();
@@ -1326,6 +1370,17 @@ if(Debug)cout<<"check point 16"<<endl;
   {
   h1_W_Lep1_eta->Write();
   h1_W_Mt->Write();
+  h1_Z_Neut_pt->Write();
+  h1_Z_Neut_phi->Write();
+  h1_Z_Neut_px->Write();
+  h1_Z_Neut_py->Write();
+  h1_Z_Neut_pt_Corr->Write();
+  h1_Z_Neut_phi_Corr->Write();
+  h1_Z_Neut_px_Corr->Write();
+  h1_Z_Neut_py_Corr->Write();
+  h2_Z_Nvtx_px_Corr->Write();
+  h2_Z_Nvtx_py_Corr->Write();
+  
   //cut value check.
     h1_check_iw->Write();
     h1_check_side_iw->Write();

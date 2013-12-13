@@ -116,13 +116,14 @@ void WLepNeu::Loop()
   //Recoil Correction
   if( (Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC") ||Mode =="Unfold" )
   {
-    if(AnaChannel == "MuonLowPU")
+    //if(AnaChannel == "MuonLowPU")
+    if(AnaChannel == "MuonLowPU" )
     {
       rcoil.ZRDfilename="../Recoil/ZmmData/fits.root";
       rcoil.ZMCfilename="../Recoil/ZmmMC/fits.root";
       rcoil.Wpfilename="../Recoil/WmpMC/fits.root";
       rcoil.Wmfilename="../Recoil/WmmMC/fits.root";
-    }else if(AnaChannel == "ElectronLowPU" || AnaChannel == "ElectronHighPU" )
+    }else if((AnaChannel == "ElectronLowPU" ) || AnaChannel == "ElectronHighPU" )
     {
       rcoil.ZRDfilename="../Recoil/ZeeData/fits.root";
       rcoil.ZMCfilename="../Recoil/ZeeMC/fits.root";
@@ -151,6 +152,11 @@ void WLepNeu::Loop()
   bool Debug(false);
 
   TString resultDir = AnaChannel;
+  if(AnaChannel == "MuonLowPU" )
+    TString resultDir = "MuonLowPU";
+  else if(AnaChannel == "ElectronLowPU")
+    TString resultDir = "ElectronLowPU";
+
 //  TString resultDir = "results";
   gSystem->mkdir(resultDir);
   
@@ -182,14 +188,29 @@ void WLepNeu::Loop()
     //FSRout<<"TT weight: "<<TTW<<endl;
 if(Debug)cout<<"check point 6"<<endl;
 if(Debug)cout<<"check point 2"<<endl;
+    
+ //   if( LumiWeight == 1)
+ //   {
+ //     TTW = 1;
+ //   }else{
+ //     //TTW= LumiWeight*weightin; //weight is right but S8 strange
+ //     //if (weightFSR<0) weightFSR=1.;
+ //     //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
+ //     TTW= LumiWeight; //weight is right but S8 strange
+ //     if(AnaChannel == "ElectronHighPU")
+ //     {TTW= LumiWeight*weight;} //reweighting value for S10
+ //   }
+    //cout<<"TTW weight = "<<TTW<<endl;
+
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
+      //TTW = 1;
       if( FillAcceptInfo() != 0 ) exit(-1);
       // Don't go futher
       continue;
     }
 if(Debug)cout<<"check point 3"<<endl;
-    if(AnaChannel == "MuonLowPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
+    if(AnaChannel == "MuonLowPU" )if(fabs(Channel) != GenType::kMuon) exit(-1);
     if(AnaChannel == "MuonHighPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
     if(AnaChannel == "ElectronLowPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
     if(AnaChannel == "ElectronHighPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
@@ -204,8 +225,8 @@ if(Debug)cout<<"check point 4"<<endl;
     //Trigger Cut
     //============
 if(Debug)cout<<"check point 4"<<endl;    //
-    if(AnaChannel == "MuonLowPU")if( HLT_Mu15_eta2p1_fired < 1) continue;
-    if(AnaChannel=="ElectronLowPU")if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1)continue;
+    if(AnaChannel == "MuonLowPU" )if( HLT_Mu15_eta2p1_fired < 1) continue;
+    if(AnaChannel == "ElectronLowPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1)continue;
     if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1)continue;
     //Vertex Study===========================
     Vtx_nPrim = vtx_isFake->size();
@@ -250,33 +271,32 @@ if(Debug)cout<<"check point 5"<<endl;
       {TTW= LumiWeight*weight;} //reweighting value for S10
     }
     
-    //cout<<"TT weight: "<<TTW<<endl;
     //cout<<"Muon size: "<<wMuons.pt->size()<<endl;
     //cout<<"W    size: "<<W_pt->size()<<endl;
     h1_W_Multi->Fill(wCand.size);
     for(int iw(0); iw<wCand.size; iw++)
     {
       //additional lepton count
-      if(AnaChannel == "MuonLowPU")    if(AddMuonCut(iw)>0) addLepN++;
+      if(AnaChannel == "MuonLowPU" )    if(AddMuonCut(iw)>0) addLepN++;
       if(AnaChannel == "MuonHighPU")    if(AddMuonCut(iw)>0) addLepN++;
-      if(AnaChannel == "ElectronLowPU")if(AddElectronCut(iw)>0) addLepN++;
+      if(AnaChannel == "ElectronLowPU" )if(AddElectronCut(iw)>0) addLepN++;
       if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
       if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
 if(Debug)cout<<"check point 6-1"<<endl;
-      if( (AnaChannel =="MuonLowPU" && MuonCut(iw) >0)||
+      if( ((AnaChannel == "MuonLowPU" ) && MuonCut(iw) >0)||
 	  (AnaChannel =="MuonHighPU" && MuonCut(iw) >0)||
-	  (AnaChannel =="ElectronLowPU" && ElectronCut(iw) > 0)||
+	  ((AnaChannel == "ElectronLowPU" ) && ElectronCut(iw) > 0)||
 	  (AnaChannel =="ElectronHighPU" && ElectronCutHighPU(iw) > 0) ||
 	  (AnaChannel =="TauHighPU" && TauCut(iw) > 0)
+	  //Best Candidate selection
       )if( wCand.lep_pt < (*W_Lept1_pt)[iw])
       {
-if(Debug)cout<<"check point 6-2"<<endl;	
 	W_pass = true;
 	wCand.charge = (*W_Charge)[iw];
 	if(Mode == "Unfold")
 	  DumpUnfoldInfo(iw);
 	//Muon Variable Study----------------------
-	if(AnaChannel == "MuonLowPU"){
+	if(AnaChannel == "MuonLowPU" ){
 	  glbMuChi2 = (*W_Lept1_globalNormChi2)[iw];
 	  wCand.muonHit = (*W_Lept1_muonHits)[iw];
 	  wCand.matchStation = (*W_Lept1_matchStations)[iw];
@@ -413,7 +433,7 @@ if(Debug)cout<<"check point 7"<<endl;
 	    SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
 	  }
 	}
-	if(AnaChannel == "MuonLowPU")
+	if(AnaChannel == "MuonLowPU" )
 	{
 	  if( wCand.charge > 0)
 	  {
@@ -428,8 +448,8 @@ if(Debug)cout<<"check point 7"<<endl;
 
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
-      if( (AnaChannel =="MuonLowPU" && MuonCutSide(iw) >0)||
-	  (AnaChannel =="ElectronLowPU" && ElectronCutSide(iw) > 0)||
+      if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
+	  ((AnaChannel == "ElectronLowPU" ) && ElectronCutSide(iw) > 0)||
 	  (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
       )
       //if( CutSide(iw)> 0 && lep_pt_side < (*W_Lept1_pt)[iw])
@@ -534,9 +554,9 @@ if(Debug)cout<<"check point 11"<<endl;
       evtCnt_Z_beforeCut++;
       if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
       evtCnt_Z_afterCut++;
-      if(AnaChannel == "MuonLowPU")if( MuonCutZ(iz) == -1) continue;
+      if(AnaChannel == "MuonLowPU" )if( MuonCutZ(iz) == -1) continue;
       if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
-      if(AnaChannel == "ElectronLowPU")if( ElectronCutZ(iz) == -1) continue;
+      if(AnaChannel == "ElectronLowPU" )if( ElectronCutZ(iz) == -1) continue;
       if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
       if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
       if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10 )continue;
@@ -589,7 +609,7 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-	if(AnaChannel=="ElectronLowPU" ||AnaChannel=="ElectronHighPU"){
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
 	}else{
@@ -651,7 +671,7 @@ if(Debug)cout<<"check point 11"<<endl;
                 (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
         Zpt = ZDiLep2D.Mod();
 
-	if(AnaChannel=="ElectronLowPU" ||AnaChannel=="ElectronHighPU"){
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
 	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
 	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
 	}else{
@@ -708,14 +728,12 @@ if(Debug)cout<<"check point 11"<<endl;
 	DoRecoilCorr();
 
       //cout<<"TruthRecoPost:"<<TruthRecoPost<<endl;
-      if(Mode == "Unfold")if(TruthRecoPost)
+      if(Mode == "Unfold")if(TruthRecoPost)if(WCHARGE == wCand.charge)
       {
 	FillUnfoldInfo();
 	// Don't go further
-	continue;
+	//continue;
       }
-    if(Debug)cout<<"check point 16"<<endl;
-
       if( Mode == "RecoilMC")
       for( int ipt(0);ipt<u1Bin;ipt++)
       {
@@ -727,6 +745,7 @@ if(Debug)cout<<"check point 11"<<endl;
 	  h1_u3W[ipt]->Fill(u3W);
 	}
       }
+
       h1_GlbMuChi2->Fill(glbMuChi2,TTW);
       h1_muonHits->Fill(wCand.muonHit,TTW);
       h1_muMatchStation->Fill(wCand.matchStation,TTW);
@@ -743,15 +762,6 @@ if(Debug)cout<<"check point 11"<<endl;
 
       h1_W_pt->Fill(wCand.pt,TTW);
       h2_WpT_lepPt->Fill(wCand.pt,wCand.lep_pt);
-
-      if( wCand.charge > 0){
-      h1_Wp_pt->Fill(wCand.pt,TTW);
-      h2_WpT_lepPt_Plus->Fill(wCand.pt,wCand.lep_pt);
-      }
-      else if ( wCand.charge < 0){
-      h1_Wm_pt->Fill(wCand.pt,TTW);
-      h2_WpT_lepPt_Minus->Fill(wCand.pt,wCand.lep_pt);
-      }
 
       h1_W_Acop->Fill(w_acop,TTW);
       h1_vtx_z->Fill(vtxz,TTW);
@@ -795,192 +805,196 @@ if(Debug)cout<<"check point 11"<<endl;
 	}
       }
     }
-    
-      if( wCand.charge > 0)
+   
+    if( wCand.charge > 0)
+    {
+      h1_Wp_pt->Fill(wCand.pt,TTW);
+      h1_Wp_pt_NoLumiWeight->Fill(wCand.pt);
+      h2_WpT_lepPt_Plus->Fill(wCand.pt,wCand.lep_pt);
+
+      if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
       {
-	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
-	{
-	  //cout<<"filling corrMet "<<corrMet<<endl;
-          h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
-	  //h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
-	  h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	//cout<<"filling corrMet "<<corrMet<<endl;
+	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	//h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
+	h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF1);
 	  
-	  if(corrMet > 25.)
-	  {
-	    NmetA[0]+=TTW;
-	    NmetAp[0]+=TTW;
-	  }else
-	  {
-	    NmetB[0]+=TTW;
-	    NmetBp[0]+=TTW;
-	  }
+	if(corrMet > 25.)
+	{
+	  NmetA[0]+=TTW;
+	  NmetAp[0]+=TTW;
 	}else{
-          h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
-          h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
-          h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
-          h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
-	  h1_Wp_Neu_pt[0]->Fill(wCand.Met,TTW);
-	  h1_GenWp_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
-
-	  if( wCand.Met > 25.)
-	  {
-	    NmetA[0]+=TTW;
-	    NmetAp[0]+=TTW;
-	  }else
-	  {
-	    NmetB[0]+=TTW;
-	    NmetBp[0]+=TTW;
-	  }
-	}
-	for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
-	{
-	  if( wCand.pt >= Bins[iBin] && wCand.pt < Bins[iBin+1] )
-	  {
-	    if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
-	    {
-	      //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
-	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
-	      //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	      h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
-	      
-	      if(corrMet >25.)
-	      {
-		NmetA[iBin+1]+=TTW;
-		NmetAp[iBin+1]+=TTW;
-	      }else
-	      {
-		NmetB[iBin+1]+=TTW;
-		NmetBp[iBin+1]+=TTW;
-	      }
-	    }else{
-	      h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	      h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
-              h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
-              h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
-	      h1_Wp_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	      h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
-
-	      if(wCand.Met >25.)
-	      {
-		NmetA[iBin+1]+=TTW;
-		NmetAp[iBin+1]+=TTW;
-	      }else
-	      {
-		NmetB[iBin+1]+=TTW;
-		NmetBp[iBin+1]+=TTW;
-	      }
-	    }
-	  }
-	}
-      }else if(wCand.charge <0){
-	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
-	{
-          h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
-	  //h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
-	  h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF1);
-	  
-	  if(corrMet > 25.)
-	  {
-	    NmetA[0]+=TTW;
-	    NmetAm[0]+=TTW;
-	  }else
-	  {
-	    NmetB[0]+=TTW;
-	    NmetBm[0]+=TTW;
-	  }
-	}else{
-          h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
-          h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
-          h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
-          h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
-	  h1_Wm_Neu_pt[0]->Fill(wCand.Met,TTW);
-	  h1_GenWm_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
-
-	  if(wCand.Met >25.)
-	  {
-	    NmetA[0]+=TTW;
-	    NmetAm[0]+=TTW;
-	  }else
-	  {
-	    NmetB[0]+=TTW;
-	    NmetBm[0]+=TTW;
-	  }
-	}
-	for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
-	{
-	  if( wCand.pt >= Bins[iBin] && wCand.pt < Bins[iBin+1] )
-	  {
-	    if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
-	    {
-	      h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
-	      //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	      h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
-
-	      if(corrMet >25.)
-	      {
-		NmetA[iBin+1]+=TTW;
-		NmetAm[iBin+1]+=TTW;
-	      }else
-	      {
-		NmetB[iBin+1]+=TTW;
-		NmetBm[iBin+1]+=TTW;
-	      }
-	    }else{
-	      h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	      h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
-              h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
-              h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
-	      h1_Wm_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	      h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
-
-	      if(wCand.Met >25.)
-	      {
-		NmetA[iBin+1]+=TTW;
-		NmetAm[iBin+1]+=TTW;
-	      }else
-	      {
-		NmetB[iBin+1]+=TTW;
-		NmetBm[iBin+1]+=TTW;
-	      }
-	    }
-	  }
+	  NmetB[0]+=TTW;
+	  NmetBp[0]+=TTW;
 	}
       }else{
-	cout<<"stange case w_charge is "<<wCand.charge<<endl;
-	exit(0);
+	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
+	h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+        h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
+        h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
+	h1_Wp_Neu_pt[0]->Fill(wCand.Met,TTW);
+	h1_GenWp_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+
+	if( wCand.Met > 25.)
+	{
+	  NmetA[0]+=TTW;
+	  NmetAp[0]+=TTW;
+	}else{
+	  NmetB[0]+=TTW;
+	  NmetBp[0]+=TTW;
+	}
       }
-      //cout<<"TTW: "<<TTW<<endl;
-      nSelect+=TTW;
+      
+      for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
+      {
+	if( wCand.pt >= Bins[iBin] && wCand.pt < Bins[iBin+1] )
+	{
+	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
+	  {
+	    //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	    h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    
+	    if(corrMet >25.)
+	    {
+	      NmetA[iBin+1]+=TTW;
+	      NmetAp[iBin+1]+=TTW;
+	    }else{
+	      NmetB[iBin+1]+=TTW;
+	      NmetBp[iBin+1]+=TTW;
+	    }
+	  }else{
+	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+            h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
+            h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
+	    h1_Wp_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
+	    h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+
+	    if(wCand.Met >25.)
+	    {
+	      NmetA[iBin+1]+=TTW;
+	      NmetAp[iBin+1]+=TTW;
+	    }else
+	    {
+	      NmetB[iBin+1]+=TTW;
+	      NmetBp[iBin+1]+=TTW;
+	    }
+	  }
+	}
+      }
+    }else if(wCand.charge <0){
+      h1_Wm_pt->Fill(wCand.pt,TTW);
+      h1_Wm_pt_NoLumiWeight->Fill(wCand.pt);
+      h2_WpT_lepPt_Minus->Fill(wCand.pt,wCand.lep_pt);
+	
+      if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
+      {
+	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	//h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
+	h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	
+	if(corrMet > 25.)
+	{
+	  NmetA[0]+=TTW;
+	  NmetAm[0]+=TTW;
+	}else{
+	  NmetB[0]+=TTW;
+	  NmetBm[0]+=TTW;
+	}
+      }else{
+	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
+        h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+        h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
+        h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
+	h1_Wm_Neu_pt[0]->Fill(wCand.Met,TTW);
+	h1_GenWm_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+
+	if(wCand.Met >25.)
+	{
+	  NmetA[0]+=TTW;
+	  NmetAm[0]+=TTW;
+	}else
+	{
+	  NmetB[0]+=TTW;
+	  NmetBm[0]+=TTW;
+	}
+      }
+      for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
+      {
+	if( wCand.pt >= Bins[iBin] && wCand.pt < Bins[iBin+1] )
+	{
+	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
+	  {
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
+	    h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+
+	    if(corrMet >25.)
+	    {
+	      NmetA[iBin+1]+=TTW;
+	      NmetAm[iBin+1]+=TTW;
+	    }else{
+	      NmetB[iBin+1]+=TTW;
+	      NmetBm[iBin+1]+=TTW;
+	    }
+	  }else{
+	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+            h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
+            h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
+	    h1_Wm_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
+	    h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+
+	    if(wCand.Met >25.)
+	    {
+	      NmetA[iBin+1]+=TTW;
+	      NmetAm[iBin+1]+=TTW;
+	    }else
+	    {
+	      NmetB[iBin+1]+=TTW;
+	      NmetBm[iBin+1]+=TTW;
+	    }
+	  }
+	}
+      }
+    }else{
+      cout<<"stange case w_charge is "<<wCand.charge<<endl;
+      exit(0);
+    }
+    
+    //cout<<"TTW: "<<TTW<<endl;
+    nSelect+=TTW;
     if(Debug)cout<<"check point 16"<<endl;
-
-      if( wCand.pt >= 0. && wCand.pt < 7.5 )
-	n1+=TTW;
-      if( wCand.pt >= 7.5 && wCand.pt < 12.5 )
-	n2+=TTW;
-      if( wCand.pt >= 12.5 && wCand.pt < 17.5 )
-	n3+=TTW;
-      if( wCand.pt >= 17.5 && wCand.pt < 24. )
-	n4+=TTW;
-      if( wCand.pt >= 24. && wCand.pt < 30. )
-	n5+=TTW;
-      if( wCand.pt >= 30. && wCand.pt < 40. )
-	n6+=TTW;
-      if( wCand.pt >= 40. && wCand.pt < 50. )
-	n7+=TTW;
-      if( wCand.pt >= 50. && wCand.pt < 70. )
-	n8+=TTW;
-      if( wCand.pt >= 70. && wCand.pt < 110. )
-	n9+=TTW;
-      if( wCand.pt >= 110. && wCand.pt < 150. )
-	n10+=TTW;
-      if( wCand.pt >= 150. && wCand.pt < 190. )
-	n11+=TTW;
-      if( wCand.pt >= 190. && wCand.pt < 250. )
-	n12+=TTW;
-      if( wCand.pt >= 250. && wCand.pt < 600. )
-	n13+=TTW;
-
-      //cout<<"nselect: "<<nSelect<<endl;
+    
+    if( wCand.pt >= 0. && wCand.pt < 7.5 )
+      n1+=TTW;
+    if( wCand.pt >= 7.5 && wCand.pt < 12.5 )
+      n2+=TTW;
+    if( wCand.pt >= 12.5 && wCand.pt < 17.5 )
+      n3+=TTW;
+    if( wCand.pt >= 17.5 && wCand.pt < 24. )
+      n4+=TTW;
+    if( wCand.pt >= 24. && wCand.pt < 30. )
+      n5+=TTW;
+    if( wCand.pt >= 30. && wCand.pt < 40. )
+      n6+=TTW;
+    if( wCand.pt >= 40. && wCand.pt < 50. )
+      n7+=TTW;
+    if( wCand.pt >= 50. && wCand.pt < 70. )
+      n8+=TTW;
+    if( wCand.pt >= 70. && wCand.pt < 110. )
+      n9+=TTW;
+    if( wCand.pt >= 110. && wCand.pt < 150. )
+      n10+=TTW;
+    if( wCand.pt >= 150. && wCand.pt < 190. )
+      n11+=TTW;
+    if( wCand.pt >= 190. && wCand.pt < 250. )
+      n12+=TTW;
+    if( wCand.pt >= 250. && wCand.pt < 600. )
+      n13+=TTW;
+    //cout<<"nselect: "<<nSelect<<endl;
     }//good W
 
     if(Z_pass)
@@ -989,22 +1003,21 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_diLeptVtxProb->Fill(diLeptVtxProb,TTW);
       if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
       {
-
 	int etaRange1 = EtaRange(ZLep1etaSC);
 	int etaRange2 = EtaRange(ZLep2etaSC);
 	//      h1_ZmassDaughEta[etaRange1][etaRange2]->Fill(Zmass);
-	if( AnaChannel=="ElectronLowPU" || AnaChannel=="ElectronHighPU")
+	if( (AnaChannel == "ElectronLowPU" ) || AnaChannel=="ElectronHighPU")
 	{
 	  FillEleZmassDaughEta(etaRange1,etaRange2);
 	}
 
-	if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+	if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
 	{
 	  FillMuZmassDaughEta(etaRange1,etaRange2);
 	}
       }
       if(Mode == "ScaleMakeMC"||Mode == "ScaleMakeRD")
-	if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+	if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
       {
 	if(Mode == "ScaleMakeMC")
 	{
@@ -1057,7 +1070,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }
 
       if(Mode == "ScaleMakeMC"||Mode == "ScaleMakeRD")
-	if( AnaChannel=="ElectronLowPU" || AnaChannel=="ElectronHighPU")
+	if( (AnaChannel == "ElectronLowPU" ) || AnaChannel=="ElectronHighPU")
 	{
 	  if(Mode == "ScaleMakeMC")
 	  {
@@ -1351,6 +1364,8 @@ if(Debug)cout<<"check point 11"<<endl;
   h1_W_pt->Write();
   h1_Wp_pt->Write();
   h1_Wm_pt->Write();
+  h1_Wp_pt_NoLumiWeight->Write();
+  h1_Wm_pt_NoLumiWeight->Write();
 
   h2_WpT_lepPt->Write();
   h2_WpT_lepPt_Plus->Write();
@@ -1434,7 +1449,7 @@ if(Debug)cout<<"check point 11"<<endl;
     h1_WmSide_Neu_eta[i]->Write();
   }
   }
-  if(AnaChannel == "ElectronLowPU"|| AnaChannel == "MuonLowPU" )
+  if((AnaChannel == "ElectronLowPU" )|| (AnaChannel == "MuonLowPU" ) )
   for( int i=0;i<NWptBinPlus;i++)
   {
     h1_W_Neu_pt[i]->Write();
@@ -1516,7 +1531,7 @@ if(Debug)cout<<"check point 11"<<endl;
   //Simulation Method
   if(Mode =="ScaleMakeMC" || Mode =="ScaleMakeRD")
   {
-    if( AnaChannel=="ElectronLowPU")
+    if( AnaChannel == "ElectronLowPU" )
     {
       for(int i(0);i<ScElCombiBins;i++)
       {
@@ -1532,7 +1547,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }
     }
 
-    if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+    if( (AnaChannel == "MuonLowPU" ) || AnaChannel=="MuonHighPU")
     {
       for(int i(0);i<ScMuCombiBins;i++)
       {

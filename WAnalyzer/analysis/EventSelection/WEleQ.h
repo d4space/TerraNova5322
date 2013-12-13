@@ -749,7 +749,22 @@ public :
    TH1D*        h1_Vtx_Prim1;
    TH1D*        h1_W_Lept1_pt1;
    TH1D*        h1_W_Neut_pt1;
+   TH1D*        h1_W_Neut_px_Corr;
+   TH1D*        h1_W_Neut_py_Corr;
+   TH1D*        h1_W_Neut_pt_Corr;
    TH1D*        h1_npileup1;
+   TH1D*        h1_Z_Neut_pt;
+   TH1D*        h1_Z_Neut_phi;
+   TH1D*        h1_Z_Neut_px;
+   TH1D*        h1_Z_Neut_py;
+   TH1D*        h1_Z_Neut_pt_Corr;
+   TH1D*        h1_Z_Neut_phi_Corr;
+   TH1D*        h1_Z_Neut_px_Corr;
+   TH1D*        h1_Z_Neut_py_Corr;
+   TH2D*        h2_Z_Nvtx_px;
+   TH2D*        h2_Z_Nvtx_py;
+   TH2D*        h2_Z_Nvtx_px_Corr;
+   TH2D*        h2_Z_Nvtx_py_Corr;
 
    TH1D*	h1_W_Multi;
    
@@ -990,6 +1005,9 @@ private:
     double Nu_px;
     double Nu_py;
     double Met_side;
+    double Nu_px_Corr;
+    double Nu_py_Corr;
+    double Met_Corr;
     int size;
     double charge;
 
@@ -1024,6 +1042,8 @@ private:
   double Z_size,Zmass,Zpt, ZptRecoil;//ZptRecoil==Zpt for real but gen dilep for MC
   double ZLep1Pt, ZLep1Pz,ZLep1En, ZLep1Phi, ZLep1etaSC;
   double ZLep2Pt, ZLep2Pz,ZLep2En, ZLep2Phi, ZLep2etaSC;
+  double Z_MET_pt, Z_MET_phi, Z_MET_px, Z_MET_py;
+  double Z_MET_pt_Corr, Z_MET_phi_Corr, Z_MET_px_Corr, Z_MET_py_Corr;
 
   //MisChargeStudy
  // double ZLep1eta;
@@ -1635,6 +1655,22 @@ void WEleQ::Init(TTree *tree)
    h1_W_Lept1_pt1 = new TH1D("h1_W_Lept1_pt1","W_Lept_pt1",50,0.,100);
    h1_npileup1 = new TH1D("h1_npileup1","npileup1",60,0.,60);
    h1_W_Neut_pt1 = new TH1D("h1_W_Neut_pt1","W_Neut_pt1",100,0.,100);
+   h1_W_Neut_px_Corr = new TH1D("h1_W_Neut_px_Corr","W_Neut_px_Corr",100,-100,100);
+   h1_W_Neut_py_Corr = new TH1D("h1_W_Neut_py_Corr","W_Neut_py_Corr",100,-100,100);
+   h1_W_Neut_pt_Corr = new TH1D("h1_W_Neut_pt_Corr","W_Neut_pt_Corr",100,0.,100);
+   h1_Z_Neut_pt = new TH1D("h1_Z_Neut_pt","Z_Neut_pt",100,0.,100);
+   h1_Z_Neut_phi = new TH1D("h1_Z_Neut_phi","Z_Neut_phi",100,-4,4);
+   h1_Z_Neut_px = new TH1D("h1_Z_Neut_px","Z_Neut_px",100,-100,100);
+   h1_Z_Neut_py = new TH1D("h1_Z_Neut_py","Z_Neut_py",100,-100,100);
+   h1_Z_Neut_pt_Corr = new TH1D("h1_Z_Neut_pt_Corr","Z_Neut_pt_Corr",100,0.,100);
+   h1_Z_Neut_phi_Corr = new TH1D("h1_Z_Neut_phi_Corr","Z_Neut_phi_Corr",100,-4,4);
+   h1_Z_Neut_px_Corr = new TH1D("h1_Z_Neut_px_Corr","Z_Neut_px_Corr",100,-100,100);
+   h1_Z_Neut_py_Corr = new TH1D("h1_Z_Neut_py_Corr","Z_Neut_py_Corr",100,-100,100);
+
+   h2_Z_Nvtx_px = new TH2D("h2_Z_Nvtx_px","Nvtx vs Nu_px",100,0,60,100,-100,100);
+   h2_Z_Nvtx_py = new TH2D("h2_Z_Nvtx_py","Nvtx vs Nu_py",100,0,60,100,-100,100);
+   h2_Z_Nvtx_px_Corr = new TH2D("h2_Z_Nvtx_px_Corr","Nvtx vs Nu_px",100,0,60,100,-100,100);
+   h2_Z_Nvtx_py_Corr = new TH2D("h2_Z_Nvtx_py_Corr","Nvtx vs Nu_py",100,0,60,100,-100,100);
 
    
   if(AnaChannel == "ElectronHighPU" )
