@@ -477,7 +477,8 @@ CPepeDouble::CPepeDouble(const char *name,RooRealVar &x,RooRealVar *t_sigma1,Roo
     sigma1 = t_sigma1;
   } else {
     sprintf(sigma1Name,"sigma1_%s",name);
-    sigma1 = new RooRealVar(sigma1Name,sigma1Name,25,0,75);
+    //sigma1 = new RooRealVar(sigma1Name,sigma1Name,25,0,75);
+    sigma1 = new RooRealVar(sigma1Name,sigma1Name,10,5,20);
   }
   char a1Name[50];
   if(t_a1) {
@@ -502,7 +503,8 @@ CPepeDouble::CPepeDouble(const char *name,RooRealVar &x,RooRealVar *t_sigma1,Roo
     sigma2 = t_sigma2;
   } else {
     sprintf(sigma2Name,"sigma2_%s",name);
-    sigma2 = new RooRealVar(sigma2Name,sigma2Name,25,0,75);
+    //sigma2 = new RooRealVar(sigma2Name,sigma2Name,25,0,75);
+    sigma2 = new RooRealVar(sigma2Name,sigma2Name,10,5,20);
   }
   char a2Name[50];
   if(t_a2) {

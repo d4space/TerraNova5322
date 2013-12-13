@@ -734,7 +734,7 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   // 0 is the total
   //for( int ipt(0);ipt<NWqaBinPlus;ipt++)
   //for( int ipt(0);ipt<12;ipt++)
-  for( int ipt(0);ipt<3;ipt++)
+  for( int ipt(0);ipt<12;ipt++)
   {
     nSig = new RooRealVar("nSig","nSig",0.7*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
     if (ipt==0){
@@ -838,7 +838,9 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
   aewkMet =new RooDataHist("aewkMET", "aewkMET", RooArgSet(pfmet),hAntiEWKMet[ipt]);  
   cout<<"hAntiEWKMet check = "<<hAntiEWKMet[ipt]->Integral()<<endl;
   aewkMetp=new RooDataHist("aewkMETp","aewkMETp",RooArgSet(pfmet),hAntiEWKMetp[ipt]);  
+  cout<<"hAntiEWKMetp check = "<<hAntiEWKMetp[ipt]->Integral()<<endl;
   aewkMetm=new RooDataHist("aewkMETm","aewkMETm",RooArgSet(pfmet),hAntiEWKMetm[ipt]);  
+  cout<<"hAntiEWKMetm check = "<<hAntiEWKMetm[ipt]->Integral()<<endl;
   apdfEWK =new RooHistPdf("aewk", "aewk", pfmet,*aewkMet, 1);
   apdfEWKp=new RooHistPdf("aewkp","aewkp",pfmet,*aewkMetp,1);
   apdfEWKm=new RooHistPdf("aewkm","aewkm",pfmet,*aewkMetm,1);
@@ -849,7 +851,9 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
                         Import("Select", *dataMet),
                         Import("Anti",   *antiMet));
   dataMetp  =new RooDataHist("dataMetp", "dataMetp", RooArgSet(pfmet), hDataMetp[ipt]);
+  cout<<"hDataMetp check = "<<hDataMetp[ipt]->Integral()<<endl;
   antiMetp  =new RooDataHist("antiMetp", "antiMetp", RooArgSet(pfmet), hAntiDataMetp[ipt]);
+  cout<<"hAntiDataMetp check = "<<hAntiDataMetp[ipt]->Integral()<<endl;
   dataTotalp=new RooDataHist("dataTotalp","dataTotalp", RooArgList(pfmet), Index(rooCat),
                          Import("Select", *dataMetp),
                          Import("Anti",   *antiMetp));
@@ -915,10 +919,29 @@ void fitWEleMetRayleighSimultHighPU(const TString  outputDir,   // output direct
     //aqcd =new CPepeModel1("aqcd",pfmet,qcd->sigma,qcd->a1);
     //aqcdp=new CPepeModel1("aqcdp",pfmet,qcdp->sigma,qcdp->a1);
     //aqcdm=new CPepeModel1("aqcdm",pfmet,qcdm->sigma,qcdm->a1);
+  if (ipt==0){
+    aqcdDB =new CPepeDouble("aqcdDB",pfmet,&sigmaJM11,qcdDB->a1,qcdDB->frac1,&sigmaJM11,qcdDB->a2,qcdDB->frac2);
+    aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,&sigmaJM11,qcdpDB->a1,qcdpDB->frac1,&sigmaJM11,qcdpDB->a2,qcdpDB->frac2);
+    aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,&sigmaJM11,qcdmDB->a1,qcdmDB->frac1,&sigmaJM11,qcdmDB->a2,qcdmDB->frac2);
+ /* }else if (ipt==1){
+    aqcdDB =new CPepeDouble("aqcdDB",pfmet,&sigmaJM11,qcdDB->a1,qcdDB->frac1,&sigmaJM11,qcdDB->a2,qcdDB->frac2);
+    aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,&sigmaJM11,qcdpDB->a1,qcdpDB->frac1,&sigmaJM11,qcdpDB->a2,qcdpDB->frac2);
+    aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,&sigmaJM11,qcdmDB->a1,qcdmDB->frac1,&sigmaJM11,qcdmDB->a2,qcdmDB->frac2);
+  }else if (ipt==2){
+    aqcdDB =new CPepeDouble("aqcdDB",pfmet,&sigmaJM13,qcdmDB->a1,qcdDB->frac1,&sigmaJM13,qcdDB->a2,qcdDB->frac2);
+    aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,&sigmaJM13,qcdmDB->a1,qcdpDB->frac1,&sigmaJM13,qcdpDB->a2,qcdpDB->frac2);
+    aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,&sigmaJM13,qcdmDB->a1,qcdmDB->frac1,&sigmaJM13,qcdmDB->a2,qcdmDB->frac2);
+  }else if (ipt==3){
+    aqcdDB =new CPepeDouble("aqcdDB",pfmet,&sigmaJM13,qcdDB->a1,qcdDB->frac1,&sigmaJM13,qcdDB->a2,qcdDB->frac2);
+    aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,&sigmaJM13,qcdpDB->a1,qcdpDB->frac1,&sigmaJM13,qcdpDB->a2,qcdpDB->frac2);
+    aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,&sigmaJM13,qcdmDB->a1,qcdmDB->frac1,&sigmaJM13,qcdmDB->a2,qcdmDB->frac2);
+*/  }else {
     aqcdDB =new CPepeDouble("aqcdDB",pfmet,qcdDB->sigma1,qcdDB->a1,qcdDB->frac1,qcdDB->sigma2,qcdDB->a2,qcdDB->frac2);
     aqcdpDB =new CPepeDouble("aqcdpDB",pfmet,qcdpDB->sigma1,qcdpDB->a1,qcdpDB->frac1,qcdpDB->sigma2,qcdpDB->a2,qcdpDB->frac2);
     aqcdmDB =new CPepeDouble("aqcdmDB",pfmet,qcdmDB->sigma1,qcdmDB->a1,qcdmDB->frac1,qcdmDB->sigma2,qcdmDB->a2,qcdmDB->frac2);
-  //}
+  }
+
+    //}
 /*  }else if (ipt>6 && ipt<10){
 //Rayleigh+fract*Gaussian
     qcd1 =new CPepeModel1("qcd1",pfmet);/

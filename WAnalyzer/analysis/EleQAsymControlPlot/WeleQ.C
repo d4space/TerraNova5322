@@ -21,18 +21,12 @@ TString AnaChannelMu  = "MuonLowPU";
   gSystem->CompileMacro("../EventSelection/WEleQ.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
-  double LumiWeight_Ele_DYToEE_S10	   = RealLumi*1*1915.08/3277040;//TotalEvent
-  //double LumiWeight_Ele_DYToEE_S10	   = RealLumi*1*1915.08/1930890;//FilterEvent
-  double LumiWeight_Ele_DYToTauTau_S10     = RealLumi*1*1915.08/44778700;//TotalEvent
-  //double LumiWeight_Ele_DYToTauTau_S10     = RealLumi*1*1915.08/3756370;//FilterEvent
-  double LumiWeight_Ele_WpToENu_S10        = RealLumi*1*7322.0/6554350;//TotalEvemt
-  //double LumiWeight_Ele_WpToENu_S10        = RealLumi*1*7322/3623370;//FilterEvent
-  double LumiWeight_Ele_WmToENu_S10        = RealLumi*1*5181.0/6553050;//TotalEvent
-  //double LumiWeight_Ele_WmToENu_S10        = RealLumi*1*5181/3267280;//FilterEvent
-  double LumiWeight_Ele_WToTauNu_S10       = RealLumi*1*12503.0/5000740;//TotalEvent
-  //double LumiWeight_Ele_WToTauNu_S10       = RealLumi*1*12503/300540;//FilterEvent
-  double LumiWeight_Ele_TTJets_S10         = RealLumi*1*136.3/1364780;//TotalEvent
-  //double LumiWeight_Ele_TTJets_S10         = RealLumi*1*136.3/467836;//FilterEvent
+  double LumiWeight_Ele_DYToEE_S10	   = RealLumi*1*1915.08/3277040;
+  double LumiWeight_Ele_DYToTauTau_S10     = RealLumi*1*1915.08/44778700;
+  double LumiWeight_Ele_WpToENu_S10        = RealLumi*1*7322.0/6554350;
+  double LumiWeight_Ele_WmToENu_S10        = RealLumi*1*5181.0/6553050;
+  double LumiWeight_Ele_WToTauNu_S10       = RealLumi*1*12503.0/5000740;
+  double LumiWeight_Ele_TTJets_S10         = RealLumi*1*136.3/1364780;
   
   double LumiWeight_Ele_TT_CT10_S10        = RealLumi*1*211/2990940;
   double LumiWeight_Ele_WToENu_S10         = RealLumi*1*12503.0/4383520;
@@ -54,14 +48,10 @@ TString AnaChannelMu  = "MuonLowPU";
   double LumiWeight_Ele_QCD_EMEnriched_350_S10          = RealLumi*0.11*810/2539840;
   
   double LumiWeight_Ele_RD_HighPU = 1;
-  double LumiWeight_Ele_RD_HighPU_A = 1;
-  double LumiWeight_Ele_RD_HighPU_B = 1;
-  double LumiWeight_Ele_RD_HighPU_C = 1;
-  double LumiWeight_Ele_RD_HighPU_D = 1;
 
 
 //Ele_RD_HighPU========================================
-/*
+
   cout<<"Ele_RD_HighPU===================="<<endl;
   TChain *TC_Ele_RD_HighPU    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_RD_HighPU_Ele = new TChain("Electrons/tree","");
@@ -71,7 +61,7 @@ TString AnaChannelMu  = "MuonLowPU";
   WEleQ WelePt_Ele_RD_HighPU(TC_Ele_RD_HighPU,TC_Ele_RD_HighPU_Ele,
         LumiWeight_Ele_RD_HighPU, Ele_RD_HighPUFile,Mode,AnaChannelEle);
   WelePt_Ele_RD_HighPU.Loop();
-*/
+
 /* 
 cout<<"Ele_RD_HighPU_A===================="<<endl;
   TChain *TC_Ele_RD_HighPU_A    = new TChain("WEleNeu/tree","");
@@ -181,7 +171,7 @@ cout<<"Ele_RD_HighPU_D===================="<<endl;
         LumiWeight_Ele_TTJets_S10, Ele_TTJets_S10File,Mode,AnaChannelEle);
   WelePt_Ele_TTJets_S10.Loop();
 */
-
+/*
   cout<<"Ele_QCD_EMEnriched_20to30_S10==========================="<<endl;
   TChain *TC_Ele_QCD_EMEnriched_20to30_S10    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_QCD_EMEnriched_20to30_S10_Ele = new TChain("Electrons/tree","");
@@ -242,7 +232,7 @@ cout<<"Ele_RD_HighPU_D===================="<<endl;
         LumiWeight_Ele_QCD_EMEnriched_350_S10, Ele_QCD_EMEnriched_350_S10File,Mode,AnaChannelEle);
   WelePt_Ele_QCD_EMEnriched_350_S10.Loop();
 
-
+*/
   /*
   cout<<"Ele_DYJetsToLL_S10==========================="<<endl;
   TChain *TC_Ele_DYJetsToLL_S10    = new TChain("WEleNeu/tree","");
