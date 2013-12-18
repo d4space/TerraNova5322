@@ -137,18 +137,18 @@ int theoryCompChannel(const TString BaseName)
   if (BaseName=="Wplus"){
     f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WpToMuNu.root");
     f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WpToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WpToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WpToEleNu.root");
+    f_Data_Mu    = new TFile("RstUnfold/Result_WpToMuNu.root");
+    f_Data_Ele   = new TFile("RstUnfold/Result_WpToEleNu.root");
   }else if (BaseName=="Wminus"){
     f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WmToMuNu.root");
     f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WmToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WmToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WmToEleNu.root");
+    f_Data_Mu    = new TFile("RstUnfold/Result_WmToMuNu.root");
+    f_Data_Ele   = new TFile("RstUnfold/Result_WmToEleNu.root");
   }else if (BaseName=="Wincl"){
     f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WInclToMuNu.root");
     f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WInclToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WInclToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WInclToEleNu.root");
+    f_Data_Mu    = new TFile("RstUnfold/Result_WInclToMuNu.root");
+    f_Data_Ele   = new TFile("RstUnfold/Result_WInclToEleNu.root");
   }
 
   if (BaseName=="Wplus")
@@ -415,6 +415,7 @@ int theoryCompChannel(const TString BaseName)
   RatioDataResb_Mu->SetMarkerStyle(kFullCircle); RatioDataResb_Mu->SetLineColor(kBlue); RatioDataResb_Mu->SetMarkerColor(kBlue);
   
   RatioDataResb_Mu->GetYaxis()->SetRangeUser(0.6,1.5);
+  //RatioDataResb_Mu->GetYaxis()->SetRangeUser(0.2,1.8);
   RatioDataResb_Mu->GetYaxis()->SetTitleOffset(1.2);
   RatioDataResb_Mu->GetYaxis()->SetTitleSize(0.04);
   RatioDataResb_Mu->GetYaxis()->SetLabelSize(0.04);
