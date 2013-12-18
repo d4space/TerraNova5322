@@ -462,14 +462,14 @@ if(Debug)cout<<"check point 8"<<endl;
 	if((*W_Charge)[iw]> 0)	  
 	{
 	  
-	  if(Mode == "AllCorrectionsMC" )
-	  {
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-	  }else{
+//	  if(Mode == "AllCorrectionsMC" )
+//	  {
+//	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+//	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+//	  }else{
 	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  }
+//	  }
 
 if(Debug)cout<<"check point 10"<<endl;
 	  //Fill MET sideband for WQA, Wplus case
@@ -487,14 +487,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
 	      
-	      if(Mode == "AllCorrectionsMC" )
-	      {
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-	      }else{
+//	      if(Mode == "AllCorrectionsMC" )
+//	      {
+//		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+//		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+//	      }else{
 		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-	      }
+//	      }
 	  
 	    }
 	  }
@@ -502,14 +502,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	else if( (*W_Charge)[iw] <0) 
 	{
 	  
-	  if(Mode == "AllCorrectionsMC" )
-	  {
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-	  }else{
+//	  if(Mode == "AllCorrectionsMC" )
+//	  {
+//	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+//	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
+//	  }else{
 	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  }
+//	  }
 
 	  if(Debug)cout<<"check point 12"<<endl;
 	  //Fill MET sideband for WQA, Wminus case
@@ -526,14 +526,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
 
-	      if(Mode == "AllCorrectionsMC" )
-	      {
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-	      }else{
+//	      if(Mode == "AllCorrectionsMC" )
+//	      {
+//		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+//		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
+//	      }else{
 		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-	      }
+//	      }
 	    }
 	  }
 	}else {
