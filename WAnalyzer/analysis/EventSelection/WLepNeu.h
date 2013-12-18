@@ -887,7 +887,7 @@ public :
 
    WLepNeu(TTree *tree=0,TTree *WMuonTree=0, double weight=1,
        TString OutFileName = "output.root",TString Mode="analysis",
-       TString AnaChannel ="Muon",int WCHARGE, int etaRange_=-999);
+       TString AnaChannel ="Muon",double WCHARGE=0, int etaRange_=-999);
 
    virtual ~WLepNeu();
    virtual Int_t    TauCut(int entry);
@@ -2003,7 +2003,7 @@ void WLepNeu::Init(TTree *tree)
      //  h1_ZmassDaughEta[i][j]=
      //	 new TH1D(histName,"ZmassDaughterEta",60,60,120);
 
-     if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+     if( AnaChannel=="ElectronLowPU")
      {
        for(int i(0);i<ScElCombiBins;i++)
        {
@@ -2019,7 +2019,7 @@ void WLepNeu::Init(TTree *tree)
          h1_ZmassDaughEta[i]= new TH1D(histName,"ZmassDaughterEta",60,60,120);
        }
      }
-     if( (AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+     if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
      {
        for(int i(0);i<ScMuCombiBins;i++)
        {
@@ -2032,7 +2032,7 @@ void WLepNeu::Init(TTree *tree)
 }
    WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
        TString OutFileName_, TString mode_, TString AnaChannel_,
-       int Wcharge, int etaRange_) : fChain(0) 
+       double Wcharge, int etaRange_) : fChain(0) 
 //WLepNeu::WLepNeu(TTree *tree) : fChain(0) 
   {
     // if parameter tree is not specified (or zero), connect the file
@@ -2209,67 +2209,64 @@ void WLepNeu::Init(TTree *tree)
 // Electron effi correction
 Double_t WLepNeu::ElePlusEffiCorrection(double elePt, double eleEtaSC)
 {
-
   if (elePt>25. && elePt <=35.)
   {
-    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9737;}
-    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9114;}
-    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 1.1486;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9055;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 1.0168;}
-    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.9424;}
+    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9495;}
+    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9525;}
+    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 1.0784;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.8960;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9862;}
+    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 1.0142;}
   }else if (elePt>35. && elePt <=50.)
   {
-    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 1.0366;}
-    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9818;}
-    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9518;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9496;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9555;}
-    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 1.0110;}
+    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 1.0302;}
+    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9831;}
+    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9551;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9446;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9519;}
+    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 1.0399;}
   }else if (elePt>50. )
   {
     if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 1.1285;}
     if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9445;}
     if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 1.0736;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9981;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9692;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9983;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9693;}
     if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 1.0308;}
   }
 }
 Double_t WLepNeu::EleMinusEffiCorrection(double elePt, double eleEtaSC)
 {
-
   if (elePt>25. && elePt <=35.)
   {
-    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9944;}
-    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 1.0321;}
-    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9704;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.8589;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9825;}
-    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.9941;}
+    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 1.0956;}
+    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 1.0238;}
+    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 1.0202;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.8692;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 1.0110;}
+    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 1.1316;}
   }else if (elePt>35. && elePt <=50.)
   {
-    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 1.0041;}
-    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9798;}
-    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9481;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9305;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9816;}
-    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.9401;}
+    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9949;}
+    if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9815;}
+    if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9563;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9306;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9892;}
+    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.9255;}
   }else if (elePt>50. )
   {
-    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9440;}
+    if (eleEtaSC >-2.5 && eleEtaSC <= -1.5 )  {return 0.9441;}
     if (eleEtaSC >-1.5 && eleEtaSC <= -0.5 )  {return 0.9553;}
     if (eleEtaSC >-0.5 && eleEtaSC <= 0.0 )   {return 0.9645;}
-    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9692;}
-    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9718;}
-    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.8523;}
+    if (eleEtaSC > 0.0 && eleEtaSC <= 0.5 )   {return 0.9695;}
+    if (eleEtaSC > 0.5 && eleEtaSC <= 1.5 )   {return 0.9719;}
+    if (eleEtaSC > 1.5 && eleEtaSC < 2.5 )   {return 0.8826;}
   }
 }
 
 // Muon effi correction
 Double_t WLepNeu::MuonPlusEffiCorrection(double muonPt, double muonEta)
 {
-
   if (muonPt>20. && muonPt <=40.)
   {
     if (muonEta >-2.1 && muonEta <= -1.2 )  {return 0.9534;}
@@ -2329,7 +2326,7 @@ Double_t WLepNeu::MuonMinusEffiCorrection(double muonPt, double muonEta)
 Int_t WLepNeu::FillEleZmassDaughEta(int etaRange1, int etaRange2)
 {
 //ScaleSmear Electron 21 category Fill
-if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+if( AnaChannel=="ElectronLowPU")
 {
   if( (etaRange1==0) && (etaRange2==0))
     h1_ZmassDaughEta[0]->Fill(Zmass);
@@ -3503,7 +3500,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
 {
   int lep1Range(-1);
   int lep2Range(-1);
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3548,7 +3545,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
     if( fabs(lep2Eta) >= 2.0   && fabs(lep2Eta) < 2.2)    lep2Range=9;
     if( fabs(lep2Eta) >= 2.2   && fabs(lep2Eta) < 2.4)    lep2Range=10;
   }
-  if((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3569,7 +3566,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta,double lep2Eta)
 Int_t WLepNeu::EtaRange(double lep1Eta)
 {
   int lep1Range(-1);
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3594,7 +3591,7 @@ Int_t WLepNeu::EtaRange(double lep1Eta)
     if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.2)    lep1Range=9;
     if( fabs(lep1Eta) >= 2.2   && fabs(lep1Eta) < 2.4)    lep1Range=10;
   }
-  if((AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU") || AnaChannel=="MuonHighPU")
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   {
     if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
     if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
@@ -3645,12 +3642,12 @@ Int_t WLepNeu::FillAcceptInfo()
   int NGenW = GenW_Born_pt->size();
   //Check W number and Lept1 id
   if( NGenW != 1) cout<<"Notice: Number of GenW is not 1 but "<<NGenW<<endl;
-  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
   {
     cout<<"Error: Muon Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
     exit(-1);
   }
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
     if( fabs((*GenW_BornLept1_id)[0]) != GenType::kElectron)
   {
     cout<<"Error: Electron Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
@@ -3668,22 +3665,22 @@ Int_t WLepNeu::FillAcceptInfo()
   // Acceptance
     //Full Phase Spece
   // Fiducial 
-  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   if( (*GenW_BornLept1_pt)[0] > 20 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
     isBornPassAcc = true;
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
   if( (*GenW_BornLept1_pt)[0] > 25 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
   //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
     isBornPassAcc = true;
 
   // Fiducial of Post 
-  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   if( (*GenW_PostLept1_pt)[0] > 20 )
   if( fabs( (*GenW_PostLept1_eta)[0]) < 2.1 )
     isPostPassAcc = true;
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
   if( (*GenW_PostLept1_pt)[0] > 25 )
   if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
   //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
@@ -3791,7 +3788,7 @@ Int_t WLepNeu::FillUnfoldInfo()
       //}
     }
     //We've found the gen match, and get out of here
-    if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+    if( AnaChannel=="ElectronLowPU")
     {
       if( wCand.charge > 0)
       {
@@ -3802,7 +3799,7 @@ Int_t WLepNeu::FillUnfoldInfo()
 	SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
       }
     }
-    if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+    if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
     {
       if( wCand.charge > 0)
       {
@@ -3823,7 +3820,7 @@ Int_t WLepNeu::DoRecoilCorr()
   //Uncomment to apply scale/res corrections to MC
   //wCand.lep_pt_corr = gRandom->Gaus(wCand.lep_pt*lepScale,lepRes);
 
-  if( AnaChannel == "ElectronPlusLowPU" || AnaChannel == "ElectronMinusLowPU")
+  if( AnaChannel=="ElectronLowPU")
   {
     //MC Smear Correction
     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
@@ -3838,7 +3835,7 @@ Int_t WLepNeu::DoRecoilCorr()
     }
   }
   
-  if(AnaChannel == "MuonPlusLowPU" || AnaChannel == "MuonMinusLowPU")
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   {
     //MC Smear Correction
     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
