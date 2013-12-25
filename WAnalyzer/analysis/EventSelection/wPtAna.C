@@ -56,7 +56,6 @@ TString AnaChannelMu  = "MuonLowPU";
 ***/  
 
 //WpToMuNu========================================
-  /***
   cout<<"WpToMuNu_S8===================="<<endl;
   TChain *TC_Muon_WpToMuNu_S8    = new TChain("WMuNeu/tree","");
   TChain *TC_Muon_WpToMuNu_S8_Mu = new TChain("Muons/tree","");
@@ -66,7 +65,6 @@ TString AnaChannelMu  = "MuonLowPU";
   WLepNeu WmuPt_WpMuNu(TC_Muon_WpToMuNu_S8,TC_Muon_WpToMuNu_S8_Mu,
   	LumiWeight_Muon_WpToMuNu_S8, Muon_WpToMuNuFile,ModeMC,AnaChannelMu);
   WmuPt_WpMuNu.Loop();
-  ***/
   
 //WmToMuNu========================================
   /***
@@ -152,7 +150,7 @@ TString AnaChannelMu  = "MuonLowPU";
   double LumiWeight_Ele_RD_LowPU = 1;
 
   //Ele_RD_LowPU========================================
- //***
+ /***
   cout<<"Ele_RD_LowPU===================="<<endl;
   TChain *TC_Ele_RD_LowPU    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_RD_LowPU_Ele = new TChain("Electrons/tree","");
@@ -161,9 +159,7 @@ TString AnaChannelMu  = "MuonLowPU";
   TString Ele_RD_LowPUFile = "Ele_RD_LowPU_"+ModeRD;
   WLepNeu WelePt_Ele_RD_LowPU(TC_Ele_RD_LowPU,TC_Ele_RD_LowPU_Ele,LumiWeight_Ele_RD_LowPU, Ele_RD_LowPUFile, ModeRD, AnaChannelEle);
   WelePt_Ele_RD_LowPU.Loop();
- //***/
 
-  //***
   cout<<"Ele_WminusToEleNu_S8==========================="<<endl;
   TChain *TC_Ele_WmToEleNu_S8    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_WmToEleNu_S8_Ele = new TChain("Electrons/tree","");
@@ -173,9 +169,7 @@ TString AnaChannelMu  = "MuonLowPU";
   WLepNeu WelePt_Ele_WmToEleNu_S8(TC_Ele_WmToEleNu_S8,TC_Ele_WmToEleNu_S8_Ele,
   	LumiWeight_Ele_WmToEleNu_S8, Ele_WmToEleNu_S8File,ModeMC,AnaChannelEle);
   WelePt_Ele_WmToEleNu_S8.Loop();
-  /***/
 
-  //***
   cout<<"Ele_WplusToEleNu_S8==========================="<<endl;
   TChain *TC_Ele_WpToEleNu_S8    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_WpToEleNu_S8_Ele = new TChain("Electrons/tree","");
@@ -185,7 +179,7 @@ TString AnaChannelMu  = "MuonLowPU";
   WLepNeu WelePt_Ele_WpToEleNu_S8(TC_Ele_WpToEleNu_S8,TC_Ele_WpToEleNu_S8_Ele,
   	LumiWeight_Ele_WpToEleNu_S8, Ele_WpToEleNu_S8File,ModeMC,AnaChannelEle);
   WelePt_Ele_WpToEleNu_S8.Loop();
-  /***/
+  ***/
   
   /***
   cout<<"Ele_DYToEE_S8==========================="<<endl;
