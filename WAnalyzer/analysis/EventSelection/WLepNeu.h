@@ -762,6 +762,9 @@ public :
    TH1D*	h1_W_pt;
    TH1D*        h1_Wp_pt;
    TH1D*        h1_Wm_pt;
+   TH1D*	h1_W_pt_EffCorr;
+   TH1D*        h1_Wp_pt_EffCorr;
+   TH1D*        h1_Wm_pt_EffCorr;
    TH1D*        h1_Wp_pt_NoLumiWeight;
    TH1D*        h1_Wm_pt_NoLumiWeight;
    TH2D*        h2_WpT_ReconPstFsr;
@@ -942,7 +945,6 @@ private:
   int evtCnt;
   bool TruthRecoPost;
   double SF;
-  double SF1;
   double WCHARGE;
   //Recoil Variables
   RecoilCorrector *recoilCorr;
@@ -1748,6 +1750,7 @@ void WLepNeu::Init(TTree *tree)
   }
    h1_W_Lept1_pt = new TH1D("h1_W_Lept1_pt","W_Lept_pt",50,0.,100);
    h1_W_pt	= new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,Bins);
+   h1_W_pt_EffCorr = new TH1D("h1_W_pt_EffCorr","Wpt_EffCorr",NWptBinPlus-1,Bins);
    h2_WpT_lepPt =new TH2D("h2_WpT_lepPt","WpT_LepPt",600,0,600,600,0,600);
    h2_WpT_lepPt_Plus =new TH2D("h2_WpT_lepPt_Plus","WpT_LepPt-Plus Charge",600,0,600,600,0,600);
    h2_WpT_lepPt_Minus =new TH2D("h2_WpT_lepPt_Minus","WpT_LepPt-Minus Charge",600,0,600,600,0,600);
@@ -1805,8 +1808,10 @@ void WLepNeu::Init(TTree *tree)
    h1_Truth_Post_EffCorr_weightFSR=new TH1D("h1_Truth_Post_EffCorr_weightFSR","Post Wpt Truth EffCorr weightFSR",NWptBinPlus-1,Bins);
    h2_Truth_Rec_AP_Post	=new TH2D("h2_Truth_Rec_AP_Post" ,"Truth Rec All Phase Post",NWptBinPlus-1,Bins,NWptBinPlus-1, Bins);
 
-   h1_Wp_pt	= new TH1D("h1_Wp_pt","WplusPt",NWptBinPlus-1,Bins);
-   h1_Wm_pt	= new TH1D("h1_Wm_pt","WminusPt",NWptBinPlus-1,Bins);
+   h1_Wp_pt = new TH1D("h1_Wp_pt","WplusPt",NWptBinPlus-1,Bins);
+   h1_Wm_pt = new TH1D("h1_Wm_pt","WminusPt",NWptBinPlus-1,Bins);
+   h1_Wp_pt_EffCorr = new TH1D("h1_Wp_pt_EffCorr","WplusPt_EffCorr",NWptBinPlus-1,Bins);
+   h1_Wm_pt_EffCorr = new TH1D("h1_Wm_pt_EffCorr","WminusPt_EffCorr",NWptBinPlus-1,Bins);
    h1_Wp_pt_NoLumiWeight = new TH1D("h1_Wp_pt_NoLumiWeight ","WplusPt",NWptBinPlus-1,Bins);
    h1_Wm_pt_NoLumiWeight = new TH1D("h1_Wm_pt_NoLumiWeight ","WminusPt",NWptBinPlus-1,Bins);
    //for( int i(0);i<NWptBinPlus-1;i++)
@@ -2600,93 +2605,95 @@ Int_t WLepNeu::TauCut(int i)
   return 1;
 }
 
-   Int_t WLepNeu::MuonCut(int i)
-   {
-     if( !(*W_Lept1_isGlobal)[i])return -1;
-     if((*W_Lept1_pt)[i] < 20) return -1;
+Int_t WLepNeu::MuonCut(int i)
+{
+  if( !(*W_Lept1_isGlobal)[i])return -1;
+  if((*W_Lept1_pt)[i] < 20) return -1;
+  //if((*W_Lept1_pt)[i] < 25) return -1;
 
-     //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
-     {
-       smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
-       PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
-       corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-       Wmu_4=corr1*Wmu_4;
-     }
+  //MC Smear Correction
+  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
+  {
+    smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
+    PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
+    corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+    Wmu_4=corr1*Wmu_4;
+  }
 
-     if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
-     if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
-     if( (*W_Lept1_muonHits)[i] <1) return -1;
-     if( (*W_Lept1_matchStations)[i] <2 ) return -1;
-     if( (*W_Lept1_trkLayers)[i] <6 )return -1;
-     if( (*W_Lept1_pixelHits)[i] <1 )return -1;
-     if( fabs( (*W_Lept1_dB)[i]) >0.02 )return -1;
-     if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
-     //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
-     double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-     if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.12) return -1; //Signal Band   // use this line to get n.of.events in AB area in  ABCD method
+  if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
+  if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if( (*W_Lept1_muonHits)[i] <1) return -1;
+  if( (*W_Lept1_matchStations)[i] <2 ) return -1;
+  if( (*W_Lept1_trkLayers)[i] <6 )return -1;
+  if( (*W_Lept1_pixelHits)[i] <1 )return -1;
+  if( fabs( (*W_Lept1_dB)[i]) >0.02 )return -1;
+  if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
+  //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
+  double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
+  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.12) return -1; //Signal Band   // use this line to get n.of.events in AB area in  ABCD method
 
 
-     // uncomment next line (Sideband)  to get n.of.events in DC area in  ABCD method
-     //  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.5) return -1; //Side Band
+  // uncomment next line (Sideband)  to get n.of.events in DC area in  ABCD method
+  //  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.5) return -1; //Side Band
 
+  
+  
+  //if( (*W_Neut_pt)[i] < 14 ) return -1;
+  //if( (*W_Mt)[i] < 30 ) return -1;
+  //if( (*W_Neut_pt)[i] < 25 ) return -1;
+  //if( (*W_Mt)[i] < 40 ) return -1;
+
+  return 1;
+}
+
+Int_t WLepNeu::MuonCutSide(int i)
+{
+  if( !(*W_Lept1_isGlobal)[i])return -1;
+  if((*W_Lept1_pt)[i] < 20) return -1;
+  //if((*W_Lept1_pt)[i] < 25) return -1;
      
+  //MC Smear Correction
+  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
+  {
+    smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
+    PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
+    corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+    Wmu_4=corr1*Wmu_4;
+  }
      
-     //if( (*W_Neut_pt)[i] < 14 ) return -1;
-     //if( (*W_Mt)[i] < 30 ) return -1;
-     //if( (*W_Neut_pt)[i] < 25 ) return -1;
-     //if( (*W_Mt)[i] < 40 ) return -1;
+  if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
+  if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if( (*W_Lept1_muonHits)[i] <1) return -1;
+  if( (*W_Lept1_matchStations)[i] <2 ) return -1;
+  if( (*W_Lept1_trkLayers)[i] <6 )return -1;
+  if( (*W_Lept1_pixelHits)[i] <1 )return -1;
+  if( fabs( (*W_Lept1_dB)[i]) >0.02 )return -1;
+  if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
+  double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
+  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.5) return -1; //Side Band
 
-     return 1;
-   }
+  return 1;
+}
 
-   Int_t WLepNeu::MuonCutSide(int i)
-   {
-     if( !(*W_Lept1_isGlobal)[i])return -1;
-     if((*W_Lept1_pt)[i] < 20) return -1;
+Int_t WLepNeu::AddMuonCut(int i)
+{
+  if( !(*W_Lept1_isTrker)[i] || !(*W_Lept1_isGlobal)[i]) return -1; //Signal Band only. For Side Band comment this line.
+  if((*W_Lept1_pt)[i] <= 10) return -1;
 
-     //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
-     {
-       smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
-       PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
-       corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-       Wmu_4=corr1*Wmu_4;
-     }
-     
-     if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
-     if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
-     if( (*W_Lept1_muonHits)[i] <1) return -1;
-     if( (*W_Lept1_matchStations)[i] <2 ) return -1;
-     if( (*W_Lept1_trkLayers)[i] <6 )return -1;
-     if( (*W_Lept1_pixelHits)[i] <1 )return -1;
-     if( fabs( (*W_Lept1_dB)[i]) >0.02 )return -1;
-     if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
-     double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-     if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.5) return -1; //Side Band
+  //MC Smear Correction
+  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
+  {
+    smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
+    PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
+    corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+    Wmu_4=corr1*Wmu_4;
+  }
 
-     return 1;
-   }
-
-   Int_t WLepNeu::AddMuonCut(int i)
-   {
-     if( !(*W_Lept1_isTrker)[i] || !(*W_Lept1_isGlobal)[i]) return -1; //Signal Band only. For Side Band comment this line.
-     if((*W_Lept1_pt)[i] <= 10) return -1;
-
-     //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
-     {
-       smearcorr= MuonSmearMC((*W_Lept1_eta)[i]);
-       PtEtaPhiMLorentzVector Wmu_4( (*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
-       corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-       Wmu_4=corr1*Wmu_4;
-     }
-
-     if(fabs((*W_Lept1_eta)[i])>=2.4) return -1;
-     double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-     if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.20) return -1;
-     return 1;
-   }
+  if(fabs((*W_Lept1_eta)[i])>=2.4) return -1;
+  double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
+  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.20) return -1;
+  return 1;
+}
 
    Int_t WLepNeu::ElectronCut(int i)
    {
@@ -2702,7 +2709,7 @@ Int_t WLepNeu::TauCut(int i)
      }
 
      //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
+     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
      {
        if((*W_Lept1_pt)[i] < 25) return -1;
        smearcorr=EleSmearMC((*W_Lept1_etaSC)[i]);
@@ -2715,6 +2722,7 @@ Int_t WLepNeu::TauCut(int i)
 
      
      if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
+     //if(fabs((*W_Lept1_etaSC)[i])>2.1) return -1;
      //W/Z
      if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i])<1.566)return -1;
      //if(fabs((*W_Lept1_etaSC)[i])>1.47 && fabs((*W_Lept1_etaSC)[i])<1.566)return -1;
@@ -2857,7 +2865,7 @@ Int_t WLepNeu::TauCut(int i)
      }
 
      //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
+     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
      {
        if((*W_Lept1_pt)[i] < 25) return -1;
        smearcorr=EleSmearMC((*W_Lept1_etaSC)[i]);
@@ -2870,6 +2878,7 @@ Int_t WLepNeu::TauCut(int i)
 
 
      if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
+     //if(fabs((*W_Lept1_etaSC)[i])>2.1) return -1;
      if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i]) < 1.566) return -1;
      //if(fabs((*W_Lept1_etaSC)[i])>1.47 && fabs((*W_Lept1_etaSC)[i]) < 1.566) return -1;
 
@@ -3005,7 +3014,7 @@ Int_t WLepNeu::TauCut(int i)
      }
 
      //MC Smear Correction
-     if(Mode == "AllCorrectionsMC")
+     if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
      {
        if((*W_Lept1_pt)[i] < 20) return -1;
        smearcorr=EleSmearMC((*W_Lept1_etaSC)[i]);
@@ -3667,22 +3676,26 @@ Int_t WLepNeu::FillAcceptInfo()
   // Fiducial 
   if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   if( (*GenW_BornLept1_pt)[0] > 20 )
+  //if( (*GenW_BornLept1_pt)[0] > 25 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
     isBornPassAcc = true;
   if( AnaChannel=="ElectronLowPU")
   if( (*GenW_BornLept1_pt)[0] > 25 )
   if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
+  //if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
   //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
     isBornPassAcc = true;
 
   // Fiducial of Post 
   if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
   if( (*GenW_PostLept1_pt)[0] > 20 )
+  //if( (*GenW_PostLept1_pt)[0] > 25 )
   if( fabs( (*GenW_PostLept1_eta)[0]) < 2.1 )
     isPostPassAcc = true;
   if( AnaChannel=="ElectronLowPU")
   if( (*GenW_PostLept1_pt)[0] > 25 )
   if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
+  //if( fabs((*GenW_PostLept1_eta)[0]) < 2.1 )
   //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
     isPostPassAcc = true;
   // Fill Histo
@@ -3788,28 +3801,28 @@ Int_t WLepNeu::FillUnfoldInfo()
       //}
     }
     //We've found the gen match, and get out of here
-    if( AnaChannel=="ElectronLowPU")
-    {
-      if( wCand.charge > 0)
-      {
-	SF = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-      }
-      else  if( wCand.charge < 0)
-      {
-	SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-      }
-    }
-    if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-    {
-      if( wCand.charge > 0)
-      {
-	SF = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-      }
-      else  if( wCand.charge < 0)
-      {
-	SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-      }
-    }
+    //if( AnaChannel=="ElectronLowPU")
+    //{
+    //  if( wCand.charge > 0)
+    //  {
+    //    SF = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+    //  }
+    //  else  if( wCand.charge < 0)
+    //  {
+    //    SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+    //  }
+    //}
+    //if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+    //{
+    //  if( wCand.charge > 0)
+    //  {
+    //    SF = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+    //  }
+    //  else  if( wCand.charge < 0)
+    //  {
+    //    SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+    //  }
+    //}
     h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,TTW*SF);
     if(weightFSR<0) weightFSR=1;
     h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,TTW*SF*weightFSR);
@@ -3820,36 +3833,36 @@ Int_t WLepNeu::DoRecoilCorr()
   //Uncomment to apply scale/res corrections to MC
   //wCand.lep_pt_corr = gRandom->Gaus(wCand.lep_pt*lepScale,lepRes);
 
-  if( AnaChannel=="ElectronLowPU")
-  {
-    //MC Smear Correction
-    if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    {
-      smearcorr=EleSmearMC(wCand.lep_etaSC);
-      PtEtaPhiMLorentzVector WeleMC_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.000511);
-      corr1 = gRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
-      WeleMC_4=corr1*WeleMC_4;
-      wCand.lep_pt_corr=WeleMC_4.Pt();
-    }else{
-      wCand.lep_pt_corr = wCand.lep_pt;
-    }
-  }
-  
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-  {
-    //MC Smear Correction
-    if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    {
-      smearcorr= MuonSmearMC(wCand.lep_eta);
-      PtEtaPhiMLorentzVector Wmu_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.1056);
-      corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-      Wmu_4=corr1*Wmu_4;
-      wCand.lep_pt_corr=Wmu_4.Pt();
-     } else{
-       wCand.lep_pt_corr = wCand.lep_pt;
-     }
-    }
-    //  wCand.lep_pt_corr = wCand.lep_pt;
+  //if( AnaChannel=="ElectronLowPU")
+  //{
+  //  //MC Smear Correction
+  //  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
+  //  {
+  //    smearcorr=EleSmearMC(wCand.lep_etaSC);
+  //    PtEtaPhiMLorentzVector WeleMC_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.000511);
+  //    corr1 = gRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
+  //    WeleMC_4=corr1*WeleMC_4;
+  //    wCand.lep_pt_corr=WeleMC_4.Pt();
+  //  }else{
+  //    wCand.lep_pt_corr = wCand.lep_pt;
+  //  }
+  //}
+  //
+  //if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+  //{
+  //  //MC Smear Correction
+  //  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
+  //  {
+  //    smearcorr= MuonSmearMC(wCand.lep_eta);
+  //    PtEtaPhiMLorentzVector Wmu_4( wCand.lep_pt,wCand.lep_eta,wCand.lep_phi,0.1056);
+  //    corr1 = gRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+  //    Wmu_4=corr1*Wmu_4;
+  //    wCand.lep_pt_corr=Wmu_4.Pt();
+  //   } else{
+  //     wCand.lep_pt_corr = wCand.lep_pt;
+  //   }
+  //}
+  wCand.lep_pt_corr = wCand.lep_pt;
   if(wCand.genIdx < 0) wCand.genIdx = 0;
   //genBeFsrW_pt = (*GenW_Born_pt)[gi];
   //genW_phi = (*GenW_phi)[gi];
