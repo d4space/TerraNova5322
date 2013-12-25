@@ -293,6 +293,33 @@ if(Debug)cout<<"check point 6-1"<<endl;
       {
 	W_pass = true;
 	wCand.charge = (*W_Charge)[iw];
+	
+	if(Mode == "AllCorrectionsMC")
+	{
+	  if(AnaChannel == "ElectronLowPU" )
+	  {
+	    if( wCand.charge > 0)
+	    {	  
+	      SF = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	    }
+	    else  if( wCand.charge < 0)
+	    {
+	      SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	    }
+	  }
+	  if(AnaChannel == "MuonLowPU" )
+	  {
+	    if( wCand.charge > 0)
+	    {
+	      SF = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	    }
+	    else  if( wCand.charge < 0)
+	    {
+	      SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	    }
+	  }
+	}
+	
 	if(Mode == "Unfold")
 	  DumpUnfoldInfo(iw);
 	//Muon Variable Study----------------------
@@ -420,32 +447,6 @@ if(Debug)cout<<"check point 7"<<endl;
 	//}
       //}
 
-      if(Mode == "AllCorrectionsMC" )
-      {
-	if(AnaChannel == "ElectronLowPU" )
-	{
-	  if( wCand.charge > 0)
-	  {	  
-	    SF1 = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	  }
-	  else  if( wCand.charge < 0)
-	  {
-	    SF1 = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	  }
-	}
-	if(AnaChannel == "MuonLowPU" )
-	{
-	  if( wCand.charge > 0)
-	  {
-	    SF1 = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	  }
-	  else  if( wCand.charge < 0)
-	  {
-	    SF1 = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	  }
-	}
-      }
-
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
       if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
@@ -462,14 +463,14 @@ if(Debug)cout<<"check point 8"<<endl;
 	if((*W_Charge)[iw]> 0)	  
 	{
 	  
-//	  if(Mode == "AllCorrectionsMC" )
-//	  {
-//	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-//	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-//	  }else{
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF);
+	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF);
+	  }else{
 	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-//	  }
+	  }
 
 if(Debug)cout<<"check point 10"<<endl;
 	  //Fill MET sideband for WQA, Wplus case
@@ -487,14 +488,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
 	      
-//	      if(Mode == "AllCorrectionsMC" )
-//	      {
-//		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-//		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-//	      }else{
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF);
+		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF);
+	      }else{
 		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-//	      }
+	      }
 	  
 	    }
 	  }
@@ -502,14 +503,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	else if( (*W_Charge)[iw] <0) 
 	{
 	  
-//	  if(Mode == "AllCorrectionsMC" )
-//	  {
-//	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-//	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF1);
-//	  }else{
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF);
+	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF);
+	  }else{
 	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
 	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-//	  }
+	  }
 
 	  if(Debug)cout<<"check point 12"<<endl;
 	  //Fill MET sideband for WQA, Wminus case
@@ -526,14 +527,14 @@ if(Debug)cout<<"check point 11"<<endl;
 	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
 	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
 
-//	      if(Mode == "AllCorrectionsMC" )
-//	      {
-//		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-//		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF1);
-//	      }else{
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF);
+		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*SF);
+	      }else{
 		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
 		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-//	      }
+	      }
 	    }
 	  }
 	}else {
@@ -761,6 +762,7 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_IsoBeta04->Fill( (wCand.chIso04+max(0.0, wCand.nhIso04+wCand.phIso04-0.5*wCand.pcIso04))/wCand.lep_pt,TTW);
 
       h1_W_pt->Fill(wCand.pt,TTW);
+      h1_W_pt_EffCorr->Fill(wCand.pt,TTW*SF);
       h2_WpT_lepPt->Fill(wCand.pt,wCand.lep_pt);
 
       h1_W_Acop->Fill(w_acop,TTW);
@@ -809,15 +811,16 @@ if(Debug)cout<<"check point 11"<<endl;
     if( wCand.charge > 0)
     {
       h1_Wp_pt->Fill(wCand.pt,TTW);
+      h1_Wp_pt_EffCorr->Fill(wCand.pt,TTW*SF);
       h1_Wp_pt_NoLumiWeight->Fill(wCand.pt);
       h2_WpT_lepPt_Plus->Fill(wCand.pt,wCand.lep_pt);
 
       if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
       {
 	//cout<<"filling corrMet "<<corrMet<<endl;
-	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF);
 	//h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
-	h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*SF);
 	  
 	if(corrMet > 25.)
 	{
@@ -852,9 +855,9 @@ if(Debug)cout<<"check point 11"<<endl;
 	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	  {
 	    //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
-	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF);
 	    //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	    h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF);
 	    
 	    if(corrMet >25.)
 	    {
@@ -886,14 +889,15 @@ if(Debug)cout<<"check point 11"<<endl;
       }
     }else if(wCand.charge <0){
       h1_Wm_pt->Fill(wCand.pt,TTW);
+      h1_Wm_pt_EffCorr->Fill(wCand.pt,TTW*SF);
       h1_Wm_pt_NoLumiWeight->Fill(wCand.pt);
       h2_WpT_lepPt_Minus->Fill(wCand.pt,wCand.lep_pt);
 	
       if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
       {
-	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	h1_W_Neu_pt[0]->Fill(corrMet,TTW*SF);
 	//h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
-	h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF1);
+	h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*SF);
 	
 	if(corrMet > 25.)
 	{
@@ -927,9 +931,9 @@ if(Debug)cout<<"check point 11"<<endl;
 	{
 	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	  {
-	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF);
 	    //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	    h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF1);
+	    h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*SF);
 
 	    if(corrMet >25.)
 	    {
@@ -1364,6 +1368,9 @@ if(Debug)cout<<"check point 11"<<endl;
   h1_W_pt->Write();
   h1_Wp_pt->Write();
   h1_Wm_pt->Write();
+  h1_W_pt_EffCorr->Write();
+  h1_Wp_pt_EffCorr->Write();
+  h1_Wm_pt_EffCorr->Write();
   h1_Wp_pt_NoLumiWeight->Write();
   h1_Wm_pt_NoLumiWeight->Write();
 
