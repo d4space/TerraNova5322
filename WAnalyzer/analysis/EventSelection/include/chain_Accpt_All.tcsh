@@ -1,7 +1,8 @@
 #!/bin/tcsh -f
 #set dirName_base = "/terranova_1/W_Ntuple2012LowPU/Muon/V9_GenTable"
 #set dirName_base = "/terranova_1/W_Ntuple2012LowPU/Muon/Acceptance"
-set dirName_base = "/d2/scratch/Storage_Area/AcceptanceFSR"
+#set dirName_base = "/d2/scratch/Storage_Area/AcceptanceFSR"
+set dirName_base = "/terranova_1/W_Ntuple2012LowPU/AcceptanceFSR"
 set dirName = "$dirName_base/WpToMuNu"
 ./chain_Muon_WpToMuNu_S8_Accpt.tcsh $dirName
 set dirName = "$dirName_base/WmToMuNu"

@@ -85,6 +85,7 @@ void WLepNeu::Loop()
   int Ntries = fChain->GetEntries();
 
   wCand.size=0;
+  SF = 1;
   cout<<"Total: "<<Ntries<<endl;
   double nSelect(0);
   TTW=1;
@@ -166,7 +167,7 @@ void WLepNeu::Loop()
   //FSRout.open(FSRName);
 
   for (int i(0); i<Ntries;i++)
-//  for (int i(0); i<2;i++)
+  //for (int i(0); i<20;i++)
   {
     evtCnt = i;
     //===============================
@@ -293,33 +294,6 @@ if(Debug)cout<<"check point 6-1"<<endl;
       {
 	W_pass = true;
 	wCand.charge = (*W_Charge)[iw];
-	
-	if(Mode == "AllCorrectionsMC")
-	{
-	  if(AnaChannel == "ElectronLowPU" )
-	  {
-	    if( wCand.charge > 0)
-	    {	  
-	      SF = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	    }
-	    else  if( wCand.charge < 0)
-	    {
-	      SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	    }
-	  }
-	  if(AnaChannel == "MuonLowPU" )
-	  {
-	    if( wCand.charge > 0)
-	    {
-	      SF = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	    }
-	    else  if( wCand.charge < 0)
-	    {
-	      SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	    }
-	  }
-	}
-	
 	if(Mode == "Unfold")
 	  DumpUnfoldInfo(iw);
 	//Muon Variable Study----------------------
@@ -447,6 +421,29 @@ if(Debug)cout<<"check point 7"<<endl;
 	//}
       //}
 
+      if(AnaChannel == "ElectronLowPU" )
+      {
+	if( wCand.charge > 0)
+	{
+	  SF = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  SF = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+      }
+      if(AnaChannel == "MuonLowPU" )
+      {
+	if( wCand.charge > 0)
+	{
+	  SF = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+      }
+
 if(Debug)cout<<"check point 8"<<endl;
       //Side Band
       if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
@@ -462,7 +459,6 @@ if(Debug)cout<<"check point 8"<<endl;
 	//lep_pt_side = (*W_Lept1_pt)[iw];
 	if((*W_Charge)[iw]> 0)	  
 	{
-	  
 	  if(Mode == "AllCorrectionsMC" )
 	  {
 	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*SF);
@@ -761,6 +757,7 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_IsoBeta03->Fill( (wCand.chIso03+max(0.0, wCand.nhIso03+wCand.phIso03-0.5*wCand.pcIso03))/wCand.lep_pt,TTW);
       h1_IsoBeta04->Fill( (wCand.chIso04+max(0.0, wCand.nhIso04+wCand.phIso04-0.5*wCand.pcIso04))/wCand.lep_pt,TTW);
 
+      cout<<"SF(C) = "<<SF<<endl;
       h1_W_pt->Fill(wCand.pt,TTW);
       h1_W_pt_EffCorr->Fill(wCand.pt,TTW*SF);
       h2_WpT_lepPt->Fill(wCand.pt,wCand.lep_pt);
