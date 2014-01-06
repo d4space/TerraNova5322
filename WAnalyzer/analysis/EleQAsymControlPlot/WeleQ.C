@@ -51,7 +51,7 @@ TString AnaChannelMu  = "MuonLowPU";
 
 
 //Ele_RD_HighPU========================================
-
+/*
   cout<<"Ele_RD_HighPU===================="<<endl;
   TChain *TC_Ele_RD_HighPU    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_RD_HighPU_Ele = new TChain("Electrons/tree","");
@@ -61,7 +61,7 @@ TString AnaChannelMu  = "MuonLowPU";
   WEleQ WelePt_Ele_RD_HighPU(TC_Ele_RD_HighPU,TC_Ele_RD_HighPU_Ele,
         LumiWeight_Ele_RD_HighPU, Ele_RD_HighPUFile,Mode,AnaChannelEle);
   WelePt_Ele_RD_HighPU.Loop();
-
+*/
 /* 
 cout<<"Ele_RD_HighPU_A===================="<<endl;
   TChain *TC_Ele_RD_HighPU_A    = new TChain("WEleNeu/tree","");
@@ -160,7 +160,7 @@ cout<<"Ele_RD_HighPU_D===================="<<endl;
   WEleQ WelePt_Ele_WToTauNu_S10(TC_Ele_WToTauNu_S10,TC_Ele_WToTauNu_S10_Ele,
   	LumiWeight_Ele_WToTauNu_S10, Ele_WToTauNu_S10File,Mode,AnaChannelEle);
   WelePt_Ele_WToTauNu_S10.Loop();
-
+*/
   cout<<"Ele_TTJets_S10==========================="<<endl;
   TChain *TC_Ele_TTJets_S10    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_TTJets_S10_Ele = new TChain("Electrons/tree","");
@@ -170,7 +170,7 @@ cout<<"Ele_RD_HighPU_D===================="<<endl;
   WEleQ WelePt_Ele_TTJets_S10(TC_Ele_TTJets_S10,TC_Ele_TTJets_S10_Ele,
         LumiWeight_Ele_TTJets_S10, Ele_TTJets_S10File,Mode,AnaChannelEle);
   WelePt_Ele_TTJets_S10.Loop();
-*/
+
 /*
   cout<<"Ele_QCD_EMEnriched_20to30_S10==========================="<<endl;
   TChain *TC_Ele_QCD_EMEnriched_20to30_S10    = new TChain("WEleNeu/tree","");
