@@ -1,4 +1,4 @@
-// $Log: WLepNeu.C,v $
+// $Log: WpT.C,v $
 // Revision 1.8  2013/09/13 00:09:32  salee
 // *** empty log message ***
 //
@@ -8,31 +8,9 @@
 // Revision 1.6  2013/08/31 06:56:40  khakim
 // *** empty log message ***
 //
-// Revision 1.5  2013/08/19 15:11:34  jungmin
-// *** empty log message ***
-//
-// Revision 1.4  2013/07/24 08:13:15  jungmin
-// *** empty log message ***
-//
-// Revision 1.3  2013/07/13 14:28:40  khakim
-// *** empty log message ***
-//
-// Revision 1.2  2013/07/08 11:57:32  sangilpark
-// *** empty log message ***
-//
-// Revision 1.44  2013/07/04 09:11:36  salee
-// *** empty log message ***
-//
-// Revision 1.43  2013/07/04 08:19:58  jungmin
-// *** empty log message ***
-//
-// Revision 1.42  2013/07/03 16:04:01  jungmin
-// *** empty log message ***
-//
-//
 //   In a ROOT session, you can do:
-//      Root > .L WLepNeu.C
-//      Root > WLepNeu t
+//      Root > .L WpT.C
+//      Root > WpT t
 //      Root > t.GetEntry(12); // Fill t data members with entry number 12
 //      Root > t.Show();       // Show values of entry 12
 //      Root > t.Show(16);     // Read and show values of entry 16
@@ -53,13 +31,13 @@
 // METHOD2: replace line
 //    fChain->GetEntry(jentry);       //read all branches
 //by  b_branchname->GetEntry(ientry); //read only this branch
-#define WLepNeu_cxx
+#define WpT_cxx
 //#include <iostream>
 //#include <TROOT.h>                        // access to gROOT, entry point to ROOT system
 //#include <TSystem.h>                      // interface to OS
 #include <TBenchmark.h>                   // class to track macro running statistics
 #include <algorithm>
-#include "WLepNeu.h"
+#include "WpT.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -75,19 +53,19 @@
 typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMLorentzVectorD;
 typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
-void WLepNeu::Loop()
+void WpT::Loop()
 {
-  gBenchmark->Start("WLepNeu");
+  cout<<"==========================================================="<<endl;
+  cout<<"WpT Analysis with Mode: "<<Mode<<"  AnaChannel: "<<AnaChannel<<endl;
+  cout<<"==========================================================="<<endl;
+  gBenchmark->Start("WpT");
   gRandom->SetSeed(0);
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   int Ntries = fChain->GetEntries();
 
-  wCand.size=0;
-  effSf_ = 1;
   cout<<"Total: "<<Ntries<<endl;
-  double nSelect(0);
   TTW=1;
   double n1(0);
   double n2(0);
@@ -966,7 +944,7 @@ if(Debug)cout<<"check point 11"<<endl;
     }
     
     //cout<<"TTW: "<<TTW<<endl;
-    nSelect+=TTW;
+    evtSelected+=TTW;
     if(Debug)cout<<"check point 16"<<endl;
     
     if( wCand.pt >= 0. && wCand.pt < 7.5 )
@@ -995,7 +973,7 @@ if(Debug)cout<<"check point 11"<<endl;
       n12+=TTW;
     if( wCand.pt >= 250. && wCand.pt < 600. )
       n13+=TTW;
-    //cout<<"nselect: "<<nSelect<<endl;
+    //cout<<"nselect: "<<evtSelected<<endl;
     }//good W
 
     if(Z_pass)
@@ -1211,8 +1189,8 @@ if(Debug)cout<<"check point 11"<<endl;
   }
   Fout.open(FoutName);
   
-  cout<<"selected converted: "<<nSelect<<" +- "<<TMath::Sqrt(nSelect)<<endl;
-  Fout<<"Bin\t0\tSignal\t"<<nSelect<<"\tError\t"<<TMath::Sqrt(nSelect)<<endl;
+  cout<<"selected converted: "<<evtSelected<<" +- "<<TMath::Sqrt(evtSelected)<<endl;
+  Fout<<"Bin\t0\tSignal\t"<<evtSelected<<"\tError\t"<<TMath::Sqrt(evtSelected)<<endl;
 
   cout<<"Bin1 selected converted: "<<n1<<" +- "<<TMath::Sqrt(n1)<<endl;
   Fout<<"Bin\t1\tSignal\t"<<n1<<"\tError\t"<<TMath::Sqrt(n1)<<endl;
@@ -1562,7 +1540,7 @@ if(Debug)cout<<"check point 11"<<endl;
   Fout.close();
   //FSRout.close();
   myFile->Write();
-  gBenchmark->Show("WLepNeu");
+  gBenchmark->Show("WpT");
 }
 
 

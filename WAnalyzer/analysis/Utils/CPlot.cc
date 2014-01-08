@@ -476,7 +476,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
   }
       
   int nHist1D=0, nHist2D=0, nGraph=0, nProf=0;
-  for(int i=0; i<fItems.size(); i++) {
+  for(unsigned long i=0; i<fItems.size(); i++) {
     if(fItems[i].hist1D != 0) nHist1D++;
     if(fItems[i].hist2D != 0) nHist2D++;
     if(fItems[i].graph  != 0) nGraph++;
@@ -492,7 +492,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
   //   Default is scatter plot
   //  
   if(nHist2D>0) {
-    for(int i=0; i<fItems.size(); i++) {
+    for(unsigned i=0; i<fItems.size(); i++) {
       if(fItems[i].hist2D==0) continue;
       
       fItems[i].hist2D->Draw(fItems[i].drawopt);
@@ -506,13 +506,13 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
       c->SetLogx(fLogx);
       c->SetLogy(fLogy);
       
-      for(int k=0; k<fLines.size(); k++)
+      for(unsigned k=0; k<fLines.size(); k++)
         fLines[k]->Draw();
 
-      for(int k=0; k<fBoxes.size(); k++)
+      for(unsigned k=0; k<fBoxes.size(); k++)
         fBoxes[k]->Draw();
       
-      for(int j=0; j<fTextBoxes.size(); j++)
+      for(unsigned j=0; j<fTextBoxes.size(); j++)
         fTextBoxes[j]->Draw();
             
       if(doSave) {
@@ -544,7 +544,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
     double ymax=0;
     int ifirst=0;
     
-    for(int i=0; i<fItems.size(); i++) {
+    for(unsigned i=0; i<fItems.size(); i++) {
       if(fItems[i].hist1D==0) continue;
       if(fStack && fStack->GetHists()->Contains(fItems[i].hist1D)) continue;
       
@@ -620,7 +620,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
       } 
     }
         
-    for(int i=0; i<vHists.size(); i++) {
+    for(unsigned i=0; i<vHists.size(); i++) {
       TH1D *h = vHists[i];              
       h->SetLineWidth(2);
       char opt[100];
@@ -635,7 +635,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
   std::vector<TGraph*> vGraphs;
   std::vector<TString> vGraphOpts;
   if(nGraph>0) {    
-    for(int i=0; i<fItems.size(); i++) {
+    for(unsigned i=0; i<fItems.size(); i++) {
       if(fItems[i].graph==0) continue;
     
       TString grName = fName;
@@ -661,7 +661,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
       vGraphs[0]->GetYaxis()->SetTitle(fYTitle);
     }
     
-    for(int i=0; i<vGraphs.size(); i++) {
+    for(unsigned i=0; i<vGraphs.size(); i++) {
       TGraph *gr = vGraphs[i];
       char opt[100];
       (i==0 && nHist1D==0) ? sprintf(opt,"AP%s",vGraphOpts[i].Data()) : sprintf(opt,"P%s",vGraphOpts[i].Data());
@@ -675,7 +675,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
   std::vector<TProfile*> vProfiles;
   std::vector<TString> vProfileOpts;
   if(nProf>0) {    
-    for(int i=0; i<fItems.size(); i++) {
+    for(unsigned i=0; i<fItems.size(); i++) {
       if(fItems[i].prof==0) continue;
     
       TString prName = fName;
@@ -701,7 +701,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
       vProfiles[0]->GetYaxis()->SetTitle(fYTitle);
     }
     
-    for(int i=0; i<vProfiles.size(); i++) {
+    for(unsigned i=0; i<vProfiles.size(); i++) {
       TProfile *pr = vProfiles[i];
       char opt[100];
       if(i>0 || nHist1D>0 || nGraph>0) 
@@ -729,7 +729,7 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
     char buffer[20];
     stat = new TLatex[3*vHists.size()];
     sval = new TLatex[3*vHists.size()];
-    for(int i=0; i<vHists.size(); i++) {
+    for(unsigned i=0; i<vHists.size(); i++) {
       int x = fShowStats;
       
       // number of entries
@@ -778,25 +778,25 @@ void CPlot::Draw(TCanvas *c, bool doSave, TString format, Int_t subpad)
   //
   // Draw functions
   //
-  for(int i=0; i<fFcns.size(); i++)
+  for(unsigned i=0; i<fFcns.size(); i++)
     (i==0 && vHists.size()==0 && vGraphs.size()==0) ? fFcns[i]->Draw() : fFcns[i]->Draw("sameC");
   
   //
   // Draw lines
   //
-  for(int i=0; i<fLines.size(); i++)
+  for(unsigned i=0; i<fLines.size(); i++)
     fLines[i]->Draw();
   
   //
   // Draw Boxes
   //
-  for(int i=0; i<fBoxes.size(); i++)
+  for(unsigned i=0; i<fBoxes.size(); i++)
     fBoxes[i]->Draw();
   
   //
   // Draw textboxes
   //
-  for(int i=0; i<fTextBoxes.size(); i++)
+  for(unsigned i=0; i<fTextBoxes.size(); i++)
     fTextBoxes[i]->Draw();    
   
   //

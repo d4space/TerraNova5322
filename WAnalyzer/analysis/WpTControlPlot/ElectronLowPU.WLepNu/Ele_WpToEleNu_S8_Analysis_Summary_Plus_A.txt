@@ -1,0 +1,14 @@
+Bin	0	Signal	685300	Error	827.828
+Bin	1	Signal	158617	Error	398.267
+Bin	2	Signal	150786	Error	388.312
+Bin	3	Signal	113010	Error	336.17
+Bin	4	Signal	93157	Error	305.216
+Bin	5	Signal	50588	Error	224.918
+Bin	6	Signal	46879	Error	216.516
+Bin	7	Signal	24388	Error	156.167
+Bin	8	Signal	24325	Error	155.965
+Bin	9	Signal	16297	Error	127.66
+Bin	10	Signal	4595	Error	67.7864
+Bin	11	Signal	1470	Error	38.3406
+Bin	12	Signal	793	Error	28.1603
+Bin	13	Signal	391	Error	19.7737

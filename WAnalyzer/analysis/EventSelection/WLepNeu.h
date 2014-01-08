@@ -941,10 +941,11 @@ public :
    //   virtual void     Loop_Recoil();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
-private:
+protected:
   int evtCnt;
+  double evtSelected;
   bool TruthRecoPost;
-  double SF;
+  double effSf_;
   double WCHARGE;
   //Recoil Variables
   RecoilCorrector *recoilCorr;
@@ -1058,6 +1059,9 @@ void WLepNeu::Init(TTree *tree)
    // code, but the routine can be extended by the user if needed.
    // Init() will be called many times when running on PROOF
    // (once per file to be processed).
+   //
+   // Initialization for the member
+   effSf_ = 1;
 
   //===============================================
    // change from here when ever you change the tree 2/2
@@ -2035,11 +2039,11 @@ void WLepNeu::Init(TTree *tree)
    }
    Notify();
 }
-   WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
+WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
        TString OutFileName_, TString mode_, TString AnaChannel_,
        double Wcharge, int etaRange_) : fChain(0) 
 //WLepNeu::WLepNeu(TTree *tree) : fChain(0) 
-  {
+{
     // if parameter tree is not specified (or zero), connect the file
     // // used to generate this class and read the Tree.
    cout<<"WLepNeu constructor"<<endl;
@@ -2159,10 +2163,8 @@ void WLepNeu::Init(TTree *tree)
    ETARANGE = etaRange_;
    Init(WLepNeuTree);
    //wMuons.Init(WLepTree);
-
    }
-
-  }
+}
 
 
    WLepNeu::~WLepNeu()
@@ -3823,9 +3825,9 @@ Int_t WLepNeu::FillUnfoldInfo()
     //    SF = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
     //  }
     //}
-    h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,TTW*SF);
+    h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,TTW*effSf_);
     if(weightFSR<0) weightFSR=1;
-    h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,TTW*SF*weightFSR);
+    h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,TTW*effSf_*weightFSR);
     return 0;
 }
 Int_t WLepNeu::DoRecoilCorr()

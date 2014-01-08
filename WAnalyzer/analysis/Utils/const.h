@@ -1,4 +1,5 @@
 #define NWptBinPlus 14
+#define NwPtBin 13
 //#define NWqaBinPlus 25
 #define NWqaBinPlus 12
 //#define NWqaBins 22
