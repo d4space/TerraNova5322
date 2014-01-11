@@ -890,7 +890,7 @@ public :
 
    WLepNeu(TTree *tree=0,TTree *WMuonTree=0, double weight=1,
        TString OutFileName = "output.root",TString Mode="analysis",
-       TString AnaChannel ="Muon",double WCHARGE=0, int etaRange_=-999);
+       TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);
 
    virtual ~WLepNeu();
    virtual Int_t    TauCut(int entry);
@@ -942,13 +942,27 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 protected:
+  int InitVar();
+  int CheckChannel();
+  int TriggerCut();
+  int CalcEvtWeight(){TTW =1;}
+  int DumpWbestCand(int);
+  int DumpMETs();
+  // Member Variables
+  int Ntries;
   int evtCnt;
+  int mNWevt;
+  int mNZevt;
   double evtSelected;
   bool TruthRecoPost;
   double effSf_;
   double WCHARGE;
+  struct VtxVar{
+    int nPrim;
+    int nGood;
+  }mVtxVar;
   //Recoil Variables
-  RecoilCorrector *recoilCorr;
+  RecoilCorrector *RecoilCorr;
   struct RecoilVar{
     TString ZRDfilename;
     TString ZMCfilename;
@@ -995,7 +1009,7 @@ protected:
 
   }wCand;
   double w_pt_side, w_acop;
-  bool W_pass;
+  bool mWpass;
 
   //For filling MET histograms for WQA by chang
   double wqaMetMXBins[NWqaBins];
@@ -1035,8 +1049,9 @@ protected:
   TString	OutFileName;
   TString	Mode;
   TString	AnaChannel;
-  double vtxz,vtxRho;
-  double TTW;
+  bool		RunOnMC;
+  double	vtxz,vtxRho;
+  double	mTTW;
 
   struct UnfoldInfo{
     double recoPreFsrGenWptRes;
@@ -2041,8 +2056,7 @@ void WLepNeu::Init(TTree *tree)
 }
 WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
        TString OutFileName_, TString mode_, TString AnaChannel_,
-       double Wcharge, int etaRange_) : fChain(0) 
-//WLepNeu::WLepNeu(TTree *tree) : fChain(0) 
+       double Wcharge, bool runOnMC, int etaRange_) : fChain(0) 
 {
     // if parameter tree is not specified (or zero), connect the file
     // // used to generate this class and read the Tree.
@@ -2160,10 +2174,12 @@ WLepNeu::WLepNeu(TTree *WLepNeuTree,TTree *WLepTree, double lumiweight,
    Mode = mode_;
    AnaChannel = AnaChannel_;
    WCHARGE = Wcharge;
+   RunOnMC = runOnMC;
    ETARANGE = etaRange_;
    Init(WLepNeuTree);
    //wMuons.Init(WLepTree);
    }
+   InitVar();
 }
 
 
@@ -3880,7 +3896,7 @@ Int_t WLepNeu::DoRecoilCorr()
   //wCand.pt = W2D_lepCorrOnly.Mod();
   //if( wCand.pt < 100)
   //{
-    recoilCorr->Correct(
+    RecoilCorr->Correct(
       corrMet,corrMetPhi,
       genInfo.PostW_pt,genInfo.PostW_phi,//basedonthis,calculate correctedrecoilvectors
       //genBeFsrW_pt,genW_phi, 
@@ -3905,6 +3921,7 @@ Int_t WLepNeu::DoRecoilCorr()
 }
 Int_t WLepNeu::InitVar4Evt()
 {
+  //cout<<"WLepNeu::InitVar4Evt ==========================="<<endl;
   wCand.size = W_pt->size();
   wCand.pt=0;w_pt_side=0;w_acop=0;
   wCand.Mt=0;
@@ -3917,7 +3934,7 @@ Int_t WLepNeu::InitVar4Evt()
   wCand.lep_eta = 0;
   wCand.lep_etaSC = 0;
 
-  W_pass=0;
+  mWpass=0;
   glbMuChi2=0;
   addLepN=0;lep_pt=0;lep_pt_corr=0;corrMet=0;
   scalecorr1=0;

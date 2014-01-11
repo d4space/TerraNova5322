@@ -42,7 +42,5 @@ namespace Ky{
     double muonEt_;
 
   };
-
-
 }
 #endif

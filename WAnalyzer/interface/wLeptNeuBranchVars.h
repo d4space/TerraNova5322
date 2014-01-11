@@ -69,8 +69,6 @@ public:
 class Zboson
 {
 public:
-
-
   vector<bool>*		Lept1_isGlobal;
   vector<bool>*		Lept1_isTrker; 
   vector<double>*	Lept1_MedComIsoDelBetCorr3Hits;
@@ -226,7 +224,6 @@ public:
   vector<double>* genMEtCaloAndNonPrompt_px;
   vector<double>* genMEtCaloAndNonPrompt_py;
 */  vector<double>* Sign;
-
 
   void Register(TTree *tree)
   {
@@ -798,3 +795,4 @@ class FSRphoton
       tree->Branch("weightFSR", &weightFSR);
     }
 };
+

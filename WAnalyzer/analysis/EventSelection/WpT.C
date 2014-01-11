@@ -63,37 +63,16 @@ void WpT::Loop()
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
-  int Ntries = fChain->GetEntries();
+  Ntries = fChain->GetEntries();
 
   cout<<"Total: "<<Ntries<<endl;
-  TTW=1;
-  double n1(0);
-  double n2(0);
-  double n3(0);
-  double n4(0);
-  double n5(0);
-  double n6(0);
-  double n7(0);
-  double n8(0);
-  double n9(0);
-  double n10(0);
-  double n11(0);
-  double n12(0);
-  double n13(0);
   
-  double NmetA[NWptBinPlus]={0.0};
-  double NmetB[NWptBinPlus]={0.0};
-  double NmetAp[NWptBinPlus]={0.0};
-  double NmetBp[NWptBinPlus]={0.0};
-  double NmetAm[NWptBinPlus]={0.0};
-  double NmetBm[NWptBinPlus]={0.0};
-
-  int Vtx_nPrim;
-  int Vtx_GoodN;
   double tmpVar;
   double ZLep2PtTmp;
-  //Recoil Correction
-  if( (Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC") ||Mode =="Unfold" )
+  // Recoil Correction Parameter Files
+  if( (  Mode == "AllCorrectionsMC"
+      || Mode == "RecoilCorrMC")
+      || Mode =="DumpUnfInfo" )
   {
     //if(AnaChannel == "MuonLowPU")
     if(AnaChannel == "MuonLowPU" )
@@ -109,22 +88,15 @@ void WpT::Loop()
       rcoil.Wpfilename="../Recoil/WepMC/fits.root";
       rcoil.Wmfilename="../Recoil/WemMC/fits.root";
     }
-    recoilCorr= new RecoilCorrector(
+    // RecoilCorrection Object.
+    RecoilCorr= new RecoilCorrector(
       rcoil.ZRDfilename,
       rcoil.Wpfilename,rcoil.Wmfilename,
       rcoil.ZMCfilename,
       0x1234);
   //Int_t iSeed=0xDEADBEEF default seed for random number generator at constructor
   }
-  //Scale Correction
-  double lepScale(1);
-  double lepScaleErr(0.005);
-  double lepRes(0.5);
-  double lepResErr(0.5);
-  evtCnt = 0;
  
-  int evtCnt_W(0);
-  int evtCnt_Z(0);
   int evtCnt_Z_beforeCut(0);
   int evtCnt_Z_afterCut(0);
 
@@ -136,16 +108,9 @@ void WpT::Loop()
   else if(AnaChannel == "ElectronLowPU")
     TString resultDir = "ElectronLowPU";
 
-//  TString resultDir = "results";
   gSystem->mkdir(resultDir);
-  
-  //ofstream FSRout;
-  //TString FSRName;
-  //FSRName = resultDir+"/FSR_Summary.txt";
-  //FSRout.open(FSRName);
 
   for (int i(0); i<Ntries;i++)
-  //for (int i(0); i<20;i++)
   {
     evtCnt = i;
     //===============================
@@ -162,97 +127,50 @@ void WpT::Loop()
     //===========================
     InitVar4Evt();
 
-    //FSRout<<"FSR: "<<weightFSR<<endl;
-    //cout<<"FSR: "<<weightFSR<<endl;
-    //FSRout<<"TT weight: "<<TTW<<endl;
-if(Debug)cout<<"check point 6"<<endl;
-if(Debug)cout<<"check point 2"<<endl;
-    
- //   if( LumiWeight == 1)
- //   {
- //     TTW = 1;
- //   }else{
- //     //TTW= LumiWeight*weightin; //weight is right but S8 strange
- //     //if (weightFSR<0) weightFSR=1.;
- //     //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
- //     TTW= LumiWeight; //weight is right but S8 strange
- //     if(AnaChannel == "ElectronHighPU")
- //     {TTW= LumiWeight*weight;} //reweighting value for S10
- //   }
-    //cout<<"TTW weight = "<<TTW<<endl;
-
+    //==================
+    // Acceptance Study
+    //==================
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
-      //TTW = 1;
       if( FillAcceptInfo() != 0 ) exit(-1);
       // Don't go futher
       continue;
     }
-if(Debug)cout<<"check point 3"<<endl;
-    if(AnaChannel == "MuonLowPU" )if(fabs(Channel) != GenType::kMuon) exit(-1);
-    if(AnaChannel == "MuonHighPU")if(fabs(Channel) != GenType::kMuon) exit(-1);
-    if(AnaChannel == "ElectronLowPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
-    if(AnaChannel == "ElectronHighPU")if(fabs(Channel) != GenType::kElectron) exit(-1);
-    if(AnaChannel == "TauHighPU")if(fabs(Channel) != GenType::kTau) exit(-1);
+    //===================
+    // Check the channel : To check if the ntuple is for each lepton flavor
+    //===================
+    if(WLepNeu::CheckChannel()!=0) exit(-1);
 
-if(Debug)cout<<"check point 4"<<endl;
-
-    //We need this again for the FillUnfoldInfo is stand alone
-    //cout<<"Ntuple Channel is "<<Channel<<endl;
-    //wMuons.fChain->GetEntry(i);
     //============
     //Trigger Cut
     //============
-if(Debug)cout<<"check point 4"<<endl;    //
-    if(AnaChannel == "MuonLowPU" )if( HLT_Mu15_eta2p1_fired < 1) continue;
-    if(AnaChannel == "ElectronLowPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1)continue;
-    if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1)continue;
-    //Vertex Study===========================
-    Vtx_nPrim = vtx_isFake->size();
-    if(Vtx_nPrim < 1 ) continue;
-    // Check the VTX cuts for the largest Sum(Pt) vertex
-    if( (*vtx_isFake)[0] )continue;
-//    if( (*vtx_ndof)[0] <= 2 ) continue; // Our Study
-      if( (*vtx_ndof)[0] <= 4 ) continue; //W&Z Xsec study
-    if( (*vtx_z)[0] >= 24 ) continue;
-    if( (*vtx_Rho)[0] >= 2 ) continue;
+    if(WLepNeu::TriggerCut() !=0) continue;
 
-if(Debug)cout<<"check point 5"<<endl;
-    Vtx_GoodN=0;
-    for( int ivtx(0);ivtx<Vtx_nPrim; ivtx++)
-    {
-      if( (*vtx_isFake)[ivtx] )continue;
-//      if( (*vtx_ndof)[ivtx] <= 2 ) continue; // Our Study
-      if( (*vtx_ndof)[ivtx] <= 4 ) continue; //W&Z Xsec study
-      if( (*vtx_z)[ivtx] >= 24 ) continue;
-      if( (*vtx_Rho)[ivtx] >= 2 ) continue;
-      Vtx_GoodN++;
-    }
-//    if( Vtx_GoodN < 1 ) continue;
-    h1_Vtx_Prim->Fill(Vtx_nPrim);
-    //h1_Vtx_Good->Fill(Vtx_GoodN);
+    //Vertex Study===========================
+    if(VertexStudy() !=0) continue;
+
+
+    h1_Vtx_Prim->Fill(mVtxVar.nPrim);
+    h1_Vtx_Good->Fill(mVtxVar.nGood);
 
     if(LumiWeight != 1){
-      h1_Vtx_PrimPuW->Fill(Vtx_nPrim*weightin);
-      h1_Vtx_GoodPuW->Fill(Vtx_GoodN*weightin);
+      h1_Vtx_PrimPuW->Fill(mVtxVar.nPrim*weightin);
+      h1_Vtx_GoodPuW->Fill(mVtxVar.nGood*weightin);
       h1_PuWeight->Fill(weightin);
     }
 
-    if( LumiWeight == 1)
-    {
-      TTW = 1;
-    }else{
-      //TTW= LumiWeight*weightin; //weight is right but S8 strange
-      //if (weightFSR<0) weightFSR=1.;
-      //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
-      TTW= LumiWeight; //weight is right but S8 strange
-      if(AnaChannel == "ElectronHighPU")
-      {TTW= LumiWeight*weight;} //reweighting value for S10
-    }
+    //===================
+    // Calculate Event Weight
+    //=====================
+    TTW = CalcEvtWeight();
     
     //cout<<"Muon size: "<<wMuons.pt->size()<<endl;
     //cout<<"W    size: "<<W_pt->size()<<endl;
     h1_W_Multi->Fill(wCand.size);
+
+    //===========================
+    // W best Candidate Selection
+    //===========================
     for(int iw(0); iw<wCand.size; iw++)
     {
       //additional lepton count
@@ -261,7 +179,6 @@ if(Debug)cout<<"check point 5"<<endl;
       if(AnaChannel == "ElectronLowPU" )if(AddElectronCut(iw)>0) addLepN++;
       if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
       if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
-if(Debug)cout<<"check point 6-1"<<endl;
       if( ((AnaChannel == "MuonLowPU" ) && MuonCut(iw) >0)||
 	  (AnaChannel =="MuonHighPU" && MuonCut(iw) >0)||
 	  ((AnaChannel == "ElectronLowPU" ) && ElectronCut(iw) > 0)||
@@ -270,32 +187,8 @@ if(Debug)cout<<"check point 6-1"<<endl;
 	  //Best Candidate selection
       )if( wCand.lep_pt < (*W_Lept1_pt)[iw])
       {
-	W_pass = true;
-	wCand.charge = (*W_Charge)[iw];
-	if(Mode == "Unfold")
-	  DumpUnfoldInfo(iw);
-	//Muon Variable Study----------------------
-	if(AnaChannel == "MuonLowPU" ){
-	  glbMuChi2 = (*W_Lept1_globalNormChi2)[iw];
-	  wCand.muonHit = (*W_Lept1_muonHits)[iw];
-	  wCand.matchStation = (*W_Lept1_matchStations)[iw];
-	  wCand.trkLayers = (*W_Lept1_trkLayers)[iw];
-	  wCand.pixelHits = (*W_Lept1_pixelHits)[iw];
-	  wCand.dB = fabs((*W_Lept1_dB)[iw]);
-	  wCand.chIso03 = (*W_Lept1_chIso03)[iw];
-	  wCand.chIso04 = (*W_Lept1_chIso04)[iw];
-	  wCand.nhIso03 = (*W_Lept1_nhIso03)[iw];
-	  wCand.nhIso04 = (*W_Lept1_nhIso04)[iw];
-	  wCand.phIso03 = (*W_Lept1_phIso03)[iw];
-	  wCand.phIso04 = (*W_Lept1_phIso04)[iw];
-	  wCand.pcIso03 = (*W_Lept1_pcIso03)[iw];
-	  wCand.pcIso04 = (*W_Lept1_pcIso04)[iw];
-	}//Muon Variable Study---------------------
-if(Debug)cout<<"check point 6-3"<<endl;
-//	wCand.dz = fabs((*W_Lept1_dz)[iw]); // Tau channel has a problem!
-	wCand.dz = 1;
-	wCand.Mt = (*W_Mt)[iw];
-	wCand.Met = (*W_Neut_pt)[iw];
+	mIdxWcan = iw;
+	mWpass = true;
 // MVAnoPUMETana study
 	//if (Mode=="MVAnoPUMEt")
 	//{
@@ -515,7 +408,8 @@ if(Debug)cout<<"check point 11"<<endl;
 	    cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
 	    exit(0);}
 	}
-      }
+    }
+
     
     if(Debug)cout<<"check point 14"<<endl;
     double tmp_prob;
@@ -693,17 +587,26 @@ if(Debug)cout<<"check point 11"<<endl;
 
 
     //Fill the W==================
-    if( W_pass && addLepN <2 ){
-      evtCnt_W++;
+    if( mWpass)
+    {
+      DumpWbestCand(mIdxWcan);
+      if(Mode == "DumpUnfInfo")
+      {
+        DumpUnfoldInfo(iw);
+      }
+      DumpMETs();
+    }
+    if( mWpass && addLepN <2 ){
+      mNWevt++;
     if(Debug)cout<<"check point 15"<<endl;
       //Recoil Correction for W candidate of MC
       if((Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
-	  || Mode == "Unfold")
+	  || Mode == "DumpUnfInfo")
 	if(GenW_Born_Id->size() >0)
 	DoRecoilCorr();
 
       //cout<<"TruthRecoPost:"<<TruthRecoPost<<endl;
-      if(Mode == "Unfold")if(TruthRecoPost)if(WCHARGE == wCand.charge)
+      if(Mode == "DumpUnfInfo")if(TruthRecoPost)if(WCHARGE == wCand.charge)
       {
 	FillUnfoldInfo();
 	// Don't go further
@@ -747,8 +650,8 @@ if(Debug)cout<<"check point 11"<<endl;
       h1_W_Mt->Fill(wCand.Mt,TTW);
       h1_W_Lept1_pt->Fill(wCand.lep_pt,TTW);
 
-      h1_Vtx_Prim1->Fill(Vtx_nPrim,TTW);
-      h1_Vtx_Good1->Fill(Vtx_GoodN,TTW);
+      h1_Vtx_Prim1->Fill(mVtxVar.nPrim,TTW);
+      h1_Vtx_Good1->Fill(mVtxVar.nGood,TTW);
       h1_W_Lept1_pt1->Fill(wCand.lep_pt,TTW);
       h1_npileup1->Fill(npileup,TTW);
       h1_W_Neut_pt1->Fill(wCand.Met,TTW);
@@ -799,11 +702,11 @@ if(Debug)cout<<"check point 11"<<endl;
 	  
 	if(corrMet > 25.)
 	{
-	  NmetA[0]+=TTW;
-	  NmetAp[0]+=TTW;
+	  mNmetA[0]+=TTW;
+	  mNmetAp[0]+=TTW;
 	}else{
-	  NmetB[0]+=TTW;
-	  NmetBp[0]+=TTW;
+	  mNmetB[0]+=TTW;
+	  mNmetBp[0]+=TTW;
 	}
       }else{
 	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
@@ -815,11 +718,11 @@ if(Debug)cout<<"check point 11"<<endl;
 
 	if( wCand.Met > 25.)
 	{
-	  NmetA[0]+=TTW;
-	  NmetAp[0]+=TTW;
+	  mNmetA[0]+=TTW;
+	  mNmetAp[0]+=TTW;
 	}else{
-	  NmetB[0]+=TTW;
-	  NmetBp[0]+=TTW;
+	  mNmetB[0]+=TTW;
+	  mNmetBp[0]+=TTW;
 	}
       }
       
@@ -836,11 +739,11 @@ if(Debug)cout<<"check point 11"<<endl;
 	    
 	    if(corrMet >25.)
 	    {
-	      NmetA[iBin+1]+=TTW;
-	      NmetAp[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=TTW;
+	      mNmetAp[iBin+1]+=TTW;
 	    }else{
-	      NmetB[iBin+1]+=TTW;
-	      NmetBp[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=TTW;
+	      mNmetBp[iBin+1]+=TTW;
 	    }
 	  }else{
 	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
@@ -852,12 +755,12 @@ if(Debug)cout<<"check point 11"<<endl;
 
 	    if(wCand.Met >25.)
 	    {
-	      NmetA[iBin+1]+=TTW;
-	      NmetAp[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=TTW;
+	      mNmetAp[iBin+1]+=TTW;
 	    }else
 	    {
-	      NmetB[iBin+1]+=TTW;
-	      NmetBp[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=TTW;
+	      mNmetBp[iBin+1]+=TTW;
 	    }
 	  }
 	}
@@ -876,11 +779,11 @@ if(Debug)cout<<"check point 11"<<endl;
 	
 	if(corrMet > 25.)
 	{
-	  NmetA[0]+=TTW;
-	  NmetAm[0]+=TTW;
+	  mNmetA[0]+=TTW;
+	  mNmetAm[0]+=TTW;
 	}else{
-	  NmetB[0]+=TTW;
-	  NmetBm[0]+=TTW;
+	  mNmetB[0]+=TTW;
+	  mNmetBm[0]+=TTW;
 	}
       }else{
 	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
@@ -892,12 +795,12 @@ if(Debug)cout<<"check point 11"<<endl;
 
 	if(wCand.Met >25.)
 	{
-	  NmetA[0]+=TTW;
-	  NmetAm[0]+=TTW;
+	  mNmetA[0]+=TTW;
+	  mNmetAm[0]+=TTW;
 	}else
 	{
-	  NmetB[0]+=TTW;
-	  NmetBm[0]+=TTW;
+	  mNmetB[0]+=TTW;
+	  mNmetBm[0]+=TTW;
 	}
       }
       for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
@@ -912,11 +815,11 @@ if(Debug)cout<<"check point 11"<<endl;
 
 	    if(corrMet >25.)
 	    {
-	      NmetA[iBin+1]+=TTW;
-	      NmetAm[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=TTW;
+	      mNmetAm[iBin+1]+=TTW;
 	    }else{
-	      NmetB[iBin+1]+=TTW;
-	      NmetBm[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=TTW;
+	      mNmetBm[iBin+1]+=TTW;
 	    }
 	  }else{
 	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
@@ -928,12 +831,12 @@ if(Debug)cout<<"check point 11"<<endl;
 
 	    if(wCand.Met >25.)
 	    {
-	      NmetA[iBin+1]+=TTW;
-	      NmetAm[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=TTW;
+	      mNmetAm[iBin+1]+=TTW;
 	    }else
 	    {
-	      NmetB[iBin+1]+=TTW;
-	      NmetBm[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=TTW;
+	      mNmetBm[iBin+1]+=TTW;
 	    }
 	  }
 	}
@@ -946,39 +849,14 @@ if(Debug)cout<<"check point 11"<<endl;
     //cout<<"TTW: "<<TTW<<endl;
     evtSelected+=TTW;
     if(Debug)cout<<"check point 16"<<endl;
+    Nselected4Bin();
     
-    if( wCand.pt >= 0. && wCand.pt < 7.5 )
-      n1+=TTW;
-    if( wCand.pt >= 7.5 && wCand.pt < 12.5 )
-      n2+=TTW;
-    if( wCand.pt >= 12.5 && wCand.pt < 17.5 )
-      n3+=TTW;
-    if( wCand.pt >= 17.5 && wCand.pt < 24. )
-      n4+=TTW;
-    if( wCand.pt >= 24. && wCand.pt < 30. )
-      n5+=TTW;
-    if( wCand.pt >= 30. && wCand.pt < 40. )
-      n6+=TTW;
-    if( wCand.pt >= 40. && wCand.pt < 50. )
-      n7+=TTW;
-    if( wCand.pt >= 50. && wCand.pt < 70. )
-      n8+=TTW;
-    if( wCand.pt >= 70. && wCand.pt < 110. )
-      n9+=TTW;
-    if( wCand.pt >= 110. && wCand.pt < 150. )
-      n10+=TTW;
-    if( wCand.pt >= 150. && wCand.pt < 190. )
-      n11+=TTW;
-    if( wCand.pt >= 190. && wCand.pt < 250. )
-      n12+=TTW;
-    if( wCand.pt >= 250. && wCand.pt < 600. )
-      n13+=TTW;
     //cout<<"nselect: "<<evtSelected<<endl;
     }//good W
 
     if(Z_pass)
     {
-      evtCnt_Z++;
+      mNZevt++;
       h1_diLeptVtxProb->Fill(diLeptVtxProb,TTW);
       if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
       {
@@ -1161,7 +1039,7 @@ if(Debug)cout<<"check point 11"<<endl;
       }
     }
   }//Ntries
-  cout<<"Passed W evts: "<<evtCnt_W<<"   Passed Z evts: "<<evtCnt_Z<<endl;
+  cout<<"Passed W evts: "<<mNWevt<<"   Passed Z evts: "<<mNZevt<<endl;
   cout<<"Z (beforeCut): "<<evtCnt_Z_beforeCut<<"   Z (afterCut): "<<evtCnt_Z_afterCut<<endl;
   //Results======================
 
@@ -1192,36 +1070,11 @@ if(Debug)cout<<"check point 11"<<endl;
   cout<<"selected converted: "<<evtSelected<<" +- "<<TMath::Sqrt(evtSelected)<<endl;
   Fout<<"Bin\t0\tSignal\t"<<evtSelected<<"\tError\t"<<TMath::Sqrt(evtSelected)<<endl;
 
-  cout<<"Bin1 selected converted: "<<n1<<" +- "<<TMath::Sqrt(n1)<<endl;
-  Fout<<"Bin\t1\tSignal\t"<<n1<<"\tError\t"<<TMath::Sqrt(n1)<<endl;
-  cout<<"Bin2 selected converted: "<<n2<<" +- "<<TMath::Sqrt(n2)<<endl;
-  Fout<<"Bin\t2\tSignal\t"<<n2<<"\tError\t"<<TMath::Sqrt(n2)<<endl;
-  cout<<"Bin3 selected converted: "<<n3<<" +- "<<TMath::Sqrt(n3)<<endl;
-  Fout<<"Bin\t3\tSignal\t"<<n3<<"\tError\t"<<TMath::Sqrt(n3)<<endl;
-  cout<<"Bin4 selected converted: "<<n4<<" +- "<<TMath::Sqrt(n4)<<endl;
-  Fout<<"Bin\t4\tSignal\t"<<n4<<"\tError\t"<<TMath::Sqrt(n4)<<endl;
-  cout<<"Bin5 selected converted: "<<n5<<" +- "<<TMath::Sqrt(n5)<<endl;
-  Fout<<"Bin\t5\tSignal\t"<<n5<<"\tError\t"<<TMath::Sqrt(n5)<<endl;
-  cout<<"Bin6 selected converted: "<<n6<<" +- "<<TMath::Sqrt(n6)<<endl;
-  Fout<<"Bin\t6\tSignal\t"<<n6<<"\tError\t"<<TMath::Sqrt(n6)<<endl;
-  cout<<"Bin7 selected converted: "<<n7<<" +- "<<TMath::Sqrt(n7)<<endl;
-  Fout<<"Bin\t7\tSignal\t"<<n7<<"\tError\t"<<TMath::Sqrt(n7)<<endl;
-  cout<<"Bin8 selected converted: "<<n8<<" +- "<<TMath::Sqrt(n8)<<endl;
-  Fout<<"Bin\t8\tSignal\t"<<n8<<"\tError\t"<<TMath::Sqrt(n8)<<endl;
-  cout<<"Bin9 selected converted: "<<n9<<" +- "<<TMath::Sqrt(n9)<<endl;
-  Fout<<"Bin\t9\tSignal\t"<<n9<<"\tError\t"<<TMath::Sqrt(n9)<<endl;
-  cout<<"Bin10 selected converted: "<<n10<<" +- "<<TMath::Sqrt(n10)<<endl;
-  Fout<<"Bin\t10\tSignal\t"<<n10<<"\tError\t"<<TMath::Sqrt(n10)<<endl;
-  cout<<"Bin11 selected converted: "<<n11<<" +- "<<TMath::Sqrt(n11)<<endl;
-  Fout<<"Bin\t11\tSignal\t"<<n11<<"\tError\t"<<TMath::Sqrt(n11)<<endl;
-  cout<<"Bin12 selected converted: "<<n12<<" +- "<<TMath::Sqrt(n12)<<endl;
-  Fout<<"Bin\t12\tSignal\t"<<n12<<"\tError\t"<<TMath::Sqrt(n12)<<endl;
-  cout<<"Bin13 selected converted: "<<n13<<" +- "<<TMath::Sqrt(n13)<<endl;
-  Fout<<"Bin\t13\tSignal\t"<<n13<<"\tError\t"<<TMath::Sqrt(n13)<<endl;
-  cout<<"===================================== "<<endl;
-  cout<<"Checking numbers "<<n1+n2+n3+n4+n5+n6+n7+n8+n9+n10+n11+n12+n13<<endl;
-  cout<<"===================================== "<<endl;
-  cout<<"There is no genMEt: "<<metCnt<<endl;
+  for(int i(0); i<NwPtBin;i++)
+  {
+    cout<<"Bin("<<i+1<<" selected converted: "<<mNselected4Bin[i]<< "+- "<<TMath::Sqrt(mNselected4Bin[i])<<endl;
+    Fout<<"Bin("<<i+1<<") selected converted: "<<mNselected4Bin[i]<< "+- "<<TMath::Sqrt(mNselected4Bin[i])<<endl;
+  }
 
   Fout.close();
 
@@ -1240,7 +1093,7 @@ if(Debug)cout<<"check point 11"<<endl;
   Fout.open(FoutName);
   for(int i(0); i<NWptBinPlus;i++)
   {
-    Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetA[i]<<"\tError\t"<<TMath::Sqrt(NmetA[i])<<endl;
+    Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetA[i]<<"\tError\t"<<TMath::Sqrt(mNmetA[i])<<endl;
   }
   Fout.close();
  
@@ -1258,7 +1111,7 @@ if(Debug)cout<<"check point 11"<<endl;
   Fout.open(FoutName);
   for(int i(0); i<NWptBinPlus;i++)
   {
-    Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetB[i]<<"\tError\t"<<TMath::Sqrt(NmetB[i])<<endl;
+    Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetB[i]<<"\tError\t"<<TMath::Sqrt(mNmetB[i])<<endl;
   }
   Fout.close();
 
@@ -1277,7 +1130,7 @@ if(Debug)cout<<"check point 11"<<endl;
   Fout.open(FoutName);
   for(int i(0); i<NWptBinPlus;i++)
   {
-    Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetAp[i]<<"\tError\t"<<TMath::Sqrt(NmetAp[i])<<endl;
+    Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetAp[i]<<"\tError\t"<<TMath::Sqrt(mNmetAp[i])<<endl;
   }
   Fout.close();
 
@@ -1294,7 +1147,7 @@ if(Debug)cout<<"check point 11"<<endl;
   Fout.open(FoutName);
   for(int i(0); i<NWptBinPlus;i++)
   {
-    Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetBp[i]<<"\tError\t"<<TMath::Sqrt(NmetBp[i])<<endl;
+    Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetBp[i]<<"\tError\t"<<TMath::Sqrt(mNmetBp[i])<<endl;
   }
   Fout.close();
 
@@ -1312,7 +1165,7 @@ if(Debug)cout<<"check point 11"<<endl;
    Fout.open(FoutName);
    for(int i(0); i<NWptBinPlus;i++)
    {
-     Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetAm[i]<<"\tError\t"<<TMath::Sqrt(NmetAm[i])<<endl;
+     Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetAm[i]<<"\tError\t"<<TMath::Sqrt(mNmetAm[i])<<endl;
    }
    Fout.close();
 
@@ -1329,7 +1182,7 @@ if(Debug)cout<<"check point 11"<<endl;
    Fout.open(FoutName);
    for(int i(0); i<NWptBinPlus;i++)
    {
-     Fout<<"Bin\t"<<i<<"\tSignal\t"<<NmetBm[i]<<"\tError\t"<<TMath::Sqrt(NmetBm[i])<<endl;
+     Fout<<"Bin\t"<<i<<"\tSignal\t"<<mNmetBm[i]<<"\tError\t"<<TMath::Sqrt(mNmetBm[i])<<endl;
    }
 
   h1_W_Multi->Write();
@@ -1353,7 +1206,7 @@ if(Debug)cout<<"check point 11"<<endl;
   h2_WpT_lepPt_Plus->Write();
   h2_WpT_lepPt_Minus->Write();
 
-  if(Mode == "Unfold")
+  if(Mode == "DumpUnfInfo")
   {
     h1_Truth_Rec->Write();
     h1_Truth_Rec_Even->Write();
@@ -1542,5 +1395,77 @@ if(Debug)cout<<"check point 11"<<endl;
   myFile->Write();
   gBenchmark->Show("WpT");
 }
+void WpT::Nselected4Bin()
+{
+  for(int i(0);i<NwPtBin;i++)
+  {
+    if( wCand.pt >= Bins[i] && wCand.pt <Bins[i+1]) mNselected4Bin[i]+=TTW;
+  }
+}
+int WpT::InitVar()
+{
+  cout<<"Initialize variable at WpT class ==========="<<endl;
+  evtCnt = 0;
+  mNWevt = 0;
+  for(int i(0);i<NwPtBin;i++)
+  {
+    mNselected4Bin[i]=0;
+  }
+  for(int i(0);i<NWptBinPlus;i++)
+  {
+    mNmetA[NWptBinPlus] = 0.0;
+    mNmetB[NWptBinPlus] = 0.0;
+    mNmetAp[NWptBinPlus]= 0.0;
+    mNmetBp[NWptBinPlus]= 0.0;
+    mNmetAm[NWptBinPlus]= 0.0;
+    mNmetBm[NWptBinPlus]= 0.0;
 
+  }
+  return 0;
+}
+int WpT::InitVar4Evt()
+{
+  //cout<<"WpT::InitVar4Evt ==========================="<<endl;
+  WLepNeu::InitVar4Evt();
+  TTW=1;
+  mVtxVar.nPrim = 0;
+  mVtxVar.nGood = 0;
+  return 0;
+}
+int WpT::VertexStudy()
+{
+  mVtxVar.nPrim = vtx_isFake->size();
+  if(mVtxVar.nPrim < 1 ) return -1;
 
+  // Check the VTX cuts for the largest Sum(Pt) vertex
+  if( (*vtx_isFake)[0] ) return -1;
+//  if( (*vtx_ndof)[0] <= 2 ) continue; // Our Study
+  if( (*vtx_ndof)[0] <= 4 ) return -1; //W&Z Xsec study
+  if( (*vtx_z)[0] >= 24 ) return -1;
+  if( (*vtx_Rho)[0] >= 2 ) return -1;
+
+  // Count the good vtx
+  for( int ivtx(0);ivtx<mVtxVar.nPrim; ivtx++)
+  {
+    if( (*vtx_isFake)[ivtx] )continue;
+//    if( (*vtx_ndof)[ivtx] <= 2 ) continue; // Our Study
+    if( (*vtx_ndof)[ivtx] <= 4 ) continue; //W&Z Xsec study
+    if( (*vtx_z)[ivtx] >= 24 ) continue;
+    if( (*vtx_Rho)[ivtx] >= 2 ) continue;
+    mVtxVar.nGood++;
+  }
+//    if( mVtxVar.nGood < 1 ) continue;
+  return 0;
+}
+double CalcEvtWeight()
+{
+  if(!RunOnMC){mTTW = 1;return mTTW;}
+      //TTW= LumiWeight*weightin; //weight is right but S8 strange
+      //if (weightFSR<0) weightFSR=1.;
+      //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
+  TTW= LumiWeight; //weight is right but S8 strange
+  if(AnaChannel == "ElectronHighPU")
+  {
+    TTW= LumiWeight*weight;} //reweighting value for S10
+  return TTW;
+}

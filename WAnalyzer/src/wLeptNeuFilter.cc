@@ -149,7 +149,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     //bool selected = false;
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > corrmet;
     corrmet.SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
-    MET = MetIt->pt();
+    pfMET = MetIt->pt();
     met->push_back(corrmet);
 
     if(metStudy_){
@@ -160,7 +160,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
       pfMet->push_back(pfmet);
     }
 
-    h_MET->Fill(MET);
+    h_MET->Fill(pfMET);
 /*
     NoPU_MET = NoPU_MetIt->pt();
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > NoPU_corrmet;

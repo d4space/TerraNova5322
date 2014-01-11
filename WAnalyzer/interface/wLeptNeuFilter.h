@@ -682,7 +682,7 @@ private:
 //  std::vector<math::XYZTLorentzVector>* genMEtCaloAndNonPrompt_met;
   std::vector<math::XYZTLorentzVector>* jetspt30;
 
-  double MET;
+  double pfMET;
 //  double NoPU_MET;
 //  double MVA_MET;
 //  double genMEtTrue_MET;

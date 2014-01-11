@@ -14,31 +14,36 @@
 // Fixed size dimensions of array or collections stored in the TTree if any.
 class WpT: public WLepNeu {
 public :
-
-   WpT(TTree *tree=0,TTree *WMuonTree=0, double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",int etaRange_=-999);//Electron
+   WpT(TTree *tree=0,TTree *WMuonTree=0, double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);//Electron
    ~WpT();
    virtual void     Loop();
-   void		Init(TTree *tree);
 protected:
-   double Nselected4bin[NwPtBin];
+   void Nselected4Bin();
+   int InitVar(); // Init for Class
+   int InitVar4Evt(); // Init for every event
+   int VertexStudy();
+   double CalcEvtWeight();
+   // Member variables
+   int mIdxWcan;
+   double mNselected4Bin[NwPtBin];
+   double mNmetA[NWptBinPlus];
+   double mNmetB[NWptBinPlus];
+   double mNmetAp[NWptBinPlus];
+   double mNmetBp[NWptBinPlus];
+   double mNmetAm[NWptBinPlus];
+   double mNmetBm[NWptBinPlus];
 };
 
 #endif
 
 #ifdef WpT_cxx
 
-void WpT::Init(TTree *tree)
-{
-  for(int i(0);i<NwPtBin;i++)
-  {
-    Nselected4bin[i]=0;
-  }
-}
 
-WpT::WpT(TTree *WpTTree,TTree *WLepTree, double lumiweight,TString OutFileName_, TString mode_, TString AnaChannel_, int etaRange_) :
-WLepNeu::WLepNeu(WpTTree,WLepTree, lumiweight,OutFileName_, mode_, AnaChannel_, etaRange_)
+WpT::WpT(TTree *WpTTree,TTree *WLepTree, double lumiweight,TString OutFileName_, TString mode_, TString AnaChannel_,double Wcharge, bool runOnMC,int etaRange_) :
+WLepNeu::WLepNeu(WpTTree,WLepTree, lumiweight,OutFileName_, mode_, AnaChannel_,Wcharge, runOnMC, etaRange_)
 {
-  Init(WLepTree);
+  // Initialize Variables
+  InitVar();
 }
 
 WpT::~WpT()
