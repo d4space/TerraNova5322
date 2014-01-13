@@ -7,9 +7,10 @@ source = cms.Source("PoolSource",
     fileNames = readFiles
     )
 readFiles.extend([
+  'file:/afs/cern.ch/work/s/salee/DataSample/S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
 #  'root://eoscms//eos/cms/store/user/shchang/DYToMuMu_Summer12_S10/DYToMuMu_5000_1_1_tIc.root',
-  'file:/afs/cern.ch/work/k/kbutanov/public/DYJetsToLL/DYJetsToLL_5000_1_1_gtv.root',
-#  'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToMuMu_5000_3_1_f18.root',
+#  'file:/afs/cern.ch/work/k/kbutanov/public/DYJetsToLL/DYJetsToLL_5000_1_1_gtv.root',
+  #'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToMuMu_5000_3_1_f18.root',
 #  'file:/afs/cern.ch/work/t/taehoon/public/DATA/MC/DYToEE_S10.root',
 #  'file:/afs/cern.ch/work/t/taehoon/public/DATA/MC/2012/WToENu_copy.root'
   #'file:/d2/scratch/Storage_Area/NoPuMET/WToENu_copy.root'

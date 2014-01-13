@@ -7,6 +7,7 @@ source = cms.Source("PoolSource",
     fileNames = readFiles
     )
 readFiles.extend([
-   'file:/terranova_1/MC_Sample/W_LowPU_S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
+  'file::/afs/cern.ch/work/s/salee/DataSample/S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
+   #'file:/terranova_1/MC_Sample/W_LowPU_S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
   ]
   )

@@ -113,12 +113,13 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 #process.patMuonFilter.minNumber = 1
-process.patMuonFilter.minNumber = 0
+process.patMuonFilter.minNumber = 1
 #process.patElectronFilter.minNumber = 0
 process.patElectronFilter.minNumber = 1
 
 ## Source
-process.load("KoSMP.WAnalyzer.Sources.WToJDs_AODSIM_CP_local_cff")
+#process.load("KoSMP.WAnalyzer.Sources.WToJDs_AODSIM_CP_local_cff")
+process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
 
 #process.source = cms.Source("PoolSource",
 #                                fileNames = cms.untracked.vstring(
@@ -147,10 +148,10 @@ process.p = cms.Path(
 process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 #process.p += process.looseLeptonSequence
-process.p += process.acceptedElectrons
-#process.p += process.acceptedMuons
-process.p += process.patElectronFilter
-#process.p += process.patMuonFilter
+#process.p += process.acceptedElectrons
+process.p += process.acceptedMuons
+#process.p += process.patElectronFilter
+process.p += process.patMuonFilter
 process.p += process.nEventsFiltered
 #if produceTaus:
 #  process.p += process.recoTauClassicHPSSequence
