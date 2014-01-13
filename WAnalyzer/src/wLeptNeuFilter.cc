@@ -153,12 +153,13 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     met->push_back(corrmet);
 
     if(metStudy_){
-      const Ky::METCandidate pfmet(MET, MetIt->sumEt(),
-	  MetIt->NeutralEMFraction(),MetIt->NeutralHadEtFraction(),
-	  MetIt->ChargedHadEtFraction(),MetIt->ChargedEMEtFraction(),
-	  MetIt->MuonEtFraction() );
+      const Ky::METCandidate pfmet(pfMET, MetIt->sumEt(),
+          MetIt->NeutralEMFraction(),MetIt->NeutralHadEtFraction(),
+          MetIt->ChargedHadEtFraction(),MetIt->ChargedEMEtFraction(),
+          MetIt->MuonEtFraction() );
       pfMet->push_back(pfmet);
     }
+
     KoMETs.pfMEt4V->SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
 
     h_MET->Fill(pfMET);

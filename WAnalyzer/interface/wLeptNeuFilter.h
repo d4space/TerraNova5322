@@ -650,7 +650,7 @@ private:
   GenWboson	GenWs;
   GenZboson	GenZs;
   FSRphoton	FSRph;
-  KoMET		KoMETs
+  KoMET		KoMETs;
 
   TH1F * tmp;
   TH1F * h_lept1_pt;
@@ -1365,7 +1365,7 @@ void clear()
   Ws.Lept1_genDeltaR->clear();
   Ws.Lept1_genDPtRel->clear();
 
-  KoMETs.pfMEt4V->clear();
+  KoMETs.pfMEt4V->SetPxPyPzE(0,0,0,0);
 
 
 
