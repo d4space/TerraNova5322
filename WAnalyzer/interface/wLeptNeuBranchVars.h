@@ -796,3 +796,13 @@ class FSRphoton
     }
 };
 
+class KoMET
+{
+  public:
+    TLorentzVector *pfMEt4V;
+    void Register(TTree *tree)
+    {
+      tree->Branch("pfMEt4V", &pfMEt4V);
+      //tree->Branch("pfMEt4V", &pfMEt4V, int bufsize=3200, splitlevel=99);
+    }
+};

@@ -495,6 +495,8 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Lept1_genDeltaR	= new std::vector<double>;
     Ws.Lept1_genDPtRel	= new std::vector<double>;
 
+    KoMETs.pfMEt4V = new TLorentzVector();
+
 //    double	GenZs.Neut_pt;
 
     tmp = fs->make<TH1F>("EventSummary","EventSummary",filters_.size(),0,filters_.size());
@@ -648,6 +650,7 @@ private:
   GenWboson	GenWs;
   GenZboson	GenZs;
   FSRphoton	FSRph;
+  KoMET		KoMETs
 
   TH1F * tmp;
   TH1F * h_lept1_pt;
@@ -873,6 +876,7 @@ virtual void bookTree()
   Ws.Register(tree);
   GenWs.Register(tree);
   GenZs.Register(tree);
+  KoMETs.Register(tree);
 }
 
 virtual bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup ) 
@@ -1360,6 +1364,8 @@ void clear()
   Ws.Lept1_genIdxMatch->clear();
   Ws.Lept1_genDeltaR->clear();
   Ws.Lept1_genDPtRel->clear();
+
+  KoMETs.pfMEt4V->clear();
 
 
 

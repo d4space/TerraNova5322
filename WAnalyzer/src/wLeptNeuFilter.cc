@@ -159,6 +159,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  MetIt->MuonEtFraction() );
       pfMet->push_back(pfmet);
     }
+    KoMETs.pfMEt4V->SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
 
     h_MET->Fill(pfMET);
 /*
