@@ -25,7 +25,8 @@ process.TFileService = cms.Service("TFileService",
 )
 
 #process.load("KoSMP.WAnalyzer.Sources.DYToMuMu_S8_Skim_cff")
-process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
+process.load("KoSMP.WAnalyzer.Sources.PatSkimTemplate_cff")
+#process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
 
 process.p = cms.Path(
     process.WMuNeuAnalysisMCSequence
