@@ -16,7 +16,7 @@ process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.pat_22Jan2013_MC_cfg import *
 from KoSMP.WAnalyzer.eventContent_cff import *
 from KoSMP.WAnalyzer.tools import *
 
@@ -36,9 +36,11 @@ from PhysicsTools.PatAlgos.tools.cmsswVersionTools import pickRelValInputFiles
 #                        )
 #    )
 #)
-
 # output
 ## Output Module Configuration (expects a path 'p')
+## Source
+process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
+
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('patTuple_skim.root'),
     # save only events passing the full path
@@ -47,6 +49,7 @@ process.out = cms.OutputModule("PoolOutputModule",
     # unpack the list of commands 'patEventContent'
     outputCommands = cms.untracked.vstring('drop *')
 )
+
 
 if runOnMC:
   usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, typeIMetCorrections=True)
@@ -88,14 +91,10 @@ process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
 process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3')
 #process.pfMEtMVA.srcLeptons = cms.VInputTag( ["selectedPatMuons"]) #selectedPatMuons
 
-
-
-
-
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
 
-#change cone size
+#change cone size TODO
 #changeConeSize(process,postfix)
 
 #FastJet!
@@ -107,31 +106,22 @@ process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3
 # top projections in PF2PAT:
 #topProjection(process,postfix)
 
+# output
 
-#process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(5000) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
-#process.patMuonFilter.minNumber = 1
+#process.acceptedMuons.cut = cms.string("pt > 20 && abs(eta) < 2.5 && (chargedHadronIso + neutralHadronIso + photonIso)/pt < 0.05")
+
 process.patMuonFilter.minNumber = 1
-#process.patElectronFilter.minNumber = 0
-process.patElectronFilter.minNumber = 1
+process.patElectronFilter.minNumber = 0
 
-## Source
-#process.load("KoSMP.WAnalyzer.Sources.WToJDs_AODSIM_CP_local_cff")
-process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
-
-#process.source = cms.Source("PoolSource",
-#                                fileNames = cms.untracked.vstring(
-#  '/store/data/Run2011B/DoubleMu/AOD/PromptReco-v1/000/180/252/085F0838-4305-E111-BDD0-003048CF94A8.root',
-#  '/store/data/Run2011A/MuEG/AOD/PromptReco-v1/000/161/312/04850A2C-F757-E011-9A74-003048F024DC.root'
-#  )
-#)
 
 process.out.outputCommands +=pf2patEventContent
 
+
 process.outpath = cms.EndPath(process.out)
-#process.load("KoPFA.CommonTools.recoPFCandCountFilter_cfi")
+
 process.p = cms.Path(
     process.nEventsTotal*
     process.noscraping*
@@ -157,4 +147,3 @@ process.p += process.nEventsFiltered
 #  process.p += process.recoTauClassicHPSSequence
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
-
