@@ -3,7 +3,7 @@ import os
 # Options
 produceTaus=False
 
-runOnMC=True
+runOnMC=False
 postfix = "PFlow"
 jetAlgo="AK5"
 
@@ -16,7 +16,7 @@ process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.RD_2012_cfg import *
 from KoSMP.WAnalyzer.eventContent_cff import *
 from KoSMP.WAnalyzer.tools import *
 

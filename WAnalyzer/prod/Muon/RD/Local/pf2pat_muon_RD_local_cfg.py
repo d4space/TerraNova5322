@@ -3,7 +3,7 @@ import os
 # Options
 produceTaus=False
 
-runOnMC=True
+runOnMC=False
 postfix = "PFlow"
 jetAlgo="AK5"
 
@@ -16,7 +16,7 @@ process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.RD_2012_cfg import *
 from KoSMP.WAnalyzer.eventContent_cff import *
 from KoSMP.WAnalyzer.tools import *
 
@@ -49,6 +49,7 @@ process.out = cms.OutputModule("PoolOutputModule",
     # unpack the list of commands 'patEventContent'
     outputCommands = cms.untracked.vstring('drop *')
 )
+process.out.outputCommands +=pf2patEventContent
 
 
 if runOnMC:
@@ -113,11 +114,10 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 #process.acceptedMuons.cut = cms.string("pt > 20 && abs(eta) < 2.5 && (chargedHadronIso + neutralHadronIso + photonIso)/pt < 0.05")
 
-process.patMuonFilter.minNumber = 0
-process.patElectronFilter.minNumber = 1
+process.patMuonFilter.minNumber = 1
+process.patElectronFilter.minNumber = 0
 
 
-process.out.outputCommands +=pf2patEventContent
 
 
 process.outpath = cms.EndPath(process.out)
@@ -139,9 +139,9 @@ process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 #process.p += process.looseLeptonSequence
 #process.p += process.acceptedElectrons
-process.p += process.acceptedElectrons
+process.p += process.acceptedMuons
 #process.p += process.patElectronFilter
-process.p += process.patElectronFilter
+process.p += process.patMuonFilter
 process.p += process.nEventsFiltered
 #if produceTaus:
 #  process.p += process.recoTauClassicHPSSequence
