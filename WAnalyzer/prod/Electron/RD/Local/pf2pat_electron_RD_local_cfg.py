@@ -12,11 +12,11 @@ produceMVAPFMET=True
 
 process = cms.Process("PAT")
 
-process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg")
+process.load("KoSMP.WAnalyzer.pf2pat_template_RD_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.RD_2012_cfg import *
+from KoSMP.WAnalyzer.pat_22Jan2013_RD_cfg import *
 from KoSMP.WAnalyzer.eventContent_cff import *
 from KoSMP.WAnalyzer.tools import *
 
