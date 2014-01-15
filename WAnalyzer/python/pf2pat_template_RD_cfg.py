@@ -1,78 +1,46 @@
 import FWCore.ParameterSet.Config as cms
-import os
-
-process = cms.Process("PAT")
 
 ## MessageLogger
-process.load("FWCore.MessageLogger.MessageLogger_cfi")
-process.load("Configuration.StandardSequences.Geometry_cff")
-#process.load("Configuration.Geometry.GeometryIdeal_cff")
-process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
-process.load("Configuration.StandardSequences.MagneticField_cff")
+from FWCore.MessageLogger.MessageLogger_cfi import *
+#process.load("Configuration.StandardSequences.Geometry_cff")
+from Configuration.Geometry.GeometryIdeal_cff import *
+from Configuration.StandardSequences.FrontierConditions_GlobalTag_cff import *
+from Configuration.StandardSequences.MagneticField_cff import *
 
-## Options and Output Report
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 
 #from Configuration.PyReleaseValidation.autoCond import autoCond
 #process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
-#process.GlobalTag.globaltag = cms.string( 'GR_R_53_V19::All' )
-process.GlobalTag.globaltag = cms.string( 'GR_R_52_V8::All' )
-
-## Source
-from PhysicsTools.PatAlgos.tools.cmsswVersionTools import pickRelValInputFiles
-process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring(
-    pickRelValInputFiles( cmsswVersion  = os.environ['CMSSW_VERSION']
-                        , relVal        = 'RelValTTbar'
-                        , globalTag     = process.GlobalTag.globaltag.value().split(':')[0]
-                        , numberOfFiles = 1
-                        )
-    )
-)
-
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-
-## Output Module Configuration (expects a path 'p')
-from PhysicsTools.PatAlgos.patEventContent_cff import patEventContent
-process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('patTuple_skim.root'),
-    # save only events passing the full path
-    SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
-    # save PAT Layer 1 output; you need a '*' to
-    # unpack the list of commands 'patEventContent'
-    outputCommands = cms.untracked.vstring('drop *')
-)
 
 #PF2PAT
-process.load("PhysicsTools.PatAlgos.patSequences_cff")
-from PhysicsTools.PatAlgos.tools.pfTools import *
+from PhysicsTools.PatAlgos.patSequences_cff import *
 
-process.goodOfflinePrimaryVertices = cms.EDFilter("VertexSelector",
+goodOfflinePrimaryVertices = cms.EDFilter("VertexSelector",
    src = cms.InputTag("offlinePrimaryVertices"),
    cut = cms.string("!isFake && ndof > 4 && abs(z) < 24 && position.Rho < 2"), # tracksSize() > 3 for the older cut
    filter = cms.bool(True),   # otherwise it won't filter the events, just produce an empty vertex collection.
 )
 
-process.noscraping = cms.EDFilter("FilterOutScraping",
+
+noscraping = cms.EDFilter("FilterOutScraping",
    applyfilter = cms.untracked.bool(True),
    debugOn = cms.untracked.bool(False),
    numtrack = cms.untracked.uint32(10),
    thresh = cms.untracked.double(0.25)
 )
 
-process.acceptedElectrons = cms.EDFilter("PATElectronSelector",
+acceptedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("selectedPatElectronsPFlow"),
     cut = cms.string("pt > 10 && abs(eta) < 3.0"),
     #cut = cms.string("pt > 20 && abs(eta) < 2.5"),
     #cut = cms.string("pt > 20 && abs(eta) < 2.5 && ecalDrivenSeed")
     filter = cms.bool(False),
 )
-process.allConversions = cms.EDProducer("PATConversionProducer",
+allConversions = cms.EDProducer("PATConversionProducer",
     electronSource = cms.InputTag("acceptedElectrons")
     # this should be your last selected electron collection name
     )
 
-process.acceptedGsfElectrons = cms.EDFilter("PATElectronSelector",
+acceptedGsfElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("selectedPatElectrons"),
     cut = cms.string("pt > 10 && abs(eta) < 3.0"),
     #cut = cms.string("pt > 20 && abs(eta) < 2.5"),
@@ -80,33 +48,33 @@ process.acceptedGsfElectrons = cms.EDFilter("PATElectronSelector",
     filter = cms.bool(False),
 )
 
-process.patElectronFilter = cms.EDFilter("CandViewCountFilter",
+patElectronFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('acceptedElectrons'),
     minNumber = cms.uint32(1)
 )
 
-process.acceptedMuons = cms.EDFilter("PATMuonSelector",
+acceptedMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("selectedPatMuonsPFlow"),
     cut =cms.string("pt > 10 && abs(eta) < 2.5"),
     #cut =cms.string("pt > 15 && abs(eta) < 2.5"),
     filter = cms.bool(False),
 )
 
-process.patMuonFilter = cms.EDFilter("CandViewCountFilter",
+patMuonFilter = cms.EDFilter("CandViewCountFilter",
   src = cms.InputTag('acceptedMuons'),
   minNumber = cms.uint32(1)
 )
 
-process.patLeptonFilter = cms.EDFilter("MultiLeptonCountFilter",
+patLeptonFilter = cms.EDFilter("MultiLeptonCountFilter",
   leptons = cms.untracked.VInputTag('acceptedMuons','acceptedElectrons'),
   minCount = cms.untracked.uint32(0)
 )
 
 #Electron ID
-#process.load('RecoEgamma.ElectronIdentification.cutsInCategoriesElectronIdentificationV06_cfi')
-#process.load("ElectroWeakAnalysis.WENu.simpleEleIdSequence_cff")
+#from RecoEgamma.ElectronIdentification.cutsInCategoriesElectronIdentificationV06_cfi import *
+#from ElectroWeakAnalysis.WENu.simpleEleIdSequence_cff import *
 
-#process.patElectrons.electronIDSources = cms.PSet(
+#patElectrons.electronIDSources = cms.PSet(
 #    #CiC
 #    eidVeryLooseMC = cms.InputTag("eidVeryLooseMC"),
 #    eidLooseMC = cms.InputTag("eidLooseMC"),
@@ -123,40 +91,27 @@ process.patLeptonFilter = cms.EDFilter("MultiLeptonCountFilter",
 #    simpleEleId60relIso= cms.InputTag("simpleEleId60relIso"),
 #)
 
-#process.patElectronIDs = cms.Sequence(process.simpleEleIdSequence)
-#process.eidCiCSequence = cms.Sequence(
+#patElectronIDs = cms.Sequence(process.simpleEleIdSequence)
+#eidCiCSequence = cms.Sequence(
 #    process.eidVeryLooseMC * process.eidLooseMC * process.eidMediumMC
 #  * process.eidTightMC * process.eidSuperTightMC * process.eidHyperTight1MC
 #)
 
-process.load('CommonTools.RecoAlgos.HBHENoiseFilter_cfi')
-process.HBHENoiseFilter.minNumIsolatedNoiseChannels = cms.int32(9999)
-process.HBHENoiseFilter.minIsolatedNoiseSumE = cms.double(9999)
-process.HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
+from CommonTools.RecoAlgos.HBHENoiseFilter_cfi import *
+HBHENoiseFilter.minNumIsolatedNoiseChannels = cms.int32(9999)
+HBHENoiseFilter.minIsolatedNoiseSumE = cms.double(9999)
+HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
 
 
 ##################################################################
-process.load("KoSMP.WAnalyzer.wHLTfilter_cff")
+from KoSMP.WAnalyzer.wHLTfilter_cff import *
 
-process.nEventsTotal = cms.EDProducer("EventCountProducer")
-process.nEventsNoscrap = cms.EDProducer("EventCountProducer")
-process.nEventsHBHE = cms.EDProducer("EventCountProducer")
-#process.nEventsClean = cms.EDProducer("EventCountProducer")
-process.nEventsHLT = cms.EDProducer("EventCountProducer")
-process.nEventsFiltered = cms.EDProducer("EventCountProducer")
+nEventsTotal = cms.EDProducer("EventCountProducer")
+nEventsNoscrap = cms.EDProducer("EventCountProducer")
+nEventsHBHE = cms.EDProducer("EventCountProducer")
+#EventsClean = cms.EDProducer("EventCountProducer")
+nEventsHLT = cms.EDProducer("EventCountProducer")
+nEventsFiltered = cms.EDProducer("EventCountProducer")
 
-process.outpath = cms.EndPath(process.out)
-#process.load("KoPFA.CommonTools.recoPFCandCountFilter_cfi")
 
-process.p = cms.Path(
-    process.nEventsTotal*
-    process.noscraping*
-    process.nEventsNoscrap*
-#    process.goodOfflinePrimaryVertices*
-    process.HBHENoiseFilter *
-    process.nEventsHBHE
-    #process.nEventsClean
-#    process.patElectronIDs*
-#    process.eidCiCSequence
-)
 
