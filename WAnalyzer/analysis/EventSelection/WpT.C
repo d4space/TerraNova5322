@@ -147,22 +147,16 @@ void WpT::Loop()
     if(WLepNeu::TriggerCut() !=0) continue;
 
     //Vertex Study===========================
-    if(VertexStudy() !=0) continue;
-
+    if(VertexCut() !=0) continue;
 
     h1_Vtx_Prim->Fill(mVtxVar.nPrim);
     h1_Vtx_Good->Fill(mVtxVar.nGood);
 
-    if(LumiWeight != 1){
-      h1_Vtx_PrimPuW->Fill(mVtxVar.nPrim*weightin);
-      h1_Vtx_GoodPuW->Fill(mVtxVar.nGood*weightin);
-      h1_PuWeight->Fill(weightin);
-    }
 
     //===================
     // Calculate Event Weight
     //=====================
-    TTW = CalcEvtWeight();
+    mTTW = CalcEvtWeight();
     
     //cout<<"Muon size: "<<wMuons.pt->size()<<endl;
     //cout<<"W    size: "<<W_pt->size()<<endl;
@@ -171,244 +165,7 @@ void WpT::Loop()
     //===========================
     // W best Candidate Selection
     //===========================
-    for(int iw(0); iw<wCand.size; iw++)
-    {
-      //additional lepton count
-      if(AnaChannel == "MuonLowPU" )    if(AddMuonCut(iw)>0) addLepN++;
-      if(AnaChannel == "MuonHighPU")    if(AddMuonCut(iw)>0) addLepN++;
-      if(AnaChannel == "ElectronLowPU" )if(AddElectronCut(iw)>0) addLepN++;
-      if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
-      if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
-      if( ((AnaChannel == "MuonLowPU" ) && MuonCut(iw) >0)||
-	  (AnaChannel =="MuonHighPU" && MuonCut(iw) >0)||
-	  ((AnaChannel == "ElectronLowPU" ) && ElectronCut(iw) > 0)||
-	  (AnaChannel =="ElectronHighPU" && ElectronCutHighPU(iw) > 0) ||
-	  (AnaChannel =="TauHighPU" && TauCut(iw) > 0)
-	  //Best Candidate selection
-      )if( wCand.lep_pt < (*W_Lept1_pt)[iw])
-      {
-	mIdxWcan = iw;
-	mWpass = true;
-// MVAnoPUMETana study
-	//if (Mode=="MVAnoPUMEt")
-	//{
-	//  W_Met = (*W_Neut_pt)[iw];
-	//  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
-	//  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-	//  else if (abs((*GenW_BornLept2_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-//	//  W_Gen_Met = (*W_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
-	//    //cout << "There is no genMEt" << endl;
-	//  metCnt++;
-	//}
-	wCand.lep_pt = (*W_Lept1_pt)[iw];
-	wCand.lep_phi = (*W_Lept1_phi)[iw];
-	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
-	wCand.Nu_py=(*W_Neut_py)[iw]; //i->iw
-	if(AnaChannel == "ElectronLowPU" )
-	{
-	  wCand.lep_etaSC = (*W_Lept1_etaSC)[iw];
-	}
-	wCand.lep_eta = (*W_Lept1_eta)[iw];
-if(Debug)cout<<"check point 6-4"<<endl;	
-	wCand.pt = (*W_pt)[iw];
-	if(wCand.pt > 600)cout<<"Check the wCand.pt is greater than 600: "<<wCand.pt<<endl;
-	w_acop= (*W_Acop)[iw];
-	vtxz= (*vtx_z)[iw];
-	vtxRho= (*vtx_Rho)[iw];
-if(Debug)cout<<"check point 7"<<endl;
-	//wCand.charge = (*W_Charge)[iw];
-	//Gen Neutrino distribution for selected events
-	if(GenW_Born_Id->size()>0)
-	{
-	  if( abs((*GenW_PostLept1_id)[0])==14 || //Nuet_Mu
-	      abs((*GenW_PostLept1_id)[0])==12)genInfo.genWmet=(*GenW_PostLept1_pt)[0];//Nuet_ele
-	  if( abs((*GenW_PostLept2_id)[0])==14 || 
-	      abs((*GenW_PostLept2_id)[0])==12)genInfo.genWmet=(*GenW_PostLept2_pt)[0];
-	}
-	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")if(GenW_Born_Id->size()>0)
-	{
-          wCand.genIdx = (*W_Lept1_genIdxMatch)[iw];
-	}//RecoilCorr
-	if(Mode == "RecoilRD" || Mode == "RecoilMC")
-	{
-	  //Recoil = -Met -Lepts
-	  TVector2 RecoilVector(
-	  	-(*W_Neut_px)[iw]-(*W_Lept1_px)[iw],
-	  	-(*W_Neut_py)[iw]-(*W_Lept1_py)[iw]);
-	  //if( GenW_Born_Id->size() < 1)cout<<"GenW size is "<<GenW_Born_Id->size()<<endl;
-	  if( Mode == "RecoilMC")if(GenW_Born_Id->size() > 0)
-	  {
-	    int gi = (*W_Lept1_genIdxMatch)[iw];
-	    //if( gi != 0 || iw != 0)
-	    //cout<<"Gen Idx: "<<gi<<" iw: "<<iw<<endl;
-            if( fabs((*W_Lept1_genDeltaR)[iw]) > 0.025)
-	    {
-	      //cout<<"W not MC truth"<<endl;
-	      gi = 0; //Let's use the one
-	    }
-	    if(gi < 0) gi = 0;
-	    //genBeFsrW_pt = (*GenW_pt)[gi];
-
-	    TVector2 genAfFsrW_pt_2D(
-		(*GenW_PostLept1_px)[gi]+(*GenW_PostLept2_px)[gi],
-		(*GenW_PostLept1_py)[gi]+(*GenW_PostLept2_py)[gi]);
-	    genInfo.PostW_pt= genAfFsrW_pt_2D.Mod();
-	    //BosonNorm = TMath::Sqrt(
-	//	(*GenW_px)[gi]*(*GenW_px)[gi]+
-	//	(*GenW_py)[gi]*(*GenW_py)[gi]);
-	    //u1 = B.u, u2 = B cross u
-	    u1W =RecoilVector*genAfFsrW_pt_2D/genInfo.PostW_pt;
-	    u2W =(RecoilVector.Px()*genAfFsrW_pt_2D.Py()-RecoilVector.Py()*genAfFsrW_pt_2D.Px())/genInfo.PostW_pt;
-	    u3W =RecoilVector*genAfFsrW_pt_2D/genInfo.PostW_pt+genInfo.PostW_pt;
-	  }
-	}
-      }//Cut and Bigger pt
-
-      //if(Mode == "AllCorrectionsRD" )
-      //{
-	//if(AnaChannel == "ElectronLowPU" )
-	//{
-	 // if( wCand.charge > 0)
-	  //{
-	   // TTW=TTW / ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	  //}else  if( wCand.charge < 0)
-	  //{
-	    //TTW=TTW / EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	  //}
-	//}
-	//if(AnaChannel == "MuonLowPU")
-	//{
-	  //if( wCand.charge > 0)
-	  //{
-	    //TTW=TTW / MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	  //}else  if( wCand.charge < 0)
-	  //{
-	    //TTW=TTW / MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	  //}
-	//}
-      //}
-
-      if(AnaChannel == "ElectronLowPU" )
-      {
-	if( wCand.charge > 0)
-	{
-	  effSf_ = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	}
-	else  if( wCand.charge < 0)
-	{
-	  effSf_ = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
-	}
-      }
-      if(AnaChannel == "MuonLowPU" )
-      {
-	if( wCand.charge > 0)
-	{
-	  effSf_ = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	}
-	else  if( wCand.charge < 0)
-	{
-	  effSf_ = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
-	}
-      }
-
-if(Debug)cout<<"check point 8"<<endl;
-      //Side Band
-      if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
-	  ((AnaChannel == "ElectronLowPU" ) && ElectronCutSide(iw) > 0)||
-	  (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
-      )
-      //if( CutSide(iw)> 0 && lep_pt_side < (*W_Lept1_pt)[iw])
-      {
-	w_pt_side = (*W_pt)[iw];
-	wCand.Met_side = (*W_Neut_pt)[iw];
-
-	if(Debug)cout<<"check point 9"<<endl;
-	//lep_pt_side = (*W_Lept1_pt)[iw];
-	if((*W_Charge)[iw]> 0)	  
-	{
-	  if(Mode == "AllCorrectionsMC" )
-	  {
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*effSf_);
-	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*effSf_);
-	  }else{
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  }
-
-if(Debug)cout<<"check point 10"<<endl;
-	  //Fill MET sideband for WQA, Wplus case
-	  if(AnaChannel == "ElectronHighPU") {
-	    for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
-	      if (fabs(wCand.lep_eta) > wqaMetMNBins[iEtaSD] && fabs(wCand.lep_eta) < wqaMetMXBins[iEtaSD] )  {
-		h1_WSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,TTW);
-		h1_WpSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,TTW);
-		//	  h1_W_Neu_Eta_M[wqaWmIdx]->Fill(wCand.Met,TTW);
-	      }
-	    }
-	  }	    
-if(Debug)cout<<"check point 11"<<endl;
-	  //Wpt case
-	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
-	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-	      
-	      if(Mode == "AllCorrectionsMC" )
-	      {
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*effSf_);
-		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*effSf_);
-	      }else{
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-	      }
-	  
-	    }
-	  }
-	}
-	else if( (*W_Charge)[iw] <0) 
-	{
-	  
-	  if(Mode == "AllCorrectionsMC" )
-	  {
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*effSf_);
-	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW*effSf_);
-	  }else{
-	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,TTW);
-	  }
-
-	  if(Debug)cout<<"check point 12"<<endl;
-	  //Fill MET sideband for WQA, Wminus case
-	  if(AnaChannel == "ElectronHighPU") {
-	    for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
-	      if (fabs(wCand.lep_eta) > wqaMetMNBins[iEtaSD] && fabs(wCand.lep_eta) < wqaMetMXBins[iEtaSD] ) {		
-		h1_WSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,TTW);
-		h1_WmSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,TTW);
-	      }
-	    }
-	  }
-	  if(Debug)cout<<"check point 13"<<endl;
-	  //Wpt case
-	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
-	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
-
-	      if(Mode == "AllCorrectionsMC" )
-	      {
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*effSf_);
-		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW*effSf_);
-	      }else{
-		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,TTW);
-	      }
-	    }
-	  }
-	}else {
-	    cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
-	    exit(0);}
-	}
-    }
+    WbestSelect();
 
     
     if(Debug)cout<<"check point 14"<<endl;
@@ -592,7 +349,7 @@ if(Debug)cout<<"check point 11"<<endl;
       DumpWbestCand(mIdxWcan);
       if(Mode == "DumpUnfInfo")
       {
-        DumpUnfoldInfo(iw);
+        DumpUnfoldInfo(mIdxWcan);
       }
       DumpMETs();
     }
@@ -624,63 +381,63 @@ if(Debug)cout<<"check point 11"<<endl;
 	}
       }
 
-      h1_GlbMuChi2->Fill(glbMuChi2,TTW);
-      h1_muonHits->Fill(wCand.muonHit,TTW);
-      h1_muMatchStation->Fill(wCand.matchStation,TTW);
-      h1_trkLayers->Fill(wCand.trkLayers,TTW);
-      h1_pixelHits->Fill(wCand.pixelHits,TTW);
-      h1_dB->Fill(wCand.dB,TTW);
-      h1_dz->Fill(wCand.dz,TTW);
-      h1_IsoCom03->Fill( (wCand.chIso03+wCand.nhIso03+wCand.phIso03)/wCand.lep_pt,TTW);
-      h1_IsoCom04->Fill( (wCand.chIso04+wCand.nhIso04+wCand.phIso04)/wCand.lep_pt,TTW);
-      h1_IsoHad03->Fill( (wCand.chIso03+wCand.nhIso03)/wCand.lep_pt,TTW);
-      h1_IsoHad04->Fill( (wCand.chIso04+wCand.nhIso04)/wCand.lep_pt,TTW);
-      h1_IsoBeta03->Fill( (wCand.chIso03+max(0.0, wCand.nhIso03+wCand.phIso03-0.5*wCand.pcIso03))/wCand.lep_pt,TTW);
-      h1_IsoBeta04->Fill( (wCand.chIso04+max(0.0, wCand.nhIso04+wCand.phIso04-0.5*wCand.pcIso04))/wCand.lep_pt,TTW);
+      h1_GlbMuChi2->Fill(glbMuChi2,mTTW);
+      h1_muonHits->Fill(wCand.muonHit,mTTW);
+      h1_muMatchStation->Fill(wCand.matchStation,mTTW);
+      h1_trkLayers->Fill(wCand.trkLayers,mTTW);
+      h1_pixelHits->Fill(wCand.pixelHits,mTTW);
+      h1_dB->Fill(wCand.dB,mTTW);
+      h1_dz->Fill(wCand.dz,mTTW);
+      h1_IsoCom03->Fill( (wCand.chIso03+wCand.nhIso03+wCand.phIso03)/wCand.lep_pt,mTTW);
+      h1_IsoCom04->Fill( (wCand.chIso04+wCand.nhIso04+wCand.phIso04)/wCand.lep_pt,mTTW);
+      h1_IsoHad03->Fill( (wCand.chIso03+wCand.nhIso03)/wCand.lep_pt,mTTW);
+      h1_IsoHad04->Fill( (wCand.chIso04+wCand.nhIso04)/wCand.lep_pt,mTTW);
+      h1_IsoBeta03->Fill( (wCand.chIso03+max(0.0, wCand.nhIso03+wCand.phIso03-0.5*wCand.pcIso03))/wCand.lep_pt,mTTW);
+      h1_IsoBeta04->Fill( (wCand.chIso04+max(0.0, wCand.nhIso04+wCand.phIso04-0.5*wCand.pcIso04))/wCand.lep_pt,mTTW);
 
       //cout<<"effSf_(C) = "<<effSf_<<endl;
-      h1_W_pt->Fill(wCand.pt,TTW);
-      h1_W_pt_EffCorr->Fill(wCand.pt,TTW*effSf_);
+      h1_W_pt->Fill(wCand.pt,mTTW);
+      h1_W_pt_EffCorr->Fill(wCand.pt,mTTW*effSf_);
       h2_WpT_lepPt->Fill(wCand.pt,wCand.lep_pt);
 
-      h1_W_Acop->Fill(w_acop,TTW);
-      h1_vtx_z->Fill(vtxz,TTW);
-      h1_vtx_Rho->Fill(vtxRho,TTW);
+      h1_W_Acop->Fill(w_acop,mTTW);
+      h1_vtx_z->Fill(vtxz,mTTW);
+      h1_vtx_Rho->Fill(vtxRho,mTTW);
 
-      h1_W_Mt->Fill(wCand.Mt,TTW);
-      h1_W_Lept1_pt->Fill(wCand.lep_pt,TTW);
+      h1_W_Mt->Fill(wCand.Mt,mTTW);
+      h1_W_Lept1_pt->Fill(wCand.lep_pt,mTTW);
 
-      h1_Vtx_Prim1->Fill(mVtxVar.nPrim,TTW);
-      h1_Vtx_Good1->Fill(mVtxVar.nGood,TTW);
-      h1_W_Lept1_pt1->Fill(wCand.lep_pt,TTW);
-      h1_npileup1->Fill(npileup,TTW);
-      h1_W_Neut_pt1->Fill(wCand.Met,TTW);
+      h1_Vtx_Prim1->Fill(mVtxVar.nPrim,mTTW);
+      h1_Vtx_Good1->Fill(mVtxVar.nGood,mTTW);
+      h1_W_Lept1_pt1->Fill(wCand.lep_pt,mTTW);
+      h1_npileup1->Fill(npileup,mTTW);
+      h1_W_Neut_pt1->Fill(wCand.Met,mTTW);
       
 // MVAnoPUMETana study
       //if (Mode=="MVAnoPUMEt")
       //{
-      //  h1_W_Met->Fill(W_Met,TTW);
-      //  h1_W_NoPU_Met->Fill(W_NoPU_Met,TTW);
-      //  h1_W_MVA_Met->Fill(W_MVA_Met,TTW);
-      //  h1_W_Gen_Met->Fill(W_Gen_Met,TTW);
+      //  h1_W_Met->Fill(W_Met,mTTW);
+      //  h1_W_NoPU_Met->Fill(W_NoPU_Met,mTTW);
+      //  h1_W_MVA_Met->Fill(W_MVA_Met,mTTW);
+      //  h1_W_Gen_Met->Fill(W_Gen_Met,mTTW);
       //}
 
     if(AnaChannel == "ElectronHighPU" )
     {
-      h1_W_Lep1_eta->Fill(wCand.lep_eta,TTW);
-      h1_W_Neu_All->Fill(wCand.Met,TTW);
+      h1_W_Lep1_eta->Fill(wCand.lep_eta,mTTW);
+      h1_W_Neu_All->Fill(wCand.Met,mTTW);
 
       for(int iEta=0;iEta<NWqaBins;iEta++){
 	///////////////// Divide Eta Bins///////////
 	////////Inclusive Case////////////
 	if (fabs(wCand.lep_eta) > wqaMetMNBins[iEta] && fabs(wCand.lep_eta) < wqaMetMXBins[iEta] ) {
-	  h1_W_Neu_Eta_I[iEta]->Fill(wCand.Met,TTW);
+	  h1_W_Neu_Eta_I[iEta]->Fill(wCand.Met,mTTW);
 	  
 	  if ( wCand.charge > 0 ){ /////////Plus Case////////////
-	    h1_W_Neu_Eta_P[iEta]->Fill(wCand.Met,TTW);
+	    h1_W_Neu_Eta_P[iEta]->Fill(wCand.Met,mTTW);
 	  }
 	  else if ( wCand.charge < 0){ //////////Minus Case////////////////
-	    h1_W_Neu_Eta_M[iEta]->Fill(wCand.Met,TTW);
+	    h1_W_Neu_Eta_M[iEta]->Fill(wCand.Met,mTTW);
 	  }
 	}
       }
@@ -688,41 +445,41 @@ if(Debug)cout<<"check point 11"<<endl;
    
     if( wCand.charge > 0)
     {
-      h1_Wp_pt->Fill(wCand.pt,TTW);
-      h1_Wp_pt_EffCorr->Fill(wCand.pt,TTW*effSf_);
+      h1_Wp_pt->Fill(wCand.pt,mTTW);
+      h1_Wp_pt_EffCorr->Fill(wCand.pt,mTTW*effSf_);
       h1_Wp_pt_NoLumiWeight->Fill(wCand.pt);
       h2_WpT_lepPt_Plus->Fill(wCand.pt,wCand.lep_pt);
 
       if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
       {
 	//cout<<"filling corrMet "<<corrMet<<endl;
-	h1_W_Neu_pt[0]->Fill(corrMet,TTW*effSf_);
-	//h1_Wp_Neu_pt[0]->Fill(corrMet,TTW);
-	h1_Wp_Neu_pt[0]->Fill(corrMet,TTW*effSf_);
+	h1_W_Neu_pt[0]->Fill(corrMet,mTTW*effSf_);
+	//h1_Wp_Neu_pt[0]->Fill(corrMet,mTTW);
+	h1_Wp_Neu_pt[0]->Fill(corrMet,mTTW*effSf_);
 	  
 	if(corrMet > 25.)
 	{
-	  mNmetA[0]+=TTW;
-	  mNmetAp[0]+=TTW;
+	  mNmetA[0]+=mTTW;
+	  mNmetAp[0]+=mTTW;
 	}else{
-	  mNmetB[0]+=TTW;
-	  mNmetBp[0]+=TTW;
+	  mNmetB[0]+=mTTW;
+	  mNmetBp[0]+=mTTW;
 	}
       }else{
-	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
-	h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+	h1_W_Neu_pt[0]->Fill(wCand.Met,mTTW);
+	h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
         h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
         h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
-	h1_Wp_Neu_pt[0]->Fill(wCand.Met,TTW);
-	h1_GenWp_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+	h1_Wp_Neu_pt[0]->Fill(wCand.Met,mTTW);
+	h1_GenWp_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
 
 	if( wCand.Met > 25.)
 	{
-	  mNmetA[0]+=TTW;
-	  mNmetAp[0]+=TTW;
+	  mNmetA[0]+=mTTW;
+	  mNmetAp[0]+=mTTW;
 	}else{
-	  mNmetB[0]+=TTW;
-	  mNmetBp[0]+=TTW;
+	  mNmetB[0]+=mTTW;
+	  mNmetBp[0]+=mTTW;
 	}
       }
       
@@ -733,74 +490,74 @@ if(Debug)cout<<"check point 11"<<endl;
 	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	  {
 	    //if(corrMet < 0)cout<<"corrMet: "<<corrMet<<endl;
-	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*effSf_);
-	    //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	    h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,TTW*effSf_);
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,mTTW*effSf_);
+	    //h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,mTTW);
+	    h1_Wp_Neu_pt[iBin+1]->Fill(corrMet,mTTW*effSf_);
 	    
 	    if(corrMet >25.)
 	    {
-	      mNmetA[iBin+1]+=TTW;
-	      mNmetAp[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=mTTW;
+	      mNmetAp[iBin+1]+=mTTW;
 	    }else{
-	      mNmetB[iBin+1]+=TTW;
-	      mNmetBp[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=mTTW;
+	      mNmetBp[iBin+1]+=mTTW;
 	    }
 	  }else{
-	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
             h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
             h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
-	    h1_Wp_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	    h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+	    h1_Wp_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
+	    h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
 
 	    if(wCand.Met >25.)
 	    {
-	      mNmetA[iBin+1]+=TTW;
-	      mNmetAp[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=mTTW;
+	      mNmetAp[iBin+1]+=mTTW;
 	    }else
 	    {
-	      mNmetB[iBin+1]+=TTW;
-	      mNmetBp[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=mTTW;
+	      mNmetBp[iBin+1]+=mTTW;
 	    }
 	  }
 	}
       }
     }else if(wCand.charge <0){
-      h1_Wm_pt->Fill(wCand.pt,TTW);
-      h1_Wm_pt_EffCorr->Fill(wCand.pt,TTW*effSf_);
+      h1_Wm_pt->Fill(wCand.pt,mTTW);
+      h1_Wm_pt_EffCorr->Fill(wCand.pt,mTTW*effSf_);
       h1_Wm_pt_NoLumiWeight->Fill(wCand.pt);
       h2_WpT_lepPt_Minus->Fill(wCand.pt,wCand.lep_pt);
 	
       if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
       {
-	h1_W_Neu_pt[0]->Fill(corrMet,TTW*effSf_);
-	//h1_Wm_Neu_pt[0]->Fill(corrMet,TTW);
-	h1_Wm_Neu_pt[0]->Fill(corrMet,TTW*effSf_);
+	h1_W_Neu_pt[0]->Fill(corrMet,mTTW*effSf_);
+	//h1_Wm_Neu_pt[0]->Fill(corrMet,mTTW);
+	h1_Wm_Neu_pt[0]->Fill(corrMet,mTTW*effSf_);
 	
 	if(corrMet > 25.)
 	{
-	  mNmetA[0]+=TTW;
-	  mNmetAm[0]+=TTW;
+	  mNmetA[0]+=mTTW;
+	  mNmetAm[0]+=mTTW;
 	}else{
-	  mNmetB[0]+=TTW;
-	  mNmetBm[0]+=TTW;
+	  mNmetB[0]+=mTTW;
+	  mNmetBm[0]+=mTTW;
 	}
       }else{
-	h1_W_Neu_pt[0]->Fill(wCand.Met,TTW);
-        h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+	h1_W_Neu_pt[0]->Fill(wCand.Met,mTTW);
+        h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
         h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
         h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
-	h1_Wm_Neu_pt[0]->Fill(wCand.Met,TTW);
-	h1_GenWm_Neu_pt[0]->Fill(genInfo.genWmet,TTW);
+	h1_Wm_Neu_pt[0]->Fill(wCand.Met,mTTW);
+	h1_GenWm_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
 
 	if(wCand.Met >25.)
 	{
-	  mNmetA[0]+=TTW;
-	  mNmetAm[0]+=TTW;
+	  mNmetA[0]+=mTTW;
+	  mNmetAm[0]+=mTTW;
 	}else
 	{
-	  mNmetB[0]+=TTW;
-	  mNmetBm[0]+=TTW;
+	  mNmetB[0]+=mTTW;
+	  mNmetBm[0]+=mTTW;
 	}
       }
       for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
@@ -809,34 +566,34 @@ if(Debug)cout<<"check point 11"<<endl;
 	{
 	  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	  {
-	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,TTW*effSf_);
-	    //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW);
-	    h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,TTW*effSf_);
+	    h1_W_Neu_pt[iBin+1]->Fill(corrMet,mTTW*effSf_);
+	    //h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,mTTW);
+	    h1_Wm_Neu_pt[iBin+1]->Fill(corrMet,mTTW*effSf_);
 
 	    if(corrMet >25.)
 	    {
-	      mNmetA[iBin+1]+=TTW;
-	      mNmetAm[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=mTTW;
+	      mNmetAm[iBin+1]+=mTTW;
 	    }else{
-	      mNmetB[iBin+1]+=TTW;
-	      mNmetBm[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=mTTW;
+	      mNmetBm[iBin+1]+=mTTW;
 	    }
 	  }else{
-	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
             h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
             h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
-	    h1_Wm_Neu_pt[iBin+1]->Fill(wCand.Met,TTW);
-	    h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.genWmet,TTW);
+	    h1_Wm_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
+	    h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
 
 	    if(wCand.Met >25.)
 	    {
-	      mNmetA[iBin+1]+=TTW;
-	      mNmetAm[iBin+1]+=TTW;
+	      mNmetA[iBin+1]+=mTTW;
+	      mNmetAm[iBin+1]+=mTTW;
 	    }else
 	    {
-	      mNmetB[iBin+1]+=TTW;
-	      mNmetBm[iBin+1]+=TTW;
+	      mNmetB[iBin+1]+=mTTW;
+	      mNmetBm[iBin+1]+=mTTW;
 	    }
 	  }
 	}
@@ -846,8 +603,8 @@ if(Debug)cout<<"check point 11"<<endl;
       exit(0);
     }
     
-    //cout<<"TTW: "<<TTW<<endl;
-    evtSelected+=TTW;
+    //cout<<"mTTW: "<<mTTW<<endl;
+    evtSelected+=mTTW;
     if(Debug)cout<<"check point 16"<<endl;
     Nselected4Bin();
     
@@ -857,7 +614,7 @@ if(Debug)cout<<"check point 11"<<endl;
     if(Z_pass)
     {
       mNZevt++;
-      h1_diLeptVtxProb->Fill(diLeptVtxProb,TTW);
+      h1_diLeptVtxProb->Fill(diLeptVtxProb,mTTW);
       if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
       {
 	int etaRange1 = EtaRange(ZLep1etaSC);
@@ -885,31 +642,31 @@ if(Debug)cout<<"check point 11"<<endl;
 	  corr2 = gRandom->Gaus(Zele2_4.E(), MuonSmearMC(ZLep2etaSC))/Zele2_4.E();
 	  
 	  PtEtaPhiMLorentzVector Z_4 =  corr1*Zele1_4 + corr2* Zele2_4;
-	  h1_ZmassCorr->Fill(Z_4.M(),TTW);
+	  h1_ZmassCorr->Fill(Z_4.M(),mTTW);
 
 	  // Barrel Barrel  
 	  if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
 	  {
 	    if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-	      h1_ZmassCorr_BB->Fill(Z_4.M(),TTW);
+	      h1_ZmassCorr_BB->Fill(Z_4.M(),mTTW);
 	  }
 
 	  //Barrel Endcap
 	  if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
 	  {
 	    if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-	      h1_ZmassCorr_BE->Fill(Z_4.M(),TTW);
+	      h1_ZmassCorr_BE->Fill(Z_4.M(),mTTW);
 	  }else if(fabs(ZLep1etaSC) >= 1.566   && fabs(ZLep1etaSC) < 2.5)
 	  {
 	    if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-	      h1_ZmassCorr_BE->Fill(Z_4.M(),TTW);
+	      h1_ZmassCorr_BE->Fill(Z_4.M(),mTTW);
 	  }
      
 	  // Endcap Endcap
 	  if(fabs(ZLep1etaSC) >= 1.566  && fabs(ZLep1etaSC) < 2.5)
 	  {
 	    if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-	      h1_ZmassCorr_EE->Fill(Z_4.M(),TTW);
+	      h1_ZmassCorr_EE->Fill(Z_4.M(),mTTW);
 	  }
 	}
 
@@ -920,7 +677,7 @@ if(Debug)cout<<"check point 11"<<endl;
 	//{
         //  if(Mode == "ScaleMakeMC")
 	//  DoScaleSmearScan(ZLep1Pt,ZLep1Pz,ZLep1En,ZLep1Phi,
-	//                   ZLep2Pt,ZLep2Pz,ZLep2En,ZLep2Phi,TTW);
+	//                   ZLep2Pt,ZLep2Pz,ZLep2En,ZLep2Phi,mTTW);
 	//  if(Mode == "ScaleMakeRD")h1_ZmassDaughEtaRD->Fill(Zmass);
 	//}
 	//  //wCand.lep_pt_corr = gRandom->Gaus(wCand.lep_pt*lepScale,lepRes);
@@ -941,31 +698,31 @@ if(Debug)cout<<"check point 11"<<endl;
 	    corr2 = gRandom->Gaus(Zele2_4.E(), EleSmearMC(ZLep2etaSC))/Zele2_4.E();
 	    
 	    PtEtaPhiMLorentzVector Z_4 =  corr1*Zele1_4 + corr2* Zele2_4;
-	    h1_ZmassCorr->Fill(Z_4.M(),TTW);
+	    h1_ZmassCorr->Fill(Z_4.M(),mTTW);
 	  
 	    //Barrel Barrel
 	    if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
 	    {
 	      if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-		h1_ZmassCorr_BB->Fill(Z_4.M(),TTW);
+		h1_ZmassCorr_BB->Fill(Z_4.M(),mTTW);
 	    }
 
 	    //Barrel Endcap
 	    if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
 	    {
 	      if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-		h1_ZmassCorr_BE->Fill(Z_4.M(),TTW);
+		h1_ZmassCorr_BE->Fill(Z_4.M(),mTTW);
 	    }else if(fabs(ZLep1etaSC) >= 1.566   && fabs(ZLep1etaSC) < 2.5)
 	    {
 	      if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-		h1_ZmassCorr_BE->Fill(Z_4.M(),TTW);
+		h1_ZmassCorr_BE->Fill(Z_4.M(),mTTW);
 	    }
 
 	    // Endcap Endcap
 	    if(fabs(ZLep1etaSC) >= 1.566  && fabs(ZLep1etaSC) < 2.5)
 	    {
 	      if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-		h1_ZmassCorr_EE->Fill(Z_4.M(),TTW);
+		h1_ZmassCorr_EE->Fill(Z_4.M(),mTTW);
 	    }
 	  }
 	}
@@ -974,11 +731,11 @@ if(Debug)cout<<"check point 11"<<endl;
       h2_Zmass_ZLep1->Fill(Zmass,ZLep1Pt);
       h2_Zmass_ZLep2->Fill(Zmass,ZLep2Pt);
       
-      h1_Zpt->Fill(Zpt,TTW);
+      h1_Zpt->Fill(Zpt,mTTW);
       h2_Zpt_ZLep1->Fill(Zpt,ZLep1Pt);
       h2_Zpt_ZLep2->Fill(Zpt,ZLep2Pt);
 
-      h1_Zmass->Fill(Zmass,TTW);
+      h1_Zmass->Fill(Zmass,mTTW);
 
 // MVAnoPUMETana study
       //if (Mode=="MVAnoPUMEt")
@@ -997,25 +754,25 @@ if(Debug)cout<<"check point 11"<<endl;
       if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
       {
 	if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-	  h1_Zmass_BB->Fill(Zmass,TTW);
+	  h1_Zmass_BB->Fill(Zmass,mTTW);
       }
 
       //Barrel Endcap uncorrected
       if(fabs(ZLep1etaSC) >= 0.0   && fabs(ZLep1etaSC) < 1.4442)
       {
 	if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-	  h1_Zmass_BE->Fill(Zmass,TTW);
+	  h1_Zmass_BE->Fill(Zmass,mTTW);
       }else if(fabs(ZLep1etaSC) >= 1.566   && fabs(ZLep1etaSC) < 2.5)
       {
 	if(fabs(ZLep2etaSC) >= 0.0   && fabs(ZLep2etaSC) < 1.4442)
-	  h1_Zmass_BE->Fill(Zmass,TTW);
+	  h1_Zmass_BE->Fill(Zmass,mTTW);
       }
 
       // Endcap Endcap uncorrected
       if(fabs(ZLep1etaSC) >= 1.566  && fabs(ZLep1etaSC) < 2.5)
       {
 	if(fabs(ZLep2etaSC) >= 1.566   && fabs(ZLep2etaSC) < 2.5)
-	  h1_Zmass_EE->Fill(Zmass,TTW);
+	  h1_Zmass_EE->Fill(Zmass,mTTW);
       }
 
 
@@ -1399,7 +1156,7 @@ void WpT::Nselected4Bin()
 {
   for(int i(0);i<NwPtBin;i++)
   {
-    if( wCand.pt >= Bins[i] && wCand.pt <Bins[i+1]) mNselected4Bin[i]+=TTW;
+    if( wCand.pt >= Bins[i] && wCand.pt <Bins[i+1]) mNselected4Bin[i]+=mTTW;
   }
 }
 int WpT::InitVar()
@@ -1413,12 +1170,12 @@ int WpT::InitVar()
   }
   for(int i(0);i<NWptBinPlus;i++)
   {
-    mNmetA[NWptBinPlus] = 0.0;
-    mNmetB[NWptBinPlus] = 0.0;
-    mNmetAp[NWptBinPlus]= 0.0;
-    mNmetBp[NWptBinPlus]= 0.0;
-    mNmetAm[NWptBinPlus]= 0.0;
-    mNmetBm[NWptBinPlus]= 0.0;
+    mNmetA [i]= 0.0;
+    mNmetB [i]= 0.0;
+    mNmetAp[i]= 0.0;
+    mNmetBp[i]= 0.0;
+    mNmetAm[i]= 0.0;
+    mNmetBm[i]= 0.0;
 
   }
   return 0;
@@ -1427,12 +1184,9 @@ int WpT::InitVar4Evt()
 {
   //cout<<"WpT::InitVar4Evt ==========================="<<endl;
   WLepNeu::InitVar4Evt();
-  TTW=1;
-  mVtxVar.nPrim = 0;
-  mVtxVar.nGood = 0;
   return 0;
 }
-int WpT::VertexStudy()
+int WpT::VertexCut()
 {
   mVtxVar.nPrim = vtx_isFake->size();
   if(mVtxVar.nPrim < 1 ) return -1;
@@ -1457,15 +1211,258 @@ int WpT::VertexStudy()
 //    if( mVtxVar.nGood < 1 ) continue;
   return 0;
 }
-double CalcEvtWeight()
+double WpT::CalcEvtWeight()
 {
   if(!RunOnMC){mTTW = 1;return mTTW;}
-      //TTW= LumiWeight*weightin; //weight is right but S8 strange
+      //mTTW= LumiWeight*weightin; //weight is right but S8 strange
       //if (weightFSR<0) weightFSR=1.;
-      //TTW= LumiWeight*weightFSR; //weight is right but S8 strange
-  TTW= LumiWeight; //weight is right but S8 strange
+      //mTTW= LumiWeight*weightFSR; //weight is right but S8 strange
+  mTTW= LumiWeight; //weight is right but S8 strange
   if(AnaChannel == "ElectronHighPU")
   {
-    TTW= LumiWeight*weight;} //reweighting value for S10
-  return TTW;
+    mTTW= LumiWeight*weight;} //reweighting value for S10
+  return mTTW;
+}
+int WpT:WbestSelect()
+{
+  for(int iw(0); iw<wCand.size; iw++)
+  {
+    //additional lepton count
+    if(AnaChannel == "MuonLowPU" )    if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "MuonHighPU")    if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "ElectronLowPU" )if(AddElectronCut(iw)>0) addLepN++;
+    if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
+    if(AnaChannel == "TauHighPU")if(TauCut(iw)>0) addLepN++;
+
+    if( ((AnaChannel == "MuonLowPU" ) && (MuonCut(iw) >0))||
+	((AnaChannel == "MuonHighPU") && (MuonCut(iw) >0))||
+	((AnaChannel == "ElectronLowPU" ) && (ElectronCut(iw) > 0))||
+	((AnaChannel =="ElectronHighPU") &&  (ElectronCutHighPU(iw) > 0)) ||
+	((AnaChannel =="TauHighPU") && (TauCut(iw)) > 0)
+	  //Best Candidate selection
+    )if( wCand.lep_pt < (*W_Lept1_pt)[iw])
+    {
+	mIdxWcan = iw;
+	mWpass = true;
+// MVAnoPUMETana study
+	//if (Mode=="MVAnoPUMEt")
+	//{
+	//  W_Met = (*W_Neut_pt)[iw];
+	//  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
+	//  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
+	//  if (abs((*GenW_BornLept1_id)[0])==16)
+	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+	//  else if (abs((*GenW_BornLept2_id)[0])==16)
+	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
+//	//  W_Gen_Met = (*W_Neut_pt)[iw];
+	//  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
+	//    //cout << "There is no genMEt" << endl;
+	//  metCnt++;
+	//}
+	wCand.lep_pt = (*W_Lept1_pt)[iw];
+	wCand.lep_phi = (*W_Lept1_phi)[iw];
+	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
+	wCand.Nu_py=(*W_Neut_py)[iw]; //i->iw
+	if(AnaChannel == "ElectronLowPU" )
+	{
+	  wCand.lep_etaSC = (*W_Lept1_etaSC)[iw];
+	}
+	wCand.lep_eta = (*W_Lept1_eta)[iw];
+if(Debug)cout<<"check point 6-4"<<endl;	
+	wCand.pt = (*W_pt)[iw];
+	if(wCand.pt > 600)cout<<"Check the wCand.pt is greater than 600: "<<wCand.pt<<endl;
+	w_acop= (*W_Acop)[iw];
+	vtxz= (*vtx_z)[iw];
+	vtxRho= (*vtx_Rho)[iw];
+if(Debug)cout<<"check point 7"<<endl;
+	//wCand.charge = (*W_Charge)[iw];
+	//Gen Neutrino distribution for selected events
+	if(GenW_Born_Id->size()>0)
+	{
+	  if( abs((*GenW_PostLept1_id)[0])==14 || //Nuet_Mu
+	      abs((*GenW_PostLept1_id)[0])==12)genInfo.genWmet=(*GenW_PostLept1_pt)[0];//Nuet_ele
+	  if( abs((*GenW_PostLept2_id)[0])==14 || 
+	      abs((*GenW_PostLept2_id)[0])==12)genInfo.genWmet=(*GenW_PostLept2_pt)[0];
+	}
+	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")if(GenW_Born_Id->size()>0)
+	{
+          wCand.genIdx = (*W_Lept1_genIdxMatch)[iw];
+	}//RecoilCorr
+	if(Mode == "RecoilRD" || Mode == "RecoilMC")
+	{
+	  //Recoil = -Met -Lepts
+	  TVector2 RecoilVector(
+	  	-(*W_Neut_px)[iw]-(*W_Lept1_px)[iw],
+	  	-(*W_Neut_py)[iw]-(*W_Lept1_py)[iw]);
+	  //if( GenW_Born_Id->size() < 1)cout<<"GenW size is "<<GenW_Born_Id->size()<<endl;
+	  if( Mode == "RecoilMC")if(GenW_Born_Id->size() > 0)
+	  {
+	    int gi = (*W_Lept1_genIdxMatch)[iw];
+	    //if( gi != 0 || iw != 0)
+	    //cout<<"Gen Idx: "<<gi<<" iw: "<<iw<<endl;
+            if( fabs((*W_Lept1_genDeltaR)[iw]) > 0.025)
+	    {
+	      //cout<<"W not MC truth"<<endl;
+	      gi = 0; //Let's use the one
+	    }
+	    if(gi < 0) gi = 0;
+	    //genBeFsrW_pt = (*GenW_pt)[gi];
+
+	    TVector2 genAfFsrW_pt_2D(
+		(*GenW_PostLept1_px)[gi]+(*GenW_PostLept2_px)[gi],
+		(*GenW_PostLept1_py)[gi]+(*GenW_PostLept2_py)[gi]);
+	    genInfo.PostW_pt= genAfFsrW_pt_2D.Mod();
+	    //BosonNorm = TMath::Sqrt(
+	//	(*GenW_px)[gi]*(*GenW_px)[gi]+
+	//	(*GenW_py)[gi]*(*GenW_py)[gi]);
+	    //u1 = B.u, u2 = B cross u
+	    u1W =RecoilVector*genAfFsrW_pt_2D/genInfo.PostW_pt;
+	    u2W =(RecoilVector.Px()*genAfFsrW_pt_2D.Py()-RecoilVector.Py()*genAfFsrW_pt_2D.Px())/genInfo.PostW_pt;
+	    u3W =RecoilVector*genAfFsrW_pt_2D/genInfo.PostW_pt+genInfo.PostW_pt;
+	  }
+	}
+      }//Cut and Bigger pt
+
+      //if(Mode == "AllCorrectionsRD" )
+      //{
+	//if(AnaChannel == "ElectronLowPU" )
+	//{
+	 // if( wCand.charge > 0)
+	  //{
+	   // TTW=TTW / ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  //}else  if( wCand.charge < 0)
+	  //{
+	    //TTW=TTW / EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	  //}
+	//}
+	//if(AnaChannel == "MuonLowPU")
+	//{
+	  //if( wCand.charge > 0)
+	  //{
+	    //TTW=TTW / MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	  //}else  if( wCand.charge < 0)
+	  //{
+	    //TTW=TTW / MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	  //}
+	//}
+      //}
+
+      if(AnaChannel == "ElectronLowPU" )
+      {
+	if( wCand.charge > 0)
+	{
+	  effSf_ = ElePlusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  effSf_ = EleMinusEffiCorrection(wCand.lep_pt,wCand.lep_etaSC);
+	}
+      }
+      if(AnaChannel == "MuonLowPU" )
+      {
+	if( wCand.charge > 0)
+	{
+	  effSf_ = MuonPlusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+	else  if( wCand.charge < 0)
+	{
+	  effSf_ = MuonMinusEffiCorrection(wCand.lep_pt,wCand.lep_eta);
+	}
+      }
+
+if(Debug)cout<<"check point 8"<<endl;
+      //Side Band
+      if( ((AnaChannel == "MuonLowPU" ) && MuonCutSide(iw) >0)||
+	  ((AnaChannel == "ElectronLowPU" ) && ElectronCutSide(iw) > 0)||
+	  (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
+      )
+      //if( CutSide(iw)> 0 && lep_pt_side < (*W_Lept1_pt)[iw])
+      {
+	w_pt_side = (*W_pt)[iw];
+	wCand.Met_side = (*W_Neut_pt)[iw];
+
+	if(Debug)cout<<"check point 9"<<endl;
+	//lep_pt_side = (*W_Lept1_pt)[iw];
+	if((*W_Charge)[iw]> 0)	  
+	{
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW*effSf_);
+	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW*effSf_);
+	  }else{
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW);
+	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW);
+	  }
+
+if(Debug)cout<<"check point 10"<<endl;
+	  //Fill MET sideband for WQA, Wplus case
+	  if(AnaChannel == "ElectronHighPU") {
+	    for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
+	      if (fabs(wCand.lep_eta) > wqaMetMNBins[iEtaSD] && fabs(wCand.lep_eta) < wqaMetMXBins[iEtaSD] )  {
+		h1_WSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,mTTW);
+		h1_WpSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,mTTW);
+		//	  h1_W_Neu_Eta_M[wqaWmIdx]->Fill(wCand.Met,mTTW);
+	      }
+	    }
+	  }	    
+if(Debug)cout<<"check point 11"<<endl;
+	  //Wpt case
+	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
+	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
+	      
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW*effSf_);
+		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW*effSf_);
+	      }else{
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW);
+		h1_WpSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW);
+	      }
+	  
+	    }
+	  }
+	}
+	else if( (*W_Charge)[iw] <0) 
+	{
+	  
+	  if(Mode == "AllCorrectionsMC" )
+	  {
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW*effSf_);
+	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW*effSf_);
+	  }else{
+	    h1_WSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW);
+	    h1_WmSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW);
+	  }
+
+	  if(Debug)cout<<"check point 12"<<endl;
+	  //Fill MET sideband for WQA, Wminus case
+	  if(AnaChannel == "ElectronHighPU") {
+	    for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
+	      if (fabs(wCand.lep_eta) > wqaMetMNBins[iEtaSD] && fabs(wCand.lep_eta) < wqaMetMXBins[iEtaSD] ) {		
+		h1_WSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,mTTW);
+		h1_WmSide_Neu_eta[iEtaSD]->Fill(wCand.Met_side,mTTW);
+	      }
+	    }
+	  }
+	  if(Debug)cout<<"check point 13"<<endl;
+	  //Wpt case
+	  for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
+	    if( w_pt_side >= Bins[iBin] && w_pt_side < Bins[iBin+1] ) {
+
+	      if(Mode == "AllCorrectionsMC" )
+	      {
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW*effSf_);
+		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW*effSf_);
+	      }else{
+		h1_WSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW);
+		h1_WmSide_Neu_pt[iBin+1]->Fill(wCand.Met_side,mTTW);
+	      }
+	    }
+	  }
+	}else {
+	    cout<<"strange case: charge = 0 ^^^^^^^^^^^^^^^^^^^^^^^^^"<<endl;
+	    exit(0);}
+	}
+    }
+  return 0;
 }

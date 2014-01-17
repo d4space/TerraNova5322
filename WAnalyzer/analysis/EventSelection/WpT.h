@@ -21,7 +21,7 @@ protected:
    void Nselected4Bin();
    int InitVar(); // Init for Class
    int InitVar4Evt(); // Init for every event
-   int VertexStudy();
+   int VertexCut();
    double CalcEvtWeight();
    // Member variables
    int mIdxWcan;

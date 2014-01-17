@@ -22,3 +22,6 @@ set dirName = "$dirName_base/WmToMuNu"
 ./chain_Muon_WmToMuNu_S8.tcsh $dirName
 set dirName = "$dirName_base/WpToMuNu"
 ./chain_Muon_WpToMuNu_S8.tcsh $dirName
+
+
+./chain_Muon_Test.tcsh $dirName
