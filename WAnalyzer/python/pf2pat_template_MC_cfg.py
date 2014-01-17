@@ -69,6 +69,10 @@ patLeptonFilter = cms.EDFilter("MultiLeptonCountFilter",
   leptons = cms.untracked.VInputTag('acceptedMuons','acceptedElectrons'),
   minCount = cms.untracked.uint32(0)
 )
+patMuEleTauFilter = cms.EDFilter("MultiObjectCountFilter",
+  leptons = cms.untracked.VInputTag('acceptedMuons','acceptedElectrons','acceptedTaus'),
+  minCount = cms.untracked.uint32(1)
+)
 
 #Electron ID
 #from RecoEgamma.ElectronIdentification.cutsInCategoriesElectronIdentificationV06_cfi import *

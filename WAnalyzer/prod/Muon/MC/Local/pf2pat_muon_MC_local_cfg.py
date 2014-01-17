@@ -56,6 +56,13 @@ if runOnMC:
 else :
   usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
 	
+# Pre Settings ######################
+# 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
+# -1(no cut) 0(check cut, isocut pset)
+process.acceptedMuons.version = cms.untracked.int32(6)
+# -1(no cut), 0(check cut, isocut pset), 1(WptCut)
+# 13(medium pt 30) 14(medium pt 15)
+process.acceptedElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
@@ -85,11 +92,16 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForNoPileUpPFMEt.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
+process.noPileUpPFMEt.srcLeptons = cms.VInputTag(["acceptedMuons","acceptedElectrons","acceptedTaus"])
 
 ### MVA MET
 process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
-process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3')
-#process.pfMEtMVA.srcLeptons = cms.VInputTag( ["selectedPatMuons"]) #selectedPatMuons
+if runOnMC:
+  process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3')
+else:
+  process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
+
+process.pfMEtMVA.srcLeptons = cms.VInputTag( ["acceptedMuons","acceptedElectrons","acceptedTaus"]) #selectedPatMuons
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
@@ -134,16 +146,20 @@ process.p = cms.Path(
 #    process.eidCiCSequence
 )
 
+if produceTaus:
+  process.p += process.recoTauClassicHPSSequence
+  print "Using Tau Sequence =================================="
 #process.p += process.hltHighLevelMuMuRD
 process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 #process.p += process.looseLeptonSequence
-#process.p += process.acceptedElectrons
 process.p += process.acceptedMuons
-#process.p += process.patElectronFilter
+#process.p += process.acceptedElectrons
+#process.p += process.acceptedTaus
+process.p += process.patMuEleTauFilter
 process.p += process.patMuonFilter
+#process.p += process.patElectronFilter
+#process.p += process.patTauFilter
 process.p += process.nEventsFiltered
-#if produceTaus:
-#  process.p += process.recoTauClassicHPSSequence
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
