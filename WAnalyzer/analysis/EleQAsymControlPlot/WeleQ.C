@@ -18,6 +18,7 @@ TString Mode = "Analysis";//Analysis,Recoil, RecoilMC, RecoilCorr, Resolution,
 TString AnaChannelEle = "ElectronHighPU";//ElectronLowPU
 TString AnaChannelMu  = "MuonLowPU";
 
+  gSystem->CompileMacro("../EventSelection/WLepNeu.C","k");
   gSystem->CompileMacro("../EventSelection/WEleQ.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight

@@ -16,7 +16,7 @@ process.load("KoSMP.WAnalyzer.pf2pat_template_MC_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
+from KoSMP.WAnalyzer.pat_S8_cfg import *
 from KoSMP.WAnalyzer.eventContent_cff import *
 from KoSMP.WAnalyzer.tools import *
 
@@ -38,6 +38,9 @@ from PhysicsTools.PatAlgos.tools.cmsswVersionTools import pickRelValInputFiles
 #)
 # output
 ## Output Module Configuration (expects a path 'p')
+## Source
+process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
+
 process.out = cms.OutputModule("PoolOutputModule",
     fileName = cms.untracked.string('patTuple_skim.root'),
     # save only events passing the full path
@@ -113,8 +116,6 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.patMuonFilter.minNumber = 1
 process.patElectronFilter.minNumber = 0
 
-## Source
-process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
 
 process.out.outputCommands +=pf2patEventContent
 

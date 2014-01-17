@@ -67,7 +67,7 @@ void WEleQ::Loop()
     //============
   
     //before trigger event check.
-    if(AnaChannel =="ElectronHighPU" && ElectronCutHighPUToTal(iw) > 0)
+    if(AnaChannel =="ElectronHighPU" && WQElectronCutHighPUToTal(iw) > 0)
     { 
      for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++)
      {
@@ -121,7 +121,7 @@ void WEleQ::Loop()
     for(int ie(0); ie<wCand.size; ie++)
     {
       double current_elpT = (*W_Lept1_pt)[ie];
-      if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(ie)>0) addLepN++;
+      if(AnaChannel == "ElectronHighPU")if(AddWQElectronCutHighPU(ie)>0) addLepN++;
       if(current_elpT > temp_elpT)
 	{
 	  temp_elpT = current_elpT;
@@ -131,10 +131,10 @@ void WEleQ::Loop()
     /////////////////////////////
 
 
-     // if(AnaChannel == "ElectronHighPU")if(AddElectronCutHighPU(iw)>0) addLepN++;
-//cout<<"check if&if pt = "<<(*W_Lept1_pt)[iw]<<", event number = "<<i<<", eMulti = "<<wCand.size<<", sigmaIEtaIEta = "<<(*W_Lept1_sigmaIEtaIEta)[iw]<<", dEtaIn = "<<fabs((*W_Lept1_dEtaIn)[iw])<<", dPhiIn = "<<fabs((*W_Lept1_dPhiIn)[iw])<<", HoverE = "<<(*W_Lept1_HoverE)[iw]<<", dxy = "<<fabs((*W_Lept1_dxy)[iw])<<", dz = "<<fabs((*W_Lept1_dz)[iw])<<", InvE-InvP = "<<fabs((*W_Lept1_InvEminusInvP)[iw])<<", mHits = "<<fabs((*W_Lept1_mHits)[iw])<<", lep eta = "<<fabs(wCand.lep_eta)<<", W_Lept1_eta[iw] = "<<(*W_Lept1_eta)[iw]<<", lep SCeta = "<<fabs((*W_Lept1_etaSC)[iw])<<", SideCut pass ="<<ElectronCutSideHighPU(iw)<<", SignalCut pass ="<<ElectronCutHighPU(iw)<<", iw = "<<iw<<endl;
+     // if(AnaChannel == "ElectronHighPU")if(AddWQElectronCutHighPU(iw)>0) addLepN++;
+//cout<<"check if&if pt = "<<(*W_Lept1_pt)[iw]<<", event number = "<<i<<", eMulti = "<<wCand.size<<", sigmaIEtaIEta = "<<(*W_Lept1_sigmaIEtaIEta)[iw]<<", dEtaIn = "<<fabs((*W_Lept1_dEtaIn)[iw])<<", dPhiIn = "<<fabs((*W_Lept1_dPhiIn)[iw])<<", HoverE = "<<(*W_Lept1_HoverE)[iw]<<", dxy = "<<fabs((*W_Lept1_dxy)[iw])<<", dz = "<<fabs((*W_Lept1_dz)[iw])<<", InvE-InvP = "<<fabs((*W_Lept1_InvEminusInvP)[iw])<<", mHits = "<<fabs((*W_Lept1_mHits)[iw])<<", lep eta = "<<fabs(wCand.lep_eta)<<", W_Lept1_eta[iw] = "<<(*W_Lept1_eta)[iw]<<", lep SCeta = "<<fabs((*W_Lept1_etaSC)[iw])<<", SideCut pass ="<<WQElectronCutSideHighPU(iw)<<", SignalCut pass ="<<ElectronCutHighPU(iw)<<", iw = "<<iw<<endl;
 
-      if(AnaChannel =="ElectronHighPU" && ElectronCutHighPUToTal(iw) > 0)
+      if(AnaChannel =="ElectronHighPU" && WQElectronCutHighPUToTal(iw) > 0)
        {
 	 for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
 	 if (fabs((*W_Lept1_eta)[iw]) > wqaMetMNBins[iEtaSD] && fabs((*W_Lept1_eta)[iw]) < wqaMetMXBins[iEtaSD] ) {
@@ -144,7 +144,7 @@ void WEleQ::Loop()
        }
        }
 
-      if(AnaChannel =="ElectronHighPU" && ElectronCutHighPUToTal(iw) > 0)
+      if(AnaChannel =="ElectronHighPU" && WQElectronCutHighPUToTal(iw) > 0)
        {
       if(addLepN >1)
        {
@@ -156,7 +156,7 @@ void WEleQ::Loop()
        }
        }
 
-      if( (AnaChannel =="ElectronHighPU" && ElectronCutHighPU(iw) > 0)
+      if( (AnaChannel =="ElectronHighPU" && WQElectronCutHighPU(iw) > 0)
       ){
 if(Debug)cout<<"check point 6-2"<<endl;	
 	W_pass = true;
@@ -170,7 +170,7 @@ if(Debug)cout<<"check point 6-2"<<endl;
 
 
       //Side Band
-      if( (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
+      if( (AnaChannel =="ElectronHighPU" && WQElectronCutSideHighPU(iw) > 0)
       )
       {    
 	wCand.Met_side = (*W_Neut_pt)[iw];
@@ -223,9 +223,9 @@ if(Debug)cout<<"check point 9"<<endl;
       }
     
 
-   if(   (ElectronCutSideHighPU(iw)==-1)&&
-         (ElectronCutHighPU(iw)==-1)&&
-         (ElectronCutHighPUToTal(iw)==1)
+   if(   (WQElectronCutSideHighPU(iw)==-1)&&
+         (WQElectronCutHighPU(iw)==-1)&&
+         (WQElectronCutHighPUToTal(iw)==1)
       ){
         for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
         if (fabs((*W_Lept1_eta)[iw]) > wqaMetMNBins[iEtaSD] && fabs((*W_Lept1_eta)[iw]) < wqaMetMXBins[iEtaSD] ) {
