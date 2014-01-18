@@ -57,12 +57,12 @@ else :
   usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
 	
 # Pre Settings ######################
-# 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
+# 6(pt>10, tight, use for DiMu) 7(pt>27, tight, use for SingleMu)
 # -1(no cut) 0(check cut, isocut pset)
-process.acceptedMuons.version = cms.untracked.int32(6)
+process.METsrcMuons.version = cms.untracked.int32(6)
 # -1(no cut), 0(check cut, isocut pset), 1(WptCut)
 # 13(medium pt 30) 14(medium pt 15)
-process.acceptedElectrons.version = cms.untracked.int32(14)
+process.METsrcElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
@@ -71,19 +71,19 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
 ### ============= NoPU and MVA MET ===============###
-if produceMVAPFMET or produceNoPUPFMET :
-  # Muon Cuts
-  IN_ACCEPTANCE = '(abs(eta)<2.4 && pt>=19)'
-  TRACK_CUTS = "? track ? track.numberOfValidHits > 10 :0"
-  GLB_CUTS = "isGlobalMuon && isTrackerMuon && muonID('GlobalMuonPromptTight')"
-
-  #electron
-  Ele_ACCEPTANCE = '(pt >= 19 && abs(eta)<2.5)'
-  Ele_Id = 'abs(deltaPhiSuperClusterTrackAtVtx)<0.9 && abs(deltaEtaSuperClusterTrackAtVtx)<0.02 && scSigmaIEtaIEta<0.03 && hadronicOverEm<0.15' 
-  Else_Iso = 'dr03TkSumPt/pt < 0.30'
-    
-  process.selectedPatMuons.cut = cms.string("(abs(eta)<2.4 && pt>=15)&&isGlobalMuon && isTrackerMuon && globalTrack.normalizedChi2 < 10 && muonID(\'TrackerMuonArbitrated\') && globalTrack.hitPattern.numberOfValidMuonHits > 0 && trackIso/pt < 0.3")
-  process.selectedPatElectrons.cut = Ele_ACCEPTANCE+"&&"+Ele_Id+"&&"+Else_Iso
+#if produceMVAPFMET or produceNoPUPFMET :
+#  # Muon Cuts
+#  IN_ACCEPTANCE = '(abs(eta)<2.4 && pt>=19)'
+#  TRACK_CUTS = "? track ? track.numberOfValidHits > 10 :0"
+#  GLB_CUTS = "isGlobalMuon && isTrackerMuon && muonID('GlobalMuonPromptTight')"
+#
+#  #electron
+#  Ele_ACCEPTANCE = '(pt >= 19 && abs(eta)<2.5)'
+#  Ele_Id = 'abs(deltaPhiSuperClusterTrackAtVtx)<0.9 && abs(deltaEtaSuperClusterTrackAtVtx)<0.02 && scSigmaIEtaIEta<0.03 && hadronicOverEm<0.15' 
+#  Else_Iso = 'dr03TkSumPt/pt < 0.30'
+#    
+#  process.selectedPatMuons.cut = cms.string("(abs(eta)<2.4 && pt>=15)&&isGlobalMuon && isTrackerMuon && globalTrack.normalizedChi2 < 10 && muonID(\'TrackerMuonArbitrated\') && globalTrack.hitPattern.numberOfValidMuonHits > 0 && trackIso/pt < 0.3")
+#  process.selectedPatElectrons.cut = Ele_ACCEPTANCE+"&&"+Ele_Id+"&&"+Else_Iso
 
 # No PU MET
 process.load('RecoMET.METPUSubtraction.noPileUpPFMET_cff')
@@ -92,7 +92,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForNoPileUpPFMEt.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.noPileUpPFMEt.srcLeptons = cms.VInputTag(["acceptedMuons","acceptedElectrons","acceptedTaus"])
+process.noPileUpPFMEt.srcLeptons = cms.VInputTag(["METsrcMuons","METsrcElectrons","METsrcTaus"])
 
 ### MVA MET
 process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
@@ -101,7 +101,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.pfMEtMVA.srcLeptons = cms.VInputTag( ["acceptedMuons","acceptedElectrons","acceptedTaus"]) #selectedPatMuons
+process.pfMEtMVA.srcLeptons = cms.VInputTag( ["METsrcMuons","METsrcElectrons","METsrcTaus"]) #selectedPatMuons
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
@@ -131,7 +131,6 @@ process.patElectronFilter.minNumber = 0
 
 process.out.outputCommands +=pf2patEventContent
 
-
 process.outpath = cms.EndPath(process.out)
 
 process.p = cms.Path(
@@ -156,7 +155,7 @@ process.p += getattr(process,"patPF2PATSequence"+postfix)
 process.p += process.acceptedMuons
 #process.p += process.acceptedElectrons
 #process.p += process.acceptedTaus
-process.p += process.patMuEleTauFilter
+#process.p += process.patMuEleTauFilter
 process.p += process.patMuonFilter
 #process.p += process.patElectronFilter
 #process.p += process.patTauFilter
