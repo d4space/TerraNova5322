@@ -28,8 +28,8 @@ pf2patEventContent +=[
 	'keep *MET*_*_*_*',
 	'keep *_*met*_*_*',
 	'keep *_*Met*_*_*',
-	#'keep *_genMetTrue_*_*',
-	#'keep *_genMetCalo_*_*',
-	#'keep *_genMetCaloAndNonPrompt_*_*',
+	'keep *_genMetTrue_*_*',
+	'keep *_genMetCalo_*_*',
+	'keep *_genMetCaloAndNonPrompt_*_*',
 ]
 
