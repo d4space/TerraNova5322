@@ -111,11 +111,11 @@ class wLeptNeuFilter : public edm::EDFilter{
     leptonLabel1_ = iConfig.getParameter<edm::InputTag>("leptonLabel1");
     leptonLabel2_ = iConfig.getParameter<edm::InputTag>("leptonLabel2");
     metLabel_ = iConfig.getParameter<edm::InputTag>("metLabel");
-//    noPuMEtLabel_ = iConfig.getParameter<edm::InputTag>("noPuMEtLabel");
-//    MVAMEtLabel_ = iConfig.getParameter<edm::InputTag>("MVAMEtLabel");
-//    genMEtTrueLabel_ = iConfig.getParameter<edm::InputTag>("genMEtTrueLabel");
-//    genMEtCaloLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloLabel");
-//    genMEtCaloAndNonPromptLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloAndNonPromptLabel");    
+    noPuMEtLabel_ = iConfig.getParameter<edm::InputTag>("noPuMEtLabel");
+    MVAMEtLabel_ = iConfig.getParameter<edm::InputTag>("MVAMEtLabel");
+    genMEtTrueLabel_ = iConfig.getParameter<edm::InputTag>("genMEtTrueLabel");
+    genMEtCaloLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloLabel");
+    genMEtCaloAndNonPromptLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloAndNonPromptLabel");    
     jetLabel_ = iConfig.getParameter<edm::InputTag>("jetLabel");
     genParticlesLabel_= iConfig.getParameter<edm::InputTag>("genParticlesLabel");
     vertexLabel_ =  iConfig.getUntrackedParameter<edm::InputTag>("vertexLabel");
@@ -496,6 +496,11 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Lept1_genDPtRel	= new std::vector<double>;
 
     KoMETs.pfMEt4V = new TLorentzVector();
+    KoMETs.NoPuMEt4V = new TLorentzVector();
+    KoMETs.MVaMEt4V = new TLorentzVector();
+    KoMETs.genMEtTrue4V = new TLorentzVector();
+    KoMETs.genMEtCalo4V = new TLorentzVector();
+    KoMETs.genMEtCaloAndNonPrompt4V = new TLorentzVector();
 
 //    double	GenZs.Neut_pt;
 
@@ -574,11 +579,11 @@ private:
   edm::InputTag leptonLabel2_;
   edm::InputTag muonLabel2_;
   edm::InputTag metLabel_;
-//  edm::InputTag noPuMEtLabel_;
-//  edm::InputTag MVAMEtLabel_;
-//  edm::InputTag genMEtTrueLabel_;
-//  edm::InputTag genMEtCaloLabel_;
-//  edm::InputTag genMEtCaloAndNonPromptLabel_;
+  edm::InputTag noPuMEtLabel_;
+  edm::InputTag MVAMEtLabel_;
+  edm::InputTag genMEtTrueLabel_;
+  edm::InputTag genMEtCaloLabel_;
+  edm::InputTag genMEtCaloAndNonPromptLabel_;
   edm::InputTag jetLabel_;
   edm::InputTag genParticlesLabel_;
   edm::InputTag vertexLabel_;
@@ -598,20 +603,20 @@ private:
   edm::Handle<std::vector<pat::Tau> > tau1_hand;
   edm::Handle<std::vector<pat::Tau> > tau2_hand;
   edm::Handle<pat::METCollection> MET_hand;
-//  edm::Handle<reco::PFMETCollection> NoPU_MET_hand;
-//  edm::Handle<reco::PFMETCollection> MVA_MET_hand;
-//  edm::Handle<reco::GenMETCollection> genMEtTrue_hand;
-//  edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
-//  edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
+  edm::Handle<reco::PFMETCollection> NoPU_MET_hand;
+  edm::Handle<reco::PFMETCollection> MVA_MET_hand;
+  edm::Handle<reco::GenMETCollection> genMEtTrue_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
 
   //iterator------------------------------
   pat::METCollection::const_iterator MetIt;
-//  reco::PFMETCollection::const_iterator NoPU_MetIt;
-//  reco::PFMETCollection::const_iterator MVA_MetIt;
-//  reco::GenMETCollection::const_iterator genMEtTrue_MetIt;
-//  reco::GenMETCollection::const_iterator genMEtCalo_MetIt;
-//  reco::GenMETCollection::const_iterator genMEtCaloAndNonPrompt_MetIt;
+  reco::PFMETCollection::const_iterator NoPU_MetIt;
+  reco::PFMETCollection::const_iterator MVA_MetIt;
+  reco::GenMETCollection::const_iterator genMEtTrue_MetIt;
+  reco::GenMETCollection::const_iterator genMEtCalo_MetIt;
+  reco::GenMETCollection::const_iterator genMEtCaloAndNonPrompt_MetIt;
 
   std::vector<std::string> filters_;
 
@@ -1366,6 +1371,11 @@ void clear()
   Ws.Lept1_genDPtRel->clear();
 
   KoMETs.pfMEt4V->SetPxPyPzE(0,0,0,0);
+  KoMETs.NoPuMEt4V->SetPxPyPzE(0,0,0,0);
+  KoMETs.MVaMEt4V->SetPxPyPzE(0,0,0,0);
+  KoMETs.genMEtTrue4V->SetPxPyPzE(0,0,0,0);
+  KoMETs.genMEtCalo4V->SetPxPyPzE(0,0,0,0);
+  KoMETs.genMEtCaloAndNonPrompt4V->SetPxPyPzE(0,0,0,0);
 
 
 

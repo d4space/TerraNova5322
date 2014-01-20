@@ -119,7 +119,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     iEvent.getByLabel(metLabel_,MET_hand);
     MetIt = MET_hand->begin();
-/*
+
     iEvent.getByLabel(noPuMEtLabel_,NoPU_MET_hand);
     NoPU_MetIt = NoPU_MET_hand->begin();
 
@@ -134,7 +134,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     iEvent.getByLabel(genMEtCaloAndNonPromptLabel_,genMEtCaloAndNonPrompt_hand);
     genMEtCaloAndNonPrompt_MetIt = genMEtCaloAndNonPrompt_hand->begin();
-*/
+
     edm::Handle< reco::PFCandidateCollection > pfCandidates_;
     typedef reco::PFCandidateCollection::const_iterator CI;
     iEvent.getByLabel("particleFlow",pfCandidates_);
@@ -147,72 +147,75 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
     //bool selected = false;
+    //
     ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > corrmet;
     corrmet.SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
     pfMET = MetIt->pt();
     met->push_back(corrmet);
 
-    if(metStudy_){
-      const Ky::METCandidate pfmet(pfMET, MetIt->sumEt(),
-          MetIt->NeutralEMFraction(),MetIt->NeutralHadEtFraction(),
-          MetIt->ChargedHadEtFraction(),MetIt->ChargedEMEtFraction(),
-          MetIt->MuonEtFraction() );
-      pfMet->push_back(pfmet);
-    }
+    //if(metStudy_){
+    //  const Ky::METCandidate pfmet(pfMET, MetIt->sumEt(),
+    //      MetIt->NeutralEMFraction(),MetIt->NeutralHadEtFraction(),
+    //      MetIt->ChargedHadEtFraction(),MetIt->ChargedEMEtFraction(),
+    //      MetIt->MuonEtFraction() );
+    //  pfMet->push_back(pfmet);
+    //}
 
-    KoMETs.pfMEt4V->SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
+    KoMETs.pfMEt4V    ->SetPxPyPzE(MetIt->px(),MetIt->py(),0,MetIt->pt());
+    KoMETs.pfMEtSumEt = MetIt->sumEt();
+    KoMETs.pfMEtNeuEM = MetIt->NeutralEMFraction();
+    KoMETs.pfMEtNeuHad= MetIt->NeutralHadEtFraction();
+    KoMETs.pfMEtChHad = MetIt->ChargedHadEtFraction();
+    KoMETs.pfMEtChEM  = MetIt->ChargedEMEtFraction();
+    KoMETs.pfMEtMu    = MetIt->MuonEtFraction();
 
-    h_MET->Fill(pfMET);
-/*
-    NoPU_MET = NoPU_MetIt->pt();
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > NoPU_corrmet;
-    NoPU_corrmet.SetPxPyPzE(NoPU_MetIt->px(),NoPU_MetIt->py(),0,NoPU_MetIt->pt());
-    NoPU_met->push_back(NoPU_corrmet);
+    KoMETs.NoPuMEt4V    ->SetPxPyPzE(NoPU_MetIt->px(),NoPU_MetIt->py(),0,NoPU_MetIt->pt());
+    KoMETs.NoPuMEtSumEt = NoPU_MetIt->sumEt();
+    KoMETs.NoPuMEtNeuEM = NoPU_MetIt->NeutralEMFraction();
+    KoMETs.NoPuMEtNeuHad= NoPU_MetIt->NeutralHadEtFraction();
+    KoMETs.NoPuMEtChHad = NoPU_MetIt->ChargedHadEtFraction();
+    KoMETs.NoPuMEtChEM  = NoPU_MetIt->ChargedEMEtFraction();
+    KoMETs.NoPuMEtMu    = NoPU_MetIt->MuonEtFraction();
 
-    if(NoPU_metStudy_){
-      const Ky::METCandidate NoPU_pfmet(NoPU_MET, NoPU_MetIt->sumEt(),
-	  NoPU_MetIt->NeutralEMFraction(),NoPU_MetIt->NeutralHadEtFraction(),
-	  NoPU_MetIt->ChargedHadEtFraction(),NoPU_MetIt->ChargedEMEtFraction(),
-	  NoPU_MetIt->MuonEtFraction() );
-      NoPU_pfMet->push_back(NoPU_pfmet);
-    }
-    h_NoPU_MET->Fill(NoPU_MET);
+    KoMETs.MVaMEt4V     ->SetPxPyPzE(MVA_MetIt->px(),MVA_MetIt->py(),0,MVA_MetIt->pt());
+    KoMETs.MVaMEtSumEt = MVA_MetIt->sumEt();
+    KoMETs.MVaMEtNeuEM = MVA_MetIt->NeutralEMFraction();
+    KoMETs.MVaMEtNeuHad= MVA_MetIt->NeutralHadEtFraction();
+    KoMETs.MVaMEtChHad = MVA_MetIt->ChargedHadEtFraction();
+    KoMETs.MVaMEtChEM  = MVA_MetIt->ChargedEMEtFraction();
+    KoMETs.MVaMEtMu    = MVA_MetIt->MuonEtFraction();
 
-    MVA_MET = MVA_MetIt->pt();
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > MVA_corrmet;
-    MVA_corrmet.SetPxPyPzE(MVA_MetIt->px(),MVA_MetIt->py(),0,MVA_MetIt->pt());
-    MVA_met->push_back(MVA_corrmet);
+    KoMETs.genMEtTrue4V ->SetPxPyPzE(genMEtTrue_MetIt->px(),genMEtTrue_MetIt->py(),0,genMEtTrue_MetIt->pt());
+    KoMETs.genMEtTrueSumEt = genMEtTrue_MetIt->sumEt();
+    KoMETs.genMEtTrueNeuEM = genMEtTrue_MetIt->NeutralEMFraction();
+    KoMETs.genMEtTrueNeuHad= genMEtTrue_MetIt->NeutralHadEtFraction();
+    KoMETs.genMEtTrueChHad = genMEtTrue_MetIt->ChargedHadEtFraction();
+    KoMETs.genMEtTrueChEM  = genMEtTrue_MetIt->ChargedEMEtFraction();
+    KoMETs.genMEtTrueMu    = genMEtTrue_MetIt->MuonEtFraction();
 
-    if(MVA_metStudy_){
-      const Ky::METCandidate MVA_pfmet(MVA_MET, MVA_MetIt->sumEt(),
-	  MVA_MetIt->NeutralEMFraction(),MVA_MetIt->NeutralHadEtFraction(),
-	  MVA_MetIt->ChargedHadEtFraction(),MVA_MetIt->ChargedEMEtFraction(),
-	  MVA_MetIt->MuonEtFraction() );
-      MVA_pfMet->push_back(MVA_pfmet);
-    }
-    h_MVA_MET->Fill(MVA_MET);
+    KoMETs.genMEtCalo4V ->SetPxPyPzE(genMEtCalo_MetIt->px(),genMEtCalo_MetIt->py(),0,genMEtCalo_MetIt->pt());
+    KoMETs.genMEtCaloSumEt = genMEtCalo_MetIt->sumEt();
+    KoMETs.genMEtCaloNeuEM = genMEtCalo_MetIt->NeutralEMFraction();
+    KoMETs.genMEtCaloNeuHad= genMEtCalo_MetIt->NeutralHadEtFraction();
+    KoMETs.genMEtCaloChHad = genMEtCalo_MetIt->ChargedHadEtFraction();
+    KoMETs.genMEtCaloChEM  = genMEtCalo_MetIt->ChargedEMEtFraction();
+    KoMETs.genMEtCaloMu    = genMEtCalo_MetIt->MuonEtFraction();
 
-    genMEtTrue_MET = genMEtTrue_MetIt->pt();
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtTrue_corrmet;
-    genMEtTrue_corrmet.SetPxPyPzE(genMEtTrue_MetIt->px(),genMEtTrue_MetIt->py(),0,genMEtTrue_MetIt->pt());
-    genMEtTrue_met->push_back(genMEtTrue_corrmet);
-    
-    h_genMEtTrue_MET->Fill(genMEtTrue_MET);
+    KoMETs.genMEtCaloAndNonPrompt4V->SetPxPyPzE(genMEtCaloAndNonPrompt_MetIt->px(),genMEtCaloAndNonPrompt_MetIt->py(),0,genMEtCaloAndNonPrompt_MetIt->pt());
+    KoMETs.genMEtCaloAndNonPromptSumEt = genMEtCaloAndNonPrompt_MetIt->sumEt();
+    KoMETs.genMEtCaloAndNonPromptNeuEM = genMEtCaloAndNonPrompt_MetIt->NeutralEMFraction();
+    KoMETs.genMEtCaloAndNonPromptNeuHad= genMEtCaloAndNonPrompt_MetIt->NeutralHadEtFraction();
+    KoMETs.genMEtCaloAndNonPromptChHad = genMEtCaloAndNonPrompt_MetIt->ChargedHadEtFraction();
+    KoMETs.genMEtCaloAndNonPromptChEM  = genMEtCaloAndNonPrompt_MetIt->ChargedEMEtFraction();
+    KoMETs.genMEtCaloAndNonPromptMu    = genMEtCaloAndNonPrompt_MetIt->MuonEtFraction();
 
-    genMEtCalo_MET = genMEtCalo_MetIt->pt();
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtCalo_corrmet;
-    genMEtCalo_corrmet.SetPxPyPzE(genMEtCalo_MetIt->px(),genMEtCalo_MetIt->py(),0,genMEtCalo_MetIt->pt());
-    genMEtCalo_met->push_back(genMEtCalo_corrmet);
-    
+    h_MET->Fill(pfMEt4V->Pt());
+    h_NoPU_MET->Fill(NoPuMEt4V->Pt());
+    h_MVA_MET->Fill(MVaMEt4V->Pt());
+    h_genMEtTrue_MET->Fill(genMEtTrue4V->Pt());
     h_genMEtCalo_MET->Fill(genMEtCalo_MET);
-
-    genMEtCaloAndNonPrompt_MET = genMEtCaloAndNonPrompt_MetIt->pt();
-    ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > genMEtCaloAndNonPrompt_corrmet;
-    genMEtCaloAndNonPrompt_corrmet.SetPxPyPzE(genMEtCaloAndNonPrompt_MetIt->px(),genMEtCaloAndNonPrompt_MetIt->py(),0,genMEtCaloAndNonPrompt_MetIt->pt());
-    genMEtCaloAndNonPrompt_met->push_back(genMEtCaloAndNonPrompt_corrmet);
-    
     h_genMEtCaloAndNonPrompt_MET->Fill(genMEtCaloAndNonPrompt_MET);
-*/
+
     if(Channel == "Muon"){
       EventData.Channel = GenType::kMuon;
       LoopMuon(iEvent, iSetup);
