@@ -52,6 +52,19 @@ patElectronFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('acceptedElectrons'),
     minNumber = cms.uint32(1)
 )
+from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+METsrcElectrons = cms.EDProducer(
+    "KyElectronSelector",
+    version = cms.untracked.int32( 13 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut) 13(medium pt 30) 14(medium pt 15)
+    cut = cms.vstring("pt","eta","EcalGapCut"),
+    electronLabel  = cms.InputTag("selectedPatElectronsPFlow"),
+    beamSpotLabel = cms.InputTag("offlineBeamSpot"),
+    vertexLabel = cms.InputTag('offlinePrimaryVertices'),
+    rhoIsoLabel = cms.InputTag('kt6PFJets','rho'),
+    conversionsInputTag = cms.InputTag("allConversions"),
+    eleIdSelector = eleSelectorPSet,
+    saveTree = cms.untracked.bool(False),
+    )
 
 acceptedMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("selectedPatMuonsPFlow"),
@@ -65,9 +78,35 @@ patMuonFilter = cms.EDFilter("CandViewCountFilter",
   minNumber = cms.uint32(1)
 )
 
+from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+METsrcMuons = cms.EDProducer("KyMuonSelector",
+    # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
+    version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
+    cut = cms.vstring("pt"),
+    isocut = cms.vstring(),
+    muonLabel  = cms.InputTag("selectedPatMuonsPFlow"),
+    beamSpotLabel = cms.InputTag("offlineBeamSpot"),
+    muonIdSelector = muonSelectorPSet,
+    muonIsoSelector = muonIsoSelectorPSet,
+    saveTree = cms.untracked.bool(False),
+    )
+
+METsrcTaus = cms.EDFilter("PATTauSelector",
+    src = cms.InputTag("selectedPatTausPFlow"),
+    cut = cms.string("pt > 20 && abs(eta) < 2.3 && tauID('decayModeFinding')>0.5 && tauID('byMediumCombinedIsolationDeltaBetaCorr3Hits')>0.5"),
+    #cut = cms.string("pt > 10 && abs(eta) < 3.0"),
+#    filter = cms.bool(False),
+)
+
+
 patLeptonFilter = cms.EDFilter("MultiLeptonCountFilter",
   leptons = cms.untracked.VInputTag('acceptedMuons','acceptedElectrons'),
   minCount = cms.untracked.uint32(0)
+)
+patMuEleTauFilter = cms.EDFilter("MultiObjectCountFilter",
+  leptons = cms.untracked.VInputTag('acceptedMuons','acceptedElectrons','acceptedTaus'),
+  minCount = cms.untracked.uint32(1)
 )
 
 #Electron ID

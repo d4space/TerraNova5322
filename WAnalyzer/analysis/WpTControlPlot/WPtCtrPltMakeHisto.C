@@ -14,6 +14,7 @@ void WPtCtrPltMakeHisto()
   TString AnaChannelEle = "ElectronLowPU"; 
   TString AnaChannelMu  = "MuonLowPU";
 
+  gSystem->CompileMacro("../EventSelection/NtupleAna.C","k");
   gSystem->CompileMacro("../EventSelection/WLepNeu.C","k");
   gSystem->CompileMacro("../EventSelection/WpT.C","k");
 //====================
@@ -82,7 +83,7 @@ void WPtCtrPltMakeHisto()
   WPt_WmToEleNu_S8.Loop();
   ***/
 
-  //***
+  /***
   cout<<"Ele_WplusToEleNu_S8==========================="<<endl;
   TChain *TC_Ele_WpToEleNu_S8    = new TChain("WEleNeu/tree","");
   TChain *TC_Ele_WpToEleNu_S8_Ele = new TChain("Electrons/tree","");
@@ -92,6 +93,17 @@ void WPtCtrPltMakeHisto()
   WpT WPt_WpToEleNu_S8(TC_Ele_WpToEleNu_S8,TC_Ele_WpToEleNu_S8_Ele,
   	LumiW_WpToElNu, Ele_WpToEleNu_S8File,Mode,AnaChannelEle,1,true,-999);
   WPt_WpToEleNu_S8.Loop();
+  ***/
+  //***
+  cout<<"Muon Test==========================="<<endl;
+  TChain *TC_Test    = new TChain("WMuNeu/tree","");
+  TChain *TC_Test_Muon = new TChain("Muons/tree","");
+  SetupTree("MuonTest",TC_Test);
+  SetupTree("MuonTest",TC_Test_Muon);
+  TString MuonTestFile = "MuonTest_"+Mode;
+  WpT WPt_MuonTest(TC_Test,TC_Test_Muon,
+  	1, MuonTestFile,Mode,AnaChannelMu,1,true,-999);
+  WPt_MuonTest.Loop();
   //***/
 // For Electron analysis: TO HERE
 }
