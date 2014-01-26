@@ -1,7 +1,11 @@
+#include "TSystem.h"
 #include <iostream>
 #include "../EventSelection/include/Tree2012LoPU/SetupTree.h"
-#include "../Utils/const.h"
+//#include "../Utils/const.h"
+#include "../EventSelection/WpT.h"
+
 using namespace std;
+//using namespace ROOT::Math;
 void WPtCtrPltMakeHisto()
 {
 //======================================
@@ -13,6 +17,9 @@ void WPtCtrPltMakeHisto()
   TString Mode = "Analysis";//Analysis,Recoil, RecoilMC, RecoilCorr, Unfold,
   TString AnaChannelEle = "ElectronLowPU"; 
   TString AnaChannelMu  = "MuonLowPU";
+
+  //gSystem->Load("libMathCore");
+  //gSystem->Load("libPhysics");
 
   gSystem->CompileMacro("../EventSelection/NtupleAna.C","k");
   gSystem->CompileMacro("../EventSelection/WLepNeu.C","k");

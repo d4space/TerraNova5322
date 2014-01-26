@@ -55,6 +55,10 @@ typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
 void WpT::Loop()
 {
+  gSystem->Load("libMathCore");
+  gSystem->Load("libPhysics");
+  using namespace ROOT::Math;
+
   Debug=false;
   cout<<"==========================================================="<<endl;
   cout<<"WpT Analysis with Mode: "<<Mode<<"  AnaChannel: "<<AnaChannel<<endl;
@@ -109,6 +113,8 @@ void WpT::Loop()
     resultDir = "ElectronLowPU";
 
   gSystem->mkdir(resultDir);
+  //TLorentzVector *myPfMEt = 0;
+  //fChain->SetBranchAddress("pfMEt4V",&myPfMEt);
 
   for (int i(0); i<20;i++)
   //for (int i(0); i<Ntries;i++)
@@ -122,6 +128,8 @@ void WpT::Loop()
   //=========
     //dump tree
     //=========
+    //pfMEt4V = 0;
+
     fChain->GetEntry(i);
     //===========================
     //Initialization of Variables
@@ -169,8 +177,13 @@ void WpT::Loop()
     if(pfMEt4V == NULL)
     {
       cout<<"No pfMET: EXIT================="<<endl;
+      //continue;
+      //exit(-1);
     }
-    cout<<"pfMEt4V.pt: "<<pfMEt4V->X()<<endl;
+    //cout<<"fP.fX: "<<fP_fX<<endl;
+    cout<<"pfMEt4V.pt: "<<pfMEt4V->Px()<<endl;
+    //cout<<"myPfMEt.pt: "<<myPfMEt->Pt()<<endl;
+    
     WbestSelect();
 
     
