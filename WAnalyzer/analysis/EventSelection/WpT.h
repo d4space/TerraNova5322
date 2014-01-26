@@ -9,6 +9,7 @@
 
 #ifndef WpT_h
 #define WpT_h
+
 #include "WLepNeu.h"
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
@@ -23,6 +24,7 @@ protected:
    int InitVar4Evt(); // Init for every event
    int VertexCut();
    double CalcEvtWeight();
+   int WbestSelect();
    // Member variables
    int mIdxWcan;
    double mNselected4Bin[NwPtBin];

@@ -737,12 +737,12 @@ class KoMET
     void Register(TTree *tree)
     {
       //tree->Branch("pfMEt4V", &pfMEt4V, int bufsize=3200, splitlevel=99);
-      tree->Branch("pfMEt4V", &pfMEt4V);
-      tree->Branch("NoPuMEt4V", &NoPuMEt4V);
-      tree->Branch("MVaMEt4V", &MVaMEt4V);
-      tree->Branch("genMEtTrue4V", &genMEtTrue4V);
-      tree->Branch("genMEtCalo4V", &genMEtCalo4V);
-      tree->Branch("genMEtCaloAndNonPrompt4V", &genMEtCaloAndNonPrompt4V);
+      tree->Branch("pfMEt4V","TLorentzVector", &pfMEt4V);
+      tree->Branch("NoPuMEt4V","TLorentzVector", &NoPuMEt4V);
+      tree->Branch("MVaMEt4V","TLorentzVector", &MVaMEt4V);
+      tree->Branch("genMEtTrue4V","TLorentzVector", &genMEtTrue4V);
+      tree->Branch("genMEtCalo4V","TLorentzVector", &genMEtCalo4V);
+      tree->Branch("genMEtCaloAndNonPrompt4V","TLorentzVector", &genMEtCaloAndNonPrompt4V);
 
       tree->Branch("pfMEtSumEt", &pfMEtSumEt	,"pfMEtSumEt/d");
       tree->Branch("pfMEtNeuEM", &pfMEtNeuEM	,"pfMEtNeuEM/d");

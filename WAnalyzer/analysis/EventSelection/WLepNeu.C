@@ -58,7 +58,7 @@ void WLepNeu::Loop()
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
-  int Ntries = fChain->GetEntries();
+  Ntries = fChain->GetEntries();
   gBenchmark->Show("WLepNeu");
 }
 int WLepNeu::CheckChannel()

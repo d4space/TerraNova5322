@@ -55,6 +55,7 @@ typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
 void WpT::Loop()
 {
+  Debug=false;
   cout<<"==========================================================="<<endl;
   cout<<"WpT Analysis with Mode: "<<Mode<<"  AnaChannel: "<<AnaChannel<<endl;
   cout<<"==========================================================="<<endl;
@@ -100,17 +101,17 @@ void WpT::Loop()
   int evtCnt_Z_beforeCut(0);
   int evtCnt_Z_afterCut(0);
 
-  bool Debug(false);
 
   TString resultDir = AnaChannel;
   if(AnaChannel == "MuonLowPU" )
-    TString resultDir = "MuonLowPU";
+    resultDir = "MuonLowPU";
   else if(AnaChannel == "ElectronLowPU")
-    TString resultDir = "ElectronLowPU";
+    resultDir = "ElectronLowPU";
 
   gSystem->mkdir(resultDir);
 
-  for (int i(0); i<Ntries;i++)
+  for (int i(0); i<20;i++)
+  //for (int i(0); i<Ntries;i++)
   {
     evtCnt = i;
     //===============================
@@ -165,6 +166,11 @@ void WpT::Loop()
     //===========================
     // W best Candidate Selection
     //===========================
+    if(pfMEt4V == NULL)
+    {
+      cout<<"No pfMET: EXIT================="<<endl;
+    }
+    cout<<"pfMEt4V.pt: "<<pfMEt4V->X()<<endl;
     WbestSelect();
 
     
@@ -946,7 +952,6 @@ void WpT::Loop()
   h1_W_Acop->Write();
   h1_vtx_z->Write();
   h1_vtx_Rho->Write();
-  h1_PuWeight->Write();
   h1_GlbMuChi2->Write();
   h1_muonHits->Write();
   
@@ -1075,9 +1080,7 @@ void WpT::Loop()
 //--------------
 
   h1_Vtx_Prim->Write();
-  h1_Vtx_PrimPuW->Write();
   h1_Vtx_Good->Write();
-  h1_Vtx_GoodPuW->Write();
 
   //Z----------
   h1_diLeptVtxProb->Write();
@@ -1223,7 +1226,7 @@ double WpT::CalcEvtWeight()
     mTTW= LumiWeight*weight;} //reweighting value for S10
   return mTTW;
 }
-int WpT:WbestSelect()
+int WpT::WbestSelect()
 {
   for(int iw(0); iw<wCand.size; iw++)
   {

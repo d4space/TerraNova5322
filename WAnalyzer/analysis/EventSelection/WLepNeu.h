@@ -271,6 +271,7 @@ public :
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 protected:
+  bool Debug;
   int InitVar();
   int CheckChannel();
   int TriggerCut();
