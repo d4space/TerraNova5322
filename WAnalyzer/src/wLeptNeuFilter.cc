@@ -164,35 +164,35 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     KoMETs.pfMEt_x    =pfMEt_It->px();
     KoMETs.pfMEt_y    =pfMEt_It->py();
 //    KoMETs.pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
-    KoMETs.pfMEtSumEt = pfMEt_It->sumEt();
-    KoMETs.pfMEtNeuEM = pfMEt_It->NeutralEMFraction();
-    KoMETs.pfMEtNeuHad= pfMEt_It->NeutralHadEtFraction();
-    KoMETs.pfMEtChHad = pfMEt_It->ChargedHadEtFraction();
-    KoMETs.pfMEtChEM  = pfMEt_It->ChargedEMEtFraction();
-    KoMETs.pfMEtMu    = pfMEt_It->MuonEtFraction();
+    //KoMETs.pfMEtSumEt = pfMEt_It->sumEt();
+    //KoMETs.pfMEtNeuEM = pfMEt_It->NeutralEMFraction();
+    //KoMETs.pfMEtNeuHad= pfMEt_It->NeutralHadEtFraction();
+    //KoMETs.pfMEtChHad = pfMEt_It->ChargedHadEtFraction();
+    //KoMETs.pfMEtChEM  = pfMEt_It->ChargedEMEtFraction();
+    //KoMETs.pfMEtMu    = pfMEt_It->MuonEtFraction();
 
     KoMETs.NoPuMEt_x    =NoPuMEt_It->px();
     KoMETs.NoPuMEt_y    =NoPuMEt_It->py();
-    KoMETs.NoPuMEtSumEt = NoPuMEt_It->sumEt();
-    KoMETs.NoPuMEtNeuEM = NoPuMEt_It->NeutralEMFraction();
-    KoMETs.NoPuMEtNeuHad= NoPuMEt_It->NeutralHadEtFraction();
-    KoMETs.NoPuMEtChHad = NoPuMEt_It->ChargedHadEtFraction();
-    KoMETs.NoPuMEtChEM  = NoPuMEt_It->ChargedEMEtFraction();
-    KoMETs.NoPuMEtMu    = NoPuMEt_It->MuonEtFraction();
+    //KoMETs.NoPuMEtSumEt = NoPuMEt_It->sumEt();
+    //KoMETs.NoPuMEtNeuEM = NoPuMEt_It->NeutralEMFraction();
+    //KoMETs.NoPuMEtNeuHad= NoPuMEt_It->NeutralHadEtFraction();
+    //KoMETs.NoPuMEtChHad = NoPuMEt_It->ChargedHadEtFraction();
+    //KoMETs.NoPuMEtChEM  = NoPuMEt_It->ChargedEMEtFraction();
+    //KoMETs.NoPuMEtMu    = NoPuMEt_It->MuonEtFraction();
 
     KoMETs.MVaMEt_x     =MVaMEt_It->px();
     KoMETs.MVaMEt_y     =MVaMEt_It->py();
-    KoMETs.MVaMEtSumEt = MVaMEt_It->sumEt();
-    KoMETs.MVaMEtNeuEM = MVaMEt_It->NeutralEMFraction();
-    KoMETs.MVaMEtNeuHad= MVaMEt_It->NeutralHadEtFraction();
-    KoMETs.MVaMEtChHad = MVaMEt_It->ChargedHadEtFraction();
-    KoMETs.MVaMEtChEM  = MVaMEt_It->ChargedEMEtFraction();
-    KoMETs.MVaMEtMu    = MVaMEt_It->MuonEtFraction();
+    //KoMETs.MVaMEtSumEt = MVaMEt_It->sumEt();
+    //KoMETs.MVaMEtNeuEM = MVaMEt_It->NeutralEMFraction();
+    //KoMETs.MVaMEtNeuHad= MVaMEt_It->NeutralHadEtFraction();
+    //KoMETs.MVaMEtChHad = MVaMEt_It->ChargedHadEtFraction();
+    //KoMETs.MVaMEtChEM  = MVaMEt_It->ChargedEMEtFraction();
+    //KoMETs.MVaMEtMu    = MVaMEt_It->MuonEtFraction();
 
     KoMETs.genMEtTrue_x =genMEtTrue_It->px();
     KoMETs.genMEtTrue_y =genMEtTrue_It->py();
     KoMETs.genMEtTrueSumEt = genMEtTrue_It->sumEt();
-    KoMETs.genMEtTrueNeuEM = genMEtTrue_It->NeutralEMFraction();
+    //KoMETs.genMEtTrueNeuEM = genMEtTrue_It->NeutralEMFraction();
     KoMETs.genMEtTrueNeuHad= genMEtTrue_It->NeutralHadEtFraction();
     KoMETs.genMEtTrueChHad = genMEtTrue_It->ChargedHadEtFraction();
     KoMETs.genMEtTrueChEM  = genMEtTrue_It->ChargedEMEtFraction();
@@ -200,6 +200,8 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     KoMETs.genMEtCalo_x =genMEtCalo_It->px();
     KoMETs.genMEtCalo_y =genMEtCalo_It->py();
+    KoMETs.genMEtCaloSumEt = genMEtCalo_It->sumEt();
+    KoMETs.genMEtCaloNeuHad= genMEtCalo_It->NeutralHadEtFraction();
     KoMETs.genMEtCaloChHad = genMEtCalo_It->ChargedHadEtFraction();
     KoMETs.genMEtCaloChEM  = genMEtCalo_It->ChargedEMEtFraction();
     KoMETs.genMEtCaloMu    = genMEtCalo_It->MuonEtFraction();
@@ -207,7 +209,7 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     KoMETs.genMEtCaloAndNonPrompt_x=genMEtCaloAndNonPrompt_It->px();
     KoMETs.genMEtCaloAndNonPrompt_y=genMEtCaloAndNonPrompt_It->py();
     KoMETs.genMEtCaloAndNonPromptSumEt = genMEtCaloAndNonPrompt_It->sumEt();
-    KoMETs.genMEtCaloAndNonPromptNeuEM = genMEtCaloAndNonPrompt_It->NeutralEMFraction();
+    //KoMETs.genMEtCaloAndNonPromptNeuEM = genMEtCaloAndNonPrompt_It->NeutralEMFraction();
     KoMETs.genMEtCaloAndNonPromptNeuHad= genMEtCaloAndNonPrompt_It->NeutralHadEtFraction();
     KoMETs.genMEtCaloAndNonPromptChHad = genMEtCaloAndNonPrompt_It->ChargedHadEtFraction();
     KoMETs.genMEtCaloAndNonPromptChEM  = genMEtCaloAndNonPrompt_It->ChargedEMEtFraction();
