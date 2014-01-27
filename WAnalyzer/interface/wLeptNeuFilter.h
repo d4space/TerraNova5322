@@ -286,27 +286,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     Zs.Neut_phi = new std::vector<double>;
     Zs.Neut_px = new std::vector<double>;
     Zs.Neut_py = new std::vector<double>;
-//    Zs.NoPU_Neut_pt = new std::vector<double>;
-//    Zs.NoPU_Neut_phi = new std::vector<double>;
-//    Zs.NoPU_Neut_px = new std::vector<double>;
-//    Zs.NoPU_Neut_py = new std::vector<double>;
-//    Zs.MVA_Neut_pt = new std::vector<double>;
-//    Zs.MVA_Neut_phi = new std::vector<double>;
-//    Zs.MVA_Neut_px = new std::vector<double>;
-//    Zs.MVA_Neut_py = new std::vector<double>;
-//    Zs.genMEtTrue_pt = new std::vector<double>;
-//    Zs.genMEtTrue_phi = new std::vector<double>;
-//    Zs.genMEtTrue_px = new std::vector<double>;
-//    Zs.genMEtTrue_py = new std::vector<double>;
-//    Zs.genMEtCalo_pt = new std::vector<double>;
-/*    Zs.genMEtCalo_phi = new std::vector<double>;
-    Zs.genMEtCalo_px = new std::vector<double>;
-    Zs.genMEtCalo_py = new std::vector<double>;
-    Zs.genMEtCaloAndNonPrompt_pt = new std::vector<double>;
-    Zs.genMEtCaloAndNonPrompt_phi = new std::vector<double>;
-    Zs.genMEtCaloAndNonPrompt_px = new std::vector<double>;
-    Zs.genMEtCaloAndNonPrompt_py = new std::vector<double>;
-*/    Zs.Sign=new std::vector<double>; //--(-2), +-(0), ++(2)
+    Zs.Sign=new std::vector<double>; //--(-2), +-(0), ++(2)
 
     Ws.Lept1_isGlobal=new std::vector<bool>;
     Ws.Lept1_isTrker=new std::vector<bool>;
@@ -370,27 +350,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Neut_phi = new std::vector<double>;
     Ws.Neut_px = new std::vector<double>;
     Ws.Neut_py = new std::vector<double>;
-//    Ws.NoPU_Neut_pt = new std::vector<double>;
-//    Ws.NoPU_Neut_phi = new std::vector<double>;
-//    Ws.NoPU_Neut_px = new std::vector<double>;
-//    Ws.NoPU_Neut_py = new std::vector<double>;
-//    Ws.MVA_Neut_pt = new std::vector<double>;
-//    Ws.MVA_Neut_phi = new std::vector<double>;
-//    Ws.MVA_Neut_px = new std::vector<double>;
-//    Ws.MVA_Neut_py = new std::vector<double>;
-//    Ws.genMEtTrue_pt = new std::vector<double>;
-//    Ws.genMEtTrue_phi = new std::vector<double>;
-//    Ws.genMEtTrue_px = new std::vector<double>;
-//    Ws.genMEtTrue_py = new std::vector<double>;
-/*    Ws.genMEtCalo_pt = new std::vector<double>;
-    Ws.genMEtCalo_phi = new std::vector<double>;
-    Ws.genMEtCalo_px = new std::vector<double>;
-    Ws.genMEtCalo_py = new std::vector<double>;
-    Ws.genMEtCaloAndNonPrompt_pt = new std::vector<double>;
-    Ws.genMEtCaloAndNonPrompt_phi = new std::vector<double>;
-    Ws.genMEtCaloAndNonPrompt_px = new std::vector<double>;
-    Ws.genMEtCaloAndNonPrompt_py = new std::vector<double>;
-*/    Ws.W_pt = new std::vector<double>;
+    Ws.W_pt = new std::vector<double>;
     Ws.W_eta = new std::vector<double>;
     Ws.W_phi = new std::vector<double>;
     Ws.W_px = new std::vector<double>;
@@ -495,14 +455,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Lept1_genDeltaR	= new std::vector<double>;
     Ws.Lept1_genDPtRel	= new std::vector<double>;
 
-    //KoMETs.pfMEt4V = new TLorentzVector();
-    //KoMETs.NoPuMEt4V = new TLorentzVector();
-    //KoMETs.MVaMEt4V = new TLorentzVector();
-    //KoMETs.genMEtTrue4V = new TLorentzVector();
-    //KoMETs.genMEtCalo4V = new TLorentzVector();
-    //KoMETs.genMEtCaloAndNonPrompt4V = new TLorentzVector();
-
-//    double	GenZs.Neut_pt;
+    pfMEt4V = new TLorentzVector();
 
     tmp = fs->make<TH1F>("EventSummary","EventSummary",filters_.size(),0,filters_.size());
 
@@ -676,18 +629,8 @@ private:
   std::vector<Ky::Lepton>* lepton1;
   std::vector<Ky::Lepton>* lepton2;
   std::vector<Ky::METCandidate>* pfMet;
-//  std::vector<Ky::METCandidate>* NoPU_pfMet;
-//  std::vector<Ky::METCandidate>* MVA_pfMet;
-//  std::vector<Ky::METCandidate>* genMEtTrue_pfMet;
-//  std::vector<Ky::METCandidate>* genMEtCalo_pfMet;
-//  std::vector<Ky::METCandidate>* genMEtCaloAndNonPrompt_pfMet;
-  //std::vector<Ky::WLeptNeuCand>* WLeptNeuCand_v;
   std::vector<math::XYZTLorentzVector>* met;
-//  std::vector<math::XYZTLorentzVector>* NoPU_met;
-//  std::vector<math::XYZTLorentzVector>* MVA_met;
-//  std::vector<math::XYZTLorentzVector>* genMEtTrue_met;
-//  std::vector<math::XYZTLorentzVector>* genMEtCalo_met;
-//  std::vector<math::XYZTLorentzVector>* genMEtCaloAndNonPrompt_met;
+  TLorentzVector *pfMEt4V;
   std::vector<math::XYZTLorentzVector>* jetspt30;
 
   double pfMET;
@@ -2066,7 +2009,9 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       //W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
+      //const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
+
 
       if( !isRD && GenWs.Born_nLepts->size() >0 )
       if(Channel == "Muon")
@@ -2192,7 +2137,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.Lept1_pixelHits->push_back(Lept1_pixelHits);
 
       Ws.W_invm->push_back(WLeptNeuCand_.M());
-      Ws.Neut_pt->push_back(met->at(0).pt());
+      Ws.Neut_pt->push_back(pfMEt4V->Pt());
       Ws.Neut_phi->push_back(pfMEt_It->phi());
       Ws.Neut_px->push_back(pfMEt_It->px());
       Ws.Neut_py->push_back(pfMEt_It->py());
@@ -2475,7 +2420,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.px->push_back( Dimuon.px());
         Zs.py->push_back( Dimuon.py());
         Zs.pz->push_back( Dimuon.pz());
-        Zs.Neut_pt->push_back( met->at(0).pt());
+        Zs.Neut_pt->push_back( pfMEt4V->Pt());
         Zs.Neut_phi->push_back( pfMEt_It->phi());
         Zs.Neut_px->push_back( pfMEt_It->px());
         Zs.Neut_py->push_back( pfMEt_It->py());
@@ -2604,7 +2549,7 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	//W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
       if( !isRD && GenWs.Born_nLepts->size() >0 )
       if(Channel == "Electron")
       //Loop all GenWs------------------
@@ -2700,7 +2645,7 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.Lept1_RelisoHad03    ->push_back(Lept1_RelisoHad03);
 
       Ws.W_invm->push_back(WLeptNeuCand_.M());
-      Ws.Neut_pt->push_back(met->at(0).pt());
+      Ws.Neut_pt->push_back(pfMEt4V->Pt());
       Ws.Neut_phi->push_back(pfMEt_It->phi());
       Ws.Neut_px->push_back(pfMEt_It->px());
       Ws.Neut_py->push_back(pfMEt_It->py());
@@ -2994,7 +2939,7 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.px->push_back( Dimuon.px());
         Zs.py->push_back( Dimuon.py());
         Zs.pz->push_back( Dimuon.pz());
-        Zs.Neut_pt->push_back( met->at(0).pt());
+        Zs.Neut_pt->push_back( pfMEt4V->Pt());
         Zs.Neut_phi->push_back( pfMEt_It->phi());
         Zs.Neut_px->push_back( pfMEt_It->px());
         Zs.Neut_py->push_back( pfMEt_It->py());
@@ -3036,7 +2981,7 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	//W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
       if( !isRD && GenWs.Born_nLepts->size() >0 )
       if(Channel == "Tau")
       //Loop all GenWs------------------
@@ -3099,7 +3044,7 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.Lept1_pz->push_back(Lept1_pz);
       Ws.Lept1_en->push_back(Lept1_en);
       Ws.W_invm->push_back(WLeptNeuCand_.M());
-      Ws.Neut_pt->push_back(met->at(0).pt());
+      Ws.Neut_pt->push_back(pfMEt4V->Pt());
       Ws.Neut_phi->push_back(pfMEt_It->phi());
       Ws.Neut_px->push_back(pfMEt_It->px());
       Ws.Neut_py->push_back(pfMEt_It->py());
@@ -3245,7 +3190,7 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.px->push_back( DiTau.px());
         Zs.py->push_back( DiTau.py());
         Zs.pz->push_back( DiTau.pz());
-        Zs.Neut_pt->push_back( met->at(0).pt());
+        Zs.Neut_pt->push_back( pfMEt4V->Pt());
         Zs.Neut_phi->push_back( pfMEt_It->phi());
         Zs.Neut_px->push_back( pfMEt_It->px());
         Zs.Neut_py->push_back( pfMEt_It->py());

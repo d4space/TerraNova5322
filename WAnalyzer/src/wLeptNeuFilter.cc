@@ -163,6 +163,8 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     KoMETs.pfMEt_x    =pfMEt_It->px();
     KoMETs.pfMEt_y    =pfMEt_It->py();
+    pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
+
 //    KoMETs.pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
     //KoMETs.pfMEtSumEt = pfMEt_It->sumEt();
     //KoMETs.pfMEtNeuEM = pfMEt_It->NeutralEMFraction();
