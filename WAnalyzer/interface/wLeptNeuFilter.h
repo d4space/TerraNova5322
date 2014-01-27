@@ -630,7 +630,7 @@ private:
   std::vector<Ky::Lepton>* lepton2;
   std::vector<Ky::METCandidate>* pfMet;
   std::vector<math::XYZTLorentzVector>* met;
-  TLorentzVector *pfMEt4V;
+  math::XYZTLorentzVector *pfMEt4V;
   std::vector<math::XYZTLorentzVector>* jetspt30;
 
   double pfMET;
