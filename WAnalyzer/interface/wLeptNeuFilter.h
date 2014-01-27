@@ -2193,9 +2193,9 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
 
       Ws.W_invm->push_back(WLeptNeuCand_.M());
       Ws.Neut_pt->push_back(met->at(0).pt());
-      Ws.Neut_phi->push_back(pfMEtIt->phi());
-      Ws.Neut_px->push_back(pfMEtIt->px());
-      Ws.Neut_py->push_back(pfMEtIt->py());
+      Ws.Neut_phi->push_back(pfMEt_It->phi());
+      Ws.Neut_px->push_back(pfMEt_It->px());
+      Ws.Neut_py->push_back(pfMEt_It->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -2476,9 +2476,9 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.py->push_back( Dimuon.py());
         Zs.pz->push_back( Dimuon.pz());
         Zs.Neut_pt->push_back( met->at(0).pt());
-        Zs.Neut_phi->push_back( pfMEtIt->phi());
-        Zs.Neut_px->push_back( pfMEtIt->px());
-        Zs.Neut_py->push_back( pfMEtIt->py());
+        Zs.Neut_phi->push_back( pfMEt_It->phi());
+        Zs.Neut_px->push_back( pfMEt_It->px());
+        Zs.Neut_py->push_back( pfMEt_It->py());
 	Zs.Sign->push_back(Dimuon.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());
@@ -2701,9 +2701,9 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 
       Ws.W_invm->push_back(WLeptNeuCand_.M());
       Ws.Neut_pt->push_back(met->at(0).pt());
-      Ws.Neut_phi->push_back(pfMEtIt->phi());
-      Ws.Neut_px->push_back(pfMEtIt->px());
-      Ws.Neut_py->push_back(pfMEtIt->py());
+      Ws.Neut_phi->push_back(pfMEt_It->phi());
+      Ws.Neut_px->push_back(pfMEt_It->px());
+      Ws.Neut_py->push_back(pfMEt_It->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -2995,9 +2995,9 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.py->push_back( Dimuon.py());
         Zs.pz->push_back( Dimuon.pz());
         Zs.Neut_pt->push_back( met->at(0).pt());
-        Zs.Neut_phi->push_back( pfMEtIt->phi());
-        Zs.Neut_px->push_back( pfMEtIt->px());
-        Zs.Neut_py->push_back( pfMEtIt->py());
+        Zs.Neut_phi->push_back( pfMEt_It->phi());
+        Zs.Neut_px->push_back( pfMEt_It->px());
+        Zs.Neut_py->push_back( pfMEt_It->py());
 	Zs.Sign->push_back(Dimuon.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());
@@ -3100,9 +3100,9 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Ws.Lept1_en->push_back(Lept1_en);
       Ws.W_invm->push_back(WLeptNeuCand_.M());
       Ws.Neut_pt->push_back(met->at(0).pt());
-      Ws.Neut_phi->push_back(pfMEtIt->phi());
-      Ws.Neut_px->push_back(pfMEtIt->px());
-      Ws.Neut_py->push_back(pfMEtIt->py());
+      Ws.Neut_phi->push_back(pfMEt_It->phi());
+      Ws.Neut_px->push_back(pfMEt_It->px());
+      Ws.Neut_py->push_back(pfMEt_It->py());
       Ws.W_pt->push_back(WLeptNeuCand_.pt());
       Ws.W_eta->push_back(WLeptNeuCand_.eta());
       Ws.W_phi->push_back(WLeptNeuCand_.phi());
@@ -3246,9 +3246,9 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
         Zs.py->push_back( DiTau.py());
         Zs.pz->push_back( DiTau.pz());
         Zs.Neut_pt->push_back( met->at(0).pt());
-        Zs.Neut_phi->push_back( pfMEtIt->phi());
-        Zs.Neut_px->push_back( pfMEtIt->px());
-        Zs.Neut_py->push_back( pfMEtIt->py());
+        Zs.Neut_phi->push_back( pfMEt_It->phi());
+        Zs.Neut_px->push_back( pfMEt_It->px());
+        Zs.Neut_py->push_back( pfMEt_It->py());
 	Zs.Sign->push_back(DiTau.sign()); //--(-2), +-(0), ++(2)
         
         h_lept1_pt->Fill(it1.pt());
