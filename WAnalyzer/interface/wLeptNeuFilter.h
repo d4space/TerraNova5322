@@ -2009,7 +2009,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       //W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
       //const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
 
 
@@ -2549,7 +2549,7 @@ virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	//W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
       if( !isRD && GenWs.Born_nLepts->size() >0 )
       if(Channel == "Electron")
       //Loop all GenWs------------------
@@ -2981,7 +2981,7 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	//W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, &pfMEt4V,lep1.charge());
+      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
       if( !isRD && GenWs.Born_nLepts->size() >0 )
       if(Channel == "Tau")
       //Loop all GenWs------------------
