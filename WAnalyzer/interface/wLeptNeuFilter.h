@@ -455,7 +455,7 @@ class wLeptNeuFilter : public edm::EDFilter{
     Ws.Lept1_genDeltaR	= new std::vector<double>;
     Ws.Lept1_genDPtRel	= new std::vector<double>;
 
-    pfMEt4V = new TLorentzVector();
+    pfMEt4V = new math::XYZTLorentzVector();
 
     tmp = fs->make<TH1F>("EventSummary","EventSummary",filters_.size(),0,filters_.size());
 
