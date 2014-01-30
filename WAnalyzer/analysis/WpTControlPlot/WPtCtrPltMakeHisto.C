@@ -1,8 +1,8 @@
 #include "TSystem.h"
 #include <iostream>
 #include "../EventSelection/include/Tree2012LoPU/SetupTree.h"
-//#include "../Utils/const.h"
-#include "../EventSelection/WpT.h"
+#include "../Utils/const.h"
+//#include "../EventSelection/WpT.h"
 
 using namespace std;
 //using namespace ROOT::Math;
@@ -24,15 +24,16 @@ void WPtCtrPltMakeHisto()
   gSystem->CompileMacro("../EventSelection/NtupleAna.C","k");
   gSystem->CompileMacro("../EventSelection/WLepNeu.C","k");
   gSystem->CompileMacro("../EventSelection/WpT.C","k");
+
 //====================
 /////////// Muon LowPU
 //====================
 // For Muon analysis: use the lines FROM HERE
   //Luminosity weight
+  double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*4697.0/1.97346e6;
+  double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*6702.0/935446;
   double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
   double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
-  //double LumiWeight_Muon_WpToMuNu_S8 = RealLumi*1*6702.0/935446;
-  //double LumiWeight_Muon_WmToMuNu_S8 = RealLumi*1*4697.0/1.97346e6;
   LumiW_WpToMuNu = 1;
   LumiW_WmToMuNu = 1;
 
@@ -73,8 +74,8 @@ void WPtCtrPltMakeHisto()
 //***
   double LumiW_WpToElNu = LumiWeight_Ele_WpToEleNu_S8;
   double LumiW_WmToElNu = LumiWeight_Ele_WmToEleNu_S8;
-  //double LumiWeight_Ele_WpToEleNu_S8= RealLumi*1*6702.0/2401905;
-  //double LumiWeight_Ele_WmToEleNu_S8= RealLumi*1*4697.0/2127666;
+  //double LumiWeight_Ele_WpToEleNu_S8= Lumi_LowPU*1*6702.0/2401905;
+  //double LumiWeight_Ele_WmToEleNu_S8= Lumi_LowPU*1*4697.0/2127666;
   LumiW_WpToElNu = 1;
   LumiW_WmToElNu = 1;
 

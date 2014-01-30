@@ -72,8 +72,6 @@ void WpT::Loop()
 
   cout<<"Total: "<<Ntries<<endl;
   
-  double tmpVar;
-  double ZLep2PtTmp;
   // Recoil Correction Parameter Files
   if( (  Mode == "AllCorrectionsMC"
       || Mode == "RecoilCorrMC")
@@ -101,10 +99,6 @@ void WpT::Loop()
       0x1234);
   //Int_t iSeed=0xDEADBEEF default seed for random number generator at constructor
   }
- 
-  int evtCnt_Z_beforeCut(0);
-  int evtCnt_Z_afterCut(0);
-
 
   TString resultDir = AnaChannel;
   if(AnaChannel == "MuonLowPU" )
@@ -113,8 +107,6 @@ void WpT::Loop()
     resultDir = "ElectronLowPU";
 
   gSystem->mkdir(resultDir);
-  //TLorentzVector *myPfMEt = 0;
-  //fChain->SetBranchAddress("pfMEt4V",&myPfMEt);
 
   for (int i(0); i<20;i++)
   //for (int i(0); i<Ntries;i++)
@@ -174,207 +166,35 @@ void WpT::Loop()
     //===========================
     // W best Candidate Selection
     //===========================
-    if(pfMEt4V == NULL)
-    {
-      cout<<"No pfMET: EXIT================="<<endl;
-      //continue;
-      //exit(-1);
-    }
-    //cout<<"fP.fX: "<<fP_fX<<endl;
-    cout<<"pfMEt4V.pt: "<<pfMEt4V->Px()<<endl;
-    //cout<<"myPfMEt.pt: "<<myPfMEt->Pt()<<endl;
+    //cout<<"pfMEtTL.pt: "<<pfMEtTL.Pt()<<" W_NuPt: "<<(*W_Neut_pt)[0]<<endl;
+    //cout<<"NoPuMEtTL.pt: "<<NoPuMEtTL.Pt()<<endl;
+    //cout<<"MVaMEtTL.pt: "<<MVaMEtTL.Pt()<<endl;
+    //cout<<"genMEtTrueTL.pt: "<<genMEtTrueTL.Pt()<<endl;
+    //cout<<"genMEtCaloTL.pt: "<<genMEtCaloTL.Pt()<<endl;
+    //cout<<"genMEtCaloAndNonPromptTL.pt: "<<genMEtCaloAndNonPromptTL.Pt()<<endl;
     
     WbestSelect();
-
     
-    if(Debug)cout<<"check point 14"<<endl;
-    double tmp_prob;
-    Z_pass=false;
-    diLeptVtxProb = 0;
     ZLep2Pt = 0;
     u1Z=-999;u2Z=-999;u3Z=-999;
-    Z_size = Z_Mass->size();
-    for(int iz(0); iz<Z_size;iz++)
-    {
-      evtCnt_Z_beforeCut++;
-      if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
-      evtCnt_Z_afterCut++;
-      if(AnaChannel == "MuonLowPU" )if( MuonCutZ(iz) == -1) continue;
-      if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
-      if(AnaChannel == "ElectronLowPU" )if( ElectronCutZ(iz) == -1) continue;
-      if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
-      if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
-      if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10 )continue;
-      if((Mode =="RecoilRD")||(Mode == "RecoilMC"))if((*Z_Lept2_pt)[iz] < 15 )continue;
-      //MC truth Check or Z_pass = false
-      //if(Mode == "RecoilMC")
-      //{
-	//Lepton MC truth
-//	if( fabs((*Z_Lept1_genDeltaR)[iz]) > 0.025 ||
-//	    fabs((*Z_Lept2_genDeltaR)[iz]) > 0.025)
-//	{
-//	  //cout<<"DeltaR Z_Lept1: "<<(*Z_Lept1_genDeltaR)[iz]<<
-//	  ///  "DeltaR Z_Lept2: "<<(*Z_Lept2_genDeltaR)[iz]<<endl;
-//	  continue;
-//	}
-//	if( (*Z_Lept1_genIdxMatch)[iz] != (*Z_Lept2_genIdxMatch)[iz] )continue;
-//	if( (*Z_Lept1_genIdxMatch)[iz] <0) continue;
-//	if( GenZ_id->size() == 0)continue;
-//	if( abs((*GenZ_id)[iz]) != 23 //Z
-//	    && abs((*GenZ_id)[iz]) != 22)continue; //Gamma
- //     }
-      Z_pass=true;
 
-//MVAnoPUMETana study
-      //if (Mode=="MVAnoPUMEt")
-      //{
-      //  Z_Met = (*Z_Neut_pt)[iz];
-      //  Z_NoPU_Met = (*Z_NoPU_Neut_pt)[iz];
-      //  Z_MVA_Met = (*Z_MVA_Neut_pt)[iz];
-      //  if( fabs(Channel) != GenType::kTau)
-      //  Z_Gen_Met = (*GenZ_Neut_pt)[iz]; //Tau channel W events has a problem, in that case use next line
-//    //  Z_Gen_Met = 1;
-      //}
-      if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
-      {
-	diLeptVtxProb = tmpVar;
-	Zmass		= (*Z_Mass)[iz];
-	ZLep1Pt		= (*Z_Lept1_pt)[iz];
-	ZLep1Pz		= (*Z_Lept1_pz)[iz];
-	ZLep1En		= (*Z_Lept1_en)[iz];
-	ZLep1Phi	= (*Z_Lept1_phi)[iz];
-	ZLep2Pt		= (*Z_Lept2_pt)[iz];
-	ZLep2Pz		= (*Z_Lept2_pz)[iz];
-	ZLep2En		= (*Z_Lept2_en)[iz];
-	//cout<<"energy: "<<ZLep2En<<endl;
-	ZLep2Phi	= (*Z_Lept2_phi)[iz];
-
-	TVector2 ZDiLep2D(
-                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
-                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
-        Zpt = ZDiLep2D.Mod();
-
-	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
-	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
-	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
-	}else{
-	  ZLep1etaSC	= (*Z_Lept1_eta)[iz];
-	  ZLep2etaSC	= (*Z_Lept2_eta)[iz];
-	}
-
-	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<ZLep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
-	if(Mode == "RecoilRD" || Mode =="RecoilMC"){
-	  //Recoil = -Met - Z
-	  TVector2 RecoilVector(
-	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
-	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
-	  //if(Mode == "RecoilRD")
-	  //{
-	    TVector2 DiLep2D(
-	      (*Z_px)[iz],
-	      (*Z_py)[iz]
-	      );
-	    ZptRecoil = (*Z_pt)[iz];
-	    //u1 = B.u, u2=B cross u
-	    u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
-	    u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
-	    u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
-	    //u1Z = ( (*Z_px)[iz]*ux+(*Z_py)[iz]*uy )/BosonNorm;
-	    //u2Z = ( (*Z_px)[iz]*uy - (*Z_py)[iz]*ux)/BosonNorm;
-	  //}else if(Mode == "RecoilMC")
-	  //{
-	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
-	    //TVector2 genDiLep2D(
-//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
-//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
-//	    ZptRecoil = genDiLep2D.Mod();
-//	    //u1 = B.u, u2=B cross u
-//	    u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
-//	    u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
-	    //u1Z = ((*GenZ_px)[iz]*ux+(*GenZ_py)[iz]*uy )/BosonNorm;
-	    //u2Z = ((*GenZ_px)[iz]*uy-(*GenZ_py)[iz]*ux)/BosonNorm;
-//	  }
-	}//fi Recoil or RecoilMC
-      }//fi diLeptVtxProb
-      ZLep2PtTmp = (*Z_Lept2_pt)[iz];
-//      if( ZLep2PtTmp > ZLep2Pt )if( fabs(Channel) == GenType::kTau)
-      if( fabs(Channel) == GenType::kTau) if( ZLep2PtTmp > ZLep2Pt )
-      {
-	Zmass		= (*Z_Mass)[iz];
-	ZLep1Pt		= (*Z_Lept1_pt)[iz];
-	ZLep1Pz		= (*Z_Lept1_pz)[iz];
-	ZLep1En		= (*Z_Lept1_en)[iz];
-	ZLep1Phi	= (*Z_Lept1_phi)[iz];
-	ZLep2Pt		= (*Z_Lept2_pt)[iz];
-	ZLep2Pz		= (*Z_Lept2_pz)[iz];
-	ZLep2En		= (*Z_Lept2_en)[iz];
-	//cout<<"energy: "<<ZLep2En<<endl;
-	ZLep2Phi	= (*Z_Lept2_phi)[iz];
-
-	TVector2 ZDiLep2D(
-                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
-                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
-        Zpt = ZDiLep2D.Mod();
-
-	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
-	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
-	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
-	}else{
-	  ZLep1etaSC	= (*Z_Lept1_eta)[iz];
-	  ZLep2etaSC	= (*Z_Lept2_eta)[iz];
-	}
-
-	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<ZLep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
-	if(Mode == "RecoilRD" || Mode =="RecoilMC")
-	{
-	  //Recoil = -Met - Z
-	  TVector2 RecoilVector(
-	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
-	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
-	  //if(Mode == "RecoilRD")
-	  //{
-	    TVector2 DiLep2D(
-	      (*Z_px)[iz],
-	      (*Z_py)[iz]
-	      );
-	    ZptRecoil = (*Z_pt)[iz];
-	    //u1 = B.u, u2=B cross u
-	    u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
-	    u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
-	    u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
-	    //u1Z = ( (*Z_px)[iz]*ux+(*Z_py)[iz]*uy )/BosonNorm;
-	    //u2Z = ( (*Z_px)[iz]*uy - (*Z_py)[iz]*ux)/BosonNorm;
-	  //}else if(Mode == "RecoilMC")
-	  //{
-	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
-	    //TVector2 genDiLep2D(
-//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
-//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
-//	    ZptRecoil = genDiLep2D.Mod();
-//	    //u1 = B.u, u2=B cross u
-//	    u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
-//	    u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
-	    //u1Z = ((*GenZ_px)[iz]*ux+(*GenZ_py)[iz]*uy )/BosonNorm;
-	    //u2Z = ((*GenZ_px)[iz]*uy-(*GenZ_py)[iz]*ux)/BosonNorm;
-//	  }
-	}//fi Recoil or RecoilMC
-      }//fi diLeptVtxProb
-    }//Z
+    ZbestSelect();
 
 
     //Fill the W==================
-    if( mWpass)
+    if( wCand.Pass)
     {
-      DumpWbestCand(mIdxWcan);
+      DumpWbestCand(wCand.idxBest);
       if(Mode == "DumpUnfInfo")
       {
-        DumpUnfoldInfo(mIdxWcan);
+        DumpUnfoldInfo(wCand.idxBest);
       }
-      DumpMETs();
     }
-    if( mWpass && addLepN <2 ){
+    if( wCand.Pass && addLepN <2 ){
+      DumpWMETs();
       mNWevt++;
-    if(Debug)cout<<"check point 15"<<endl;
+      if(wCand.pt > 600)
+	cout<<"Check the wCand.pt is greater than 600: "<<wCand.pt<<endl;
       //Recoil Correction for W candidate of MC
       if((Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")
 	  || Mode == "DumpUnfInfo")
@@ -420,8 +240,6 @@ void WpT::Loop()
       h2_WpT_lepPt->Fill(wCand.pt,wCand.lep_pt);
 
       h1_W_Acop->Fill(w_acop,mTTW);
-      h1_vtx_z->Fill(vtxz,mTTW);
-      h1_vtx_Rho->Fill(vtxRho,mTTW);
 
       h1_W_Mt->Fill(wCand.Mt,mTTW);
       h1_W_Lept1_pt->Fill(wCand.lep_pt,mTTW);
@@ -432,15 +250,6 @@ void WpT::Loop()
       h1_npileup1->Fill(npileup,mTTW);
       h1_W_Neut_pt1->Fill(wCand.Met,mTTW);
       
-// MVAnoPUMETana study
-      //if (Mode=="MVAnoPUMEt")
-      //{
-      //  h1_W_Met->Fill(W_Met,mTTW);
-      //  h1_W_NoPU_Met->Fill(W_NoPU_Met,mTTW);
-      //  h1_W_MVA_Met->Fill(W_MVA_Met,mTTW);
-      //  h1_W_Gen_Met->Fill(W_Gen_Met,mTTW);
-      //}
-
     if(AnaChannel == "ElectronHighPU" )
     {
       h1_W_Lep1_eta->Fill(wCand.lep_eta,mTTW);
@@ -486,11 +295,11 @@ void WpT::Loop()
 	}
       }else{
 	h1_W_Neu_pt[0]->Fill(wCand.Met,mTTW);
-	h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
+	h1_GenW_Neu_pt[0]->Fill(genInfo.BornW_Nu_Pt,mTTW);
         h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
         h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
 	h1_Wp_Neu_pt[0]->Fill(wCand.Met,mTTW);
-	h1_GenWp_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
+	h1_GenWp_Neu_pt[0]->Fill(genInfo.BornW_Nu_Pt,mTTW);
 
 	if( wCand.Met > 25.)
 	{
@@ -523,11 +332,11 @@ void WpT::Loop()
 	    }
 	  }else{
 	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
-	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.BornW_Nu_Pt,mTTW);
             h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
             h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
 	    h1_Wp_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
-	    h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
+	    h1_GenWp_Neu_pt[iBin+1]->Fill(genInfo.BornW_Nu_Pt,mTTW);
 
 	    if(wCand.Met >25.)
 	    {
@@ -563,11 +372,11 @@ void WpT::Loop()
 	}
       }else{
 	h1_W_Neu_pt[0]->Fill(wCand.Met,mTTW);
-        h1_GenW_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
+        h1_GenW_Neu_pt[0]->Fill(genInfo.BornW_Nu_Pt,mTTW);
         h2_Met_WpT[0]->Fill(wCand.pt,wCand.Met);
         h2_Met_LepPt[0]->Fill(wCand.lep_pt,wCand.Met);
 	h1_Wm_Neu_pt[0]->Fill(wCand.Met,mTTW);
-	h1_GenWm_Neu_pt[0]->Fill(genInfo.genWmet,mTTW);
+	h1_GenWm_Neu_pt[0]->Fill(genInfo.BornW_Nu_Pt,mTTW);
 
 	if(wCand.Met >25.)
 	{
@@ -599,11 +408,11 @@ void WpT::Loop()
 	    }
 	  }else{
 	    h1_W_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
-	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
+	    h1_GenW_Neu_pt[iBin+1]->Fill(genInfo.BornW_Nu_Pt,mTTW);
             h2_Met_WpT[iBin+1]->Fill(wCand.pt,wCand.Met);
             h2_Met_LepPt[iBin+1]->Fill(wCand.lep_pt,wCand.Met);
 	    h1_Wm_Neu_pt[iBin+1]->Fill(wCand.Met,mTTW);
-	    h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.genWmet,mTTW);
+	    h1_GenWm_Neu_pt[iBin+1]->Fill(genInfo.BornW_Nu_Pt,mTTW);
 
 	    if(wCand.Met >25.)
 	    {
@@ -630,8 +439,9 @@ void WpT::Loop()
     //cout<<"nselect: "<<evtSelected<<endl;
     }//good W
 
-    if(Z_pass)
+    if(Zboson.Pass)
     {
+      DumpZMETs();
       mNZevt++;
       h1_diLeptVtxProb->Fill(diLeptVtxProb,mTTW);
       if(Mode == "ScaleMakeMC" || Mode == "ScaleMakeRD")
@@ -756,14 +566,6 @@ void WpT::Loop()
 
       h1_Zmass->Fill(Zmass,mTTW);
 
-// MVAnoPUMETana study
-      //if (Mode=="MVAnoPUMEt")
-      //{
-      //  h1_Z_Met->Fill(Z_Met);
-      //  h1_Z_NoPU_Met->Fill(Z_NoPU_Met);
-      //  h1_Z_MVA_Met->Fill(Z_MVA_Met);
-      //  h1_Z_Gen_Met->Fill(Z_Gen_Met);
-      //}
 
       //MisChargeStudy
   //    if(AnaChannel =="ElectronHighPU"){
@@ -816,7 +618,6 @@ void WpT::Loop()
     }
   }//Ntries
   cout<<"Passed W evts: "<<mNWevt<<"   Passed Z evts: "<<mNZevt<<endl;
-  cout<<"Z (beforeCut): "<<evtCnt_Z_beforeCut<<"   Z (afterCut): "<<evtCnt_Z_afterCut<<endl;
   //Results======================
 
 //  TString resultDir = AnaChannel;
@@ -963,8 +764,6 @@ void WpT::Loop()
 
   h1_W_Multi->Write();
   h1_W_Acop->Write();
-  h1_vtx_z->Write();
-  h1_vtx_Rho->Write();
   h1_GlbMuChi2->Write();
   h1_muonHits->Write();
   
@@ -1035,14 +834,11 @@ void WpT::Loop()
   h1_Vtx_Prim1->Write();
   h1_Vtx_Good1->Write();
   
-// MVAnoPUMETana study
-  //if (Mode=="MVAnoPUMEt")
-  //{
-  //  h1_W_Met->Write();
-  //  h1_W_NoPU_Met->Write();
-  //  h1_W_MVA_Met->Write();
-  //  h1_W_Gen_Met->Write();
-  //}
+  h1_W_Met->Write();
+  h1_W_Born_Met->Write();
+  h1_W_MVA_Met->Write();
+  h1_W_NoPU_Met->Write();
+  h1_W_genMEtTrue->Write();
 
   if(AnaChannel == "ElectronHighPU" )
   {
@@ -1121,9 +917,10 @@ void WpT::Loop()
 // MVAnoPUMETana study
   //if ("Mode==NoPUMEt")
   //{
-  //  h1_Z_Met->Write();
-  //  h1_Z_NoPU_Met->Write();
-  //  h1_Z_MVA_Met->Write();
+  h1_Z_Met->Write();
+  h1_Z_genMEtTrue->Write();
+  h1_Z_MVA_Met->Write();
+  h1_Z_NoPU_Met->Write();
   //  h1_Z_Gen_Met->Write();
   //}
   if(Mode == "RecoilRD" || Mode == "RecoilMC")
@@ -1258,47 +1055,51 @@ int WpT::WbestSelect()
 	  //Best Candidate selection
     )if( wCand.lep_pt < (*W_Lept1_pt)[iw])
     {
-	mIdxWcan = iw;
-	mWpass = true;
-// MVAnoPUMETana study
-	//if (Mode=="MVAnoPUMEt")
-	//{
-	//  W_Met = (*W_Neut_pt)[iw];
-	//  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
-	//  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-	//  else if (abs((*GenW_BornLept2_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-//	//  W_Gen_Met = (*W_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
-	//    //cout << "There is no genMEt" << endl;
-	//  metCnt++;
-	//}
+	wCand.idxBest = iw;
+	wCand.Pass = true;
+	if( RunOnMC)
+	{
+	  if((abs((*GenW_BornLept1_id)[0])==12)
+	    || (abs((*GenW_BornLept1_id)[0])==14)
+	    || (abs((*GenW_BornLept1_id)[0])==16))
+	  {
+	    genInfo.BornW_Nu_Pt = (*GenW_BornLept1_pt)[iw];
+	    genInfo.BornW_Nu_Cnt ++;
+	  }else if((abs((*GenW_BornLept2_id)[0])==12)
+	   || (abs((*GenW_BornLept2_id)[0])==14)
+	   || (abs((*GenW_BornLept2_id)[0])==16))
+	  {
+	    genInfo.BornW_Nu_Pt = (*GenW_BornLept2_pt)[iw];
+	    genInfo.BornW_Nu_Cnt ++;
+	  }else{
+	    cout << "There is no BornW_Nu_Pt" << endl;
+	  }
+	}
+
 	wCand.lep_pt = (*W_Lept1_pt)[iw];
 	wCand.lep_phi = (*W_Lept1_phi)[iw];
-	wCand.Nu_px=(*W_Neut_px)[iw]; //i->iw
-	wCand.Nu_py=(*W_Neut_py)[iw]; //i->iw
+	wCand.Nu_px	= pfMEt_x; //i->iw
+	wCand.Nu_py	= pfMEt_y; //i->iw
+
 	if(AnaChannel == "ElectronLowPU" )
 	{
 	  wCand.lep_etaSC = (*W_Lept1_etaSC)[iw];
 	}
 	wCand.lep_eta = (*W_Lept1_eta)[iw];
-if(Debug)cout<<"check point 6-4"<<endl;	
 	wCand.pt = (*W_pt)[iw];
-	if(wCand.pt > 600)cout<<"Check the wCand.pt is greater than 600: "<<wCand.pt<<endl;
 	w_acop= (*W_Acop)[iw];
-	vtxz= (*vtx_z)[iw];
-	vtxRho= (*vtx_Rho)[iw];
 if(Debug)cout<<"check point 7"<<endl;
 	//wCand.charge = (*W_Charge)[iw];
 	//Gen Neutrino distribution for selected events
 	if(GenW_Born_Id->size()>0)
 	{
 	  if( abs((*GenW_PostLept1_id)[0])==14 || //Nuet_Mu
-	      abs((*GenW_PostLept1_id)[0])==12)genInfo.genWmet=(*GenW_PostLept1_pt)[0];//Nuet_ele
+	      abs((*GenW_PostLept1_id)[0])==12) //Nuet_Ele
+	    genInfo.BornW_Nu_Pt =(*GenW_PostLept1_pt)[0];
+
 	  if( abs((*GenW_PostLept2_id)[0])==14 || 
-	      abs((*GenW_PostLept2_id)[0])==12)genInfo.genWmet=(*GenW_PostLept2_pt)[0];
+	      abs((*GenW_PostLept2_id)[0])==12)
+	    genInfo.BornW_Nu_Pt =(*GenW_PostLept2_pt)[0];
 	}
 	if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")if(GenW_Born_Id->size()>0)
 	{
@@ -1410,7 +1211,6 @@ if(Debug)cout<<"check point 8"<<endl;
 	    h1_WpSide_Neu_pt[0]->Fill(wCand.Met_side,mTTW);
 	  }
 
-if(Debug)cout<<"check point 10"<<endl;
 	  //Fill MET sideband for WQA, Wplus case
 	  if(AnaChannel == "ElectronHighPU") {
 	    for(int iEtaSD=0;iEtaSD<NWqaBins;iEtaSD++) {
@@ -1480,5 +1280,169 @@ if(Debug)cout<<"check point 11"<<endl;
 	    exit(0);}
 	}
     }
+  return 0;
+}
+int WpT::ZbestSelect()
+{
+  diLeptVtxProb = 0;
+  double tmpVar(0);
+  double ZLep2PtTmp;
+  for(int iz(0); iz<mZ_size;iz++)
+  {
+    if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
+    if(AnaChannel == "MuonLowPU" )if( MuonCutZ(iz) == -1) continue;
+    if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
+    if(AnaChannel == "ElectronLowPU" )if( ElectronCutZ(iz) == -1) continue;
+    if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
+    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
+    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10 )continue;
+    if((Mode =="RecoilRD")||(Mode == "RecoilMC"))if((*Z_Lept2_pt)[iz] < 15 )continue;
+    //MC truth Check or Z_pass = false
+    //if(Mode == "RecoilMC")
+    //{
+	//Lepton MC truth
+//	if( fabs((*Z_Lept1_genDeltaR)[iz]) > 0.025 ||
+//	    fabs((*Z_Lept2_genDeltaR)[iz]) > 0.025)
+//	{
+//	  //cout<<"DeltaR Z_Lept1: "<<(*Z_Lept1_genDeltaR)[iz]<<
+//	  ///  "DeltaR Z_Lept2: "<<(*Z_Lept2_genDeltaR)[iz]<<endl;
+//	  continue;
+//	}
+//	if( (*Z_Lept1_genIdxMatch)[iz] != (*Z_Lept2_genIdxMatch)[iz] )continue;
+//	if( (*Z_Lept1_genIdxMatch)[iz] <0) continue;
+//	if( GenZ_id->size() == 0)continue;
+//	if( abs((*GenZ_id)[iz]) != 23 //Z
+//	    && abs((*GenZ_id)[iz]) != 22)continue; //Gamma
+ //     }
+    Zboson.Pass=true;
+    tmpVar = (*Z_diLeptVtxProb)[iz];
+
+    if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
+    {
+      Zboson.idxBest = iz;
+      diLeptVtxProb = tmpVar;
+	Zmass		= (*Z_Mass)[iz];
+	ZLep1Pt		= (*Z_Lept1_pt)[iz];
+	ZLep1Pz		= (*Z_Lept1_pz)[iz];
+	ZLep1En		= (*Z_Lept1_en)[iz];
+	ZLep1Phi	= (*Z_Lept1_phi)[iz];
+	ZLep2Pt		= (*Z_Lept2_pt)[iz];
+	ZLep2Pz		= (*Z_Lept2_pz)[iz];
+	ZLep2En		= (*Z_Lept2_en)[iz];
+	//cout<<"energy: "<<ZLep2En<<endl;
+	ZLep2Phi	= (*Z_Lept2_phi)[iz];
+
+	TVector2 ZDiLep2D(
+                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
+                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
+        Zpt = ZDiLep2D.Mod();
+
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
+	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
+	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
+	}else{
+	  ZLep1etaSC	= (*Z_Lept1_eta)[iz];
+	  ZLep2etaSC	= (*Z_Lept2_eta)[iz];
+	}
+
+	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<ZLep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
+	if(Mode == "RecoilRD" || Mode =="RecoilMC"){
+	  //Recoil = -Met - Z
+	  TVector2 RecoilVector(
+	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
+	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
+	  //if(Mode == "RecoilRD")
+	  //{
+	    TVector2 DiLep2D(
+	      (*Z_px)[iz],
+	      (*Z_py)[iz]
+	      );
+	    ZptRecoil = (*Z_pt)[iz];
+	    //u1 = B.u, u2=B cross u
+	    u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
+	    u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
+	    u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
+	    //u1Z = ( (*Z_px)[iz]*ux+(*Z_py)[iz]*uy )/BosonNorm;
+	    //u2Z = ( (*Z_px)[iz]*uy - (*Z_py)[iz]*ux)/BosonNorm;
+	  //}else if(Mode == "RecoilMC")
+	  //{
+	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
+	    //TVector2 genDiLep2D(
+//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
+//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
+//	    ZptRecoil = genDiLep2D.Mod();
+//	    //u1 = B.u, u2=B cross u
+//	    u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
+//	    u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
+	    //u1Z = ((*GenZ_px)[iz]*ux+(*GenZ_py)[iz]*uy )/BosonNorm;
+	    //u2Z = ((*GenZ_px)[iz]*uy-(*GenZ_py)[iz]*ux)/BosonNorm;
+//	  }
+	}//fi Recoil or RecoilMC
+    }//fi diLeptVtxProb
+    ZLep2PtTmp = (*Z_Lept2_pt)[iz];
+    if( fabs(Channel) == GenType::kTau) if( ZLep2PtTmp > ZLep2Pt )
+    {
+      Zboson.idxBest = iz;
+	Zmass		= (*Z_Mass)[iz];
+	ZLep1Pt		= (*Z_Lept1_pt)[iz];
+	ZLep1Pz		= (*Z_Lept1_pz)[iz];
+	ZLep1En		= (*Z_Lept1_en)[iz];
+	ZLep1Phi	= (*Z_Lept1_phi)[iz];
+	ZLep2Pt		= (*Z_Lept2_pt)[iz];
+	ZLep2Pz		= (*Z_Lept2_pz)[iz];
+	ZLep2En		= (*Z_Lept2_en)[iz];
+	//cout<<"energy: "<<ZLep2En<<endl;
+	ZLep2Phi	= (*Z_Lept2_phi)[iz];
+
+	TVector2 ZDiLep2D(
+                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
+                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
+        Zpt = ZDiLep2D.Mod();
+
+	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
+	  ZLep1etaSC	= (*Z_Lept1_etaSC)[iz];
+	  ZLep2etaSC	= (*Z_Lept2_etaSC)[iz];
+	}else{
+	  ZLep1etaSC	= (*Z_Lept1_eta)[iz];
+	  ZLep2etaSC	= (*Z_Lept2_eta)[iz];
+	}
+
+	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<ZLep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
+	if(Mode == "RecoilRD" || Mode =="RecoilMC")
+	{
+	  //Recoil = -Met - Z
+	  TVector2 RecoilVector(
+	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
+	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
+	  //if(Mode == "RecoilRD")
+	  //{
+	    TVector2 DiLep2D(
+	      (*Z_px)[iz],
+	      (*Z_py)[iz]
+	      );
+	    ZptRecoil = (*Z_pt)[iz];
+	    //u1 = B.u, u2=B cross u
+	    u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
+	    u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
+	    u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
+	    //u1Z = ( (*Z_px)[iz]*ux+(*Z_py)[iz]*uy )/BosonNorm;
+	    //u2Z = ( (*Z_px)[iz]*uy - (*Z_py)[iz]*ux)/BosonNorm;
+	  //}else if(Mode == "RecoilMC")
+	  //{
+	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
+	    //TVector2 genDiLep2D(
+//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
+//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
+//	    ZptRecoil = genDiLep2D.Mod();
+//	    //u1 = B.u, u2=B cross u
+//	    u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
+//	    u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
+	    //u1Z = ((*GenZ_px)[iz]*ux+(*GenZ_py)[iz]*uy )/BosonNorm;
+	    //u2Z = ((*GenZ_px)[iz]*uy-(*GenZ_py)[iz]*ux)/BosonNorm;
+//	  }
+	}//fi Recoil or RecoilMC
+    }//fi diLeptVtxProb
+  }//Z
+
   return 0;
 }

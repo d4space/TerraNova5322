@@ -10,9 +10,14 @@ Double_t deltaR(const Double_t eta1, const Double_t phi1, const Double_t eta2, c
 Double_t deltaPhi(const Double_t phi1, const Double_t phi2);
 
 Int_t roundToInt(const Double_t x);
+double pT(const double Px, const double Py);
 }
-
-//------------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------
+double toolbox::pT(const double x, const double y)
+{
+  return TMath::Sqrt(x*x + y*y);
+}
+//-----------------------------------------------------------------
 Double_t toolbox::deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t phi2)
 {
   const Double_t pi = 3.14159265358979;
@@ -25,7 +30,7 @@ Double_t toolbox::deltaR(Double_t eta1, Double_t phi1, Double_t eta2, Double_t p
   return sqrt(dphi*dphi + deta*deta);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------
 Double_t toolbox::deltaPhi(Double_t phi1, Double_t phi2) 
 {
   // Compute dPhi between two given angles. Results is in [0,pi].
@@ -37,7 +42,7 @@ Double_t toolbox::deltaPhi(Double_t phi1, Double_t phi2)
   return dphi;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------
 Int_t toolbox::roundToInt(Double_t x)
 {
   if(x>0)

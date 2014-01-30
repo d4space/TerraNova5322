@@ -25,8 +25,8 @@ protected:
    int VertexCut();
    double CalcEvtWeight();
    int WbestSelect();
+   int ZbestSelect();
    // Member variables
-   int mIdxWcan;
    double mNselected4Bin[NwPtBin];
    double mNmetA[NWptBinPlus];
    double mNmetB[NWptBinPlus];

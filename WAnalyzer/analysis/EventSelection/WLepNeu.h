@@ -40,13 +40,13 @@
 
 // Header file for the classes stored in the TTree if any.
 #include <vector>
-#include <vector>
 
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include "../Utils/const.h"
-#include "../Utils/RecoilCorrector.hh"    // class to handle recoil corrections for MET
+#include "../Utils/RecoilCorrector.hh"//class to handle recoil corrections for MET
+#include "../Utils/MyTools.hh"
 #include "NtupleAna.h"
 
 
@@ -78,13 +78,14 @@ public :
 
 // MVAnoPUMETana study
    TH1D*        h1_W_Met;
-   TH1D*        h1_W_NoPU_Met;
+   TH1D*        h1_W_Born_Met;
+   TH1D*        h1_W_genMEtTrue;
    TH1D*        h1_W_MVA_Met;
-   TH1D*        h1_W_Gen_Met;
+   TH1D*        h1_W_NoPU_Met;
    TH1D*        h1_Z_Met;
-   TH1D*        h1_Z_NoPU_Met;
+   TH1D*        h1_Z_genMEtTrue;
    TH1D*        h1_Z_MVA_Met;
-   TH1D*        h1_Z_Gen_Met;
+   TH1D*        h1_Z_NoPU_Met;
 
    TH1D*	h1_W_Multi;
    
@@ -174,8 +175,6 @@ public :
    //-----
    TH1D*	h1_W_Mt;
    TH1D*	h1_W_Acop;
-   TH1D*	h1_vtx_z;
-   TH1D*	h1_vtx_Rho;
 
    TH1D*	h1_GlbMuChi2;
    TH1D*	h1_muonHits;
@@ -277,8 +276,10 @@ protected:
   int TriggerCut();
   double CalcEvtWeight(){mTTW =1; return mTTW;}
   int DumpWbestCand(int);
-  int DumpMETs();
+  int DumpWMETs();
+  int DumpZMETs();
   // Member Variables
+  TLorentzVector pfMEtTL, NoPuMEtTL, MVaMEtTL, genMEtTrueTL, genMEtCaloTL, genMEtCaloAndNonPromptTL;
   int Ntries;
   int evtCnt;
   int mNWevt;
@@ -309,7 +310,8 @@ protected:
     double PostW_phi;
     double BornW_phi;
     double charge;
-    double genWmet;
+    double BornW_Nu_Pt;
+    int    BornW_Nu_Cnt;
   }genInfo;
   //W boson Variables
   struct WCand{
@@ -336,23 +338,23 @@ protected:
     double lep_eta, lep_etaSC;
 
     int genIdx;
-
+    bool Pass;
+    int idxBest;
   }wCand;
   double w_pt_side, w_acop;
-  bool mWpass;
 
   //For filling MET histograms for WQA by chang
   double wqaMetMXBins[NWqaBins];
   double wqaMetMNBins[NWqaBins];
   
-  //MVAnoPUMETana study Variables
-  double W_Met,W_NoPU_Met,W_MVA_Met,W_Gen_Met;
-  double Z_Met,Z_NoPU_Met,Z_MVA_Met,Z_Gen_Met;
-  int metCnt;
-
   //Z boson Variables
-  bool Z_pass;
-  double Z_size,Zmass,Zpt,ZptRecoil,MEtZ,noPUMEtZ;//ZptRecoil==Zpt for real but gen dilep for MC
+  struct zBoson{
+    bool Pass;
+    int idxBest;
+  }Zboson;
+
+  int mZ_size;
+  double Zmass,Zpt,ZptRecoil,MEtZ,noPUMEtZ;//ZptRecoil==Zpt for real but gen dilep for MC
   double ZLep1Pt, ZLep1Pz,ZLep1En, ZLep1Phi, ZLep1etaSC;
   double ZLep2Pt, ZLep2Pz,ZLep2En, ZLep2Phi, ZLep2etaSC;
 
@@ -380,7 +382,6 @@ protected:
   TString	Mode;
   TString	AnaChannel;
   bool		RunOnMC;
-  double	vtxz,vtxRho;
   double	mTTW;
 
   struct UnfoldInfo{
@@ -424,13 +425,14 @@ void WLepNeu::Init(TTree *tree)
 
 // MVAnoPUMETana study
    h1_W_Met = new TH1D("h1_W_Met","W_Neut_pt",20,0.,100);
-   h1_W_NoPU_Met = new TH1D("h1_W_NoPU_Met","W_NoPU_Neut_pt",20,0.,100);
+   h1_W_Born_Met = new TH1D("h1_W_Born_Met","W_Born_Neut_pt",20,0.,100);
+   h1_W_genMEtTrue = new TH1D("h1_W_genMEtTrue","W_genMEtTrue",20,0.,100);
    h1_W_MVA_Met = new TH1D("h1_W_MVA_Met","W_MVA_Neut_pt",20,0.,100);
-   h1_W_Gen_Met = new TH1D("h1_W_Gen_Met","W_Gen_Neut_pt",20,0.,100);
+   h1_W_NoPU_Met = new TH1D("h1_W_NoPU_Met","W_NoPU_Neut_pt",20,0.,100);
    h1_Z_Met = new TH1D("h1_Z_Met","Z_Neut_pt",20,0.,100);
    h1_Z_NoPU_Met = new TH1D("h1_Z_NoPU_Met","Z_NoPU_Neut_pt",20,0.,100);
    h1_Z_MVA_Met = new TH1D("h1_Z_MVA_Met","Z_MVA_Neut_pt",20,0.,100);
-   h1_Z_Gen_Met = new TH1D("h1_Z_Gen_Met","Z_Gen_Neut_pt",20,0.,100);
+   h1_Z_genMEtTrue = new TH1D("h1_Z_genMEtTrue","Z_genMEtTrue",20,0.,100);
 
    if(AnaChannel == "ElectronHighPU" )
   {
@@ -621,8 +623,6 @@ void WLepNeu::Init(TTree *tree)
    //---------------
    h1_W_Mt	= new TH1D("h1_W_Mt","W Mt",100,0.,100);
    h1_W_Acop	= new TH1D("h1_W_Acop","Mu vs MET Acop",30,0.,3.14);
-   h1_vtx_z	= new TH1D("h1_vtx_z","Vtx_z",60,-30,30);
-   h1_vtx_Rho	= new TH1D("h1_vtx_Rho","Vtx_Rho",40,0.3,0.7);
 
    h1_GlbMuChi2	= new TH1D("h1_GlbMuChi2","global Mu chi2/ndof",60,0.,20);
    h1_muonHits	= new TH1D("h1_muonHits","muon chamber hits",11,0.,11);
@@ -2606,6 +2606,13 @@ Int_t WLepNeu::DoRecoilCorr()
 }
 Int_t WLepNeu::InitVar4Evt()
 {
+  // MET
+  pfMEtTL.SetPxPyPzE(pfMEt_x,pfMEt_y,0,toolbox::pT(pfMEt_x,pfMEt_y));
+  NoPuMEtTL.SetPxPyPzE(NoPuMEt_x,NoPuMEt_y,0,toolbox::pT(NoPuMEt_x,NoPuMEt_y));
+  MVaMEtTL.SetPxPyPzE(MVaMEt_x,MVaMEt_y,0,toolbox::pT(MVaMEt_x,MVaMEt_y));
+  genMEtTrueTL.SetPxPyPzE(genMEtTrue_x,genMEtTrue_y,0,toolbox::pT(genMEtTrue_x,genMEtTrue_y));
+  genMEtCaloTL.SetPxPyPzE(genMEtCalo_x,genMEtCalo_y,0,toolbox::pT(genMEtCalo_x,genMEtCalo_y));
+  genMEtCaloAndNonPromptTL.SetPxPyPzE(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y,0,toolbox::pT(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y));
   mTTW = 1;
   mVtxVar.nPrim = 0;
   mVtxVar.nGood = 0;
@@ -2621,8 +2628,8 @@ Int_t WLepNeu::InitVar4Evt()
   wCand.lep_phi = 0;
   wCand.lep_eta = 0;
   wCand.lep_etaSC = 0;
-
-  mWpass=0;
+  wCand.Pass=0;
+    
   glbMuChi2=0;
   addLepN=0;lep_pt=0;lep_pt_corr=0;corrMet=0;
   scalecorr1=0;
@@ -2639,6 +2646,11 @@ Int_t WLepNeu::InitVar4Evt()
   //genInfo.W_MCtruth = 0;
   genInfo.BornW_pt = 0;
   genInfo.PostW_pt = 0;
+  genInfo.BornW_Nu_Cnt = 0;
+
+  // Z boson
+  Zboson.Pass = false;
+  mZ_size = Z_Mass->size();
   return 0;
 }
 

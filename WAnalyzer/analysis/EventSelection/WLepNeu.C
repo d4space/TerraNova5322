@@ -111,22 +111,22 @@ int WLepNeu::DumpWbestCand(int idx)
   wCand.Met = (*W_Neut_pt)[idx];
   return 0;
 }
-int WLepNeu::DumpMETs()
+int WLepNeu::DumpWMETs()
 {
-// MVAnoPUMETana study
-	//if (Mode=="MVAnoPUMEt")
-	//{
-	//  W_Met = (*W_Neut_pt)[iw];
-	//  W_NoPU_Met = (*W_NoPU_Neut_pt)[iw];
-	//  W_MVA_Met = (*W_MVA_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-	//  else if (abs((*GenW_BornLept2_id)[0])==16)
-	//  W_Gen_Met = (*GenW_BornLept1_pt)[iw];
-//	//  W_Gen_Met = (*W_Neut_pt)[iw];
-	//  if (abs((*GenW_BornLept1_id)[0])!=16 && abs((*GenW_BornLept2_id)[0])!=16)
-	//    //cout << "There is no genMEt" << endl;
-	//  metCnt++;
-	//}
+  h1_W_Met->Fill(pfMEtTL.Pt());
+  h1_W_Born_Met->Fill(genInfo.BornW_Nu_Pt);
+  h1_W_genMEtTrue->Fill(genMEtTrueTL.Pt());
+  h1_W_MVA_Met->Fill(MVaMEtTL.Pt());
+  h1_W_NoPU_Met->Fill(NoPuMEtTL.Pt());
+
+  return 0;
+}
+int WLepNeu::DumpZMETs()
+{
+  h1_Z_Met->Fill(pfMEtTL.Pt());
+  h1_Z_genMEtTrue->Fill(genMEtTrueTL.Pt());
+  h1_Z_MVA_Met->Fill(MVaMEtTL.Pt());
+  h1_Z_NoPU_Met->Fill(NoPuMEtTL.Pt());
+
   return 0;
 }
