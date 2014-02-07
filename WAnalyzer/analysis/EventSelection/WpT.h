@@ -26,6 +26,7 @@ protected:
    double CalcEvtWeight();
    int WbestSelect();
    int ZbestSelect();
+   int FillUnfoldInfo();
    // Member variables
    double mNselected4Bin[NwPtBin];
    double mNmetA[NWptBinPlus];

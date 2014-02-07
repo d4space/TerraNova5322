@@ -11,10 +11,9 @@ void WPtCtrPltMakeHisto()
 //======================================
 // choose Mode and AnaChannel here  !!!
 //======================================
-//  TString Mode = "Unfold";//Analysis,Recoil, RecoilMC, RecoilCorr, DumpUnfInfo,
 //  TString AnaChannel = "MuonLowPU"; //ElectronLowPU
 
-  TString Mode = "Analysis";//Analysis,Recoil, RecoilMC, RecoilCorr, Unfold,
+  TString Mode = "Analysis";//Analysis,Recoil, RecoilEvaMC,RecoilEvaRD, RecoilCorr, Unfold,DumpUnfInfo
   TString AnaChannelEle = "ElectronLowPU"; 
   TString AnaChannelMu  = "MuonLowPU";
 
