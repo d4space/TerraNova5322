@@ -144,6 +144,8 @@ class wLeptNeuFilter : public edm::EDFilter{
     useL1Selector_ = iConfig.getParameter<bool>("useL1Selector");
     L1Select_      = iConfig.getUntrackedParameter< std::string >("L1Select");
 
+    mEAtargetToken = consumes<std:string>(iConfig.getParameter<std:string>("EAtarget", "EleEAData2012"));
+
     tree = fs->make<TTree>("tree", "Tree for W boson");
 
     EventData.vtx_isFake = new std::vector<int>;
@@ -521,6 +523,7 @@ private:
 
   std::string Channel;
   std::string L1Select_;
+  std::string mEAtargetToken;
   bool useL1Selector_;
   //    useL1Selector_ = iConfig.getParameter<bool>("useL1Selector");
   //    L1Select_      = iConfig.getUntrackedParameter< std::string >("L1Select");
