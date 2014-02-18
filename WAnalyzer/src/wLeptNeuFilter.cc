@@ -17,23 +17,9 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   EventData.RUN    = iEvent.id().run();
   EventData.LUMI   = iEvent.id().luminosityBlock();
   isRD = iEvent.isRealData();
-  ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
-  switch(mEAtargetToken)
-  {
-    case "EleEANoCorr":
-      EAtarget=ElectronEffectiveArea:kEleEANoCorr; break;
-    case "EleEAData2011":
-      EAtarget=ElectronEffectiveArea:kEleEAData2011; break;
-    case "EleEASummer11MC":
-      EAtarget=ElectronEffectiveArea:kEleEASummer11MC; break;
-    case "EleEAFall11MC":
-      EAtarget=ElectronEffectiveArea:kEleEAFall11MC; break;
-    case "EleEAData2012":
-      EAtarget=ElectronEffectiveArea:kEleEAData2012; break;
-    default:
-      EAtarget=ElectronEffectiveArea:kEleEAData2012; break;
-  }
-  cout<<"EAtarget: "<<EAtarget<<endl;
+
+
+//  cout<<"EAtarget: "<<EAtarget<<endl;
 
   //const bool isRD = iEvent.isRealData();
 

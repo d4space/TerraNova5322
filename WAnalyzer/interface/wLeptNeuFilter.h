@@ -144,8 +144,8 @@ class wLeptNeuFilter : public edm::EDFilter{
     useL1Selector_ = iConfig.getParameter<bool>("useL1Selector");
     L1Select_      = iConfig.getUntrackedParameter< std::string >("L1Select");
 
-    mEAtargetToken = consumes<std:string>(iConfig.getParameter<std:string>("EAtarget", "EleEAData2012"));
-
+    mEAtargetToken = iConfig.getParameter< std::string >("EAtarget");//EleEANoCorr, EleEAData2011, EleEASummer11MC,EleEAFall11MC, EleEAData2012 
+    //mEAtargetToken = consumes<std:string>(iConfig.getParameter<std:string>("EAtarget", "EleEAData2012"));
     tree = fs->make<TTree>("tree", "Tree for W boson");
 
     EventData.vtx_isFake = new std::vector<int>;
@@ -494,6 +494,7 @@ class wLeptNeuFilter : public edm::EDFilter{
 //    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
+  ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
   ~wLeptNeuFilter()
   {
   }
@@ -760,6 +761,23 @@ virtual void beginJob()
     PShiftUp_ = reweight::PoissonMeanShifter(0.5);
 
     bookTree();
+
+
+  if( mEAtargetToken == "EleEANoCorr")
+      EAtarget	=ElectronEffectiveArea::kEleEANoCorr;
+  else if( mEAtargetToken == "EleEAData2011")
+      EAtarget	=ElectronEffectiveArea::kEleEAData2011;
+  else if( mEAtargetToken == "EleEASummer11MC")
+      EAtarget	=ElectronEffectiveArea::kEleEASummer11MC;
+  else if( mEAtargetToken == "EleEAFall11MC")
+      EAtarget	=ElectronEffectiveArea::kEleEAFall11MC;
+  else if( mEAtargetToken == "EleEAData2012")
+      EAtarget	=ElectronEffectiveArea::kEleEAData2012;
+  else
+      EAtarget	=ElectronEffectiveArea::kEleEAData2012;
+
+  cout<<"EAtarget: "<<EAtarget<<endl;
+
 }
   //virtual bool beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
   virtual bool beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
@@ -903,7 +921,6 @@ virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
 	//and hunt for the version number of the thing...
 	//and there are a lot of try and open catches here because HLT code
 	//seems to want to segfault at the slightest provocation
-	bool waslegal(false);
 	string theRealTriggername;
 	try{
 	  unsigned int trIndex=HltConfig.triggerIndex(FullHLTTriggerNames[i]);
