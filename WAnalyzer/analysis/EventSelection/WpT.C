@@ -199,17 +199,7 @@ void WpT::Loop()
 	//continue;
       }
 
-      if( Mode == "RecoilEvaMC")
-      for( int ipt(0);ipt<u1Bin;ipt++)
-      {
-	if(W.Post_pt >=RecoilBins[ipt] && W.Post_pt<RecoilBins[ipt+1])
-	//if(genInfo.BornW_pt >=RecoilBins[ipt] && genInfo.BornW_pt < RecoilBins[ipt+1])
-	{
-	  h1_u1W[ipt]->Fill(Rcl.u1W);
-	  h1_u2W[ipt]->Fill(Rcl.u2W);
-	  h1_u3W[ipt]->Fill(Rcl.u3W);
-	}
-      }
+      if( Mode == "RecoilEvaMC") DumpRecoilWMC();
 
       h1_GlbMuChi2->Fill(glbMuChi2,mTTW);
       h1_muonHits->Fill(W.muonHit,mTTW);
@@ -591,11 +581,11 @@ void WpT::Loop()
       if(Mode == "RecoilEvaRD" || Mode == "RecoilEvaMC" )
       {
         //Z mass cut
-        if( Zmass > ReCoil_MassLow && Z.mass < ReCoil_MassHigh){
+        if( Z.mass > ReCoil_MassLow && Z.mass < ReCoil_MassHigh){
           h2_u1Zpt->Fill(ZptRecoil,Rcl.u1Z);
           h2_u2Zpt->Fill(ZptRecoil,Rcl.u2Z);
           h2_u3Zpt->Fill(ZptRecoil,Rcl.u3Z);
-	  for( int iPt(0);iPt<u1Bin;iPt++)
+	  for( int iPt(0);iPt<U1Bin;iPt++)
 	  {
 	    if( ZptRecoil>= RecoilBins[iPt] && ZptRecoil < RecoilBins[iPt+1])
 	    {
@@ -915,7 +905,7 @@ void WpT::Loop()
   //  h1_Z_Gen_Met->Write();
   //}
   if(Mode == "RecoilEvaRD" || Mode == "RecoilEvaMC")
-  for( int i(0);i<u1Bin;i++)
+  for( int i(0);i<U1Bin;i++)
   {
     h1_u1Z[i]->Write();
     h1_u2Z[i]->Write();
@@ -1395,4 +1385,42 @@ Int_t WpT::FillUnfoldInfo()
     if(weightFSR<0) weightFSR=1;
     h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,mTTW*mEffSf*weightFSR);
     return 0;
+}
+int WpT::DumpRecoilWMC()
+{
+  for( int ipt(0);ipt<U1Bin;ipt++)
+  {
+    if(W.Post_pt >=RecoilBins[ipt] && W.Post_pt<RecoilBins[ipt+1])
+    //if(genInfo.BornW_pt >=RecoilBins[ipt] && genInfo.BornW_pt < RecoilBins[ipt+1])
+    {
+      h1_u1W[ipt]->Fill(Rcl.u1W);
+      h1_u2W[ipt]->Fill(Rcl.u2W);
+      h1_u3W[ipt]->Fill(Rcl.u3W);
+    }
+  }
+  return 0;
+}
+int WpT::InitHistogram()
+{
+  for(int i(0); i<U1Bin;i++)
+  {
+    sprintf(histName,"h1_u1W_%d",i);
+    //mean_ = 0.6-0.85*binCent;
+    h1_u1W[i]= new TH1D(histName,"h1_u1W",150,-150-RecoilBins[i],150-RecoilBins[i]);
+    sprintf(histName,"h1_u2W_%d",i);
+    h1_u2W[i] = new TH1D(histName,"h1_u2W",150,-150,150);
+    sprintf(histName,"h1_u3W_%d",i);
+    h1_u3W[i] = new TH1D(histName,"h1_u3W",100,-100,100);
+
+    sprintf(histName,"h1_u1Z_%d",i);
+    //mean_ = 0.6-0.85*binCent;
+    h1_u1Z[i]= new TH1D(histName,"h1_u1Z",150,-150-RecoilBins[i],150-RecoilBins[i]);
+    //h1_u1Z[i]= new TH1D(histName,"h1_u1Z",50,mean_-80,mean_+50);
+    sprintf(histName,"h1_u2Z_%d",i);
+    h1_u2Z[i] = new TH1D(histName,"h1_u2Z",150,-150,150);
+    sprintf(histName,"h1_u3Z_%d",i);
+    h1_u3Z[i] = new TH1D(histName,"h1_u3Z",100,-100,100);
+  }
+  //h1_u1W[i]= new TH1D(histName,"h1_u1W",50,mean_-80,mean_+50);
+  return 0;
 }

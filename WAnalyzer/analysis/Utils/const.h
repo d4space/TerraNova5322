@@ -29,8 +29,8 @@
 //All of these come up with doube Bins at WMuNeu.C
 //
 //Recoil related constants
-#define u1Bin 16
-#define u2Bin 16
+#define U1Bin 16
+#define U2Bin 16
 //#define EtaBin 22
 //#define EtaBin 25
 #define EtaBin 12

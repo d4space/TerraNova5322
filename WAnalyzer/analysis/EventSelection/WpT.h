@@ -27,6 +27,8 @@ protected:
    int WbestSelect();
    int ZbestSelect();
    int FillUnfoldInfo();
+   int DumpRecoilWMC();
+   int InitHistogram();
    // Member variables
    double mNselected4Bin[NwPtBin];
    double mNmetA[NWptBinPlus];
@@ -35,6 +37,14 @@ protected:
    double mNmetBp[NWptBinPlus];
    double mNmetAm[NWptBinPlus];
    double mNmetBm[NWptBinPlus];
+   TH1D*	h1_u1W[U1Bin];
+   TH1D*	h1_u2W[U2Bin];
+   TH1D*	h1_u3W[U1Bin];
+
+   TH1D*	h1_u1Z[U1Bin];
+   TH1D*	h1_u2Z[U2Bin];
+   TH1D*	h1_u3Z[U1Bin];
+
 };
 
 #endif
@@ -47,6 +57,7 @@ WLepNeu::WLepNeu(WpTTree,WLepTree, lumiweight,OutFileName_, mode_, AnaChannel_,W
 {
   // Initialize Variables
   InitVar();
+  InitHistogram();
 }
 
 WpT::~WpT()

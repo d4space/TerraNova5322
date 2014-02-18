@@ -64,7 +64,7 @@ public :
   //WMuons	wMuons;
 
    double	LumiWeight;
-   double RecoilBins[u1Bin+1]; //Recoil Study Wpt bins
+   double RecoilBins[U1Bin+1]; //Recoil Study Wpt bins
    double Bins[NWptBinPlus]; //Wpt bins
      
    TH1D*	h1_Vtx_Prim;
@@ -204,12 +204,6 @@ public :
    TH2D*	h2_u1Zpt;
    TH2D*	h2_u2Zpt;
    TH2D*	h2_u3Zpt;
-   TH1D*	h1_u1Z[u1Bin];
-   TH1D*	h1_u2Z[u2Bin];
-   TH1D*	h1_u3Z[u1Bin];
-   TH1D*	h1_u1W[u1Bin];
-   TH1D*	h1_u2W[u2Bin];
-   TH1D*	h1_u3W[u1Bin];
    //                          scale, smear
    //   TH1D*	h1_ZmassDaughEta[ScaleBins][ScaleBins];
    TH1D*        h1_ZmassDaughEta[ScElCombiBinsHighPU];
@@ -281,6 +275,7 @@ protected:
   // Member Variables
   //------------------
   // Miscal
+  char histName[30];
   TString mResultDir;
   TLorentzVector pfMEtTL, NoPuMEtTL, MVaMEtTL, genMEtTrueTL, genMEtCaloTL, genMEtCaloAndNonPromptTL;
   int Ntries;
@@ -420,7 +415,6 @@ void WLepNeu::Init(TTree *tree)
    mEffSf = 1;
 
 
-   char histName[30];
    h1_Vtx_Prim	= new TH1D("h1_Vtx_Prim","N primary vertex",25,0,25);
    h1_Vtx_Good	= new TH1D("h1_Vtx_Good","N primary vertex",25,0,25);
    h1_W_Multi= new TH1D("h1_W_Multi","W Multiplicity",10,-0.5,9.5);
@@ -659,27 +653,6 @@ void WLepNeu::Init(TTree *tree)
    h2_u2Zpt= new TH2D("h2_u2Zpt","u2 vs Zpt",300,0,300,80,-40,40);
    h2_u3Zpt= new TH2D("h2_u3Zpt","u3 vs Zpt",300,0,300,80,-40,40);
    //0,3,6,10,14,18,23,30,40,55,70,100
-   for(int i(0);i<u1Bin;i++)
-   {
-     //double mean_, binCent;
-     //binCent = (RecoilBins[i]+RecoilBins[i+1])/2.;
-     sprintf(histName,"h1_u1Z_%d",i);
-     //mean_ = 0.6-0.85*binCent;
-     h1_u1Z[i]= new TH1D(histName,"h1_u1Z",150,-150-RecoilBins[i],150-RecoilBins[i]);
-     //h1_u1Z[i]= new TH1D(histName,"h1_u1Z",50,mean_-80,mean_+50);
-     sprintf(histName,"h1_u2Z_%d",i);
-     h1_u2Z[i] = new TH1D(histName,"h1_u2Z",150,-150,150);
-     sprintf(histName,"h1_u3Z_%d",i);
-     h1_u3Z[i] = new TH1D(histName,"h1_u3Z",100,-100,100);
-     sprintf(histName,"h1_u1W_%d",i);
-     //mean_ = 0.6-0.85*binCent;
-     h1_u1W[i]= new TH1D(histName,"h1_u1W",150,-150-RecoilBins[i],150-RecoilBins[i]);
-     //h1_u1W[i]= new TH1D(histName,"h1_u1W",50,mean_-80,mean_+50);
-     sprintf(histName,"h1_u2W_%d",i);
-     h1_u2W[i] = new TH1D(histName,"h1_u2W",150,-150,150);
-     sprintf(histName,"h1_u3W_%d",i);
-     h1_u3W[i] = new TH1D(histName,"h1_u3W",100,-100,100);
-   }
 
    if(Mode == "ScaleMakeMC")
    {
@@ -2598,7 +2571,7 @@ Int_t WLepNeu::InitVar4Evt()
   newZlep2Pt=0;
   elemass=0.000511;
   muonmass=0.1056;
-  Rcl.u1W=-999;Rcl.u2W=-999;u3W=-999;
+  Rcl.u1W=-999;Rcl.u2W=-999;Rcl.u3W=-999;
   Rcl.u1Z=-999;Rcl.u2Z=-999;Rcl.u3Z=-999;
   //genInfo.W_MCtruth = 0;
   genInfo.BornW_pt = 0;
