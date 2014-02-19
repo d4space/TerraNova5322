@@ -86,7 +86,7 @@ DYmmFilter = cms.EDFilter("ZmmFilter",
 #)
 
 
-WEleNeu = cms.EDFilter('wLeptNeuFilter',
+WEleNeu = cms.EDAnalyzer('NtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL'),# To make the Ntupe tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -132,8 +132,7 @@ WEleNeu = cms.EDFilter('wLeptNeuFilter',
     L1Select = cms.untracked.string('L1_SingleEG22')
 
 )
-
-WMuNeu = cms.EDFilter('wLeptNeuFilter',
+WMuNeu = cms.EDAnalyzer('NtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -180,7 +179,7 @@ WMuNeu = cms.EDFilter('wLeptNeuFilter',
     L1Select = cms.untracked.string('L1_SingleEG22')
 
 )
-WTauNeu = cms.EDFilter('wLeptNeuFilter',
+WTauNeu = cms.EDAnalyzer('NtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),

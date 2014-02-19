@@ -1,4 +1,4 @@
-// $Id: wLeptNeuFilter.h,v 1.17 2013/09/13 00:09:33 salee Exp $
+// $Id: NtupleMaker.h,v 1.17 2013/09/13 00:09:33 salee Exp $
 //
 //
 
@@ -79,19 +79,19 @@
 #include <map> //L1
 #include <string> // L1
 
-#include "KoSMP/DataFormats/interface/Lepton.h"
-#include "KoSMP/DataFormats/interface/ZCandidate.h"
-#include "KoSMP/DataFormats/interface/TTbarGenEvent.h"
-#include "KoSMP/DataFormats/interface/TTbarMass.h"
-#include "KoSMP/DataFormats/interface/WLeptNeuCand.h"
-#include "KoSMP/DataFormats/interface/METCandidate.h"
-#include "KoSMP/DataFormats/interface/Maos.h"
-#include "KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h"
+#include "TerraNova/DataFormats/interface/Lepton.h"
+#include "TerraNova/DataFormats/interface/ZCandidate.h"
+#include "TerraNova/DataFormats/interface/TTbarGenEvent.h"
+#include "TerraNova/DataFormats/interface/TTbarMass.h"
+#include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
+#include "TerraNova/DataFormats/interface/METCandidate.h"
+#include "TerraNova/DataFormats/interface/Maos.h"
+#include "TerraNova/WAnalyzer/interface/wLeptNeuBranchVars.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
 #include "TLorentzVector.h"
-#include "../analysis/Utils/const.h"
+#include "../../Analysis/Utils/const.h"
 
 //
 // class declaration
@@ -102,9 +102,296 @@ using namespace reco;
 using namespace isodeposit;
 
 //template<typename T1, typename T2>
-class wLeptNeuFilter : public edm::EDFilter{
+class NtupleMaker : public edm::EDAnalyzer{
  public:
-  explicit wLeptNeuFilter(const edm::ParameterSet& iConfig)
+  explicit NtupleMaker(const edm::ParameterSet& iConfig);
+  ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
+  ~NtupleMaker()
+  {
+  }
+
+//===============================================================
+private:
+//===============================================================
+
+// Variables ==================================================
+  bool acceptFT;
+  bool isRD;
+
+  struct GenInfo{
+    double mass;
+    int id,Lept1_id,Lept2_id;
+    int status,Lept1_status,Lept2_status;
+    double px,py,pz,pt,eta,phi;
+    double Lept1_px,Lept1_py,Lept1_pz,Lept1_en,Lept1_pt,Lept1_eta,Lept1_phi,Lept1_et,Lept1_charge;
+    double Lept2_px,Lept2_py,Lept2_pz,Lept2_en,Lept2_pt,Lept2_eta,Lept2_phi,Lept2_et,Lept2_charge;
+    double Neut_pt;
+  };
+  double genDeltaR1, genDeltaR2;
+  double BestGenDeltaR1, BestGenDeltaR2;
+  double dPtRel1, dPtRel2;
+  double BesTdPtRel1, BesTdPtRel2;
+  int idxMatch;
+
+  std::string Channel;
+  std::string L1Select_;
+  std::string mEAtargetToken;
+  bool useL1Selector_;
+  //    useL1Selector_ = iConfig.getParameter<bool>("useL1Selector");
+  //    L1Select_      = iConfig.getUntrackedParameter< std::string >("L1Select");
+
+
+  typedef pat::JetCollection::const_iterator JI;
+
+  edm::InputTag leptonLabel1_;
+  edm::InputTag leptonLabel2_;
+  edm::InputTag muonLabel2_;
+  edm::InputTag pfMEtLabel_;
+  edm::InputTag noPuMEtLabel_;
+  edm::InputTag MVAMEtLabel_;
+  edm::InputTag genMEtTrueLabel_;
+  edm::InputTag genMEtCaloLabel_;
+  edm::InputTag genMEtCaloAndNonPromptLabel_;
+  edm::InputTag jetLabel_;
+  edm::InputTag genParticlesLabel_;
+  edm::InputTag vertexLabel_;
+  edm::InputTag TriggerResultsTag;
+  edm::InputTag rhoIsoInputTag;
+  edm::InputTag conversionsInputTag;
+  edm::InputTag beamSpotInputTag;
+  //Handle
+  edm::Handle<double>rhoIso_h;
+  edm::Handle<reco::ConversionCollection>conversions_h;
+  edm::Handle<reco::BeamSpot> beamSpot_h;
+  edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
+  edm::Handle<std::vector<pat::Muon> > mu1_hand;
+  edm::Handle<std::vector<pat::Muon> > mu2_hand;
+  edm::Handle<std::vector<pat::Electron> > ele1_hand;
+  edm::Handle<std::vector<pat::Electron> > ele2_hand;
+  edm::Handle<std::vector<pat::Tau> > tau1_hand;
+  edm::Handle<std::vector<pat::Tau> > tau2_hand;
+  edm::Handle<pat::METCollection> pfMET_hand;
+  edm::Handle<reco::PFMETCollection> NoPuMET_hand;
+  edm::Handle<reco::PFMETCollection> MVaMET_hand;
+  edm::Handle<reco::GenMETCollection> genMEtTrue_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
+  edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
+  edm::Handle<reco::VertexCollection> recVtxs_;
+
+  //iterator------------------------------
+  pat::METCollection::const_iterator pfMEt_It;
+  reco::PFMETCollection::const_iterator NoPuMEt_It;
+  reco::PFMETCollection::const_iterator MVaMEt_It;
+  reco::GenMETCollection::const_iterator genMEtTrue_It;
+  reco::GenMETCollection::const_iterator genMEtCalo_It;
+  reco::GenMETCollection::const_iterator genMEtCaloAndNonPrompt_It;
+
+  std::vector<std::string> filters_;
+
+  HLTConfigProvider HltConfig;
+  std::vector<std::string> HLTTriggers;
+  std::vector<unsigned int> TrigIndex;
+  std::vector<std::string> FullHLTTriggerNames;
+  std::vector<int> HLTVersions;
+
+  bool metStudy_;
+//  bool NoPU_metStudy_;
+//  bool MVA_metStudy_;
+//  bool genMEtTrue_Study_;
+//  bool genMEtCalo_Study_;
+//  bool genMEtCaloAndNonPrompt_Study_;
+  bool useEventCounter_;
+  
+  // relIso
+  double relIso1_;
+  double relIso2_;
+  // btag Discriminator
+  std::vector<std::string> bTagAlgos_;
+  std::vector<std::string> bTagNames_;
+  std::vector<double> bTagCutValues_;
+  std::vector<bool> bTagIsCutMin_;
+  std::vector<int> nbjetsCache_;
+  //std::string bTagAlgo_;
+  //double minBTagValue_;
+
+  edm::Service<TFileService> fs;
+  TTree* tree;
+  EventBranches	EventData;
+  TrigBranches	HLTData;
+  Zboson	Zs;
+  Wboson	Ws;
+  GenWboson	GenWs;
+  GenZboson	GenZs;
+  FSRphoton	FSRph;
+  KoMET		KoMETs;
+
+  TH1F * tmp;
+  TH1F * h_lept1_pt;
+  TH1F * h_lept2_pt;
+  TH1F * h_Zmass;
+  TH1F * h_MET;
+//  TH1F * h_NoPU_MET;
+//  TH1F * h_MVA_MET;
+//  TH1F * h_genMEtTrue_MET;
+//  TH1F * h_genMEtCalo_MET;
+//  TH1F * h_genMEtCaloAndNonPrompt_MET;
+  TH1F * h_jetpt30_multi;
+  TH1F * h_npileupin;
+  TH1F * h_npileup;
+  TH1F * h_nvertex;
+
+  //std::vector<Ky::ZCandidate>* Z;
+  std::vector<Ky::Lepton>* lepton1;
+  std::vector<Ky::Lepton>* lepton2;
+  std::vector<Ky::METCandidate>* pfMet;
+  std::vector<math::XYZTLorentzVector>* met;
+  math::XYZTLorentzVector *pfMEt4V;
+  std::vector<math::XYZTLorentzVector>* jetspt30;
+
+  double pfMET;
+//  double NoPU_MET;
+//  double MVA_MET;
+//  double genMEtTrue_MET;
+//  double genMEtCalo_MET;
+//  double genMEtCaloAndNonPrompt_MET;
+  double dphimetlepton1;
+  double dphimetlepton2;
+  double dphimetjet1;
+  double dphimetjet2;
+
+  double discr;
+
+  double genttbarM;
+
+
+  // ----------member data ---------------------------
+
+  //add run event data
+  //unsigned int EVENT;
+  //unsigned int RUN;
+  //unsigned int LUMI;
+  //unsigned int npileup;
+  //unsigned int nvertex;
+  //double weightin;
+  //double weight;
+  //double weightplus;
+  //double weightminus;
+
+  edm::LumiReWeighting LumiWeights_;
+
+  std::vector<double> PileUpRD_;
+  std::vector<double> PileUpMC_;
+
+  reweight::PoissonMeanShifter PShiftUp_;
+  reweight::PoissonMeanShifter PShiftDown_;
+
+  /// constant iterator for L1 trigger
+  //  http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/CMSSW/L1TriggerConfig/L1GtConfigProducers/interface/L1GtTriggerMenuTester.h?revision=1.3&view=markup
+  typedef std::map<std::string, const L1GtAlgorithm*>::const_iterator
+    CItAlgoP;
+  
+
+  bool applyIso_;
+  bool oppPair_;
+
+  double Lept1_chIso03,Lept1_chIso04;
+  double Lept2_chIso03,Lept2_chIso04;
+  double Lept1_nhIso03,Lept1_nhIso04;
+  double Lept2_nhIso03,Lept2_nhIso04;
+  double Lept1_phIso03,Lept1_phIso04;
+  double Lept2_phIso03,Lept2_phIso04;
+  double Lept1_pcIso03,Lept1_pcIso04;
+  double Lept2_pcIso03,Lept2_pcIso04;
+
+  double Lept1_RelisolPtTrks03 ;
+  double Lept1_RelisoEm03      ;
+  double Lept1_RelisoHad03     ;
+
+  bool Lept1_isGlobal, Lept2_isGlobal;
+  bool Lept1_isTrker,  Lept2_isTrker;
+  double Lept1_globalNormChi2,Lept2_globalNormChi2;
+  double Lept1_muonHits,Lept2_muonHits;
+  double Lept1_trackerHits,Lept2_trackerHits;
+  double Lept1_dxy,Lept1_dz;
+  double Lept2_dxy,Lept2_dz;
+  double Lept1_trkLayers,Lept2_trkLayers;
+  double Lept1_pixelHits,Lept2_pixelHits;
+  int Lept1_matchStations, Lept2_matchStations;
+  double Lept1_relIsoCom03,Lept1_relIsoCom04;
+  double Lept2_relIsoCom03,Lept2_relIsoCom04;
+  double Lept1_relIsoBeta03,Lept1_relIsoBeta04;
+  double Lept2_relIsoBeta03,Lept2_relIsoBeta04;
+  double Lept1_relIsoRho03;
+  double Lept2_relIsoRho03;
+
+  double Lept2_RelisolPtTrks03 ;
+  double Lept2_RelisoEm03      ;
+  double Lept2_RelisoHad03     ;
+
+  double Lept1_pt, Lept1_eta,Lept1_etaSC,Lept1_phi,
+  Lept1_phiSC, Lept1_dB, Lept1_px, Lept1_py,
+  Lept1_pz, Lept1_en,Lept1_et,Lept1_charge,
+  Lept1_MedComIsoDelBetCorr3Hits, Lept1_decModFind;
+
+
+  double Lept2_pt, Lept2_eta,Lept2_etaSC,Lept2_phi,
+  Lept2_phiSC, Lept2_dB, Lept2_px, Lept2_py,
+  Lept2_pz,Lept2_en,Lept2_et,Lept2_charge,
+  Lept2_MedComIsoDelBetCorr3Hits, Lept2_decModFind;
+  
+  double rhoIso;
+  double Lept1_dEtaIn,Lept1_dPhiIn,Lept1_sigmaIEtaIEta;
+  double Lept2_dEtaIn,Lept2_dPhiIn,Lept2_sigmaIEtaIEta;
+  double Lept1_HoverE,Lept1_fbrem;
+  double Lept2_HoverE,Lept2_fbrem;
+  double Lept1_energyEC,Lept1_Pnorm,Lept1_InvEminusInvP;
+  double Lept2_energyEC,Lept2_Pnorm,Lept2_InvEminusInvP;
+  double Lept1_AEff03;
+  double Lept2_AEff03;
+  bool   Lept1_hasConversion;
+  bool   Lept2_hasConversion;
+  int    Lept1_mHits;
+  int    Lept2_mHits;
+  double Lept1_SCcharge,Lept1_TKcharge,Lept1_GSFcharge;
+  double Lept2_SCcharge,Lept2_TKcharge,Lept2_GSFcharge;
+  double Lept1_GsfCtfScPixchargeConsistentcheck;
+  double Lept2_GsfCtfScPixchargeConsistentcheck;
+
+  virtual void beginJob();
+  //virtual bool beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
+  virtual bool beginRun( edm::Run& iRun, const edm::EventSetup& iSetup);
+  virtual bool endRun(const edm::Run&, const edm::EventSetup&)
+  {
+    return true;
+  }
+
+  virtual void bookTree();
+
+  virtual bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup );
+
+//  virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
+  virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void analyze(edm::Event& iEvent, const edm::EventSetup& iSetup);
+  void clear();
+  virtual bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
+  bool checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2);
+  bool MatchObjects( const reco::Candidate::LorentzVector& pasObj,
+      const reco::Candidate::LorentzVector& proObj,
+      bool exact );
+ 
+  virtual bool HasDaughter(reco::GenParticleRef genPtcl, int id);
+  virtual reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id);
+  
+  virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual double alphaRatio(double pt);
+  virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup);
+
+};
+explicit NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
 {
     //now do what ever initialization is needed
     Channel = iConfig.getUntrackedParameter< std::string >("Channel");
@@ -494,274 +781,21 @@ class wLeptNeuFilter : public edm::EDFilter{
 //    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
-  ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
-  ~wLeptNeuFilter()
-  {
-  }
-
-//===============================================================
-private:
-//===============================================================
-
-// Variables ==================================================
-  bool acceptFT;
-  bool isRD;
-
-  struct GenInfo{
-    double mass;
-    int id,Lept1_id,Lept2_id;
-    int status,Lept1_status,Lept2_status;
-    double px,py,pz,pt,eta,phi;
-    double Lept1_px,Lept1_py,Lept1_pz,Lept1_en,Lept1_pt,Lept1_eta,Lept1_phi,Lept1_et,Lept1_charge;
-    double Lept2_px,Lept2_py,Lept2_pz,Lept2_en,Lept2_pt,Lept2_eta,Lept2_phi,Lept2_et,Lept2_charge;
-    double Neut_pt;
-  };
-  double genDeltaR1, genDeltaR2;
-  double BestGenDeltaR1, BestGenDeltaR2;
-  double dPtRel1, dPtRel2;
-  double BesTdPtRel1, BesTdPtRel2;
-  int idxMatch;
-
-  std::string Channel;
-  std::string L1Select_;
-  std::string mEAtargetToken;
-  bool useL1Selector_;
-  //    useL1Selector_ = iConfig.getParameter<bool>("useL1Selector");
-  //    L1Select_      = iConfig.getUntrackedParameter< std::string >("L1Select");
-
-
-  typedef pat::JetCollection::const_iterator JI;
-
-  edm::InputTag leptonLabel1_;
-  edm::InputTag leptonLabel2_;
-  edm::InputTag muonLabel2_;
-  edm::InputTag pfMEtLabel_;
-  edm::InputTag noPuMEtLabel_;
-  edm::InputTag MVAMEtLabel_;
-  edm::InputTag genMEtTrueLabel_;
-  edm::InputTag genMEtCaloLabel_;
-  edm::InputTag genMEtCaloAndNonPromptLabel_;
-  edm::InputTag jetLabel_;
-  edm::InputTag genParticlesLabel_;
-  edm::InputTag vertexLabel_;
-  edm::InputTag TriggerResultsTag;
-  edm::InputTag rhoIsoInputTag;
-  edm::InputTag conversionsInputTag;
-  edm::InputTag beamSpotInputTag;
-  //Handle
-  edm::Handle<double>rhoIso_h;
-  edm::Handle<reco::ConversionCollection>conversions_h;
-  edm::Handle<reco::BeamSpot> beamSpot_h;
-  edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
-  edm::Handle<std::vector<pat::Muon> > mu1_hand;
-  edm::Handle<std::vector<pat::Muon> > mu2_hand;
-  edm::Handle<std::vector<pat::Electron> > ele1_hand;
-  edm::Handle<std::vector<pat::Electron> > ele2_hand;
-  edm::Handle<std::vector<pat::Tau> > tau1_hand;
-  edm::Handle<std::vector<pat::Tau> > tau2_hand;
-  edm::Handle<pat::METCollection> pfMET_hand;
-  edm::Handle<reco::PFMETCollection> NoPuMET_hand;
-  edm::Handle<reco::PFMETCollection> MVaMET_hand;
-  edm::Handle<reco::GenMETCollection> genMEtTrue_hand;
-  edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
-  edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
-  edm::Handle<reco::VertexCollection> recVtxs_;
-
-  //iterator------------------------------
-  pat::METCollection::const_iterator pfMEt_It;
-  reco::PFMETCollection::const_iterator NoPuMEt_It;
-  reco::PFMETCollection::const_iterator MVaMEt_It;
-  reco::GenMETCollection::const_iterator genMEtTrue_It;
-  reco::GenMETCollection::const_iterator genMEtCalo_It;
-  reco::GenMETCollection::const_iterator genMEtCaloAndNonPrompt_It;
-
-  std::vector<std::string> filters_;
-
-  HLTConfigProvider HltConfig;
-  std::vector<std::string> HLTTriggers;
-  std::vector<unsigned int> TrigIndex;
-  std::vector<std::string> FullHLTTriggerNames;
-  std::vector<int> HLTVersions;
-
-  bool metStudy_;
-//  bool NoPU_metStudy_;
-//  bool MVA_metStudy_;
-//  bool genMEtTrue_Study_;
-//  bool genMEtCalo_Study_;
-//  bool genMEtCaloAndNonPrompt_Study_;
-  bool useEventCounter_;
-  
-  // relIso
-  double relIso1_;
-  double relIso2_;
-  // btag Discriminator
-  std::vector<std::string> bTagAlgos_;
-  std::vector<std::string> bTagNames_;
-  std::vector<double> bTagCutValues_;
-  std::vector<bool> bTagIsCutMin_;
-  std::vector<int> nbjetsCache_;
-  //std::string bTagAlgo_;
-  //double minBTagValue_;
-
-  edm::Service<TFileService> fs;
-  TTree* tree;
-  EventBranches	EventData;
-  TrigBranches	HLTData;
-  Zboson	Zs;
-  Wboson	Ws;
-  GenWboson	GenWs;
-  GenZboson	GenZs;
-  FSRphoton	FSRph;
-  KoMET		KoMETs;
-
-  TH1F * tmp;
-  TH1F * h_lept1_pt;
-  TH1F * h_lept2_pt;
-  TH1F * h_Zmass;
-  TH1F * h_MET;
-//  TH1F * h_NoPU_MET;
-//  TH1F * h_MVA_MET;
-//  TH1F * h_genMEtTrue_MET;
-//  TH1F * h_genMEtCalo_MET;
-//  TH1F * h_genMEtCaloAndNonPrompt_MET;
-  TH1F * h_jetpt30_multi;
-  TH1F * h_npileupin;
-  TH1F * h_npileup;
-  TH1F * h_nvertex;
-
-  //std::vector<Ky::ZCandidate>* Z;
-  std::vector<Ky::Lepton>* lepton1;
-  std::vector<Ky::Lepton>* lepton2;
-  std::vector<Ky::METCandidate>* pfMet;
-  std::vector<math::XYZTLorentzVector>* met;
-  math::XYZTLorentzVector *pfMEt4V;
-  std::vector<math::XYZTLorentzVector>* jetspt30;
-
-  double pfMET;
-//  double NoPU_MET;
-//  double MVA_MET;
-//  double genMEtTrue_MET;
-//  double genMEtCalo_MET;
-//  double genMEtCaloAndNonPrompt_MET;
-  double dphimetlepton1;
-  double dphimetlepton2;
-  double dphimetjet1;
-  double dphimetjet2;
-
-  double discr;
-
-  double genttbarM;
-
-
-  // ----------member data ---------------------------
-
-  //add run event data
-  //unsigned int EVENT;
-  //unsigned int RUN;
-  //unsigned int LUMI;
-  //unsigned int npileup;
-  //unsigned int nvertex;
-  //double weightin;
-  //double weight;
-  //double weightplus;
-  //double weightminus;
-
-  edm::LumiReWeighting LumiWeights_;
-
-  std::vector<double> PileUpRD_;
-  std::vector<double> PileUpMC_;
-
-  reweight::PoissonMeanShifter PShiftUp_;
-  reweight::PoissonMeanShifter PShiftDown_;
-
-  /// constant iterator for L1 trigger
-  //  http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/CMSSW/L1TriggerConfig/L1GtConfigProducers/interface/L1GtTriggerMenuTester.h?revision=1.3&view=markup
-typedef std::map<std::string, const L1GtAlgorithm*>::const_iterator
-    CItAlgoP;
-  
-
-  bool applyIso_;
-  bool oppPair_;
-
-  double Lept1_chIso03,Lept1_chIso04;
-  double Lept2_chIso03,Lept2_chIso04;
-  double Lept1_nhIso03,Lept1_nhIso04;
-  double Lept2_nhIso03,Lept2_nhIso04;
-  double Lept1_phIso03,Lept1_phIso04;
-  double Lept2_phIso03,Lept2_phIso04;
-  double Lept1_pcIso03,Lept1_pcIso04;
-  double Lept2_pcIso03,Lept2_pcIso04;
-
-  double Lept1_RelisolPtTrks03 ;
-  double Lept1_RelisoEm03      ;
-  double Lept1_RelisoHad03     ;
-
-  bool Lept1_isGlobal, Lept2_isGlobal;
-  bool Lept1_isTrker,  Lept2_isTrker;
-  double Lept1_globalNormChi2,Lept2_globalNormChi2;
-  double Lept1_muonHits,Lept2_muonHits;
-  double Lept1_trackerHits,Lept2_trackerHits;
-  double Lept1_dxy,Lept1_dz;
-  double Lept2_dxy,Lept2_dz;
-  double Lept1_trkLayers,Lept2_trkLayers;
-  double Lept1_pixelHits,Lept2_pixelHits;
-  int Lept1_matchStations, Lept2_matchStations;
-  double Lept1_relIsoCom03,Lept1_relIsoCom04;
-  double Lept2_relIsoCom03,Lept2_relIsoCom04;
-  double Lept1_relIsoBeta03,Lept1_relIsoBeta04;
-  double Lept2_relIsoBeta03,Lept2_relIsoBeta04;
-  double Lept1_relIsoRho03;
-  double Lept2_relIsoRho03;
-
-  double Lept2_RelisolPtTrks03 ;
-  double Lept2_RelisoEm03      ;
-  double Lept2_RelisoHad03     ;
-
-  double Lept1_pt, Lept1_eta,Lept1_etaSC,Lept1_phi,
-  Lept1_phiSC, Lept1_dB, Lept1_px, Lept1_py,
-  Lept1_pz, Lept1_en,Lept1_et,Lept1_charge,
-  Lept1_MedComIsoDelBetCorr3Hits, Lept1_decModFind;
-
-
-  double Lept2_pt, Lept2_eta,Lept2_etaSC,Lept2_phi,
-  Lept2_phiSC, Lept2_dB, Lept2_px, Lept2_py,
-  Lept2_pz,Lept2_en,Lept2_et,Lept2_charge,
-  Lept2_MedComIsoDelBetCorr3Hits, Lept2_decModFind;
-  
-  double rhoIso;
-  double Lept1_dEtaIn,Lept1_dPhiIn,Lept1_sigmaIEtaIEta;
-  double Lept2_dEtaIn,Lept2_dPhiIn,Lept2_sigmaIEtaIEta;
-  double Lept1_HoverE,Lept1_fbrem;
-  double Lept2_HoverE,Lept2_fbrem;
-  double Lept1_energyEC,Lept1_Pnorm,Lept1_InvEminusInvP;
-  double Lept2_energyEC,Lept2_Pnorm,Lept2_InvEminusInvP;
-  double Lept1_AEff03;
-  double Lept2_AEff03;
-  bool   Lept1_hasConversion;
-  bool   Lept2_hasConversion;
-  int    Lept1_mHits;
-  int    Lept2_mHits;
-  double Lept1_SCcharge,Lept1_TKcharge,Lept1_GSFcharge;
-  double Lept2_SCcharge,Lept2_TKcharge,Lept2_GSFcharge;
-  double Lept1_GsfCtfScPixchargeConsistentcheck;
-  double Lept2_GsfCtfScPixchargeConsistentcheck;
-
-virtual void beginJob()
+virtual void NtupleMaker::beginJob()
 {
-    std::vector< float > PuMC ;
-    std::vector< float > PuReal;
-    //for( int i=0; i< 25; ++i)
-    for( int i=0; i< 60; ++i) {
-      PuReal.push_back((float)PileUpRD_[i]);
-      PuMC.push_back((float)PileUpMC_[i]);
-    }
-    LumiWeights_ = edm::LumiReWeighting(PuMC, PuReal);
+  std::vector< float > PuMC ;
+  std::vector< float > PuReal;
+  //for( int i=0; i< 25; ++i)
+  for( int i=0; i< 60; ++i) {
+    PuReal.push_back((float)PileUpRD_[i]);
+    PuMC.push_back((float)PileUpMC_[i]);
+  }
+  LumiWeights_ = edm::LumiReWeighting(PuMC, PuReal);
 
-    PShiftDown_ = reweight::PoissonMeanShifter(-0.5);
-    PShiftUp_ = reweight::PoissonMeanShifter(0.5);
+  PShiftDown_ = reweight::PoissonMeanShifter(-0.5);
+  PShiftUp_ = reweight::PoissonMeanShifter(0.5);
 
-    bookTree();
-
+  bookTree();
 
   if( mEAtargetToken == "EleEANoCorr")
       EAtarget	=ElectronEffectiveArea::kEleEANoCorr;
@@ -779,8 +813,7 @@ virtual void beginJob()
   cout<<"EAtarget: "<<EAtarget<<endl;
 
 }
-  //virtual bool beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
-  virtual bool beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
+virtual bool NtupleMaker::beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
 {
   //initialization
   FullHLTTriggerNames.clear();
@@ -827,12 +860,7 @@ virtual void beginJob()
   }
   return true;
 }
-virtual bool endRun(const edm::Run&, const edm::EventSetup&)
-{
-  return true;
-}
-
-virtual void bookTree()
+virtual void NtupleMaker::bookTree()
 {
   EventData.Register(tree);
   FSRph.Register(tree);
@@ -847,8 +875,7 @@ virtual void bookTree()
   GenZs.Register(tree);
   KoMETs.Register(tree);
 }
-
-virtual bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup ) 
+virtual bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
   // Get L1 Trigger menu
   ESHandle<L1GtTriggerMenu> menuRcd;
@@ -879,12 +906,8 @@ virtual bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup
   
   return algResult;
 }
-
-//  virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
-virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
+virtual void NtupleMaker::GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
-
-
   //Trigger Information----
   Handle<TriggerResults> trgRsltsHandle;
   //cout<<"HLTTriggers size: "<<HLTTriggers.size()<<" HLTVersions size: "<<HLTVersions.size()<<endl;
@@ -965,11 +988,8 @@ virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
   {
     cout<<"HLTTRiggers is 0 or HLTVersions.size is not the same"<<endl;
   }
-
-
 }
-virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup);
-void clear()
+void NtupleMaker::clear()
 {
   EventData.EVENT	= -999;
   EventData.RUN		= -999;
@@ -1370,7 +1390,7 @@ void clear()
 
     genttbarM = -999;
 }
-  virtual bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
+virtual bool NtupleMaker::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
 {
   //cout<<"end lumi "<<endl;
     if(useEventCounter_){
@@ -1386,46 +1406,43 @@ void clear()
     }
     return true;
 }
-  bool checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
+bool NtupleMaker::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
 {
+  bool overlap = false;
+  if( reliso1 < relIso1_ ) {
+    overlap = dRval1 < 0.4 ;
+    if(overlap) return overlap;
+  }
 
-    bool overlap = false;
-    if( reliso1 < relIso1_ ) {
-      overlap = dRval1 < 0.4 ;
-      if(overlap) return overlap;
-    }
+  if( reliso2 < relIso2_ ) {
+    overlap = dRval2 < 0.4 ;
+    if(overlap) return overlap;
+  }
 
-    if( reliso2 < relIso2_ ) {
-      overlap = dRval2 < 0.4 ;
-      if(overlap) return overlap;
-    }
-
-    return overlap;
+  return overlap;
 
 }
 
-  bool MatchObjects( const reco::Candidate::LorentzVector& pasObj,
+bool NtupleMaker::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
       const reco::Candidate::LorentzVector& proObj,
       bool exact )
 {
-    double proEta = proObj.eta();
-    double proPhi = proObj.phi();
-    double proPt  = proObj.pt();
-    double pasEta = pasObj.eta();
-    double pasPhi = pasObj.phi();
-    double pasPt  = pasObj.pt();
+  double proEta = proObj.eta();
+  double proPhi = proObj.phi();
+  double proPt  = proObj.pt();
+  double pasEta = pasObj.eta();
+  double pasPhi = pasObj.phi();
+  double pasPt  = pasObj.pt();
 
-    double dRval = deltaR(proEta, proPhi, pasEta, pasPhi);
-    double dPtRel = 999.0;
-    if( proPt > 0.0 ) dPtRel = fabs( pasPt - proPt )/proPt;
-    // If we are comparing two objects for which the candidates should
-    // be exactly the same, cut hard. Otherwise take cuts from user.
-    if( exact ) return ( dRval < 1e-3 && dPtRel < 1e-3 );
-    else        return ( dRval < 0.025 && dPtRel < 0.025 );
+  double dRval = deltaR(proEta, proPhi, pasEta, pasPhi);
+  double dPtRel = 999.0;
+  if( proPt > 0.0 ) dPtRel = fabs( pasPt - proPt )/proPt;
+  // If we are comparing two objects for which the candidates should
+  // be exactly the same, cut hard. Otherwise take cuts from user.
+  if( exact ) return ( dRval < 1e-3 && dPtRel < 1e-3 );
+  else        return ( dRval < 0.025 && dPtRel < 0.025 );
 }
-
- 
-virtual bool HasDaughter(reco::GenParticleRef genPtcl, int id)
+virtual bool NtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
 {
   for(unsigned int i(0);i<genPtcl->numberOfDaughters(); i++)
   {
@@ -1433,8 +1450,7 @@ virtual bool HasDaughter(reco::GenParticleRef genPtcl, int id)
   }
   return false;
 }
-
-virtual reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id)
+virtual reco::GenParticleRef NtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
 {
   reco::GenParticleRef daughter;
   for( unsigned int i(0);i<mom->numberOfDaughters();i++)
@@ -1444,9 +1460,7 @@ virtual reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id)
   }
   return daughter;
 }
-  
-
-virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
+virtual void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if (isRD) return;
   //if (iEvent.isRealData()) return;
@@ -1683,7 +1697,7 @@ virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     }//W status 3
   }//GenPtcls
 }
-virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
+virtual void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
   GenInfo GenZinfo;
@@ -1808,7 +1822,7 @@ virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
     }//Drell-Yan
   }//genPtcls
 }
-virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
+virtual void NtupleMaker::GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
 {
   if(isRD) return;
 
@@ -1877,8 +1891,7 @@ virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     }
   }
 }
-
-virtual double alphaRatio(double pt) {
+virtual double NtupleMaker::alphaRatio(double pt){
 
       double pigaga = 0.;
 
@@ -1918,7 +1931,6 @@ virtual double alphaRatio(double pt) {
       // Done
       return 1./(1.-pigaga);
 }
-
 virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     //cout<<"lepton size: "<<mu1_hand->size()<<endl;
@@ -2103,7 +2115,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       Lept1_pcIso03 = it1.isoDeposit(pat::PfPUChargedHadronIso)->depositAndCountWithin(0.3, vetos_pc).first;
       Lept1_pcIso04 = it1.isoDeposit(pat::PfPUChargedHadronIso)->depositAndCountWithin(0.4, vetos_pc).first;
 
-      //if(Lept1_pcIso04_tmp != Lept1_pcIso04) cout<<"wLeptNeuFilter: pcIso04 is not the same"<<endl;
+      //if(Lept1_pcIso04_tmp != Lept1_pcIso04) cout<<"NtupleMaker: pcIso04 is not the same"<<endl;
 
       Lept1_relIsoCom03 = (Lept1_chIso03 + Lept1_nhIso03 + Lept1_phIso03)/Lept1_pt;
       Lept1_relIsoCom04 = (Lept1_chIso04 + Lept1_nhIso04 + Lept1_phIso04)/Lept1_pt;
@@ -2456,7 +2468,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       //break;
     }//mu1_hand
 }
-virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
+virtual void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
@@ -3220,11 +3232,8 @@ virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
         h_lept1_pt->Fill(it1.pt());
         h_lept2_pt->Fill(it2.pt());
         h_Zmass->Fill(DiTau.mass());
-
         //break;
       }//ele2_hand
       //break;
     }//ele1_hand
 }
-
-};

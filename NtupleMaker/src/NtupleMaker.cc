@@ -1,11 +1,11 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "KoSMP/WAnalyzer/interface/wLeptNeuFilter.h"
+#include "KoSMP/WAnalyzer/interface/NtupleMaker.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 //#include "DataFormats/METReco/interface/GenMET.h"
 //#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::analyze(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
@@ -242,9 +242,6 @@ bool wLeptNeuFilter::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
     tree->Fill();
-
-    return acceptFT;
-
 }
-DEFINE_FWK_MODULE(wLeptNeuFilter);
+DEFINE_FWK_MODULE(NtupleMaker);
 
