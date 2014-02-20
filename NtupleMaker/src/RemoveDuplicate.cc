@@ -15,7 +15,7 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "KoSMP/DataFormats/interface/Event.h"
+#include "TerraNova/DataFormats/interface/Event.h"
 
 #include <set>
 //

@@ -1,5 +1,5 @@
-#include "KoSMP/DataFormats/interface/TTbarMass.h"
-#include "KoSMP/DataFormats/interface/Maos.h"
+#include "TerraNova/DataFormats/interface/TTbarMass.h"
+#include "TerraNova/DataFormats/interface/Maos.h"
 
 using namespace Ky;
 

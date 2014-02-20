@@ -1,5 +1,5 @@
-#ifndef KoSMP_CommonTools_KyElectronSelector_h
-#define KoSMP_CommonTools_KyElectronSelector_h
+#ifndef TerraNova_CommonTools_KyElectronSelector_h
+#define TerraNova_CommonTools_KyElectronSelector_h
 
 // store the position of the Z combinaison the closest to the Z mass
 
@@ -12,7 +12,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"//VertexCollection
 //#include "DataFormats/PatCandidates/interface/LookupTableRecord.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "KoSMP/CommonTools/interface/ElectronIDSelector.h"
+#include "TerraNova/CommonTools/interface/ElectronIDSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatElectronSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatLeptonSelector.h"
 

@@ -1,4 +1,4 @@
-#include "KoSMP/CommonTools/interface/KySpecificIsolation.h"
+#include "TerraNova/CommonTools/interface/KySpecificIsolation.h"
 
 
 void KySpecificIsolation::setVetoesParam( const edm::ParameterSet& pset ){

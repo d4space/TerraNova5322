@@ -1,5 +1,5 @@
-#ifndef KoSMP_TTbarGenEvent_H
-#define KoSMP_TTbarGenEvent_H
+#ifndef TerraNova_TTbarGenEvent_H
+#define TerraNova_TTbarGenEvent_H
 
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DataFormats/Candidate/interface/Candidate.h"

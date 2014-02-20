@@ -1,4 +1,4 @@
-#include "KoSMP/CommonTools/interface/KyCombinedIsolation.h"
+#include "TerraNova/CommonTools/interface/KyCombinedIsolation.h"
 
 
 bool KyCombinedIsolation::testIsoCut( double chIso, double nhIso, double phIso, double norm, bool rel) {

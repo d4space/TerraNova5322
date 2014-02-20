@@ -1,12 +1,12 @@
 #include "DataFormats/Common/interface/Wrapper.h"
 
-#include "KoSMP/DataFormats/interface/ZCandidate.h"
-#include "KoSMP/DataFormats/interface/Lepton.h"
-#include "KoSMP/DataFormats/interface/METCandidate.h"
-#include "KoSMP/DataFormats/interface/TTbarEvent.h"
-#include "KoSMP/DataFormats/interface/TTbarGenEvent.h"
-#include "KoSMP/DataFormats/interface/TTbarMass.h"
-#include "KoSMP/DataFormats/interface/WLeptNeuCand.h"
+#include "TerraNova/DataFormats/interface/ZCandidate.h"
+#include "TerraNova/DataFormats/interface/Lepton.h"
+#include "TerraNova/DataFormats/interface/METCandidate.h"
+#include "TerraNova/DataFormats/interface/TTbarEvent.h"
+#include "TerraNova/DataFormats/interface/TTbarGenEvent.h"
+#include "TerraNova/DataFormats/interface/TTbarMass.h"
+#include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
 
 #include <vector>
 
