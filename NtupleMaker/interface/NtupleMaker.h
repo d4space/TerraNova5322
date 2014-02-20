@@ -368,8 +368,8 @@ private:
 
   bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup );
 
-//  virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
-  void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup);
+//  virtual bool filter(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+  void GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup);
   virtual void analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup);
   void clear();
   bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
@@ -381,13 +381,13 @@ private:
   bool HasDaughter(reco::GenParticleRef genPtcl, int id);
   reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id);
   
-  void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetGenInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetGenInfoZ(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetFSRInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup);
   double alphaRatio(double pt);
-  void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup);
 
 };
 
@@ -1460,7 +1460,7 @@ reco::GenParticleRef NtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
   }
   return daughter;
 }
-void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetGenInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if (isRD) return;
   //if (iEvent.isRealData()) return;
@@ -1697,7 +1697,7 @@ void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     }//W status 3
   }//GenPtcls
 }
-void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetGenInfoZ(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
   GenInfo GenZinfo;
@@ -1822,7 +1822,7 @@ void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
     }//Drell-Yan
   }//genPtcls
 }
-void NtupleMaker::GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetFSRInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
 
@@ -1931,7 +1931,7 @@ double NtupleMaker::alphaRatio(double pt){
       // Done
       return 1./(1.-pigaga);
 }
-void NtupleMaker::LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     //cout<<"lepton size: "<<mu1_hand->size()<<endl;
     reco::isodeposit::AbsVetos vetos_ch;
@@ -2468,7 +2468,7 @@ void NtupleMaker::LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       //break;
     }//mu1_hand
 }
-void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
@@ -2987,7 +2987,7 @@ void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup
       //break;
     }//ele1_hand
 }
-void NtupleMaker::LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)

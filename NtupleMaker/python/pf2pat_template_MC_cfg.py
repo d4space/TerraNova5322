@@ -1,5 +1,4 @@
 
-
 #PF2PAT
 from PhysicsTools.PatAlgos.patSequences_cff import *
 

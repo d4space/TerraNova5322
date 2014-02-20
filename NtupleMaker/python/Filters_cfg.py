@@ -1,3 +1,4 @@
+import FWCore.ParameterSet.Config as cms
 
 goodOfflinePrimaryVertices = cms.EDFilter("VertexSelector",
    src = cms.InputTag("offlinePrimaryVertices"),
