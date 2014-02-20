@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
-process.load("KoSMP.WAnalyzer.wAnalysis_MC_cff")
+process.load("TerraNova.NtupleMaker.wAnalysis_MC_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -25,7 +25,7 @@ process.printTree = cms.EDAnalyzer("ParticleListDrawer",
     printVertex = cms.untracked.bool(False),
     src = cms.InputTag("genParticles")
     )
-process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
+process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
 
 process.p = cms.Path(
     process.printTree

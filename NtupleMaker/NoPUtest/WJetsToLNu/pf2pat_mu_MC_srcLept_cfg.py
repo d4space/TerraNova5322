@@ -12,13 +12,13 @@ produceMVAPFMET=True
 
 process = cms.Process("PAT")
 
-process.load("KoSMP.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
+process.load("TerraNova.NtupleMaker.pf2pat_template_MC_MVaNoPuMEt_cfg")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
-from KoSMP.WAnalyzer.eventContent_cff import *
-from KoSMP.WAnalyzer.tools import *
+from TerraNova.NtupleMaker.pat_S10_cfg import *
+from TerraNova.NtupleMaker.eventContent_cff import *
+from TerraNova.NtupleMaker.tools import *
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -62,8 +62,8 @@ process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
-from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 
 
 ### ============= NoPU and MVA MET ===============###
@@ -118,7 +118,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.patMuonFilter.minNumber = 1
 
 ## Source
-process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
+process.load("TerraNova.NtupleMaker.Sources.SourceTemplate_cff")
 
 process.out.outputCommands +=pf2patEventContent
 

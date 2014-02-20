@@ -6,7 +6,7 @@ set CfgFile=$1
 #set CASTORDIR=$2
 #echo $CfgFile
 
-set WorkDir=/afs/cern.ch/work/s/salee/private/W/CMSSW_5_2_5/src/KoSMP/WAnalyzer/test/batch/MuNeu/Run2012A_SingleMu_PromptV1
+set WorkDir=/afs/cern.ch/work/s/salee/private/W/CMSSW_5_2_5/src/TerraNova/NtupleMaker/test/batch/MuNeu/Run2012A_SingleMu_PromptV1
 
 #if [ $# -ne 1 ]
 #then
@@ -15,7 +15,7 @@ set WorkDir=/afs/cern.ch/work/s/salee/private/W/CMSSW_5_2_5/src/KoSMP/WAnalyzer/
 #fi
 #
 cd $WorkDir
-source /afs/cern.ch/user/s/salee/WorkSpace/private/W/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
+source /afs/cern.ch/user/s/salee/WorkSpace/private/W/CMSSW_5_2_5/src/TerraNova/Miscel/Env/setenv4CMSSW525.tcsh
 cmsenv
 cmsRun $CfgFile
 #eval `scramv1 runtime -sh`

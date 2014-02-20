@@ -1,5 +1,5 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "KoSMP/WAnalyzer/interface/wAcceptAnalyzer.h"
+#include "TerraNova/NtupleMaker/interface/wAcceptAnalyzer.h"
 
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 bool wAcceptAnalyzer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)

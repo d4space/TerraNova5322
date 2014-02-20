@@ -1,6 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 process = cms.Process("wNTuple")
-process.load("KoSMP.WAnalyzer.wAnalysis_MC_HiPU_MVAnoPU_cff")
+process.load("TerraNova.NtupleMaker.wAnalysis_MC_HiPU_MVAnoPU_cff")
 
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )

@@ -15,10 +15,10 @@ process = cms.Process("PAT")
 #PF2PAT
 process.load("PhysicsTools.PatAlgos.patSequences_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
-from KoSMP.WAnalyzer.pat_S10_cfg import *
-from KoSMP.WAnalyzer.eventContent_cff import *
-process.load("KoSMP.WAnalyzer.pf2pat_template_MC_MVaNoPuMEt_cfg")
-#from KoSMP.WAnalyzer.tools import *
+from TerraNova.NtupleMaker.pat_S10_cfg import *
+from TerraNova.NtupleMaker.eventContent_cff import *
+process.load("TerraNova.NtupleMaker.pf2pat_template_MC_MVaNoPuMEt_cfg")
+#from TerraNova.NtupleMaker.tools import *
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -129,7 +129,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 process.patMuonFilter.minNumber = 1
 
 ## Source
-#process.load("KoSMP.WAnalyzer.Sources.SourceTemplate_cff")
+#process.load("TerraNova.NtupleMaker.Sources.SourceTemplate_cff")
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
       'dcap://cluster142.knu.ac.kr//pnfs/knu.ac.kr/data/cms/store/mc/Summer12_DR53X/WJetsToLNu_TuneZ2Star_8TeV-madgraph-tarball/AODSIM/PU_S10_START53_V7A-v2/0004/B0ABDF71-F9F2-E111-8B0E-0025B3E063A6.root'

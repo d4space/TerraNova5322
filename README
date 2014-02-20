@@ -5,31 +5,31 @@ tool.py
 	changeConeSize
 	change the electrons cone size 03
 	rhoFor2011Aeff
-WAnalyzer/prod/Electron/
+NtupleMaker/prod/Electron/
 	pf2pat_electron_local_cfg.py
 		changeConeSize --> activate
 		rhoFor2011Aeff
 CommonTools/src/KyElectronSelector.cc
 	rhoIso
-WAnalyzer/prod/Electron/RD/Multicarb/pf2pat_electron_cfg.py
+NtupleMaker/prod/Electron/RD/Multicarb/pf2pat_electron_cfg.py
 	changeConeSize
 	rhoFor2011Aeff
 	patConversions ##These three for all of the Multicrab config files
 
 20120709================================
-WAnalyzer/python/pf2pat_template_MC(RD)_cfg.py
+NtupleMaker/python/pf2pat_template_MC(RD)_cfg.py
 	use for skim
 	specify global tag to these files
 	specify the output skim root file name
-WAnalyzer/KoSMP/src/wEle(Mu)NeuFilter.cc
+NtupleMaker/TerraNova/src/wEle(Mu)NeuFilter.cc
 	Dimuon.KalmanVtxFit for Drell-Yan Veto
-KoSMP/WAnalyzer/wAnalysis_RD(MC)_cff
+TerraNova/NtupleMaker/wAnalysis_RD(MC)_cff
 	use this at your ntuple making scripts
 20120713======================
-WAnalyzer/KoSMP/src/wEleNeuFilter.cc
+NtupleMaker/TerraNova/src/wEleNeuFilter.cc
 	bug fixing
 20120718========================
-WAnalyzer/KoSMP/src/wMuNeuFilter.cc
+NtupleMaker/TerraNova/src/wMuNeuFilter.cc
 	bug fixing
 	it1.innerTrack()
 analysis/MuNeu/W_Pt/WMuNeu.C
@@ -37,10 +37,10 @@ analysis/MuNeu/W_Pt/WMuNeu.C
 	dz=fabs((*W_Lept1_dz)[iw]
 20121213======================
 	Add two files to be used in both Muon and Electron case
-	KoSMP/WAnalyzer/interface/wLeptNeuFilter.h
-	KoSMP/WAnalyzer/src/wLeptNeuFilter.cc
+	TerraNova/NtupleMaker/interface/wLeptNeuFilter.h
+	TerraNova/NtupleMaker/src/wLeptNeuFilter.cc
 
 20121219=======================
-	KoSMP/WAnalyzer/interface/wLeptNeuFilter.h
-	KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h
-	KoSMP/WAnalyzer/src/wLeptNeuFilter.cc
+	TerraNova/NtupleMaker/interface/wLeptNeuFilter.h
+	TerraNova/NtupleMaker/interface/wLeptNeuBranchVars.h
+	TerraNova/NtupleMaker/src/wLeptNeuFilter.cc

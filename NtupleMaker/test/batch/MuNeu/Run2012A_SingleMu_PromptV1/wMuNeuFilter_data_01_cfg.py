@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("Ntuple")
 
-process.load("KoSMP.WAnalyzer.wAnalysis_RD_cff")
+process.load("TerraNova.NtupleMaker.wAnalysis_RD_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -24,7 +24,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNtuple_01.root')
 )
 
-process.load("KoSMP.WAnalyzer.Sources.Run2012A_SingleMu_PromptV1_PatSkim.PatSkim_list01_cff")
+process.load("TerraNova.NtupleMaker.Sources.Run2012A_SingleMu_PromptV1_PatSkim.PatSkim_list01_cff")
 
 process.p = cms.Path(
     process.WMuNeuAnalysisRealDataSequence

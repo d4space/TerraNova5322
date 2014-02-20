@@ -75,18 +75,18 @@ scram runtime -sh
 #scram b -j 9 # (lots of output here, but nothing to worry about)
 
 #===========================================================================
-# Before compile KoSMP, maybe change headerfiles EGamma to EgammaAnalysis 
+# Before compile TerraNova, maybe change headerfiles EGamma to EgammaAnalysis 
 #===========================================================================
-#  ./KoSMP/CommonTools/interface/KyElectronSelector.h:
+#  ./TerraNova/CommonTools/interface/KyElectronSelector.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
-#  ./KoSMP/WAnalyzer/interface/wEleNeuFilter.h:
+#  ./TerraNova/NtupleMaker/interface/wEleNeuFilter.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
 
-#  ./KoSMP/WAnalyzer/interface/wLeptNeuFilter.h:
+#  ./TerraNova/NtupleMaker/interface/wLeptNeuFilter.h:
 #  //#include "EGamma/EGammaAnalysisTools/interface/ElectronEffectiveArea.h"
 #  #include "EgammaAnalysis/ElectronTools/interface/ElectronEffectiveArea.h"
 
@@ -97,15 +97,15 @@ scram runtime -sh
 #setenv CVS_RSH ssh
 #setenv CVSROOT :ext:sangilpark@155.230.23.122:/cern/CVS
 
-#cvs co KoSMP
+#cvs co TerraNova
 
-#cd KoSMP
+#cd TerraNova
 
 scram b -j 9
 
 
 #echo -e "\n*************************************************"
-#echo -e " Done compiling KoSMP"
+#echo -e " Done compiling TerraNova"
 #echo -e " Now making symbolic link to example config file"
 #echo -e "*************************************************"
 #echo -e " \n"

@@ -33,7 +33,7 @@ noscraping = cms.EDFilter("FilterOutScraping",
 #    #cut = cms.string("pt > 20 && abs(eta) < 2.5 && ecalDrivenSeed")
 #    filter = cms.bool(False),
 #)
-from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 acceptedElectrons = cms.EDProducer(
     "KyElectronSelector",
     version = cms.untracked.int32( 13 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut) 13(medium pt 30) 14(medium pt 15)
@@ -84,15 +84,15 @@ patElectronFilter = cms.EDFilter("CandViewCountFilter",
 #    #cut =cms.string("pt > 15 && abs(eta) < 2.5"),
 #    filter = cms.bool(False),
 #)
-#from KoSMP.TnP_Muon.common_variables_cff import *
+#from TerraNova.TnP_Muon.common_variables_cff import *
 #process.acceptedMuons = cms.EDFilter("PATMuonSelector",
 #    src = cms.InputTag("selectedPatMuonsPFlow"),
 #    #cut =cms.string("pt > 10 && "+MuonIDFlags.PogTight12.value()), # for Double Mu
 #    cut =cms.string("pt > 27 && "+MuonIDFlags.POgTight12.value()), # for W
 #    #cut =cms.string("pt > 27 && abs(eta) < 2.1"),
 #)
-from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 acceptedMuons = cms.EDProducer("KyMuonSelector",
     # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
     version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
@@ -149,7 +149,7 @@ HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
 
 
 ##################################################################
-from KoSMP.WAnalyzer.wHLTfilter_cff import *
+from TerraNova.NtupleMaker.wHLTfilter_cff import *
 
 nEventsTotal = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")

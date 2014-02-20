@@ -8,15 +8,15 @@ from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 
 GlobalTag.globaltag = cms.string('GR_R_52_V9::All')
 
-from KoSMP.CommonTools.countingSequences_cfi import *
+from TerraNova.CommonTools.countingSequences_cfi import *
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 myJetId = pfJetIDSelector.clone()
 
-from KoSMP.WAnalyzer.wLeptonSelector_cfi import *
-from KoSMP.WAnalyzer.triggerFilterByRun_cfi import *
-from KoSMP.WAnalyzer.wHLTfilter_cff import *
-from KoSMP.CommonTools.PileUpWeight_cff import *
-from KoSMP.CommonTools.JetEnergyScale_cfi import *
+from TerraNova.NtupleMaker.wLeptonSelector_cfi import *
+from TerraNova.NtupleMaker.triggerFilterByRun_cfi import *
+from TerraNova.NtupleMaker.wHLTfilter_cff import *
+from TerraNova.CommonTools.PileUpWeight_cff import *
+from TerraNova.CommonTools.JetEnergyScale_cfi import *
 
 VertexFilter = cms.EDFilter('VertexFilter',
     vertexLabel =  cms.InputTag('offlinePrimaryVertices'),

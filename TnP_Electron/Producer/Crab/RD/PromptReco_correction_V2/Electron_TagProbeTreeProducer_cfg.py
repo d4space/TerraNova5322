@@ -124,10 +124,10 @@ process.source = cms.Source("PoolSource",
 
 if MC_flag:
   print "MC sample"
-  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+  process.load("TerraNova.NtupleMaker.Sources.DYToEE_S8_copy_cff")
 else:
   print "RD sample"
-  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+  process.load("TerraNova.NtupleMaker.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
 
 

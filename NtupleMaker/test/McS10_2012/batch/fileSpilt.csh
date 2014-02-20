@@ -21,7 +21,7 @@ foreach Line (`ls ${MC}_*`)
 
 echo "import FWCore.ParameterSet.Config as cms" >  wEleNeuFilter${LN}_MC_cfg.py
 echo "process = cms.Process("\""wNTuple"\"")"   >>  wEleNeuFilter${LN}_MC_cfg.py
-echo "process.load("\"KoSMP.WAnalyzer.wAnalysis_MC_cff\"")" >>  wEleNeuFilter${LN}_MC_cfg.py
+echo "process.load("\"TerraNova.NtupleMaker.wAnalysis_MC_cff\"")" >>  wEleNeuFilter${LN}_MC_cfg.py
 echo "" >>  wEleNeuFilter${LN}_MC_cfg.py
 echo "" >>  wEleNeuFilter${LN}_MC_cfg.py
 echo "process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )" >>  wEleNeuFilter${LN}_MC_cfg.py

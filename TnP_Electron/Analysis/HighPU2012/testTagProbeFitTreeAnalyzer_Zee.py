@@ -32,7 +32,7 @@ if isMC:
 
   InputFileName = "/d1/scratch/kimtaehoon/Ele_HighPU/CMSSW_5_3_8/src/KNUPhy/TnP_Electron/Analysis/HighPU2012MCCrystalBall/Abs_Eta/testNewWrite_HighPU_MC.root"
 
-  #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/KoSMP/TnP_Electron/Producer/Local/MC/testNewWrite.root"
+  #InputFileName = "/terranova_0/W/CMSSW_5_2_6/src/TerraNova/TnP_Electron/Producer/Local/MC/testNewWrite.root"
   # this is not working, you need to set PDFName = "" for each line
 ##  PDFName =""
   PDFName = "pdfSignalPlusBackground"

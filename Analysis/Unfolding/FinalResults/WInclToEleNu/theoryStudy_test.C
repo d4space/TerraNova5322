@@ -333,10 +333,10 @@ void plotHelpComp(std::string iRVar,std::string iVar,std::string iRCut,std::stri
 
 void theoryStudy_test() {
   //Prep();
-  //std::string WPenu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/analysis/Unfolding/ResultWpToEleNuNom/Result_WpToEleNu.root";
-  //std::string WMenu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/analysis/Unfolding/ResultWmToEleNuNom/Result_WmToEleNu.root";
-  //std::string WPmunu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/analysis/Unfolding/ResultWpToMuNuNom/Result_WpToMuNu.root";
-  //std::string WMmunu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/WAnalyzer/analysis/Unfolding/ResultWmToMuNuNom/Result_WmToMuNu.root";
+  //std::string WPenu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/NtupleMaker/analysis/Unfolding/ResultWpToEleNuNom/Result_WpToEleNu.root";
+  //std::string WMenu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/NtupleMaker/analysis/Unfolding/ResultWmToEleNuNom/Result_WmToEleNu.root";
+  //std::string WPmunu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/NtupleMaker/analysis/Unfolding/ResultWpToMuNuNom/Result_WpToMuNu.root";
+  //std::string WMmunu = "/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KNUPhy/NtupleMaker/analysis/Unfolding/ResultWmToMuNuNom/Result_WmToMuNu.root";
   
   std::string WInclenu  = "../RstUnfold/Result_WInclToEleNu.root";
   std::string WInclmunu = "../RstUnfold/Result_WInclToMuNu.root";

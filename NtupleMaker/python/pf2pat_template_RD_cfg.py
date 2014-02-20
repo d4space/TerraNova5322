@@ -104,7 +104,7 @@ HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
 
 
 ##################################################################
-from KoSMP.WAnalyzer.wHLTfilter_cff import *
+from TerraNova.NtupleMaker.wHLTfilter_cff import *
 
 nEventsTotal = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")

@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
 
-process.load("KoSMP.WAnalyzer.wAnalysis_MC_HiPU_MVAnoPU_cff")
+process.load("TerraNova.NtupleMaker.wAnalysis_MC_HiPU_MVAnoPU_cff")
 
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -19,9 +19,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-#'file:/d2/scratch/khakim/WAnalysis/NoPuMET/CMSSW_5_3_9/src/KoSMP/WAnalyzer/NoPUtest/WToENu/patTuple_skim.root'
-'file:/afs/cern.ch/work/s/salee/public/NoPuMET/CMSSW_5_3_9/src/KoSMP/WAnalyzer/NoPUtest/WToENu/patTuple_skim.root'
-#'file:/afs/cern.ch/work/k/kbutanov/public/NoPuMET/CMSSW_5_3_9/src/KoSMP/WAnalyzer/NoPUtest/WToENu/patTuple_skim.root'
+#'file:/d2/scratch/khakim/WAnalysis/NoPuMET/CMSSW_5_3_9/src/TerraNova/NtupleMaker/NoPUtest/WToENu/patTuple_skim.root'
+'file:/afs/cern.ch/work/s/salee/public/NoPuMET/CMSSW_5_3_9/src/TerraNova/NtupleMaker/NoPUtest/WToENu/patTuple_skim.root'
+#'file:/afs/cern.ch/work/k/kbutanov/public/NoPuMET/CMSSW_5_3_9/src/TerraNova/NtupleMaker/NoPUtest/WToENu/patTuple_skim.root'
 )
 )
 
@@ -29,7 +29,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNTuple.root')
 )
 
-#process.load("KoSMP.WAnalyzer.Sources.SingleEle_MC_Local_cff")
+#process.load("TerraNova.NtupleMaker.Sources.SingleEle_MC_Local_cff")
 
 process.p = cms.Path(
     process.WEleNeuAnalysisMCSequence

@@ -6,7 +6,7 @@ set CfgFile=wMuNeuFilter_MC_2012_LowPU_part4_cfg.py
 #set CASTORDIR=$2
 #echo $CfgFile
 
-set WorkDir=/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KoSMP/WAnalyzer/test/batch/MuNeu/Run2012LowPU/WToTauNu
+set WorkDir=/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/TerraNova/NtupleMaker/test/batch/MuNeu/Run2012LowPU/WToTauNu
 
 #if [ $# -ne 1 ]
 #then
@@ -17,7 +17,7 @@ set WorkDir=/d2/scratch/khakim/WAnalysis/CMSSW_5_2_6/src/KoSMP/WAnalyzer/test/ba
 cd $WorkDir
 setenv SCRAM_ARCH slc5_amd64_gcc462
 source /opt/exp_soft/cms/cmsset_default.csh
-#source /d2/scratch/khakim/WAnalysis/CMSSW_5_2_5/src/KoSMP/Miscel/Env/setenv4CMSSW525.tcsh
+#source /d2/scratch/khakim/WAnalysis/CMSSW_5_2_5/src/TerraNova/Miscel/Env/setenv4CMSSW525.tcsh
 cmsenv
 cmsRun $CfgFile
 #eval `scramv1 runtime -sh`

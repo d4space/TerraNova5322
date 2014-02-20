@@ -10,13 +10,13 @@ readFiles.extend([
   'file:/afs/cern.ch/work/s/salee/DataSample/S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
 
   ##### Muon code test ##########
-  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14/src/KoSMP/WAnalyzer/prod/Muon/MC/Local/data/WpToMuNu_5000_1_2_04c.root',
-  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/KoSMP/WAnalyzer/prod/Copy_Data/test/Muon/Rd/RD_5000_1_1_w23.root',
+  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14/src/TerraNova/NtupleMaker/prod/Muon/MC/Local/data/WpToMuNu_5000_1_2_04c.root',
+  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/TerraNova/NtupleMaker/prod/Copy_Data/test/Muon/Rd/RD_5000_1_1_w23.root',
 
  
   ##### Electron code test ##########
-  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/KoSMP/WAnalyzer/prod/Copy_Data/test/Electron/Rd/Run2012A_5000_1_1_j4m.root',
-  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/KoSMP/WAnalyzer/prod/Copy_Data/test/Electron/MC/WToENu_5000_1_1_w5C.root',
+  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/TerraNova/NtupleMaker/prod/Copy_Data/test/Electron/Rd/Run2012A_5000_1_1_j4m.root',
+  #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14_patch1/src/TerraNova/NtupleMaker/prod/Copy_Data/test/Electron/MC/WToENu_5000_1_1_w5C.root',
 
  
  #  'root://eoscms//eos/cms/store/user/shchang/DYToMuMu_Summer12_S10/DYToMuMu_5000_1_1_tIc.root',

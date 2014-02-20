@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
 
-process.load("KoSMP.WAnalyzer.wAnalysis_MC_cff")
+process.load("TerraNova.NtupleMaker.wAnalysis_MC_cff")
 
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
@@ -81,7 +81,7 @@ process.TFileService = cms.Service("TFileService",
     fileName = cms.string('wNTuple1.root')
 )
 
-#process.load("KoSMP.WAnalyzer.Sources.SingleEle_MC_Local_cff")
+#process.load("TerraNova.NtupleMaker.Sources.SingleEle_MC_Local_cff")
 
 process.p = cms.Path(
     process.WEleNeuAnalysisMCSequence

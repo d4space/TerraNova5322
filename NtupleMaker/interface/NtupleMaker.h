@@ -86,7 +86,7 @@
 #include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
-#include "TerraNova/WAnalyzer/interface/wLeptNeuBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/NtupleBranchVars.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
@@ -360,9 +360,8 @@ private:
   virtual void beginJob();
   //virtual bool beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
   virtual bool beginRun( edm::Run& iRun, const edm::EventSetup& iSetup);
-  virtual bool endRun(const edm::Run&, const edm::EventSetup&)
+  virtual void endRun(const edm::Run&, const edm::EventSetup&)
   {
-    return true;
   }
 
   virtual void bookTree();
@@ -391,7 +390,8 @@ private:
   virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup);
 
 };
-explicit NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
+
+NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
 {
     //now do what ever initialization is needed
     Channel = iConfig.getUntrackedParameter< std::string >("Channel");
@@ -781,7 +781,7 @@ explicit NtupleMaker::NtupleMaker(const edm::ParameterSet& iConfig)
 //    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
-virtual void NtupleMaker::beginJob()
+void NtupleMaker::beginJob()
 {
   std::vector< float > PuMC ;
   std::vector< float > PuReal;
@@ -813,7 +813,7 @@ virtual void NtupleMaker::beginJob()
   cout<<"EAtarget: "<<EAtarget<<endl;
 
 }
-virtual bool NtupleMaker::beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
+bool NtupleMaker::beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
 {
   //initialization
   FullHLTTriggerNames.clear();
@@ -860,7 +860,7 @@ virtual bool NtupleMaker::beginRun( edm::Run& iRun, const edm::EventSetup& iSetu
   }
   return true;
 }
-virtual void NtupleMaker::bookTree()
+void NtupleMaker::bookTree()
 {
   EventData.Register(tree);
   FSRph.Register(tree);
@@ -875,7 +875,7 @@ virtual void NtupleMaker::bookTree()
   GenZs.Register(tree);
   KoMETs.Register(tree);
 }
-virtual bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
+bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
   // Get L1 Trigger menu
   ESHandle<L1GtTriggerMenu> menuRcd;
@@ -906,7 +906,7 @@ virtual bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const ed
   
   return algResult;
 }
-virtual void NtupleMaker::GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   //Trigger Information----
   Handle<TriggerResults> trgRsltsHandle;
@@ -1390,7 +1390,7 @@ void NtupleMaker::clear()
 
     genttbarM = -999;
 }
-virtual bool NtupleMaker::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
+bool NtupleMaker::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
 {
   //cout<<"end lumi "<<endl;
     if(useEventCounter_){
@@ -1442,7 +1442,7 @@ bool NtupleMaker::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
   if( exact ) return ( dRval < 1e-3 && dPtRel < 1e-3 );
   else        return ( dRval < 0.025 && dPtRel < 0.025 );
 }
-virtual bool NtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
+bool NtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
 {
   for(unsigned int i(0);i<genPtcl->numberOfDaughters(); i++)
   {
@@ -1450,7 +1450,7 @@ virtual bool NtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
   }
   return false;
 }
-virtual reco::GenParticleRef NtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
+reco::GenParticleRef NtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
 {
   reco::GenParticleRef daughter;
   for( unsigned int i(0);i<mom->numberOfDaughters();i++)
@@ -1460,7 +1460,7 @@ virtual reco::GenParticleRef NtupleMaker::FindDaughter(reco::GenParticleRef mom,
   }
   return daughter;
 }
-virtual void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if (isRD) return;
   //if (iEvent.isRealData()) return;
@@ -1697,7 +1697,7 @@ virtual void NtupleMaker::GetGenInfoW(edm::Event &iEvent, const edm::EventSetup&
     }//W status 3
   }//GenPtcls
 }
-virtual void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
   GenInfo GenZinfo;
@@ -1822,7 +1822,7 @@ virtual void NtupleMaker::GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup&
     }//Drell-Yan
   }//genPtcls
 }
-virtual void NtupleMaker::GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+void NtupleMaker::GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
 
@@ -1891,7 +1891,7 @@ virtual void NtupleMaker::GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup&
     }
   }
 }
-virtual double NtupleMaker::alphaRatio(double pt){
+double NtupleMaker::alphaRatio(double pt){
 
       double pigaga = 0.;
 
@@ -1931,7 +1931,7 @@ virtual double NtupleMaker::alphaRatio(double pt){
       // Done
       return 1./(1.-pigaga);
 }
-virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     //cout<<"lepton size: "<<mu1_hand->size()<<endl;
     reco::isodeposit::AbsVetos vetos_ch;
@@ -2468,7 +2468,7 @@ virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
       //break;
     }//mu1_hand
 }
-virtual void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
@@ -2987,7 +2987,7 @@ virtual void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup
       //break;
     }//ele1_hand
 }
-virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)

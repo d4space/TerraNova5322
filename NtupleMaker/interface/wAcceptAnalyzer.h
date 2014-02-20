@@ -27,13 +27,13 @@
 #include "DataFormats/Common/interface/MergeableCounter.h"
 
 //
-#include "KoSMP/WAnalyzer/interface/wLeptNeuBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/NtupleBranchVars.h"
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
 #include "TLorentzVector.h"
 
-#include "../analysis/Utils/const.h"
+#include "../../Analysis/Utils/const.h"
 
 //
 // class declaration

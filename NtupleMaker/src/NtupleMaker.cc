@@ -1,5 +1,5 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "KoSMP/WAnalyzer/interface/NtupleMaker.h"
+#include "TerraNova/NtupleMaker/interface/NtupleMaker.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 //#include "DataFormats/METReco/interface/GenMET.h"

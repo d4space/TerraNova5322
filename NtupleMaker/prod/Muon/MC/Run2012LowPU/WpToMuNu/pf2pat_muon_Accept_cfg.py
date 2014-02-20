@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from KoSMP.WAnalyzer.pf2pat_template_Accept_cfg import *
-from KoSMP.WAnalyzer.eventContent_cff import *
-from KoSMP.WAnalyzer.tools import *
+from TerraNova.NtupleMaker.pf2pat_template_Accept_cfg import *
+from TerraNova.NtupleMaker.eventContent_cff import *
+from TerraNova.NtupleMaker.tools import *
 
 runOnMC=True
 postfix = "PFlow"

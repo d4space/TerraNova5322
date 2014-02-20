@@ -6,10 +6,10 @@ process.p=cms.Path()
 # Include
 ##########################
 
-#from KoSMP.WAnalyzer.pf2pat_template_MC_cfg import *
-from KoSMP.WAnalyzer.eventContent_cff import *
-from KoSMP.WAnalyzer.tools import *
-from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+#from TerraNova.NtupleMaker.pf2pat_template_MC_cfg import *
+from TerraNova.NtupleMaker.eventContent_cff import *
+from TerraNova.NtupleMaker.tools import *
+from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 ## MessageLogger
 process.load("FWCore.MessageLogger.MessageLogger_cfi")
 process.load("Configuration.StandardSequences.Geometry_cff")
@@ -79,12 +79,12 @@ process.source = cms.Source("PoolSource",
 )
 if MC_flag:
   print "MC sample"
-  process.load("KoSMP.WAnalyzer.Sources.DYToEE_S8_copy_cff")
+  process.load("TerraNova.NtupleMaker.Sources.DYToEE_S8_copy_cff")
 else:
   print "RD sample"
-  process.load("KoSMP.WAnalyzer.Sources.SingleElectron_2012A_PromptReco_copy_cff")
+  process.load("TerraNova.NtupleMaker.Sources.SingleElectron_2012A_PromptReco_copy_cff")
 
-#process.load("KoSMP.WAnalyzer.Sources.WplusToMuNu_AODSIM_CP_local_cff")
+#process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_AODSIM_CP_local_cff")
 ############################
 # Output
 ############################

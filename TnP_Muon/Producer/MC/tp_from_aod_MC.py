@@ -14,7 +14,7 @@ process.source = cms.Source("PoolSource",
 	#'/store/relval/CMSSW_5_2_3/RelValZMM/GEN-SIM-RECO/START52_V5-v1/0043/0E187509-0D7A-E111-8FA3-001A928116C2.root',
     ),
 )
-process.load("KoSMP.WAnalyzer.Sources.DYToMuMu_S8_AOD_CP_cff")
+process.load("TerraNova.NtupleMaker.Sources.DYToMuMu_S8_AOD_CP_cff")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )    
 
 process.load("Configuration.StandardSequences.MagneticField_cff")
@@ -66,7 +66,7 @@ from MuonAnalysis.MuonAssociators.patMuonsWithTrigger_cff import *
 changeRecoMuonInput(process, "mergedMuons")
 changeTriggerProcessName(process, "*") # auto-guess
 
-from KoSMP.TnP_Muon.common_variables_cff import *
+from TerraNova.TnP_Muon.common_variables_cff import *
 #from MuonAnalysis.TagAndProbe.common_variables_cff import *
 process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
 
