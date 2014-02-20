@@ -1931,7 +1931,7 @@ double NtupleMaker::alphaRatio(double pt){
       // Done
       return 1./(1.-pigaga);
 }
-void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     //cout<<"lepton size: "<<mu1_hand->size()<<endl;
     reco::isodeposit::AbsVetos vetos_ch;
@@ -2987,7 +2987,7 @@ void NtupleMaker::LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup
       //break;
     }//ele1_hand
 }
-void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)
