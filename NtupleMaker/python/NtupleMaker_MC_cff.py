@@ -1,23 +1,16 @@
-import FWCore.ParameterSet.Config as cms
 
-from FWCore.MessageService.MessageLogger_cfi import *
-from Configuration.StandardSequences.FrontierConditions_GlobalTag_cff import *
-from Configuration.StandardSequences.MagneticField_cff import *
-from Configuration.Geometry.GeometryIdeal_cff import *
-#from Configuration.StandardSequences.Geometry_cff import *
 from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 
-GlobalTag.globaltag = cms.string('START52_V10::All')
 
-from KoSMP.CommonTools.countingSequences_cfi import *
+from TerraNova.CommonTools.countingSequences_cfi import *
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 myJetId = pfJetIDSelector.clone()
 
-from KoSMP.WAnalyzer.wLeptonSelector_cfi import *
-from KoSMP.WAnalyzer.triggerFilterByRun_cfi import *
-from KoSMP.WAnalyzer.wHLTfilter_cff import *
-from KoSMP.CommonTools.PileUpWeight_cff import *
-from KoSMP.CommonTools.JetEnergyScale_cfi import *
+from TerraNova.NtupleMaker.wLeptonSelector_cfi import *
+from TerraNova.NtupleMaker.triggerFilterByRun_cfi import *
+from TerraNova.NtupleMaker.wHLTfilter_cff import *
+from TerraNova.CommonTools.PileUpWeight_cff import *
+from TerraNova.CommonTools.JetEnergyScale_cfi import *
 
 VertexFilter = cms.EDFilter('VertexFilter',
     vertexLabel =  cms.InputTag('offlinePrimaryVertices'),
@@ -49,7 +42,7 @@ WLeptonGenFilter = cms.EDFilter("GenParticleDecayFilter",
     minCount = cms.untracked.uint32(2),
 )
 
-patMuonFilter = cms.EDFilter("CandViewCountFilter",
+MuonsFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('Muons'),
     minNumber = cms.uint32(1)
 )
@@ -59,7 +52,7 @@ patElectronFilter = cms.EDFilter("CandViewCountFilter",
     minNumber = cms.uint32(1)
 )
 
-#patMuonFilterForMuEl = patMuonFilter.clone()
+#MuonsFilterForMuEl = patMuonFilter.clone()
 #patElectronFilterForMuEl = patElectronFilter.clone()
 #patMuonFilterForMuEl.minNumber = 1
 #patElectronFilterForMuEl.minNumber = 1
@@ -253,17 +246,7 @@ removeDuplicate = cms.EDFilter("RemoveDuplicate",
 #    beamSpotLabel = cms.InputTag("offlineBeamSpot"),
 #)
 
-noscraping = cms.EDFilter("FilterOutScraping",
-   applyfilter = cms.untracked.bool(True),
-   debugOn = cms.untracked.bool(False),
-   numtrack = cms.untracked.uint32(10),
-   thresh = cms.untracked.double(0.25)
-)
 
-from CommonTools.RecoAlgos.HBHENoiseFilter_cfi import *
-HBHENoiseFilter.minNumIsolatedNoiseChannels = cms.int32(9999)
-HBHENoiseFilter.minIsolatedNoiseSumE = cms.double(9999)
-HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
 
 nEventsPatHLT = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")
@@ -283,7 +266,7 @@ WMuNeuAnalysisMCSequence = cms.Sequence(
 #    PUweight*
 #    DYmmFilter*
     Muons*
-    patMuonFilter*
+    MuonsFilter*
 #    JetEnergyScale*
     WMuNeu
 #    mm
@@ -302,7 +285,7 @@ WTauNeuAnalysisMCSequence = cms.Sequence(
 #    PUweight*
 #    DYmmFilter*
 #    Muons*
-#    patMuonFilter*
+#    MuonsFilter*
 #    JetEnergyScale*
     WTauNeu
 #    mm
@@ -316,7 +299,7 @@ WMuNeuAnalysisRealDataSequence = cms.Sequence(
 #    DYmmFilter*
 #    selectedPatJetsPFlow*
     Muons*
-    patMuonFilter*
+    MuonsFilter*
 #    JetEnergyScale*
     WMuNeu
 #    mm

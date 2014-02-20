@@ -1,32 +1,8 @@
-import FWCore.ParameterSet.Config as cms
 
-## MessageLogger
-from FWCore.MessageLogger.MessageLogger_cfi import *
-#process.load("Configuration.StandardSequences.Geometry_cff")
-from Configuration.Geometry.GeometryIdeal_cff import *
-from Configuration.StandardSequences.FrontierConditions_GlobalTag_cff import *
-from Configuration.StandardSequences.MagneticField_cff import *
-
-
-#from Configuration.PyReleaseValidation.autoCond import autoCond
-#process.GlobalTag.globaltag = cms.string( autoCond[ 'startup' ] )
 
 #PF2PAT
 from PhysicsTools.PatAlgos.patSequences_cff import *
 
-goodOfflinePrimaryVertices = cms.EDFilter("VertexSelector",
-   src = cms.InputTag("offlinePrimaryVertices"),
-   cut = cms.string("!isFake && ndof > 4 && abs(z) < 24 && position.Rho < 2"), # tracksSize() > 3 for the older cut
-   filter = cms.bool(True),   # otherwise it won't filter the events, just produce an empty vertex collection.
-)
-
-
-noscraping = cms.EDFilter("FilterOutScraping",
-   applyfilter = cms.untracked.bool(True),
-   debugOn = cms.untracked.bool(False),
-   numtrack = cms.untracked.uint32(10),
-   thresh = cms.untracked.double(0.25)
-)
 
 acceptedElectrons = cms.EDFilter("PATElectronSelector",
     src = cms.InputTag("selectedPatElectronsPFlow"),
@@ -52,7 +28,7 @@ patElectronFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('acceptedElectrons'),
     minNumber = cms.uint32(1)
 )
-from KoSMP.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 METsrcElectrons = cms.EDProducer(
     "KyElectronSelector",
     version = cms.untracked.int32( 13 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut) 13(medium pt 30) 14(medium pt 15)
@@ -73,13 +49,13 @@ acceptedMuons = cms.EDFilter("PATMuonSelector",
     filter = cms.bool(False),
 )
 
-patMuonFilter = cms.EDFilter("CandViewCountFilter",
+acceptedMuonsFilter = cms.EDFilter("CandViewCountFilter",
   src = cms.InputTag('acceptedMuons'),
   minNumber = cms.uint32(1)
 )
 
-from KoSMP.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from KoSMP.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 METsrcMuons = cms.EDProducer("KyMuonSelector",
     # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
     version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
@@ -136,14 +112,9 @@ patMuEleTauFilter = cms.EDFilter("MultiObjectCountFilter",
 #  * process.eidTightMC * process.eidSuperTightMC * process.eidHyperTight1MC
 #)
 
-from CommonTools.RecoAlgos.HBHENoiseFilter_cfi import *
-HBHENoiseFilter.minNumIsolatedNoiseChannels = cms.int32(9999)
-HBHENoiseFilter.minIsolatedNoiseSumE = cms.double(9999)
-HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
-
 
 ##################################################################
-from KoSMP.WAnalyzer.wHLTfilter_cff import *
+from TerraNova.NtupleMaker.wHLTfilter_cff import *
 
 nEventsTotal = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")

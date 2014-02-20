@@ -2,6 +2,8 @@ import FWCore.ParameterSet.Config as cms
 import os
 ########### Make PAT #############
 process = cms.Process("TerraTuple")
+process.load("TerraNova.NtupleMaker.Common_cfg")
+process.load("TerraNova.NtupleMaker.Filters_cfg")
 
 produceTaus = False
 runOnMC = True
@@ -15,7 +17,7 @@ process.load("TerraNova.NtupleMaker.pf2pat_template_MC_cfg")
 process.load("PhysicsTools.PatAlgos.patSequence_cff")
 from PhysicsTools.PatAlgos.tools.pfTools import *
 from TerraNova.NtupleMaker.pat_22Jan2013_MC_cfg import *
-from TerraNova.NtupleMaker.eventContent_cff import *
+#from TerraNova.NtupleMaker.eventContent_cff import *
 from TerraNova.NtupleMaker.tools import *
 
 ## Options and Output Report
@@ -38,15 +40,6 @@ from PhysicsTools.PatAlgos.tools.cmsswVersionTools import pickRelValInputFiles
 ## Output Module Configuration (expects a path 'p')
 ## Source
 process.load("TerraNova.NtupleMaker.Sources.SourceTemplate_cff")
-
-process.out = cms.OutputModule("PoolOutputModule",
-    fileName = cms.untracked.string('patTuple_skim.root'),
-    # save only events passing the full path
-    SelectEvents   = cms.untracked.PSet( SelectEvents = cms.vstring('p') ),
-    # save PAT Layer 1 output; you need a '*' to
-    # unpack the list of commands 'patEventContent'
-    outputCommands = cms.untracked.vstring('drop *')
-)
 
 
 if runOnMC:
@@ -127,9 +120,24 @@ process.patMuonFilter.minNumber = 1
 process.patElectronFilter.minNumber = 0
 
 
-process.out.outputCommands +=pf2patEventContent
 
-process.outpath = cms.EndPath(process.out)
+######### NTuple Chain ###############
+process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
+
+
+#process.load("FWCore.MessageLogger.MessageLogger_cfi")
+#process.MessageLogger = cms.Service("MessageLogger")
+#process.MessageLogger.destinations = ['cout']
+#process.MessageLogger.cout = cms.untracked.PSet(
+#    threshold = cms.untracked.string('INFO'),
+#    FwkReport = cms.untracked.PSet(reportEvery=cms.untracked.int32(1000))
+#)
+
+
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string('TerraTuple.root')
+)
+
 
 process.p = cms.Path(
     process.nEventsTotal*
@@ -163,34 +171,4 @@ process.p += process.patMuonFilter
 process.p += process.nEventsFiltered
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
-
-######### NTuple Chain ###############
-process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
-
-process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
-process.MessageLogger.cerr.FwkReport.reportEvery = 1000
-
-#process.load("FWCore.MessageLogger.MessageLogger_cfi")
-#process.MessageLogger = cms.Service("MessageLogger")
-#process.MessageLogger.destinations = ['cout']
-#process.MessageLogger.cout = cms.untracked.PSet(
-#    threshold = cms.untracked.string('INFO'),
-#    FwkReport = cms.untracked.PSet(reportEvery=cms.untracked.int32(1000))
-#)
-
-process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring()
-)
-
-process.TFileService = cms.Service("TFileService",
-    fileName = cms.string('TerraTuple.root')
-)
-
-#process.load("TerraNova.NtupleMaker.Sources.DYToMuMu_S8_Skim_cff")
-process.load("TerraNova.NtupleMaker.Sources.PatSkimTemplate_cff")
-#process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
-
-process.p = cms.Path(
-    process.WMuNeuAnalysisMCSequence
-)
+process.p += process.WMuNeuAnalysisMCSequence
