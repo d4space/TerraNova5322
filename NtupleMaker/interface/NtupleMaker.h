@@ -906,7 +906,7 @@ bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::Event
   
   return algResult;
 }
-void NtupleMaker::GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   //Trigger Information----
   Handle<TriggerResults> trgRsltsHandle;
