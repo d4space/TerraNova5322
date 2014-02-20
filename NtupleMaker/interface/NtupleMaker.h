@@ -364,30 +364,30 @@ private:
   {
   }
 
-  virtual void bookTree();
+  void bookTree();
 
-  virtual bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup );
+  bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup );
 
 //  virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
-  virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  void analyze(edm::Event& iEvent, const edm::EventSetup& iSetup);
+  void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  virtual void analyze(edm::Event& iEvent, const edm::EventSetup& iSetup);
   void clear();
-  virtual bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
+  bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
   bool checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2);
   bool MatchObjects( const reco::Candidate::LorentzVector& pasObj,
       const reco::Candidate::LorentzVector& proObj,
       bool exact );
  
-  virtual bool HasDaughter(reco::GenParticleRef genPtcl, int id);
-  virtual reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id);
+  bool HasDaughter(reco::GenParticleRef genPtcl, int id);
+  reco::GenParticleRef FindDaughter(reco::GenParticleRef mom,int id);
   
-  virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual double alphaRatio(double pt);
-  virtual void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  double alphaRatio(double pt);
+  void LoopMuon(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopElectron(edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopTau(edm::Event &iEvent, const edm::EventSetup& iSetup);
 
 };
 
