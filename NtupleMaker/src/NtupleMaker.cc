@@ -5,7 +5,7 @@
 //#include "DataFormats/METReco/interface/GenMET.h"
 //#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-void NtupleMaker::analyze(edm::Event& iEvent, const edm::EventSetup& iSetup)
+void NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
