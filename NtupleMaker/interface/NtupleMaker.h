@@ -370,7 +370,7 @@ private:
 
 //  virtual bool filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   virtual void GetHLTResults(edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void analyze(edm::Event& iEvent, const edm::EventSetup& iSetup);
+  void analyze(edm::Event& iEvent, const edm::EventSetup& iSetup);
   void clear();
   virtual bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
   bool checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2);
