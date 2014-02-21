@@ -1,4 +1,4 @@
-
+import FWCore.ParameterSet.Config as cms 
 #PF2PAT
 from PhysicsTools.PatAlgos.patSequences_cff import *
 
