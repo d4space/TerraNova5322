@@ -66,7 +66,12 @@ METsrcMuons = cms.EDProducer("KyMuonSelector",
     muonIsoSelector = muonIsoSelectorPSet,
     saveTree = cms.untracked.bool(False),
     )
-
+acceptedTaus = cms.EDFilter("PATTauSelector",
+    src = cms.InputTag("selectedPatTausPFlow"),
+    cut = cms.string("pt > 20 && abs(eta) < 2.3 && tauID('decayModeFinding')>0.5 && tauID('byMediumCombinedIsolationDeltaBetaCorr3Hits')>0.5"),
+    #cut = cms.string("pt > 10 && abs(eta) < 3.0"),
+#    filter = cms.bool(False),
+)
 METsrcTaus = cms.EDFilter("PATTauSelector",
     src = cms.InputTag("selectedPatTausPFlow"),
     cut = cms.string("pt > 20 && abs(eta) < 2.3 && tauID('decayModeFinding')>0.5 && tauID('byMediumCombinedIsolationDeltaBetaCorr3Hits')>0.5"),

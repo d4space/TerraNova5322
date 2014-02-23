@@ -937,7 +937,6 @@ void NtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup&
 	if ( passL1 ){     HLTData.trigState[i].L1fired = 1;
 	} else{ HLTData.trigState[i].L1fired = -1;}
       }
-
       if(ErrFlag>-1)
       {
 	//here we play this game of adding "v..." to the requested trigger
@@ -981,12 +980,11 @@ void NtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup&
 	  HLTData.trigState[i].HLTprescale=-1;
 	}
       }//ErrFlag
-
     }
   }
   else
   {
-    cout<<"HLTTRiggers is 0 or HLTVersions.size is not the same"<<endl;
+    //cout<<"HLTTRiggers is 0 or HLTVersions.size is not the same"<<endl;
   }
 }
 void NtupleMaker::clear()
