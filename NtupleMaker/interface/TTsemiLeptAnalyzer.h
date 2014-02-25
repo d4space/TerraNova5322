@@ -174,6 +174,7 @@ private:
   edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
   edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
+  edm::Handle<pat::JetCollection> Jets;
 
   //iterator------------------------------
   //typedef pat::JetCollection::const_iterator JI;
