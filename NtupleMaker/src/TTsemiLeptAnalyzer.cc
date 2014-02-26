@@ -135,7 +135,6 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
   edm::Handle<reco::GenParticleCollection> genParticles_;
   iEvent.getByLabel(genParticlesLabel_,genParticles_);
 
-
   MEt.pfMEt_y    =pfMEt_It->py();
   pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
 
