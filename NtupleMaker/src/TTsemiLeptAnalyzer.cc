@@ -129,7 +129,6 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
   typedef reco::PFCandidateCollection::const_iterator CI;
   iEvent.getByLabel("particleFlow",pfCandidates_);
 
-  edm::Handle<pat::JetCollection> Jets;
   iEvent.getByLabel(jetLabel_, Jets);
 
   edm::Handle<reco::GenParticleCollection> genParticles_;
@@ -139,35 +138,16 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
   MEt.pfMEt_y    =pfMEt_It->py();
   pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
 
-  //MEt.pfMEtSumEt = pfMEt_It->sumEt();
-  //MEt.pfMEtNeuEM = pfMEt_It->NeutralEMFraction();
-  //MEt.pfMEtNeuHad= pfMEt_It->NeutralHadEtFraction();
-  //MEt.pfMEtChHad = pfMEt_It->ChargedHadEtFraction();
-  //MEt.pfMEtChEM  = pfMEt_It->ChargedEMEtFraction();
-  //MEt.pfMEtMu    = pfMEt_It->MuonEtFraction();
 
   MEt.NoPuMEt_x    =NoPuMEt_It->px();
   MEt.NoPuMEt_y    =NoPuMEt_It->py();
-  //MEt.NoPuMEtSumEt = NoPuMEt_It->sumEt();
-  //MEt.NoPuMEtNeuEM = NoPuMEt_It->NeutralEMFraction();
-  //MEt.NoPuMEtNeuHad= NoPuMEt_It->NeutralHadEtFraction();
-  //MEt.NoPuMEtChHad = NoPuMEt_It->ChargedHadEtFraction();
-  //MEt.NoPuMEtChEM  = NoPuMEt_It->ChargedEMEtFraction();
-  //MEt.NoPuMEtMu    = NoPuMEt_It->MuonEtFraction();
 
   MEt.MVaMEt_x     =MVaMEt_It->px();
   MEt.MVaMEt_y     =MVaMEt_It->py();
-  //MEt.MVaMEtSumEt = MVaMEt_It->sumEt();
-  //MEt.MVaMEtNeuEM = MVaMEt_It->NeutralEMFraction();
-  //MEt.MVaMEtNeuHad= MVaMEt_It->NeutralHadEtFraction();
-  //MEt.MVaMEtChHad = MVaMEt_It->ChargedHadEtFraction();
-  //MEt.MVaMEtChEM  = MVaMEt_It->ChargedEMEtFraction();
-  //MEt.MVaMEtMu    = MVaMEt_It->MuonEtFraction();
 
   MEt.genMEtTrue_x =genMEtTrue_It->px();
   MEt.genMEtTrue_y =genMEtTrue_It->py();
   MEt.genMEtTrueSumEt = genMEtTrue_It->sumEt();
-  //MEt.genMEtTrueNeuEM = genMEtTrue_It->NeutralEMFraction();
   MEt.genMEtTrueNeuHad= genMEtTrue_It->NeutralHadEtFraction();
   MEt.genMEtTrueChHad = genMEtTrue_It->ChargedHadEtFraction();
   MEt.genMEtTrueChEM  = genMEtTrue_It->ChargedEMEtFraction();
@@ -184,7 +164,6 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
   MEt.genMEtCaloAndNonPrompt_x=genMEtCaloAndNonPrompt_It->px();
   MEt.genMEtCaloAndNonPrompt_y=genMEtCaloAndNonPrompt_It->py();
   MEt.genMEtCaloAndNonPromptSumEt = genMEtCaloAndNonPrompt_It->sumEt();
-  //MEt.genMEtCaloAndNonPromptNeuEM = genMEtCaloAndNonPrompt_It->NeutralEMFraction();
   MEt.genMEtCaloAndNonPromptNeuHad= genMEtCaloAndNonPrompt_It->NeutralHadEtFraction();
   MEt.genMEtCaloAndNonPromptChHad = genMEtCaloAndNonPrompt_It->ChargedHadEtFraction();
   MEt.genMEtCaloAndNonPromptChEM  = genMEtCaloAndNonPrompt_It->ChargedEMEtFraction();
