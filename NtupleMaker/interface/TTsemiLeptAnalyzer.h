@@ -764,11 +764,11 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
     bool goodVtx=false;
-    //for(Jet_It = Jets->begin(); Jet_It != Jets->end(); ++Jet_It)
-    //{
-    //  cout<<"Jet pt: "<<Jet_It->pt()<<endl;
+    for(Jet_It = Jets->begin(); Jet_It != Jets->end(); ++Jet_It)
+    {
+      cout<<"Jet pt: "<<Jet_It->pt()<<endl;
 
-    //}
+    }
     for(unsigned i = 0; i < mu_hand->size(); i++)
     {
       acceptFT = true;
