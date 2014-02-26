@@ -125,8 +125,6 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 #process.acceptedMuons.cut = cms.string("pt > 20 && abs(eta) < 2.5 && (chargedHadronIso + neutralHadronIso + photonIso)/pt < 0.05")
 
-process.acceptedMuonsFilter.minNumber = 1
-process.patElectronFilter.minNumber = 0
 
 
 ######### NTuple Chain ###############
@@ -136,6 +134,8 @@ process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
 process.TTsemiLept.Channel = cms.untracked.string("Muon")
 process.TTsemiLept.leptonLabel = cms.InputTag("Muons")
 
+process.acceptedMuonsFilter.minNumber = 1
+process.patElectronFilter.minNumber = 0
 
 
 #process.load("FWCore.MessageLogger.MessageLogger_cfi")
