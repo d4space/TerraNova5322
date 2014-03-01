@@ -776,7 +776,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
       if( i_jet->pt() < JetPtMin) continue;
-      edm::Ptr<reco::Jet> ptrToJet = i_jet->ptrAt( i_jet - Jets->begin() );
+      edm::Ptr<reco::Jet> ptrToJet = Jets->ptrAt( i_jet - Jets->begin() );
       bool passPU = true;
       float JetMva = 0;
       int JetIdFlag = 0;
