@@ -218,6 +218,8 @@ WTauNeu = cms.EDAnalyzer('NtupleMaker',
     useL1Selector = cms.bool( False ), #for Electron WP80
     L1Select = cms.untracked.string('L1_SingleEG22')
 )
+
+
 TTsemiLept = cms.EDAnalyzer('TTsemiLeptAnalyzer',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
@@ -233,6 +235,9 @@ TTsemiLept = cms.EDAnalyzer('TTsemiLeptAnalyzer',
     genMEtCaloLabel =  cms.InputTag('genMetCalo'),
     genMEtCaloAndNonPromptLabel =  cms.InputTag('genMetCaloAndNonPrompt'),
     jetLabel =  cms.InputTag('selectedPatJetsPFlow'),
+    PUJetDiscriminant = cms.InputTag("pileupJetIdProducer","fullDiscriminant"),
+    PUJetId		= cms.InputTag("pileupJetIdProducer","fullId"),
+    JetPtMin		= cms.double(30)
     #jetLabel =  cms.InputTag('JetEnergyScale','selectedPatJetsPFlow'),
     vertexLabel = cms.untracked.InputTag('offlinePrimaryVertices'),
     #vertexLabel = cms.untracked.InputTag('goodOfflinePrimaryVertices'),

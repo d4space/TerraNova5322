@@ -66,8 +66,10 @@ process.METsrcElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
-#process.load('RecoJets.JetProducers.PileupJetID_cfi')
-#process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
+process.load('RecoJets.JetProducers.PileupJetID_cfi')
+process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
+#process.pileupJetIdProducer.vertexes = "goodOfflinePrimaryVertices"
+process.pileupJetIdProducer.residualsTxt  = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
 ### ============= NoPU and MVA MET ===============###
@@ -181,4 +183,5 @@ process.p += process.acceptedMuonsFilter
 process.p += process.nEventsFiltered
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
+process.p += process.pileupJetIdProducer
 process.p += process.TTsemiLeptMuMCSequence

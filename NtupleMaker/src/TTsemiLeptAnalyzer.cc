@@ -130,6 +130,11 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
   iEvent.getByLabel("particleFlow",pfCandidates_);
 
   iEvent.getByLabel(jetLabel_, Jets);
+  if(PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0)
+  {
+    iEvent.getByLabel(PUJetIdDisc, PUJetIdMVA);
+    iEvent.getByLabel(PUJetId, PUJetIdFlag);
+  }
 
   edm::Handle<reco::GenParticleCollection> genParticles_;
   iEvent.getByLabel(genParticlesLabel_,genParticles_);

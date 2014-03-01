@@ -40,7 +40,6 @@ METsrcElectrons = cms.EDProducer(
     eleIdSelector = eleSelectorPSet,
     saveTree = cms.untracked.bool(False),
     )
-
 acceptedMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("selectedPatMuonsPFlow"),
     cut =cms.string("pt > 10 && abs(eta) < 2.5"),
@@ -126,6 +125,5 @@ nEventsHBHE = cms.EDProducer("EventCountProducer")
 #EventsClean = cms.EDProducer("EventCountProducer")
 nEventsHLT = cms.EDProducer("EventCountProducer")
 nEventsFiltered = cms.EDProducer("EventCountProducer")
-
 
 

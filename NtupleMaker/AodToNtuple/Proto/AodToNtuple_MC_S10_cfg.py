@@ -50,11 +50,11 @@ process.out = cms.OutputModule("PoolOutputModule",
     outputCommands = cms.untracked.vstring('drop *')
 )
 
-
-if runOnMC:
-  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, typeIMetCorrections=True)
-else :
-  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
+#if runOnMC:
+#  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, typeIMetCorrections=True)
+#else :
+#  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
+usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
 	
 # Pre Settings ######################
 # 6(pt>10, tight, use for DiMu) 7(pt>27, tight, use for SingleMu)
@@ -66,8 +66,9 @@ process.METsrcElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
-#process.load('RecoJets.JetProducers.PileupJetID_cfi')
-#process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
+process.load('RecoJets.JetProducers.PileupJetID_cfi')
+process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
+process.pileupJetIdProducer.residualsTxt  = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
 ### ============= NoPU and MVA MET ===============###

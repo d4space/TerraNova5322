@@ -152,6 +152,8 @@ private:
   edm::InputTag genMEtCaloLabel_;
   edm::InputTag genMEtCaloAndNonPromptLabel_;
   edm::InputTag jetLabel_;
+  edm::InputTag PUJetIdDisc;
+  edm::InputTag PUJetId;
   edm::InputTag genParticlesLabel_;
   edm::InputTag vertexLabel_;
   edm::InputTag TriggerResultsTag;
@@ -175,10 +177,12 @@ private:
   edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
   edm::Handle<pat::JetCollection> Jets;
+  edm::Handle<edm::ValueMap<float> > PUJetIdMVA;
+  edm::Handle<edm::ValueMap<int> >   PUJetIdFlag;
 
   //iterator------------------------------
   //typedef pat::JetCollection::const_iterator JI;
-  pat::JetCollection::const_iterator Jet_It;
+  pat::JetCollection::const_iterator i_jet;
   pat::METCollection::const_iterator pfMEt_It;
   reco::PFMETCollection::const_iterator NoPuMEt_It;
   reco::PFMETCollection::const_iterator MVaMEt_It;
@@ -211,6 +215,8 @@ private:
   std::vector<double> bTagCutValues_;
   std::vector<bool> bTagIsCutMin_;
   std::vector<int> nbjetsCache_;
+
+  double JetPtMin;
   //std::string bTagAlgo_;
   //double minBTagValue_;
 
@@ -388,6 +394,9 @@ TTsemiLeptAnalyzer::TTsemiLeptAnalyzer(const edm::ParameterSet& iConfig)
     genMEtCaloLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloLabel");
     genMEtCaloAndNonPromptLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloAndNonPromptLabel");    
     jetLabel_ = iConfig.getParameter<edm::InputTag>("jetLabel");
+    PUJetIdDisc = iConfig.getParameter<edm::InputTag>("PUJetDiscriminant");
+    PUJetId = iConfig.getParameter<edm::InputTag>("PUJetId");
+    JetPtMin = iConfig.getParameter<double>("JetPtMin");
     genParticlesLabel_= iConfig.getParameter<edm::InputTag>("genParticlesLabel");
     vertexLabel_ =  iConfig.getUntrackedParameter<edm::InputTag>("vertexLabel");
     metStudy_ = iConfig.getUntrackedParameter<bool>("metStudy",false);
@@ -764,9 +773,22 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
     bool goodVtx=false;
-    for(Jet_It = Jets->begin(); Jet_It != Jets->end(); ++Jet_It)
+    for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
-      cout<<"Jet pt: "<<Jet_It->pt()<<endl;
+      if( i_jet->pt() < JetPtMin) continue;
+      edm::Ptr<reco::Jet> ptrToJet = i_jet->ptrAt( i_jet - Jets->begin() );
+      bool passPU = true;
+      float JetMva = 0;
+      int JetIdFlag = 0;
+      if( PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0 )
+      {
+	JetMva    = (*PUJetIdMVA) [ptrToJet];
+	JetIdFlag = (*PUJetIdFlag)[ptrToJet];
+	if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
+	cout<<"passPU: "<<passPU<<endl;
+      }
+      if(!passPU) continue;
+      cout<<"Jet pt: "<<i_jet->pt()<<endl;
     }
     for(unsigned i = 0; i < mu_hand->size(); i++)
     {
