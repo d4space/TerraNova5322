@@ -176,13 +176,15 @@ private:
   edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
   edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
-  edm::Handle<pat::JetCollection> Jets;
+  edm::Handle<edm::View<reco::Jet> > Jets;
+  //edm::Handle<pat::JetCollection> Jets;
   edm::Handle<edm::ValueMap<float> > PUJetIdMVA;
   edm::Handle<edm::ValueMap<int> >   PUJetIdFlag;
 
   //iterator------------------------------
   //typedef pat::JetCollection::const_iterator JI;
-  pat::JetCollection::const_iterator i_jet;
+  edm::View<reco::Jet>::const_iterator i_jet;
+  //pat::JetCollection::const_iterator i_jet;
   pat::METCollection::const_iterator pfMEt_It;
   reco::PFMETCollection::const_iterator NoPuMEt_It;
   reco::PFMETCollection::const_iterator MVaMEt_It;
