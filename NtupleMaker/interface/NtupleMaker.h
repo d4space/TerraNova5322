@@ -86,7 +86,11 @@
 #include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
+
 #include "TerraNova/NtupleMaker/interface/NtupleBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
+
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1.h"
@@ -223,7 +227,7 @@ private:
   GenWboson	GenWs;
   GenZboson	GenZs;
   FSRphoton	FSRph;
-  KoMET		KoMETs;
+  METs		MEt;
 
   TH1F * tmp;
   TH1F * h_lept1_pt;
@@ -873,7 +877,7 @@ void NtupleMaker::bookTree()
   Ws.Register(tree);
   GenWs.Register(tree);
   GenZs.Register(tree);
-  KoMETs.Register(tree);
+  MEt.Register(tree);
 }
 bool NtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
@@ -1351,12 +1355,12 @@ void NtupleMaker::clear()
   Ws.Lept1_genDeltaR->clear();
   Ws.Lept1_genDPtRel->clear();
 
-  //KoMETs.pfMEt4V->SetPxPyPzE(0,0,0,0);
-  //KoMETs.NoPuMEt4V->SetPxPyPzE(0,0,0,0);
-  //KoMETs.MVaMEt4V->SetPxPyPzE(0,0,0,0);
-  //KoMETs.genMEtTrue4V->SetPxPyPzE(0,0,0,0);
-  //KoMETs.genMEtCalo4V->SetPxPyPzE(0,0,0,0);
-  //KoMETs.genMEtCaloAndNonPrompt4V->SetPxPyPzE(0,0,0,0);
+  //MEt.pfMEt4V->SetPxPyPzE(0,0,0,0);
+  //MEt.NoPuMEt4V->SetPxPyPzE(0,0,0,0);
+  //MEt.MVaMEt4V->SetPxPyPzE(0,0,0,0);
+  //MEt.genMEtTrue4V->SetPxPyPzE(0,0,0,0);
+  //MEt.genMEtCalo4V->SetPxPyPzE(0,0,0,0);
+  //MEt.genMEtCaloAndNonPrompt4V->SetPxPyPzE(0,0,0,0);
 
 
 
