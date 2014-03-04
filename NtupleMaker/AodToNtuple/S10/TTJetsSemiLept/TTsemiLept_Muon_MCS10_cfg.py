@@ -15,7 +15,7 @@ produceMVAPFMET = True
 
 process.load("TerraNova.NtupleMaker.pf2pat_template_MC_cfg")
 
-from PhysicsTools.PatAlgos.tools.pfTools import *
+from PhysicsTools.PatAlgos.tools.pfTools import * # for patPF2PATSequence
 from TerraNova.NtupleMaker.pat_22Jan2013_MC_cfg import *
 #from TerraNova.NtupleMaker.eventContent_cff import *
 from TerraNova.NtupleMaker.tools import *
@@ -52,7 +52,7 @@ process.out = cms.OutputModule("PoolOutputModule",
 
 
 if runOnMC:
-  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, typeIMetCorrections=True)
+  usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute'] ), typeIMetCorrections=True)
 else :
   usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute','L2L3Residual'] ), typeIMetCorrections=True)
 	
@@ -66,9 +66,29 @@ process.METsrcElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
+UseCHS=''
+#UseCHS='CHS'
+JetCorrection          = "ak5PFL1FastL2L3"
+PFJetCollection   = 'ak5PFJets'+UseCHS
+PFJetCollectionCorr   = 'ak5PFJetsCorr'
+
+process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
+    src = cms.InputTag(PFJetCollection),
+    correctors = cms.vstring(JetCorrection) # NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for Data
+    )
+
+from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
+process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
+    filterParams = pfJetIDSelector.clone(quality=cms.string("TIGHT")),
+    src = cms.InputTag(PFJetCollectionCorr)
+    )
+
 process.load('RecoJets.JetProducers.PileupJetID_cfi')
-process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
-#process.pileupJetIdProducer.vertexes = "goodOfflinePrimaryVertices"
+process.pileupJetIdProducer.jets = PFJetCollectionCorr
+#process.pileupJetIdProducer.jets = cms.InputTag('ak5PFJets')
+#process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
+#process.pileupJetIdProducer.jets = 'selectedPatJetsPFlow'
+process.pileupJetIdProducer.vertexes = "goodOfflinePrimaryVertices"
 process.pileupJetIdProducer.residualsTxt  = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 #process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJets')
 
@@ -156,7 +176,7 @@ process.p = cms.Path(
     process.nEventsTotal*
     process.noscraping*
     process.nEventsNoscrap*
-#    process.goodOfflinePrimaryVertices*
+    process.goodOfflinePrimaryVertices*
     process.HBHENoiseFilter*
     process.nEventsHBHE
 #    process.nEventsClean
@@ -169,6 +189,9 @@ if produceTaus:
 #process.p += process.hltHighLevelMuMuRD
 process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
+process.p += process.ak5PFJetsCorr
+process.p += process.tightPFJetsPFlow
+process.p += process.pileupJetIdProducer
 #process.p += process.looseLeptonSequence
 process.p += process.acceptedMuons
 process.p += process.METsrcMuons
@@ -183,5 +206,4 @@ process.p += process.acceptedMuonsFilter
 process.p += process.nEventsFiltered
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
-process.p += process.pileupJetIdProducer
 process.p += process.TTsemiLeptMuMCSequence

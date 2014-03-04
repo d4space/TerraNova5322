@@ -36,8 +36,11 @@ process.TFileService = cms.Service("TFileService",
 #process.load("TerraNova.NtupleMaker.Sources.DYToMuMu_S8_Skim_cff")
 #process.load("TerraNova.NtupleMaker.Sources.PatSkimTemplate_cff")
 #process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
-
+process.load('RecoJets.JetProducers.PileupJetID_cfi')
+process.pileupJetIdProducer.jets = cms.InputTag('selectedPatJetsPFlow')
+process.pileupJetIdProducer.residualsTxt  = cms.FileInPath("RecoJets/JetProducers/data/mva_JetID_v1.weights.xml")
 process.p = cms.Path(
+    process.pileupJetIdProducer*
     process.TTsemiLeptMuMCSequence
     #process.WMuNeuAnalysisMCSequence
 )
