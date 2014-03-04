@@ -166,6 +166,7 @@ void NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     //}
 
     KoMETs.pfMEt_x    =pfMEt_It->px();
+    cout<<"pfMet x, y pt :"<< pfMEt_It->px()<<"  "<<pfMEt_It->py()<<"  "<<pfMEt_It_pt()<<endl;
     KoMETs.pfMEt_y    =pfMEt_It->py();
     pfMEt4V    ->SetPxPyPzE(pfMEt_It->px(),pfMEt_It->py(),0,pfMEt_It->pt());
 
