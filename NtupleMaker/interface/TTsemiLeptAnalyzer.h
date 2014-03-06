@@ -788,10 +788,10 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
 	JetMva    = (*PUJetIdMVA) [ptrToJet];
 	JetIdFlag = (*PUJetIdFlag)[ptrToJet];
 	if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
-	cout<<"passPU: "<<passPU<<endl;
+	//cout<<"passPU: "<<passPU<<endl;
       }
       if(!passPU) continue;
-      cout<<"Jet pt: "<<i_jet->pt()<<endl;
+      //cout<<"Jet pt: "<<i_jet->pt()<<endl;
     }
 
     for(unsigned i = 0; i < mu_hand->size(); i++)
