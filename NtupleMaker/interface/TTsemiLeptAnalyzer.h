@@ -220,6 +220,7 @@ private:
   std::vector<int> nbjetsCache_;
 
   double JetPtMin;
+  int nIdJets; // number of good jets
   //std::string bTagAlgo_;
   //double minBTagValue_;
 
@@ -776,10 +777,30 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
     bool goodVtx=false;
+    nIdJets = 0;
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
       if( i_jet->pt() < JetPtMin) continue;
+      double jecFactor = 1.0;
+      double chf = 0.0;
+      double nhf = 0.0;
+      double pef = 0.0;
+      double eef = 0.0;
+      double mef = 0;
+
       edm::Ptr<reco::Jet> ptrToJet = Jets->ptrAt( i_jet - Jets->begin() );
+      if( ptrToJet.isNonnull() && ptrToJet.isAvailable() )
+      {
+	reco::PFJet const * pfJet = dynamic_cast<reco::PFJet const *>(ptrToJet.get() );
+	if( pfJet != 0){
+	  chf = pfJet->chargedHadronEnergyFraction();
+	  nhf = pfJet->neutralHadronEnergyFraction();
+	  pef = pfJet->photonEnergyFraction();
+	  eef = pfJet->electronEnergy() / pfJet->energy();
+	  mef = pfJet->muonEnergyFraction();
+	  //if ( useJecLevels ) jecFactor = pfJet->jecFactor( jecLevels );
+	}
+      }
       bool passPU = true;
       float JetMva = 0;
       int JetIdFlag = 0;
@@ -792,9 +813,10 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
       }
       if(!passPU) continue;
       //cout<<"Jet pt: "<<i_jet->pt()<<endl;
+      ///// Count the jets in the event /////////////
+      nIdJets ++;
     }
-
-    for(unsigned i = 0; i < mu_hand->size(); i++)
+    if(nIdJets >= 4)for(unsigned i = 0; i < mu_hand->size(); i++)
     {
       acceptFT = true;
       pat::Muon it1 = mu_hand->at(i);
