@@ -120,7 +120,7 @@ private:
 //===============================================================
 
 // Variables ==================================================
-  bool acceptFT;
+  bool EvtPass;
   bool isRD;
 
   struct GenInfo{
@@ -228,6 +228,7 @@ private:
   TTree* tree;
   EventBranches	EventData;
   TrigBranches	HLTData;
+  TTsemi	TT;
   METs		MEt;
 
   TH1F * tmp;
@@ -768,6 +769,7 @@ bool TTsemiLeptAnalyzer::MatchObjects( const reco::Candidate::LorentzVector& pas
 }
 void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
+    EvtPass = false;
     //cout<<"lepton size: "<<mu_hand->size()<<endl;
     reco::isodeposit::AbsVetos vetos_ch;
     reco::isodeposit::AbsVetos vetos_nh;
@@ -781,6 +783,16 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
       if( i_jet->pt() < JetPtMin) continue;
+      if( i_jet->eta() < 2.4) continue;
+      bool pIsClean(true);
+      for(unsigned i(0); i< mu_hand->size(); i++)
+      {
+	pat::Muon it1 = mu_hand->at(i);
+        it1.setP4(it1.pfCandidateRef()->p4());
+	if(it1.pt() < 5.) continue;
+	if(deltaR(i_jet->eta(), i_jet->phi(), it1.eta(), it1.phi() ) <0.5) pIsClean = false;
+      }
+      if(!pIsClean) continue;
       double jecFactor = 1.0;
       double chf = 0.0;
       double nhf = 0.0;
@@ -818,7 +830,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     }
     if(nIdJets >= 4)for(unsigned i = 0; i < mu_hand->size(); i++)
     {
-      acceptFT = true;
+      EvtPass = true;
       pat::Muon it1 = mu_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -894,7 +906,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
       //W recon
       ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
       lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
+      //const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
       //const Ky::WLeptNeuCand WLeptNeuCand_(lept_, met->at(0),lep1.charge());
 
 
@@ -918,11 +930,42 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
 	  max(0.0, Lept1_nhIso04 + Lept1_phIso04 - 0.5*Lept1_pcIso04))
 	  /Lept1_pt;
 
-      //if(Lept1_relIsoBeta04 > 0.12)
-      //{
-//	cout<<"relIsoBeta04 : "<<Lept1_relIsoBeta04<<" Event: "<<EventData.EVENT<<endl;
-      //}
       //Fill tree
+      TT.Lept1_genIdxMatch->push_back(idxMatch);
+      TT.Lept1_genDeltaR->push_back(BestGenDeltaR1);
+      TT.Lept1_genDPtRel->push_back(BesTdPtRel1);
+      TT.Lept1_chIso03->push_back(Lept1_chIso03);
+      TT.Lept1_chIso04->push_back(Lept1_chIso04);
+      TT.Lept1_nhIso03->push_back(Lept1_nhIso03);
+      TT.Lept1_nhIso04->push_back(Lept1_nhIso04);
+      TT.Lept1_phIso03->push_back(Lept1_phIso03);
+      TT.Lept1_phIso04->push_back(Lept1_phIso04);
+      TT.Lept1_pcIso03->push_back(Lept1_pcIso03);
+      TT.Lept1_pcIso04->push_back(Lept1_pcIso04);
+      TT.Lept1_relIsoCom03->push_back(Lept1_relIsoCom03);
+      TT.Lept1_relIsoCom04->push_back(Lept1_relIsoCom04);
+      TT.Lept1_relIsoBeta03->push_back(Lept1_relIsoBeta03);
+      TT.Lept1_relIsoBeta04->push_back(Lept1_relIsoBeta04);
+      TT.Lept1_isGlobal->push_back(Lept1_isGlobal);
+      TT.Lept1_isTrker->push_back(Lept1_isTrker);
+      TT.Lept1_pt->push_back(Lept1_pt);
+      TT.Lept1_et->push_back(Lept1_et);
+      TT.Lept1_charge->push_back(Lept1_charge);
+      TT.Lept1_eta->push_back(Lept1_eta);
+      TT.Lept1_phi->push_back(Lept1_phi);
+      TT.Lept1_px->push_back(Lept1_px);
+      TT.Lept1_py->push_back(Lept1_py);
+      TT.Lept1_pz->push_back(Lept1_pz);
+      TT.Lept1_en->push_back(Lept1_en);
+      TT.Lept1_matchStations->push_back(Lept1_matchStations);
+      TT.Lept1_dB->push_back(Lept1_dB);
+
+      TT.Lept1_dz->push_back(Lept1_dz);
+      TT.Lept1_globalNormChi2->push_back(Lept1_globalNormChi2);
+      TT.Lept1_muonHits->push_back(Lept1_muonHits);
+      TT.Lept1_trkLayers->push_back(Lept1_trkLayers);
+      TT.Lept1_trackerHits->push_back(Lept1_trackerHits);
+      TT.Lept1_pixelHits->push_back(Lept1_pixelHits);
 
     }//mu_hand
 }
@@ -931,7 +974,7 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
     bool goodVtx=false;
     for(unsigned i = 0; i < ele_hand->size(); i++)
     {
-      acceptFT = true;
+      EvtPass = true;
       pat::Electron it1 = ele_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());

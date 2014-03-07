@@ -5,7 +5,7 @@
 void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
-  acceptFT = false;
+  EvtPass = false;
 
   clear();
 
@@ -194,7 +194,7 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   //ESHandle<SetupData> pSetup;
   //iSetup.get<SetupRecord>().get(pSetup);
-  tree->Fill();
+  if(EvtPass) tree->Fill();
 }
 DEFINE_FWK_MODULE(TTsemiLeptAnalyzer);
 
