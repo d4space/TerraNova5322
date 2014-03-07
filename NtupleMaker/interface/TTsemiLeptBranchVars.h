@@ -73,6 +73,9 @@ public:
   vector<double>*	Lept1_genDeltaR;
   vector<double>*	Lept1_genDPtRel;
 
+  int nIdJets;
+
+
   void Register(TTree *tree)
   {
     tree->Branch("TT_Lept1_chIso03"	,&Lept1_chIso03);
@@ -137,6 +140,7 @@ public:
     tree->Branch("TT_Lept1_genIdxMatch"	,&Lept1_genIdxMatch);
     tree->Branch("TT_Lept1_genDeltaR"	,&Lept1_genDeltaR);
     tree->Branch("TT_Lept1_genDPtRel"	,&Lept1_genDPtRel);
+    tree->Branch("TT_nIdJets"		,&nIdJets	,"nIdJets/i");
   }
 };
 

@@ -426,7 +426,7 @@ TTsemiLeptAnalyzer::TTsemiLeptAnalyzer(const edm::ParameterSet& iConfig)
 
     mEAtargetToken = iConfig.getParameter< std::string >("EAtarget");//EleEANoCorr, EleEAData2011, EleEASummer11MC,EleEAFall11MC, EleEAData2012 
     //mEAtargetToken = consumes<std:string>(iConfig.getParameter<std:string>("EAtarget", "EleEAData2012"));
-    tree = fs->make<TTree>("tree", "Tree for W boson");
+    tree = fs->make<TTree>("tree", "Tree for TT Semileptonic");
 
     EventData.vtx_isFake = new std::vector<int>;
     EventData.vtx_ndof = new std::vector<int>;
@@ -783,7 +783,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
       if( i_jet->pt() < JetPtMin) continue;
-      if( i_jet->eta() < 2.5) continue;
+      if( i_jet->eta() > 2.5) continue;
       bool pIsClean(true);
       for(unsigned i(0); i< mu_hand->size(); i++)
       {
@@ -828,6 +828,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
       ///// Count the jets in the event /////////////
       nIdJets ++;
     }
+    TT.nIdJets = nIdJets;
     if(nIdJets >= 4)for(unsigned i = 0; i < mu_hand->size(); i++)
     {
       EvtPass = true;
@@ -965,6 +966,8 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
       TT.Lept1_muonHits->push_back(Lept1_muonHits);
       TT.Lept1_trkLayers->push_back(Lept1_trkLayers);
       TT.Lept1_trackerHits->push_back(Lept1_trackerHits);
+      TT.Lept1_pixelHits->push_back(Lept1_pixelHits);
+
       TT.Lept1_pixelHits->push_back(Lept1_pixelHits);
 
     }//mu_hand
