@@ -92,7 +92,7 @@ void TTsemiMET::Loop()
       // Dump MET informations
     }
   }//Ntries
-  cout<<"Passed W evts: "<<mNTTevt<<"   Passed Z evts: "<<mNZevt<<endl;
+  cout<<"Passed TTsemi evts: "<<mNTTevt<<endl;
   //Results======================
 
 //  TString mResultDir = AnaChannel;
@@ -174,6 +174,9 @@ int TTsemiMET::TTbestSelect()
 }
 int TTsemiMET::InitHistogram()
 {
+  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",20,0.,100);
+  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",20,0.,100);
+  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",20,0.,100);
   return 0;
 }
 int TTsemiMET::Fill_METs()

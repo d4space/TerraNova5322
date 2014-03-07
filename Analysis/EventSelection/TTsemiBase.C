@@ -67,8 +67,3 @@ int TTsemiBase::TriggerCut()
     if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1) return -1;
   return 0;
 }
-int TTsemiMET::Fill_METs()
-{
-
-  return 0;
-}

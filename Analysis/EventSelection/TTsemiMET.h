@@ -18,6 +18,9 @@ public :
    TTsemiMET(TTree *tree=0,TTree *WMuonTree=0, double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);//Electron
    ~TTsemiMET();
    virtual void     Loop();
+   TH1D* h1_MVA_Met;
+   TH1D* h1_NoPU_Met;
+   TH1D* h1_genMEtTrue;
 protected:
   int Fill_METs();
    int InitVar(); // Init for Class
