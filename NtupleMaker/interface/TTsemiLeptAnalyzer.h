@@ -553,6 +553,7 @@ void TTsemiLeptAnalyzer::bookTree()
     HLTData.Register(tree,i);
   }
   MEt.Register(tree);
+  TT.Register(tree);
 }
 bool TTsemiLeptAnalyzer::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
