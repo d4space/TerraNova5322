@@ -783,7 +783,7 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
       if( i_jet->pt() < JetPtMin) continue;
-      if( i_jet->eta() < 2.4) continue;
+      if( i_jet->eta() < 2.5) continue;
       bool pIsClean(true);
       for(unsigned i(0); i< mu_hand->size(); i++)
       {
