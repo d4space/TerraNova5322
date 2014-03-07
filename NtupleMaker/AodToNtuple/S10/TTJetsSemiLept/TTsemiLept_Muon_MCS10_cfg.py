@@ -155,6 +155,7 @@ process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
 #process.TTsemiLept.leptonLabel = cms.InputTag("Electrons")
 process.TTsemiLept.Channel = cms.untracked.string("Muon")
 process.TTsemiLept.leptonLabel = cms.InputTag("Muons")
+process.TTsemiLept.JetPtMin = cms.double(30)
 
 process.acceptedMuonsFilter.minNumber = 1
 process.patElectronFilter.minNumber = 0
