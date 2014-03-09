@@ -47,14 +47,15 @@ public :
    double	LumiWeight;
 
    TTsemiBase(TTree *tree=0,TTree *WMuonTree=0, double weight=1,
-       TString OutFileName = "output.root",TString Mode="analysis",
+       TString OutNameBase = "Haha",TString Mode="analysis",
        TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);
 
    virtual ~TTsemiBase();
    virtual Int_t    TauCut(int entry);
-   virtual Int_t    MuonCut(int entry);
-   virtual Int_t    ElectronCut(int entry);
-   virtual Int_t    ElectronCutHighPU(int entry);
+   virtual Int_t    MuonCut2012LoPU(int entry);
+   virtual Int_t    MuonCut2012(int entry);
+   virtual Int_t    ElectronCut2012LoPU(int entry);
+   virtual Int_t    ElectronCut2012(int entry);
   
    
  //  virtual Int_t    FillMisChargeInfo();//MisChargeStudy
@@ -117,7 +118,7 @@ protected:
     int idxBest;
   }TTsemi;
 
-  TString	OutFileName;
+  TString	OutNameBase;
   TString	Mode;
   TString	AnaChannel;
   bool		RunOnMC;
@@ -135,7 +136,7 @@ void TTsemiBase::Init(TTree *tree)
    Notify();
 }
 TTsemiBase::TTsemiBase(TTree *TTsemiBaseTree,TTree *WLepTree, double lumiweight,
-       TString OutFileName_, TString mode_, TString AnaChannel_,
+       TString OutNameBase_, TString mode_, TString AnaChannel_,
        double Wcharge, bool runOnMC, int etaRange_)
 {
   fChain=0;
@@ -151,12 +152,10 @@ TTsemiBase::TTsemiBase(TTree *TTsemiBaseTree,TTree *WLepTree, double lumiweight,
 
      LumiWeight = lumiweight;
      cout<<"Input Value of Lumiweight = "<<lumiweight<<" Initialized as = "<<LumiWeight<<endl;
-     OutFileName = OutFileName_;
+     OutNameBase = OutNameBase_;
      Mode = mode_;
      AnaChannel = AnaChannel_;
-     WCHARGE = Wcharge;
      RunOnMC = runOnMC;
-     ETARANGE = etaRange_;
      Init(TTsemiBaseTree);
      //wMuons.Init(WLepTree);
    }
@@ -208,133 +207,152 @@ Int_t TTsemiBase::TauCut(int i)
 {
   //if( (*W_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
   //if( (*W_Lept1_decModFind)[i] < 0.5 )return -1;
-  if( fabs((*W_Lept1_eta)[i]) > 2.3 )return -1;
-  if( fabs((*W_Lept1_pt)[i]) < 20 )return -1;
+  if( fabs((*TT_Lept1_eta)[i]) > 2.3 )return -1;
+  if( fabs((*TT_Lept1_pt)[i]) < 20 )return -1;
   return 1;
 }
 
-Int_t TTsemiBase::MuonCut(int i)
+Int_t TTsemiBase::MuonCut2012LoPU(int i)
 {
-  if( !(*W_Lept1_isGlobal)[i])return -1;
-  if((*W_Lept1_pt)[i] < 20) return -1;
+  if( !(*TT_Lept1_isGlobal)[i])return -1;
+  if(  (*TT_Lept1_pt)[i] < 20) return -1;
   //if((*W_Lept1_pt)[i] < 25) return -1;
 
-  if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
-  if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
-  if( (*W_Lept1_muonHits)[i] <1) return -1;
-  if( (*W_Lept1_matchStations)[i] <2 ) return -1;
-  if( (*W_Lept1_trkLayers)[i] <6 )return -1;
-  if( (*W_Lept1_pixelHits)[i] <1 )return -1;
-  if( fabs( (*W_Lept1_dB)[i]) >0.02 )return -1;
-  if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
+  if(fabs((*TT_Lept1_eta)[i])>2.1) return -1;
+  if( (*TT_Lept1_globalNormChi2)[i]<0 || (*TT_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if( (*TT_Lept1_muonHits)[i] <1) return -1;
+  if( (*TT_Lept1_matchStations)[i] <2 ) return -1;
+  if( (*TT_Lept1_trkLayers)[i] <6 )return -1;
+  if( (*TT_Lept1_pixelHits)[i] <1 )return -1;
+  if( fabs( (*TT_Lept1_dB)[i]) >0.02 )return -1;
+  if( fabs( (*TT_Lept1_dz)[i]) >0.5 )return -1;
   //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
-  double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.12) return -1;
+  double betaCor04= max(0.0,(*TT_Lept1_nhIso04)[i]+(*TT_Lept1_phIso04)[i]-0.5*(*TT_Lept1_pcIso04)[i]);
+  if( ((*TT_Lept1_chIso04)[i]+betaCor04)/(*TT_Lept1_pt)[i] > 0.12) return -1;
+
+  return 1;
+}
+Int_t TTsemiBase::MuonCut2012(int i)
+{
+  if( !(*TT_Lept1_isGlobal)[i])return -1;
+  if(  (*TT_Lept1_pt)[i] < 25) return -1;
+
+  if(fabs((*TT_Lept1_eta)[i])>2.1) return -1;
+  if( (*TT_Lept1_globalNormChi2)[i]<0 || (*TT_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if( (*TT_Lept1_muonHits)[i] <1) return -1;
+  if( (*TT_Lept1_matchStations)[i] <2 ) return -1;
+  if( (*TT_Lept1_trkLayers)[i] <6 )return -1;
+  if( (*TT_Lept1_pixelHits)[i] <1 )return -1;
+  if( fabs( (*TT_Lept1_dB)[i]) >0.02 )return -1;
+  if( fabs( (*TT_Lept1_dz)[i]) >0.5 )return -1;
+  //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
+  double betaCor04= max(0.0,(*TT_Lept1_nhIso04)[i]+(*TT_Lept1_phIso04)[i]-0.5*(*TT_Lept1_pcIso04)[i]);
+  if( ((*TT_Lept1_chIso04)[i]+betaCor04)/(*TT_Lept1_pt)[i] > 0.12) return -1;
 
   return 1;
 }
 
-   Int_t TTsemiBase::ElectronCut(int i)
+   Int_t TTsemiBase::ElectronCut2012LoPU(int i)
    {
-     if((*W_Lept1_pt)[i] < 25) return -1;
+     if((*TT_Lept1_pt)[i] < 25) return -1;
      
-     if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
+     if(fabs((*TT_Lept1_etaSC)[i])>2.5) return -1;
      //W/Z
-     if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i])<1.566)return -1;
+     if(fabs((*TT_Lept1_etaSC)[i])>1.4442 && fabs((*TT_Lept1_etaSC)[i])<1.566)return -1;
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( (*W_Lept1_sigmaIEtaIEta)[i] > 0.01 ) return -1; 
+	 if( (*TT_Lept1_sigmaIEtaIEta)[i] > 0.01 ) return -1; 
      } else{
-	 if( (*W_Lept1_sigmaIEtaIEta)[i] > 0.03 ) return -1;   
+	 if( (*TT_Lept1_sigmaIEtaIEta)[i] > 0.03 ) return -1;   
      }
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_dEtaIn)[i]) >  0.004 ) return -1;
+	 if( fabs((*TT_Lept1_dEtaIn)[i]) >  0.004 ) return -1;
      } else{
-	 if( fabs((*W_Lept1_dEtaIn)[i])  >   0.007 ) return -1;
+	 if( fabs((*TT_Lept1_dEtaIn)[i])  >   0.007 ) return -1;
      }
      
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_dPhiIn)[i])  > 0.06 ) return -1;
+	 if( fabs((*TT_Lept1_dPhiIn)[i])  > 0.06 ) return -1;
      } else{
-	 if( fabs((*W_Lept1_dPhiIn)[i])  > 0.03 ) return -1;
+	 if( fabs((*TT_Lept1_dPhiIn)[i])  > 0.03 ) return -1;
      }
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( (*W_Lept1_HoverE)[i] > 0.12 ) return -1;
+	 if( (*TT_Lept1_HoverE)[i] > 0.12 ) return -1;
      } else{
-	 if( (*W_Lept1_HoverE)[i] > 0.10 ) return -1;
+	 if( (*TT_Lept1_HoverE)[i] > 0.10 ) return -1;
      }
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_dxy)[i]) > 0.02 ) return -1;
+	 if( fabs((*TT_Lept1_dxy)[i]) > 0.02 ) return -1;
      } else{
-	 if( fabs((*W_Lept1_dxy)[i]) > 0.02 ) return -1;
+	 if( fabs((*TT_Lept1_dxy)[i]) > 0.02 ) return -1;
      }
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_dz)[i]) > 0.1 ) return -1;
+	 if( fabs((*TT_Lept1_dz)[i]) > 0.1 ) return -1;
      } else{
-	 if( fabs((*W_Lept1_dz)[i]) > 0.1 ) return -1;
+	 if( fabs((*TT_Lept1_dz)[i]) > 0.1 ) return -1;
      }
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_InvEminusInvP)[i]) > 0.05 ) return -1;
+	 if( fabs((*TT_Lept1_InvEminusInvP)[i]) > 0.05 ) return -1;
      }else{
-	 if( fabs((*W_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
+	 if( fabs((*TT_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
      }
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-	 if( fabs((*W_Lept1_mHits)[i]) > 1 ) return -1;
+	 if( fabs((*TT_Lept1_mHits)[i]) > 1 ) return -1;
      } else{
-	 if( fabs((*W_Lept1_mHits)[i]) > 1) return -1;
+	 if( fabs((*TT_Lept1_mHits)[i]) > 1) return -1;
      }
  
-     if( (*W_Lept1_hasConversion)[i] ) return -1;
-     if( (*W_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
+     if( (*TT_Lept1_hasConversion)[i] ) return -1;
+     if( (*TT_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
 
      return 1;
    }
 
-   Int_t TTsemiBase::ElectronCutHighPU(int i)
+   Int_t TTsemiBase::ElectronCut2012(int i)
    {
      //////////////  Ele   V5 =======================================
-     double RelComIsoEB = (*W_Lept1_RelisolPtTrks03)[i]+max(0.,((*W_Lept1_RelisoEm03)[i]*(*W_Lept1_pt)[i])-1.)+(*W_Lept1_RelisoHad03)[i];
-     double RelComIsoEE = (*W_Lept1_RelisolPtTrks03)[i]+(*W_Lept1_RelisoEm03)[i]+(*W_Lept1_RelisoHad03)[i];
-     if((*W_Lept1_pt)[i] < 30) return -1;
-     if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
+     double RelComIsoEB = (*TT_Lept1_RelisolPtTrks03)[i]+max(0.,((*TT_Lept1_RelisoEm03)[i]*(*TT_Lept1_pt)[i])-1.)+(*TT_Lept1_RelisoHad03)[i];
+     double RelComIsoEE = (*TT_Lept1_RelisolPtTrks03)[i]+(*TT_Lept1_RelisoEm03)[i]+(*TT_Lept1_RelisoHad03)[i];
+     if((*TT_Lept1_pt)[i] < 30) return -1;
+     if(fabs((*TT_Lept1_etaSC)[i])>2.5) return -1;
      //W/Z
-     if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i])<1.566)return -1;
+     if(fabs((*TT_Lept1_etaSC)[i])>1.4442 && fabs((*TT_Lept1_etaSC)[i])<1.566)return -1;
 
-     if( fabs( (*W_Lept1_etaSC)[i]) < 1.4442)
+     if( fabs( (*TT_Lept1_etaSC)[i]) < 1.4442)
      {
-       if( (*W_Lept1_sigmaIEtaIEta)[i] > 0.01 ) return -1;
-       if( fabs((*W_Lept1_dEtaIn)[i]) >  0.004 ) return -1;
-       if( fabs((*W_Lept1_dPhiIn)[i])  > 0.06 ) return -1;
-       if( (*W_Lept1_HoverE)[i] > 0.12 ) return -1;
-       if( fabs((*W_Lept1_dxy)[i]) > 0.02 ) return -1;
-       if( fabs((*W_Lept1_dz)[i]) > 0.1 ) return -1;
-       if( fabs((*W_Lept1_InvEminusInvP)[i]) > 0.05 ) return -1;
-       if( fabs((*W_Lept1_mHits)[i]) > 1) return -1;
+       if( (*TT_Lept1_sigmaIEtaIEta)[i] > 0.01 ) return -1;
+       if( fabs((*TT_Lept1_dEtaIn)[i]) >  0.004 ) return -1;
+       if( fabs((*TT_Lept1_dPhiIn)[i])  > 0.06 ) return -1;
+       if( (*TT_Lept1_HoverE)[i] > 0.12 ) return -1;
+       if( fabs((*TT_Lept1_dxy)[i]) > 0.02 ) return -1;
+       if( fabs((*TT_Lept1_dz)[i]) > 0.1 ) return -1;
+       if( fabs((*TT_Lept1_InvEminusInvP)[i]) > 0.05 ) return -1;
+       if( fabs((*TT_Lept1_mHits)[i]) > 1) return -1;
      } else{ 
-	 if( (*W_Lept1_sigmaIEtaIEta)[i] > 0.03 ) return -1;
-	 if( fabs((*W_Lept1_dEtaIn)[i])  >   0.007 ) return -1;
-	 if( fabs((*W_Lept1_dPhiIn)[i])  > 0.03 ) return -1;
-	 if( (*W_Lept1_HoverE)[i] > 0.1 ) return -1;
-	 if( fabs((*W_Lept1_dxy)[i]) > 0.02 ) return -1;
-	 if( fabs((*W_Lept1_dz)[i]) > 0.1 ) return -1;
-	 if( fabs((*W_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
-	 if( fabs((*W_Lept1_mHits)[i]) > 1) return -1;
+	 if( (*TT_Lept1_sigmaIEtaIEta)[i] > 0.03 ) return -1;
+	 if( fabs((*TT_Lept1_dEtaIn)[i])  >   0.007 ) return -1;
+	 if( fabs((*TT_Lept1_dPhiIn)[i])  > 0.03 ) return -1;
+	 if( (*TT_Lept1_HoverE)[i] > 0.1 ) return -1;
+	 if( fabs((*TT_Lept1_dxy)[i]) > 0.02 ) return -1;
+	 if( fabs((*TT_Lept1_dz)[i]) > 0.1 ) return -1;
+	 if( fabs((*TT_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
+	 if( fabs((*TT_Lept1_mHits)[i]) > 1) return -1;
      }
 
-     if( (*W_Lept1_hasConversion)[i] ) return -1;
-     if( (*W_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
+     if( (*TT_Lept1_hasConversion)[i] ) return -1;
+     if( (*TT_Lept1_relIsoRho03)[i] > 0.15 ) return -1;
 
      return 1;
    }
@@ -352,8 +370,6 @@ int TTsemiBase::DumpMETs()
 Int_t TTsemiBase::InitVar4Evt()
 {
   // Recoil
-  W.RecoilT2=0;
-  W.PostT2 =0;
   mTTW = 1;
   mVtxVar.nPrim = 0;
   mVtxVar.nGood = 0;
@@ -363,26 +379,12 @@ Int_t TTsemiBase::InitVar4Evt()
   TTsemi.Mt=0;
   TTsemi.Met=0;
   TTsemi.Met_side=0;
-  TTsemi.genIdx=-999;
   TTsemi.charge=0;
   TTsemi.lep_pt = 0;
   TTsemi.lep_phi = 0;
   TTsemi.lep_eta = 0;
   TTsemi.lep_etaSC = 0;
   TTsemi.Pass=0;
-    
-  glbMuChi2=0;
-  addLepN=0;lep_pt=0;lep_pt_corr=0;corrMet=0;
-  scalecorr1=0;
-  corr1=0;
-  corr2=0;
-  scalecorr2=0;
-  smearcorr1=0;
-  smearcorr2=0;
-  newZlep1Pt=0;
-  newZlep2Pt=0;
-  elemass=0.000511;
-  muonmass=0.1056;
 
   return 0;
 }

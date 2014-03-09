@@ -35,7 +35,7 @@ typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 int TTsemiBase::InitVar()
 {
   cout<<"Initialize variables at TTsemiBase Class ==================="<<endl;
-  mResultDir = AnaChannel;
+  mResultDir = OutNameBase+"_"+Mode;
 
   return 0;
 }

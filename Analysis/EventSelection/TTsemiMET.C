@@ -37,6 +37,7 @@ void TTsemiMET::Loop()
   gBenchmark->Start("TTsemiMET");
 
   gRandom->SetSeed(0);
+
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
@@ -44,7 +45,6 @@ void TTsemiMET::Loop()
 
   cout<<"Total: "<<Ntries<<endl;
 
-  gSystem->mkdir(mResultDir);
 
   //============================================
   // Looping for each Event 
@@ -98,8 +98,6 @@ void TTsemiMET::Loop()
 //  TString mResultDir = AnaChannel;
 ////  TString mResultDir = "results";
 //  gSystem->mkdir(mResultDir);
-  TFile *myFile;
-    myFile=new TFile(mResultDir+"/"+OutFileName+".root","RECREATE");
 
   myFile->Write();
   gBenchmark->Show("TTsemiMET");
@@ -108,7 +106,7 @@ int TTsemiMET::InitVar()
 {
   cout<<"Initialize variable at TTsemiMET class ==========="<<endl;
   evtCnt = 0;
-  mNTTevet = 0;
+  mNTTevt = 0;
   return 0;
 }
 int TTsemiMET::InitVar4Evt()
@@ -158,11 +156,11 @@ int TTsemiMET::TTbestSelect()
 {
   for(int i(0); i<TTsemi.size; i++)
   {
-    if( ((AnaChannel == "MuonLowPU" ) && (MuonCut(i) >0))||
-	((AnaChannel == "MuonHighPU") && (MuonCut(i) >0))||
-	((AnaChannel == "ElectronLowPU" ) && (ElectronCut(i) > 0))||
-	((AnaChannel =="ElectronHighPU") &&  (ElectronCutHighPU(i) > 0)) ||
-	((AnaChannel =="TauHighPU") && (TauCut(i)) > 0)
+    if( ((AnaChannel == "MuonLoPU" ) && (MuonCut2012LoPU(i) >0))||
+	((AnaChannel == "Muon2012") && (MuonCut2012(i) >0))||
+	((AnaChannel == "ElectronLoPU" ) && (ElectronCut2012LoPU(i) > 0))||
+	((AnaChannel =="Electron2012") &&  (ElectronCut2012(i) > 0)) ||
+	((AnaChannel =="Tau2012") && (TauCut(i)) > 0)
 	  //Best Candidate selection
     )
     {
@@ -174,12 +172,29 @@ int TTsemiMET::TTbestSelect()
 }
 int TTsemiMET::InitHistogram()
 {
-  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",20,0.,100);
-  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",20,0.,100);
-  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",20,0.,100);
+  myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
+  h1_nIdJets   = new TH1D("h1_nIdJets","number of pileupJets",10,0.,10);
+  h1_PF_Met   = new TH1D("h1_PF_Met","PF MET",50,0.,200);
+  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",50,0.,200);
+  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",50,0.,200);
+  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",50,0.,200);
+
+  hp_pfMet  = new TProfile("hp_pfMet","pf - genMetTrue",50,0.,200);
+  hp_MVaMet = new TProfile("hp_MVaMet","MVA - genMetTrue",50,0.,200);
+  hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",50,0.,200);
   return 0;
 }
 int TTsemiMET::Fill_METs()
 {
+  h1_nIdJets->Fill(TT_nIdJets);
+  h1_PF_Met->Fill(pfMEtTL.Pt());
+  h1_MVA_Met->Fill(MVaMEtTL.Pt());
+  h1_NoPU_Met->Fill(NoPuMEtTL.Pt());
+  h1_genMEtTrue->Fill(genMEtTrueTL.Pt());
+
+  hp_pfMet  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  hp_MVaMet ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  hp_NoPuMet->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+
   return 0;
 }
