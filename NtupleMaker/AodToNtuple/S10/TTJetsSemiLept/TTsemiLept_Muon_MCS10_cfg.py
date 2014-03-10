@@ -22,7 +22,6 @@ from TerraNova.NtupleMaker.tools import *
 
 ## Options and Output Report
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
-#process.GlobalTag.globaltag = cms.string( 'START53_V18::All' )
 process.GlobalTag.globaltag = myGlobaltag
 
 ## Source
@@ -59,10 +58,10 @@ else :
 # Pre Settings ######################
 # 6(pt>10, tight, use for DiMu) 7(pt>27, tight, use for SingleMu)
 # -1(no cut) 0(check cut, isocut pset)
-process.METsrcMuons.version = cms.untracked.int32(6)
+#process.METsrcMuons.version = cms.untracked.int32(6)
 # -1(no cut), 0(check cut, isocut pset), 1(WptCut)
 # 13(medium pt 30) 14(medium pt 15)
-process.METsrcElectrons.version = cms.untracked.int32(14)
+#process.METsrcElectrons.version = cms.untracked.int32(14)
 ### taus
 process.load("RecoTauTag.Configuration.RecoPFTauTag_cff")
 
@@ -106,7 +105,7 @@ process.pileupJetIdProducer.residualsTxt  = cms.FileInPath("RecoJets/JetProducer
 #    
 #  process.selectedPatMuons.cut = cms.string("(abs(eta)<2.4 && pt>=15)&&isGlobalMuon && isTrackerMuon && globalTrack.normalizedChi2 < 10 && muonID(\'TrackerMuonArbitrated\') && globalTrack.hitPattern.numberOfValidMuonHits > 0 && trackIso/pt < 0.3")
 #  process.selectedPatElectrons.cut = Ele_ACCEPTANCE+"&&"+Ele_Id+"&&"+Else_Iso
-
+process.load('RecoMET.METPUSubtraction.mvaPFMET_leptons_cfi')
 # No PU MET
 process.load('RecoMET.METPUSubtraction.noPileUpPFMET_cff')
 if runOnMC:
@@ -114,7 +113,8 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForNoPileUpPFMEt.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.noPileUpPFMEt.srcLeptons = cms.VInputTag(["METsrcMuons","METsrcElectrons","METsrcTaus"])
+process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus")
+#process.noPileUpPFMEt.srcLeptons = cms.VInputTag(["METsrcMuons","METsrcElectrons","METsrcTaus"])
 
 ### MVA MET
 process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
@@ -123,7 +123,8 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.pfMEtMVA.srcLeptons = cms.VInputTag( ["METsrcMuons","METsrcElectrons","METsrcTaus"]) #selectedPatMuons
+process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus") #selectedPatMuons
+#process.pfMEtMVA.srcLeptons = cms.VInputTag( ["METsrcMuons","METsrcElectrons","METsrcTaus"]) #selectedPatMuons
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
@@ -146,8 +147,6 @@ process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 #process.acceptedMuons.cut = cms.string("pt > 20 && abs(eta) < 2.5 && (chargedHadronIso + neutralHadronIso + photonIso)/pt < 0.05")
-
-
 
 ######### NTuple Chain ###############
 process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
@@ -184,6 +183,7 @@ process.p = cms.Path(
 #    process.patElectronIDs*
 #    process.eidCiCSequence
 )
+
 if produceTaus:
   process.p += process.recoTauClassicHPSSequence
   print "Using Tau Sequence =================================="
@@ -195,16 +195,20 @@ process.p += process.tightPFJetsPFlow
 process.p += process.pileupJetIdProducer
 #process.p += process.looseLeptonSequence
 process.p += process.acceptedMuons
-process.p += process.METsrcMuons
-process.p += process.acceptedElectrons
-process.p += process.METsrcElectrons
+process.p += process.isomuonseq
+#process.p += process.METsrcMuons
+#process.p += process.acceptedElectrons
+#process.p += process.METsrcElectrons
 #process.p += process.acceptedTaus
-process.p += process.METsrcTaus
+#process.p += process.METsrcTaus
 #process.p += process.patMuEleTauFilter
 process.p += process.acceptedMuonsFilter
 #process.p += process.patElectronFilter
 #process.p += process.patTauFilter
 process.p += process.nEventsFiltered
+process.p += process.isomuonseq
+process.p += process.isoelectronseq
+process.p += process.isotauseq
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
 process.p += process.TTsemiLeptMuMCSequence
