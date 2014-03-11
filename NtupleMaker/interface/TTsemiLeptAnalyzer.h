@@ -500,7 +500,6 @@ void TTsemiLeptAnalyzer::beginJob()
 }
 void TTsemiLeptAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
 {
-  cout<<"beginRun hahahhaahah========================"<<endl;
   //initialization
   FullHLTTriggerNames.clear();
   HLTVersions.clear();
@@ -984,6 +983,7 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
     EvtPass = false;
 
     bool goodVtx=false;
+    /*************
 
     // Jet study =====================
     nIdJets = 0;
@@ -1195,6 +1195,7 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
       TT.Lept1_RelisoHad03    ->push_back(Lept1_RelisoHad03);
 
     }//ele_hand
+    *******/
 }
 void TTsemiLeptAnalyzer::endJob()
 {
