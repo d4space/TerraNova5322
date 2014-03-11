@@ -544,8 +544,8 @@ void TTsemiLeptAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& i
       cout<<" HLT config extraction failure with process name "<<TriggerResultsTag.process()<<std::endl;
     }
   }
-  return true;
 }
+
 void TTsemiLeptAnalyzer::bookTree()
 {
   EventData.Register(tree);
