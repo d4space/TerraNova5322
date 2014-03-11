@@ -26,6 +26,7 @@ void TTsemiLeptAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup
 
   iEvent.getByLabel(edm::InputTag("addPileupInfo"), PupInfo);
   iEvent.getByLabel(beamSpotInputTag, beamSpot_h);
+
   if( Channel == "Electron")
   {
     iEvent.getByLabel(rhoIsoInputTag, rhoIso_h);

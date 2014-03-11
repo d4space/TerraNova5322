@@ -174,7 +174,7 @@ if produceTaus:
 process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 process.p += process.ak5PFJetsCorr
-process.p += process.tightPFJetsPFlow
+#process.p += process.tightPFJetsPFlow
 process.p += process.pileupJetIdProducer
 #process.p += process.looseLeptonSequence
 process.p += process.acceptedMuons

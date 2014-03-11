@@ -383,7 +383,7 @@ private:
       const reco::Candidate::LorentzVector& proObj,
       bool exact );
   
-  void LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  void LoopMuon    (const edm::Event &iEvent, const edm::EventSetup& iSetup);
   void LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup);
 
 };
@@ -983,7 +983,6 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
     EvtPass = false;
 
     bool goodVtx=false;
-    /*************
 
     // Jet study =====================
     nIdJets = 0;
@@ -992,9 +991,9 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
       if( i_jet->pt() < JetPtMin) continue;
       if( i_jet->eta() > 2.5) continue;
       bool pIsClean(true);
-      for(unsigned i(0); i< mu_hand->size(); i++)
+      for(unsigned i(0); i< ele_hand->size(); i++)
       {
-	pat::Muon it1 = mu_hand->at(i);
+	pat::Electron it1 = ele_hand->at(i);
         it1.setP4(it1.pfCandidateRef()->p4());
 	if(it1.pt() < 5.) continue;
 	if(deltaR(i_jet->eta(), i_jet->phi(), it1.eta(), it1.phi() ) <0.5) pIsClean = false;
@@ -1195,7 +1194,6 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
       TT.Lept1_RelisoHad03    ->push_back(Lept1_RelisoHad03);
 
     }//ele_hand
-    *******/
 }
 void TTsemiLeptAnalyzer::endJob()
 {
