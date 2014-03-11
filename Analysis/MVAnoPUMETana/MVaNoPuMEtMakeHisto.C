@@ -26,6 +26,10 @@ TString AnaChannelTau  = "Tau2012";
   gSystem->CompileMacro("../EventSelection/TT2HadNT.C","k");
   gSystem->CompileMacro("../EventSelection/TT2HadBase.C","k");
   gSystem->CompileMacro("../EventSelection/TT2HadMET.C","k");
+
+  gSystem->CompileMacro("../EventSelection/MonoJetNT.C","k");
+  gSystem->CompileMacro("../EventSelection/MonoJetBase.C","k");
+  gSystem->CompileMacro("../EventSelection/MonoJetMET.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
   double LumiWeight = 1;
@@ -52,6 +56,7 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   TTsemiMET_Ele.Loop();
   *************/
+  /*************
   cout<<"TT2Hadron S10============================"<<endl;
   TChain *TC_TT2Had_S10     = new TChain("TT2Hadron/tree","");
   SetupTree("Test",TC_TT2Had_S10);
@@ -59,6 +64,14 @@ TString AnaChannelTau  = "Tau2012";
   TT2HadMET TT2HadMET_King(TC_TT2Had_S10,
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   TT2HadMET_King.Loop();
+  **************/
+  cout<<"MonoJet S10============================"<<endl;
+  TChain *TC_MJet_S10     = new TChain("MonoJet/tree","");
+  SetupTree("Test",TC_MJet_S10);
+  TString DirName = "MonoJet";
+  MonoJetMET MonoJet_King(TC_MJet_S10,
+        LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
+  MonoJet_King.Loop();
   //
   //cout<<"Ele_WToENu_S10============================"<<endl;
   //TChain *TC_Ele_WToENu_S10     = new TChain("WEleNeu/tree","");
