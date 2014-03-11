@@ -47,7 +47,7 @@ MuonsFilter = cms.EDFilter("CandViewCountFilter",
     minNumber = cms.uint32(1)
 )
 
-patElectronFilter = cms.EDFilter("CandViewCountFilter",
+ElectronsFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('Electrons'),
     minNumber = cms.uint32(1)
 )
@@ -365,7 +365,7 @@ WEleNeuAnalysisMCSequence = cms.Sequence(
 ##    PUweight*
 ##    ElectronAna*
     Electrons*
-    patElectronFilter*
+    ElectronsFilter*
 #    JetEnergyScale*
 #    ElEl
     WEleNeu
@@ -380,7 +380,7 @@ WEleNeuAnalysisRealDataSequence = cms.Sequence(
 #    selectedPatJetsPFlow*
 #    ElectronAna*
     Electrons*
-    patElectronFilter*
+    ElectronsFilter*
 #    JetEnergyScale*
     WEleNeu
 #    ee
@@ -392,7 +392,7 @@ TTsemiLeptEleMCSequence = cms.Sequence(
     removeDuplicate*
 #    ElectronAna*
     Electrons*
-    patElectronFilter*
+    ElectronsFilter*
 #    JetEnergyScale*
     TTsemiLept
 )
