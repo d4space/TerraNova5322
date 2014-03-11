@@ -117,6 +117,14 @@ class TTsemiLeptAnalyzer : public edm::EDAnalyzer{
 
 //===============================================================
 private:
+  virtual void beginJob();
+  virtual void analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup);
+  virtual void endJob();
+
+  virtual void beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup);
+  virtual void endRun(const edm::Run&, const edm::EventSetup&);
+  virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
+  virtual void endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
 //===============================================================
 
 // Variables ==================================================
@@ -363,18 +371,11 @@ private:
   double Lept1_GsfCtfScPixchargeConsistentcheck;
   double Lept2_GsfCtfScPixchargeConsistentcheck;
 
-  virtual void beginJob();
-  //virtual bool beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
-  virtual bool beginRun( edm::Run& iRun, const edm::EventSetup& iSetup);
-  virtual void endRun(const edm::Run&, const edm::EventSetup&)
-  {
-  }
   void bookTree();
 
   bool L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup );
 
   void GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup);
-  virtual void analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup);
   void clear();
   bool endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
   bool checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2);
@@ -497,7 +498,7 @@ void TTsemiLeptAnalyzer::beginJob()
   cout<<"EAtarget is : "<<EAtarget<<endl;
 
 }
-bool TTsemiLeptAnalyzer::beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
+void TTsemiLeptAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
 {
   cout<<"beginRun hahahhaahah========================"<<endl;
   //initialization
@@ -1194,4 +1195,16 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
       TT.Lept1_RelisoHad03    ->push_back(Lept1_RelisoHad03);
 
     }//ele_hand
+}
+void TTsemiLeptAnalyzer::endJob()
+{
+}
+void TTsemiLeptAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
+{
+}
+void TTsemiLeptAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+{
+}
+void TTsemiLeptAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+{
 }
