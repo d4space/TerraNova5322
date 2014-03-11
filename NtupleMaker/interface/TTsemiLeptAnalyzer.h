@@ -499,6 +499,7 @@ void TTsemiLeptAnalyzer::beginJob()
 }
 bool TTsemiLeptAnalyzer::beginRun( edm::Run& iRun, const edm::EventSetup& iSetup)
 {
+  cout<<"beginRun hahahhaahah========================"<<endl;
   //initialization
   FullHLTTriggerNames.clear();
   HLTVersions.clear();
@@ -780,6 +781,8 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
     bool goodVtx=false;
+
+    // Jet study =====================
     nIdJets = 0;
     for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
     {
@@ -830,6 +833,8 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
       nIdJets ++;
     }
     TT.nIdJets = nIdJets;
+
+    // Electron study===============
     if(nIdJets >= 4)for(unsigned i = 0; i < mu_hand->size(); i++)
     {
       EvtPass = true;
@@ -975,8 +980,63 @@ void TTsemiLeptAnalyzer::LoopMuon(const edm::Event &iEvent, const edm::EventSetu
 }
 void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
+    EvtPass = false;
+
     bool goodVtx=false;
-    for(unsigned i = 0; i < ele_hand->size(); i++)
+
+    // Jet study =====================
+    nIdJets = 0;
+    for(i_jet = Jets->begin(); i_jet != Jets->end(); ++i_jet)
+    {
+      if( i_jet->pt() < JetPtMin) continue;
+      if( i_jet->eta() > 2.5) continue;
+      bool pIsClean(true);
+      for(unsigned i(0); i< mu_hand->size(); i++)
+      {
+	pat::Muon it1 = mu_hand->at(i);
+        it1.setP4(it1.pfCandidateRef()->p4());
+	if(it1.pt() < 5.) continue;
+	if(deltaR(i_jet->eta(), i_jet->phi(), it1.eta(), it1.phi() ) <0.5) pIsClean = false;
+      }
+      if(!pIsClean) continue;
+      double jecFactor = 1.0;
+      double chf = 0.0;
+      double nhf = 0.0;
+      double pef = 0.0;
+      double eef = 0.0;
+      double mef = 0;
+
+      edm::Ptr<reco::Jet> ptrToJet = Jets->ptrAt( i_jet - Jets->begin() );
+      if( ptrToJet.isNonnull() && ptrToJet.isAvailable() )
+      {
+	reco::PFJet const * pfJet = dynamic_cast<reco::PFJet const *>(ptrToJet.get() );
+	if( pfJet != 0){
+	  chf = pfJet->chargedHadronEnergyFraction();
+	  nhf = pfJet->neutralHadronEnergyFraction();
+	  pef = pfJet->photonEnergyFraction();
+	  eef = pfJet->electronEnergy() / pfJet->energy();
+	  mef = pfJet->muonEnergyFraction();
+	  //if ( useJecLevels ) jecFactor = pfJet->jecFactor( jecLevels );
+	}
+      }
+      bool passPU = true;
+      float JetMva = 0;
+      int JetIdFlag = 0;
+      if( PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0 )
+      {
+	JetMva    = (*PUJetIdMVA) [ptrToJet];
+	JetIdFlag = (*PUJetIdFlag)[ptrToJet];
+	if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
+	//cout<<"passPU: "<<passPU<<endl;
+      }
+      if(!passPU) continue;
+      //cout<<"Jet pt: "<<i_jet->pt()<<endl;
+      ///// Count the jets in the event /////////////
+      nIdJets ++;
+    }
+    TT.nIdJets = nIdJets;
+
+    if( nIdJets >= 4)for(unsigned i = 0; i < ele_hand->size(); i++)
     {
       EvtPass = true;
       pat::Electron it1 = ele_hand->at(i);
@@ -1083,11 +1143,55 @@ void TTsemiLeptAnalyzer::LoopElectron(const edm::Event &iEvent, const edm::Event
       Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
       Lept1_mHits = it1.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
+      //Fill W vectors
+      TT.Lept1_genIdxMatch->push_back(idxMatch);
+      TT.Lept1_genDeltaR->push_back(genDeltaR1);
+      TT.Lept1_genDPtRel->push_back(dPtRel1);
+      TT.Lept1_pt->push_back(Lept1_pt);
+      TT.Lept1_et->push_back(Lept1_et);
+      TT.Lept1_charge->push_back(Lept1_charge);
+      TT.Lept1_eta->push_back(Lept1_eta);
+      TT.Lept1_phi->push_back(Lept1_phi);
+      TT.Lept1_px->push_back(Lept1_px);
+      TT.Lept1_py->push_back(Lept1_py);
+      TT.Lept1_pz->push_back(Lept1_pz);
+      TT.Lept1_en->push_back(Lept1_en);
+      TT.Lept1_etaSC->push_back(Lept1_etaSC);
+      TT.Lept1_phiSC->push_back(Lept1_phiSC);
+      TT.Lept1_dEtaIn->push_back(Lept1_dEtaIn);
+      TT.Lept1_dPhiIn->push_back(Lept1_dPhiIn);
+      TT.Lept1_sigmaIEtaIEta->push_back(Lept1_sigmaIEtaIEta);
+      TT.Lept1_HoverE->push_back(Lept1_HoverE);
+      TT.Lept1_fbrem->push_back(Lept1_fbrem);
+      TT.Lept1_energyEC->push_back(Lept1_energyEC);
+      TT.Lept1_Pnorm->push_back(Lept1_Pnorm);
+      TT.Lept1_InvEminusInvP->push_back(Lept1_InvEminusInvP);
+      TT.Lept1_dxy->push_back(Lept1_dxy);
+      TT.Lept1_dz->push_back(Lept1_dz);
+      TT.Lept1_AEff03->push_back(Lept1_AEff03);
+      TT.Lept1_chIso03->push_back(Lept1_chIso03);
+      TT.Lept1_chIso04->push_back(Lept1_chIso04);
+      TT.Lept1_nhIso03->push_back(Lept1_nhIso03);
+      TT.Lept1_nhIso04->push_back(Lept1_nhIso04);
+      TT.Lept1_phIso03->push_back(Lept1_phIso03);
+      TT.Lept1_phIso04->push_back(Lept1_phIso04);
+      TT.Lept1_pcIso03->push_back(Lept1_pcIso03);
+      TT.Lept1_pcIso04->push_back(Lept1_pcIso04);
+      TT.Lept1_relIsoCom03->push_back(Lept1_relIsoCom03);
+      TT.Lept1_relIsoCom04->push_back(Lept1_relIsoCom04);
+      TT.Lept1_relIsoBeta03->push_back(Lept1_relIsoBeta03);
+      TT.Lept1_relIsoBeta04->push_back(Lept1_relIsoBeta04);
+      TT.Lept1_relIsoRho03->push_back(Lept1_relIsoRho03);
+      TT.Lept1_hasConversion->push_back(Lept1_hasConversion);
+      TT.Lept1_mHits->push_back(Lept1_mHits);
+      TT.Lept1_SCcharge->push_back(Lept1_SCcharge);
+      TT.Lept1_TKcharge->push_back(Lept1_TKcharge);
+      TT.Lept1_GSFcharge->push_back(Lept1_GSFcharge);
+      TT.Lept1_GsfCtfScPixchargeConsistentcheck->push_back(Lept1_GsfCtfScPixchargeConsistentcheck);
 
-	//W recon
-      ROOT::Math::LorentzVector<ROOT::Math::PxPyPzE4D<double> > lept_;
-      lept_.SetPxPyPzE(lep1.px(), lep1.py(), lep1.pz(), lep1.energy());
-      const Ky::WLeptNeuCand WLeptNeuCand_(lept_, *pfMEt4V,lep1.charge());
+      TT.Lept1_RelisolPtTrks03->push_back(Lept1_RelisolPtTrks03);
+      TT.Lept1_RelisoEm03     ->push_back(Lept1_RelisoEm03);
+      TT.Lept1_RelisoHad03    ->push_back(Lept1_RelisoHad03);
 
     }//ele_hand
 }
