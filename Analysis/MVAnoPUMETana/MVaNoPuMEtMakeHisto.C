@@ -26,6 +26,7 @@ TString AnaChannelTau  = "Tau2012";
 //Luminosity weight
   double LumiWeight = 1;
 
+  /*********
   cout<<"TTsemi Muon S10============================"<<endl;
   TChain *TC_TTsemi_S10     = new TChain("TTsemiLept/tree","");
   TChain *TC_TTsemi_Muon       = new TChain("Muons/tree","");
@@ -35,6 +36,16 @@ TString AnaChannelTau  = "Tau2012";
   TTsemiMET TTsemiMET_Mu(TC_TTsemi_S10,TC_TTsemi_Muon,
         LumiWeight, DirName, Mode, AnaChannelMu, 0, true, -999);
   TTsemiMET_Mu.Loop();
+  ****/
+  cout<<"TTsemi Electron S10============================"<<endl;
+  TChain *TC_TTsemi_S10     = new TChain("TTsemiLept/tree","");
+  TChain *TC_TTsemi_Electron       = new TChain("Electrons/tree","");
+  SetupTree("Test",TC_TTsemi_S10);
+  SetupTree("Test",TC_TTsemi_Electron);
+  TString DirName = "TTsemiElectron";
+  TTsemiMET TTsemiMET_Ele(TC_TTsemi_S10,TC_TTsemi_Electron,
+        LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
+  TTsemiMET_Ele.Loop();
   //
   //cout<<"Ele_WToENu_S10============================"<<endl;
   //TChain *TC_Ele_WToENu_S10     = new TChain("WEleNeu/tree","");
