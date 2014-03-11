@@ -22,6 +22,10 @@ TString AnaChannelTau  = "Tau2012";
   gSystem->CompileMacro("../EventSelection/TTsemiNT.C","k");
   gSystem->CompileMacro("../EventSelection/TTsemiBase.C","k");
   gSystem->CompileMacro("../EventSelection/TTsemiMET.C","k");
+
+  gSystem->CompileMacro("../EventSelection/TT2HadNT.C","k");
+  gSystem->CompileMacro("../EventSelection/TT2HadBase.C","k");
+  gSystem->CompileMacro("../EventSelection/TT2HadMET.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
   double LumiWeight = 1;
@@ -37,6 +41,7 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirName, Mode, AnaChannelMu, 0, true, -999);
   TTsemiMET_Mu.Loop();
   ****/
+  /*********
   cout<<"TTsemi Electron S10============================"<<endl;
   TChain *TC_TTsemi_S10     = new TChain("TTsemiLept/tree","");
   TChain *TC_TTsemi_Electron       = new TChain("Electrons/tree","");
@@ -46,6 +51,14 @@ TString AnaChannelTau  = "Tau2012";
   TTsemiMET TTsemiMET_Ele(TC_TTsemi_S10,TC_TTsemi_Electron,
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   TTsemiMET_Ele.Loop();
+  *************/
+  cout<<"TT2Hadron S10============================"<<endl;
+  TChain *TC_TT2Had_S10     = new TChain("TT2Hadron/tree","");
+  SetupTree("Test",TC_TT2Had_S10);
+  TString DirName = "TT2Hadron";
+  TT2HadMET TT2HadMET_King(TC_TT2Had_S10,
+        LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
+  TT2HadMET_King.Loop();
   //
   //cout<<"Ele_WToENu_S10============================"<<endl;
   //TChain *TC_Ele_WToENu_S10     = new TChain("WEleNeu/tree","");
