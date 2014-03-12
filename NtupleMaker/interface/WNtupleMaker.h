@@ -1404,7 +1404,6 @@ void WNtupleMaker::endLuminosityBlock(const edm::LuminosityBlock & lumi, const e
         }
       }
     }
-    return true;
 }
 bool WNtupleMaker::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
 {
