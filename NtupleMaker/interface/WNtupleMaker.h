@@ -121,7 +121,7 @@ private:
   virtual void analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup);
   virtual void endJob();
   virtual void beginRun( const edm::Run& iRun, const edm::EventSetup& iSetup);
-  virtual void endRun(const edm::Run&, const edm::EventSetup&)
+  virtual void endRun(const edm::Run&, const edm::EventSetup&);
   virtual void beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&);
   virtual void endLuminosityBlock(const edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
 
