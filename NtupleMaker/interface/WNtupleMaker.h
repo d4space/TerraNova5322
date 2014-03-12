@@ -861,7 +861,6 @@ void WNtupleMaker::beginRun( const edm::Run& iRun, const edm::EventSetup& iSetup
       cout<<" HLT config extraction failure with process name "<<TriggerResultsTag.process()<<std::endl;
     }
   }
-  return true;
 }
 void WNtupleMaker::bookTree()
 {
