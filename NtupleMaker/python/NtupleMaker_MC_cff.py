@@ -79,7 +79,7 @@ DYmmFilter = cms.EDFilter("ZmmFilter",
 #)
 
 
-WEleNeu = cms.EDAnalyzer('NtupleMaker',
+WEleNeu = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL'),# To make the Ntupe tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -126,7 +126,7 @@ WEleNeu = cms.EDAnalyzer('NtupleMaker',
 
 )
 
-WMuNeu = cms.EDAnalyzer('NtupleMaker',
+WMuNeu = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -173,7 +173,7 @@ WMuNeu = cms.EDAnalyzer('NtupleMaker',
     L1Select = cms.untracked.string('L1_SingleEG22')
 
 )
-WTauNeu = cms.EDAnalyzer('NtupleMaker',
+WTauNeu = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),

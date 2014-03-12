@@ -1,11 +1,11 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "TerraNova/NtupleMaker/interface/NtupleMaker.h"
+#include "TerraNova/NtupleMaker/interface/WNtupleMaker.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
 //#include "DataFormats/METReco/interface/GenMET.h"
 //#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-void NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
@@ -244,5 +244,5 @@ void NtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetu
     //iSetup.get<SetupRecord>().get(pSetup);
     tree->Fill();
 }
-DEFINE_FWK_MODULE(NtupleMaker);
+DEFINE_FWK_MODULE(WNtupleMaker);
 
