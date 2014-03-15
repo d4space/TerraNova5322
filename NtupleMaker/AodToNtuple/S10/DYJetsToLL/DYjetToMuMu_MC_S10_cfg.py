@@ -146,4 +146,4 @@ process.p += process.isoelectronseq
 process.p += process.isotauseq
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
-process.p += process.ZMuNeuAnalysisMCSequence
+process.p += process.ZMuMuAnalysisMCSequence

@@ -218,7 +218,7 @@ WMuNeu = cms.EDAnalyzer('WNtupleMaker',
     useL1Selector = cms.bool( False ), #for Electron WP80
     L1Select = cms.untracked.string('L1_SingleEG22')
 )
-ZMuNeu = cms.EDAnalyzer('ZNtupleMaker',
+ZMuMu = cms.EDAnalyzer('ZNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -505,7 +505,7 @@ WMuNeuAnalysisMCSequence = cms.Sequence(
     WMuNeu
 #    mm
 )
-ZMuNeuAnalysisMCSequence = cms.Sequence(
+ZMuMuAnalysisMCSequence = cms.Sequence(
 #    hltHighLevelSingleMuLoPU*
     nEventsPatHLT*
 #    topWLeptonGenFilter*
@@ -516,7 +516,7 @@ ZMuNeuAnalysisMCSequence = cms.Sequence(
     Muons*
     MuonsFilter*
 #    JetEnergyScale*
-    ZMuNeu
+    ZMuMu
 #    mm
 )
 WTauNeuAnalysisMCSequence = cms.Sequence(
