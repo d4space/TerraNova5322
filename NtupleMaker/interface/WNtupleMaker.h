@@ -126,7 +126,7 @@ private:
   virtual void endLuminosityBlock(const edm::LuminosityBlock & lumi, const edm::EventSetup & setup);
 
 // Variables ==================================================
-  bool acceptFT;
+  bool EvtPass;
   bool isRD;
 
   struct GenInfo{
@@ -1943,7 +1943,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
     bool goodVtx=false;
     for(unsigned i = 0; i < mu1_hand->size(); i++)
     {
-      acceptFT = true;
+      EvtPass = true;
       pat::Muon it1 = mu1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -2472,7 +2472,7 @@ void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
-      acceptFT = true;
+      EvtPass = true;
       pat::Electron it1 = ele1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -2991,7 +2991,7 @@ void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
     bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)
     {
-      acceptFT = true;
+      EvtPass = true;
       pat::Tau it1 = tau1_hand->at(i);
       //it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());

@@ -9,7 +9,7 @@ void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
-  acceptFT = false;
+  EvtPass = false;
 
   clear();
 
