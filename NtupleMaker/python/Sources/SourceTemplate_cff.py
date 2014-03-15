@@ -12,8 +12,8 @@ readFiles.extend([
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToSemiLept/TTJetsToSemiLept.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WJetsToLNu/WJetsToLNu.root',
   #'file:/afs/cern.ch/work/s/salee/DataSample/S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
-  'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToMuMu_5000_3_1_f18.root',
-  #'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToEE_S10_DR53X_AOD.root',
+  #'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToMuMu_5000_3_1_f18.root',
+  'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToEE_S10_DR53X_AOD.root',
 
   ##### Muon code test ##########
   #'file:/d1/scratch/jungmin/git/CMSSW_5_3_14/src/TerraNova/NtupleMaker/prod/Muon/MC/Local/data/WpToMuNu_5000_1_2_04c.root',

@@ -125,7 +125,7 @@ WEleNeu = cms.EDAnalyzer('WNtupleMaker',
     L1Select = cms.untracked.string('L1_SingleEG22')
 
 )
-ZEleNeu = cms.EDAnalyzer('WNtupleMaker',
+ZElEl = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL'),# To make the Ntupe tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -573,7 +573,7 @@ WEleNeuAnalysisMCSequence = cms.Sequence(
     WEleNeu
 #    ee
 )
-ZEleNeuAnalysisMCSequence = cms.Sequence(
+ZElElAnalysisMCSequence = cms.Sequence(
     #noscraping*
     #nEventsNoscrap*
     #HBHENoiseFilter*
@@ -591,7 +591,7 @@ ZEleNeuAnalysisMCSequence = cms.Sequence(
     ElectronsFilter*
 #    JetEnergyScale*
 #    ElEl
-    ZEleNeu
+    ZElEl
 #    ee
 )
 
