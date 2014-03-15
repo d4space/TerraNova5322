@@ -125,6 +125,52 @@ WEleNeu = cms.EDAnalyzer('WNtupleMaker',
     L1Select = cms.untracked.string('L1_SingleEG22')
 
 )
+ZEleNeu = cms.EDAnalyzer('WNtupleMaker',
+    TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
+    #HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL'),# To make the Ntupe tree happy
+    HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
+    genParticlesLabel = cms.InputTag('genParticles'),
+    Channel = cms.untracked.string('Electron'),
+    leptonLabel1 =  cms.InputTag('Electrons'),
+    leptonLabel2 =  cms.InputTag('Electrons'),
+    pfMEtLabel =  cms.InputTag('patMETsPFlow'),
+    #metLabel =  cms.InputTag('JetEnergyScale','patMETsPFlow'),
+    noPuMEtLabel =  cms.InputTag('noPileUpPFMEt'),
+    MVAMEtLabel =  cms.InputTag('pfMEtMVA'),
+    genMEtTrueLabel =  cms.InputTag('genMetTrue'),
+    genMEtCaloLabel =  cms.InputTag('genMetCalo'),
+    genMEtCaloAndNonPromptLabel =  cms.InputTag('genMetCaloAndNonPrompt'),
+    jetLabel =  cms.InputTag('selectedPatJetsPFlow'),
+    #jetLabel =  cms.InputTag('JetEnergyScale','selectedPatJetsPFlow'),
+    vertexLabel = cms.untracked.InputTag('offlinePrimaryVertices'),
+    #vertexLabel = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
+    beamSpotInputTag = cms.InputTag("offlineBeamSpot"),
+    rhoIsoInputTag = cms.InputTag('kt6PFJets','rho'),
+    EAtarget = cms.string('EleEAData2012'), #EleEANoCorr, EleEAData2011, EleEASummer11MC,EleEAFall11MC, EleEAData2012 
+    #rhoIsoInputTag = cms.InputTag('kt6PFJetsForIsolation','rho'),
+    conversionsInputTag = cms.InputTag("allConversions"),
+    useEventCounter = cms.bool( True ),
+    filters = cms.untracked.vstring(
+        'nEventsTotal',
+        'nEventsNoscrap',
+        'nEventsHBHE',
+#        'nEventsClean',
+        'nEventsHLT',
+        'nEventsFiltered',
+        'nEventsPatHLT',
+    ),
+    relIso1 = cms.untracked.double(0.17),
+    relIso2 = cms.untracked.double(0.17),
+    #bTagSets = bTagSets,
+    #PileUpRD = PuRD2012Low,
+    PileUpRD = PuRD2012HighPUBin60,
+    #PileUpMC = PuMC2012S8Bin60,
+    PileUpMC = PuMC2012S10Bin60,
+
+    useL1Selector = cms.bool( True ), #for WP80
+    L1Select = cms.untracked.string('L1_SingleEG22')
+
+)
 
 WMuNeu = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
@@ -171,8 +217,54 @@ WMuNeu = cms.EDAnalyzer('WNtupleMaker',
 
     useL1Selector = cms.bool( False ), #for Electron WP80
     L1Select = cms.untracked.string('L1_SingleEG22')
-
 )
+ZMuNeu = cms.EDAnalyzer('ZNtupleMaker',
+    TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
+    #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
+    HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
+    genParticlesLabel = cms.InputTag('genParticles'),
+    Channel = cms.untracked.string('Muon'),
+    leptonLabel1 =  cms.InputTag('Muons'),
+    leptonLabel2 =  cms.InputTag('Muons'),
+    pfMEtLabel =  cms.InputTag('patMETsPFlow'),
+    #metLabel =  cms.InputTag('JetEnergyScale','patMETsPFlow'),
+    noPuMEtLabel =  cms.InputTag('noPileUpPFMEt'),
+    MVAMEtLabel =  cms.InputTag('pfMEtMVA'),
+    genMEtTrueLabel =  cms.InputTag('genMetTrue'),
+    genMEtCaloLabel =  cms.InputTag('genMetCalo'),
+    genMEtCaloAndNonPromptLabel =  cms.InputTag('genMetCaloAndNonPrompt'),
+    jetLabel =  cms.InputTag('selectedPatJetsPFlow'),
+    #jetLabel =  cms.InputTag('JetEnergyScale','selectedPatJetsPFlow'),
+    vertexLabel = cms.untracked.InputTag('offlinePrimaryVertices'),
+    #vertexLabel = cms.untracked.InputTag('goodOfflinePrimaryVertices'),
+    beamSpotInputTag = cms.InputTag("offlineBeamSpot"),
+    rhoIsoInputTag = cms.InputTag('kt6PFJets','rho'),
+    EAtarget = cms.string('EleEAData2012'), #EleEANoCorr, EleEAData2011, EleEASummer11MC,EleEAFall11MC, EleEAData2012 
+    #rhoIsoInputTag = cms.InputTag('kt6PFJetsForIsolation','rho'),
+    conversionsInputTag = cms.InputTag("allConversions"),
+    useEventCounter = cms.bool( True ),
+    filters = cms.untracked.vstring(
+        'nEventsTotal',
+        'nEventsNoscrap',
+        'nEventsHBHE',
+#        'nEventsClean',
+        'nEventsHLT', 
+        'nEventsFiltered',
+        'nEventsPatHLT',
+    ),
+    #for jet cleaning overlapping with isolated epton within 0.4
+    relIso1 = cms.untracked.double(0.20),
+    relIso2 = cms.untracked.double(0.20),
+    #bTagSets = bTagSets,
+    #PileUpRD = PuRD2012Low,
+    PileUpRD = PuRD2012LowBin60,
+    PileUpMC = PuMC2012S8Bin60,
+    #PileUpMC = PuMC2012S7Bin60,
+
+    useL1Selector = cms.bool( False ), #for Electron WP80
+    L1Select = cms.untracked.string('L1_SingleEG22')
+)
+
 WTauNeu = cms.EDAnalyzer('WNtupleMaker',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
@@ -413,6 +505,20 @@ WMuNeuAnalysisMCSequence = cms.Sequence(
     WMuNeu
 #    mm
 )
+ZMuNeuAnalysisMCSequence = cms.Sequence(
+#    hltHighLevelSingleMuLoPU*
+    nEventsPatHLT*
+#    topWLeptonGenFilter*
+#    GenZmassFilter*
+#    selectedPatJetsPFlow*
+#    PUweight*
+#    DYmmFilter*
+    Muons*
+    MuonsFilter*
+#    JetEnergyScale*
+    ZMuNeu
+#    mm
+)
 WTauNeuAnalysisMCSequence = cms.Sequence(
     #noscraping*
     #nEventsNoscrap*
@@ -465,6 +571,27 @@ WEleNeuAnalysisMCSequence = cms.Sequence(
 #    JetEnergyScale*
 #    ElEl
     WEleNeu
+#    ee
+)
+ZEleNeuAnalysisMCSequence = cms.Sequence(
+    #noscraping*
+    #nEventsNoscrap*
+    #HBHENoiseFilter*
+    #nEventsHBHE*
+    # HLT Cut
+#    hltHighLevelSingleEleMC*
+    nEventsPatHLT*
+#    removeDuplicate*
+#    WLeptonGenFilter*
+#    GenZmassFilter*
+##    selectedPatJetsPFlow*
+##    PUweight*
+##    ElectronAna*
+    Electrons*
+    ElectronsFilter*
+#    JetEnergyScale*
+#    ElEl
+    ZEleNeu
 #    ee
 )
 

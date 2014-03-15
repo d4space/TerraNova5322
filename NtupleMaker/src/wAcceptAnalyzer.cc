@@ -6,7 +6,7 @@ bool wAcceptAnalyzer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
-  acceptFT = false;
+  EvtPass = false;
 
   clear();
 
@@ -26,9 +26,9 @@ bool wAcceptAnalyzer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
-    tree->Fill();
+    if( EvtPass) tree->Fill();
 
-    return acceptFT;
+    return EvtPass;
 
 }
 DEFINE_FWK_MODULE(wAcceptAnalyzer);

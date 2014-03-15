@@ -242,7 +242,7 @@ void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
 
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
-    tree->Fill();
+    if(EvtPass) tree->Fill();
 }
 DEFINE_FWK_MODULE(WNtupleMaker);
 

@@ -23,7 +23,7 @@ acceptedGsfElectrons = cms.EDFilter("PATElectronSelector",
     filter = cms.bool(False),
 )
 
-patElectronFilter = cms.EDFilter("CandViewCountFilter",
+acceptedElectronFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('acceptedElectrons'),
     minNumber = cms.uint32(1)
 )

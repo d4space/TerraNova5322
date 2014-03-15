@@ -371,7 +371,7 @@ private:
 //===============================================================
 
 // Variables ==================================================
-  bool acceptFT;
+  bool EvtPass;
   bool isRD;
   struct GenInfo{
     double mass;
@@ -851,7 +851,7 @@ virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     //                       W+ = 24
     if( (abs(boson.pdgId()) == 24 ) && (boson.status() == 3))
     {
-      acceptFT = true;
+      EvtPass = true;
 
       nLepts = 0;
       BornWinfo.id	= boson.pdgId();
@@ -1076,7 +1076,7 @@ virtual void GetGenInfoZ(edm::Event &iEvent, const edm::EventSetup& iSetup)
 
     if( ((abs(boson.pdgId()) == 23) || (abs(boson.pdgId()) == 22)) && (boson.status() == 3))
     {
-      acceptFT = true;
+      EvtPass = true;
       nLepts = 0;
       GenZinfo.id	= boson.pdgId();
       GenZinfo.status	= boson.status();
@@ -1191,7 +1191,7 @@ virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     const reco::Candidate *boson = lepton.mother();
     int bosonId = fabs(boson->pdgId());
     if (bosonId!=24) continue;
-    acceptFT = true;
+    EvtPass = true;
     double bosonMass = boson->mass();
     double leptonMass = lepton.mass();
     double leptonEnergy = lepton.energy();
