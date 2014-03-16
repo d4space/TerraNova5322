@@ -1275,7 +1275,6 @@ void ZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
     bool goodVtx=false;
     for(unsigned i = 0; i < mu1_hand->size(); i++)
     {
-      EvtPass = true;
       pat::Muon it1 = mu1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -1661,7 +1660,6 @@ void ZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
-      EvtPass = true;
       pat::Electron it1 = ele1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -2059,7 +2057,6 @@ void ZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
     bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)
     {
-      EvtPass = true;
       pat::Tau it1 = tau1_hand->at(i);
       //it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
