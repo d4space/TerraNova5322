@@ -1465,6 +1465,7 @@ void ZZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iS
 	  reco::TransientTrack transientTrk2 = trackBuilder->build(trkerTrk2);
 	  Dimuon.KalmanVtxFit(transientTrk1, transientTrk2);
 	}
+	/*******************
 	if( !isRD && GenZs.nLepts->size() > 0 && Channel == "Muon")
 	{
 	  //Loop all GenZs---------------
@@ -1516,6 +1517,8 @@ void ZZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iS
 	      }
 	  }
 	}
+	***************/
+
         Lept2_chIso03=lepton2->back().chIso03();
         Lept2_chIso04=lepton2->back().chIso04();
         Lept2_nhIso03=lepton2->back().nhIso03();
@@ -1863,6 +1866,7 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
 	//reco::TransientTrack transientTrk2(it2.track(),B);
 	Dimuon.KalmanVtxFit(transientTrk1, transientTrk2);
 	}
+	/***********
 	if( !isRD && GenZs.nLepts->size() > 0 && Channel == "Electron")
 	{
 	  //Loop all GenZs-------------
@@ -1905,6 +1909,7 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
 	    //  if(dPtRel1 < 0.025 && dPtRel2 < 0.025)break;
 	  }
 	}
+	***************/
 
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(genDeltaR1);
@@ -2094,6 +2099,7 @@ void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSe
 	//reco::TransientTrack transientTrk2 = trackBuilder->build(it2.gsfTrack());
 	//Dimuon.KalmanVtxFit(transientTrk1, transientTrk2);
 	//}
+	/******************
 	if( !isRD && GenZs.nLepts->size() > 0 && Channel == "Tau")
 	{
 	  //Loop all GenZs-------------
@@ -2138,6 +2144,7 @@ void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSe
 	    //  if(dPtRel1 < 0.025 && dPtRel2 < 0.025)break;
 	  }
 	}
+	********************/
 
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(genDeltaR1);
