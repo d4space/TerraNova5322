@@ -29,7 +29,7 @@ protected:
    TProfile* hp_MVaMet;
    TProfile* hp_NoPuMet;
   TFile *myFile;
-  int Fill_W_METs();
+  int Fill_METs();
    void Nselected4Bin();
    int InitVar(); // Init for Class
    int InitVar4Evt(); // Init for every event

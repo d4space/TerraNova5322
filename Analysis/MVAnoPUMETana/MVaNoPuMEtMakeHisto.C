@@ -34,6 +34,10 @@ TString AnaChannelTau  = "Tau2012";
   gSystem->CompileMacro("../EventSelection/WlnuNT.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuBase.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuMET.C","k");
+
+  gSystem->CompileMacro("../EventSelection/ZllNT.C","k");
+  gSystem->CompileMacro("../EventSelection/ZllBase.C","k");
+  gSystem->CompileMacro("../EventSelection/ZllMET.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
   double LumiWeight = 1;
@@ -92,35 +96,37 @@ TString AnaChannelTau  = "Tau2012";
   WeleNuMET.Loop();
   *************/
 
-  cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
-  TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
-  TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
-  SetupTree("Test",TC_WToMuNu_S10);
-  SetupTree("Test",TC_WToMuNu_S10_Muon);
-  TString DirBase = "WToMuNu";
-  WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
-        LumiWeight, DirBase, Mode, AnaChannelMu);
-  WMuNuMET.Loop();
+  //cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
+  //TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
+  //TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
+  //SetupTree("Test",TC_WToMuNu_S10);
+  //SetupTree("Test",TC_WToMuNu_S10_Muon);
+  //TString DirBase = "WToMuNu";
+  //WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
+  //      LumiWeight, DirBase, Mode, AnaChannelMu);
+  //WMuNuMET.Loop();
 
-  //cout<<"Ele_DYJetsToLL_S10============================"<<endl;
-  //TChain *TC_Ele_DYJetsToLL_S10     = new TChain("WEleNeu/tree","");
-  //TChain *TC_Ele_DYJetsToLL_S10_Ele = new TChain("Electrons/tree","");
-  //SetupTreeGenMEt("Ele_DYJetsToLL_S10",TC_Ele_DYJetsToLL_S10);
-  //SetupTreeGenMEt("Ele_DYJetsToLL_S10",TC_Ele_DYJetsToLL_S10_Ele);
-  //TString Ele_DYJetsToLL_S10File = "Ele_DYJetsToLL_S10_"+Mode;
-  //WLepNeu WelePt_Ele_DYJetsToLL_S10(TC_Ele_DYJetsToLL_S10,TC_Ele_DYJetsToLL_S10_Ele,
-  //      LumiWeight_Ele_DYJetsToLL_S10, Ele_DYJetsToLL_S10File,Mode,AnaChannelEle);
-  //WelePt_Ele_DYJetsToLL_S10.Loop();
+  /***********
+  cout<<"Ele_DYJetsToLL_S10============================"<<endl;
+  TChain *TC_DYElEl_S10     = new TChain("ZElEl/tree","");
+  TChain *TC_DYElEl_S10_Ele = new TChain("Electrons/tree","");
+  SetupTree("Test",TC_DYElEl_S10);
+  SetupTree("Test",TC_DYElEl_S10_Ele);
+  TString DirBase = "DYElEl";
+  ZllMET ZllMETking(TC_DYElEl_S10,TC_DYElEl_S10_Ele,
+        LumiWeight, DirBase, Mode, AnaChannelEle);
+  ZllMETking.Loop();
+  ***********/
 
-  //cout<<"Muon_DYJetsToLL_S10==========================="<<endl;
-  //TChain *TC_Muon_DYJetsToLL_S10    = new TChain("WMuNeu/tree","");
-  //TChain *TC_Muon_DYJetsToLL_S10_Mu = new TChain("Muons/tree","");
-  //SetupTreeGenMEt("Muon_DYJetsToLL_S10",TC_Muon_DYJetsToLL_S10);
-  //SetupTreeGenMEt("Muon_DYJetsToLL_S10",TC_Muon_DYJetsToLL_S10_Mu);
-  //TString Muon_DYJetsToLL_S10File = "Muon_DYJetsToLL_S10_"+Mode;
-  //WLepNeu WmuPt_Muon_DYJetsToLL_S10(TC_Muon_DYJetsToLL_S10,TC_Muon_DYJetsToLL_S10_Mu,
-  //    LumiWeight_Mu_DYJetsToLL_S10, Muon_DYJetsToLL_S10File,Mode,AnaChannelMu);
-  //WmuPt_Muon_DYJetsToLL_S10.Loop();
+  cout<<"Muon_DYJetsToLL_S10==========================="<<endl;
+  TChain *TC_DYMuMu_S10    = new TChain("ZMuMu/tree","");
+  TChain *TC_DYMuMu_S10_Mu = new TChain("Muons/tree","");
+  SetupTree("Test",TC_DYMuMu_S10);
+  SetupTree("Test",TC_DYMuMu_S10_Mu);
+  TString DirBase = "DYMuMu";
+  ZllMET ZllMETking(TC_DYMuMu_S10,TC_DYMuMu_S10_Mu,
+      LumiWeight, DirBase, Mode, AnaChannelMu);
+  ZllMETking.Loop();
 
   /**********
   cout<<"Tau_WJetsToLNu_S10==========================="<<endl;

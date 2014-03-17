@@ -50,8 +50,6 @@ void WlnuMET::Loop()
 
   cout<<"Total: "<<Ntries<<endl;
 
-  gSystem->mkdir(mResultDir);
-
   //============================================
   // Looping for each Event 
   //============================================
@@ -120,8 +118,7 @@ void WlnuMET::Loop()
       //DumpWbestCand(W.idxBest);
 
       // Efficiency Correction
-
-      Fill_W_METs();
+      Fill_METs();
     
     //cout<<"mTTW: "<<mTTW<<endl;
     evtSelected+=mTTW;
@@ -132,10 +129,6 @@ void WlnuMET::Loop()
   cout<<"Passed W evts: "<<mNWevt<<"   Passed Z evts: "<<mNZevt<<endl;
   //Results======================
 
-//  TString mResultDir = AnaChannel;
-////  TString mResultDir = "results";
-//  gSystem->mkdir(mResultDir);
-  
   cout<<"selected converted: "<<evtSelected<<" +- "<<TMath::Sqrt(evtSelected)<<endl;
 
   myFile->Write();
@@ -493,7 +486,7 @@ int WlnuMET::InitHistogram()
   hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",50,0.,100);
   return 0;
 }
-int WlnuMET::Fill_W_METs()
+int WlnuMET::Fill_METs()
 {
   h1_PF_Met->Fill(pfMEtTL.Pt());
   h1_MVA_Met->Fill(MVaMEtTL.Pt());
