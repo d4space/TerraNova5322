@@ -177,7 +177,6 @@ private:
   edm::Handle<std::vector< PileupSummaryInfo > >  PupInfo;
   edm::Handle<std::vector<pat::Muon> > mu1_hand;
   edm::Handle<std::vector<pat::Electron> > ele1_hand;
-  edm::Handle<std::vector<pat::Electron> > ele2_hand;
   edm::Handle<std::vector<pat::Tau> > tau1_hand;
   edm::Handle<std::vector<pat::Tau> > tau2_hand;
   edm::Handle<pat::METCollection> pfMET_hand;
@@ -1747,9 +1746,9 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
       Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
       Lept1_mHits = it1.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
-      for(unsigned j = i+1; j < ele2_hand->size(); j++)
+      for(unsigned j = i+1; j < ele1_hand->size(); j++)
       {
-	pat::Electron it2 = ele2_hand->at(j);
+	pat::Electron it2 = ele1_hand->at(j);
         it2.setP4(it2.pfCandidateRef()->p4());
 
         const bool match = MatchObjects( it1.p4(), it2.p4(), true);
@@ -2034,7 +2033,7 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
         h_Zmass->Fill(Dimuon.mass());
 
         //break;
-      }//ele2_hand
+      }//ele1_hand
       //break;
     }//ele1_hand
 }
@@ -2198,7 +2197,7 @@ void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSe
         h_lept2_pt->Fill(it2.pt());
         h_Zmass->Fill(DiTau.mass());
         //break;
-      }//ele2_hand
+      }//ele1_hand
       //break;
     }//ele1_hand
 }

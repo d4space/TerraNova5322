@@ -96,7 +96,7 @@ void ZZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   h_nvertex->Fill(recVtxs_->size());
 
   iEvent.getByLabel(leptonLabel1_,mu1_hand);
-  iEvent.getByLabel(leptonLabel2_,ele2_hand);
+  iEvent.getByLabel(leptonLabel2_,ele1_hand);
 
   iEvent.getByLabel(pfMEtLabel_,pfMET_hand);
   pfMEt_It = pfMET_hand->begin();
@@ -170,7 +170,7 @@ void ZZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   //ESHandle<SetupData> pSetup;
   //iSetup.get<SetupRecord>().get(pSetup);
   if(Zs.pt->size() >= 2) EvtPass = true;
-  cout<<"Num. of Zs: "<<Zs.pt->size()<<endl;
+  //cout<<"Num. of Zs: "<<Zs.pt->size()<<endl;
   if(EvtPass) tree->Fill();
 }
 DEFINE_FWK_MODULE(ZZNtupleMaker);
