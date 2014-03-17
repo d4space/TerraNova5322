@@ -170,6 +170,7 @@ void ZZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
   //ESHandle<SetupData> pSetup;
   //iSetup.get<SetupRecord>().get(pSetup);
   if(Zs.pt->size() >= 2) EvtPass = true;
+  cout<<"Num. of Zs: "<<Zs.pt->size()<<endl;
   if(EvtPass) tree->Fill();
 }
 DEFINE_FWK_MODULE(ZZNtupleMaker);
