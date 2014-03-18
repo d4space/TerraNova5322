@@ -146,7 +146,7 @@ public:
   vector<double>* Neut_px;
   vector<double>* Neut_py;
   vector<double>* Sign;
-  vector<int>* Channel;
+  vector<int>*		Channel;
 
   void Register(TTree *tree)
   {
