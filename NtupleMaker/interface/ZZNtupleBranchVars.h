@@ -146,10 +146,11 @@ public:
   vector<double>* Neut_px;
   vector<double>* Neut_py;
   vector<double>* Sign;
-  //vector<int>*		Channel;
+  vector<int>*		Channel;
 
   void Register(TTree *tree)
   {
+    tree->Branch("Z_Channel",&Channel);
     tree->Branch("Z_Lept1_chIso03",&Lept1_chIso03);
     tree->Branch("Z_Lept1_chIso04",&Lept1_chIso04);
     tree->Branch("Z_Lept1_nhIso03",&Lept1_nhIso03);
@@ -289,7 +290,6 @@ public:
     tree->Branch("Z_Neut_px",&Neut_px);
     tree->Branch("Z_Neut_py",&Neut_py);
     tree->Branch("Z_Sign",&Sign);
-    tree->Branch("Z_Channel",&Channel);
   }
 };
 class GenZboson
