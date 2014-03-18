@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Zboson
+class ZZboson
 {
 public:
   vector<bool>*		Lept1_isGlobal;

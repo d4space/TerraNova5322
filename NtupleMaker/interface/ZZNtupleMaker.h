@@ -227,7 +227,7 @@ private:
   TTree* tree;
   EventBranches	EventData;
   TrigBranches	HLTData;
-  Zboson	Zs;
+  ZZboson	Zs;
   GenZboson	GenZs;
   FSRphoton	FSRph;
   METs		MEt;
@@ -422,7 +422,6 @@ ZZNtupleMaker::ZZNtupleMaker(const edm::ParameterSet& iConfig)
     EventData.vtx_z = new std::vector<double>;
     EventData.vtx_Rho = new std::vector<double>;
 
-    Zs.Channel = new std::vector<int>;
     Zs.Lept1_isGlobal= new std::vector<bool>;
     Zs.Lept1_isTrker= new std::vector<bool>;
     Zs.Lept1_MedComIsoDelBetCorr3Hits= new std::vector<double>;
@@ -558,7 +557,8 @@ ZZNtupleMaker::ZZNtupleMaker(const edm::ParameterSet& iConfig)
     Zs.Neut_phi = new std::vector<double>;
     Zs.Neut_px = new std::vector<double>;
     Zs.Neut_py = new std::vector<double>;
-    Zs.Sign=new std::vector<double>; //--(-2), +-(0), ++(2)
+    Zs.Sign	=new std::vector<double>; //--(-2), +-(0), ++(2)
+    Zs.Channel = new std::vector<int>;
 
 
     GenZs.nLepts	= new std::vector<int>;
@@ -838,7 +838,6 @@ void ZZNtupleMaker::clear()
   EventData.vtx_z->clear();
   EventData.vtx_Rho->clear();
 
-  Zs.Channel->clear();
   Zs.Lept1_isGlobal->clear();
   Zs.Lept1_isTrker->clear();
   Zs.Lept1_MedComIsoDelBetCorr3Hits->clear();
@@ -993,7 +992,9 @@ void ZZNtupleMaker::clear()
   Zs.genMEtCaloAndNonPrompt_phi->clear();
   Zs.genMEtCaloAndNonPrompt_px->clear();
   Zs.genMEtCaloAndNonPrompt_py->clear();
-*/  Zs.Sign->clear();
+*/
+  Zs.Sign->clear();
+  Zs.Channel->clear();
 
 
   GenZs.nLepts->clear();
