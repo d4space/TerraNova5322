@@ -289,7 +289,7 @@ public:
     tree->Branch("Z_Neut_phi",&Neut_phi);
     tree->Branch("Z_Neut_px",&Neut_px);
     tree->Branch("Z_Neut_py",&Neut_py);
-    tree->Branch("Z_Sign",&Sign);
+    tree->Branch("ZZZ_Sign",&Sign);
   }
 };
 class GenZboson
