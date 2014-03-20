@@ -40,7 +40,7 @@ HLTProcessName = "HLT"
 
 process.GlobalTag.globaltag = GLOBAL_TAG
 #process.GlobalTag.globaltag = cms.string( 'START52_V10::All' )
-OUTPUT_FILE_NAME = "testNewWrite.root"
+OUTPUT_FILE_NAME = "testNewWriteGsf.root"
 
 #ELECTRON_ET_CUT_MIN = 0.0
 #ELECTRON_ET_CUT_MIN = 25.0
@@ -136,6 +136,11 @@ runOnMC=True
 postfix = "PFlow"
 jetAlgo="AK5"
 usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, typeIMetCorrections=True)
+# to use GsfElectrons instead of PF electrons
+# this will destory the feature of top projection which solves the ambiguity between leptons and jets because
+# there will be overlap between non-PF electrons and jets even though top projection is ON!
+useGsfElectrons(process,postfix,"03") # to change isolation cone size to 0.3 as it is recommended by EGM POG, use "04" for cone size 0.4
+
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
@@ -146,7 +151,7 @@ changeConeSize(process,postfix)
 #FastJet!
 #applyFastJet(process,postfix)
 
-rhoFor2011Aeff(process,postfix)
+#rhoFor2011Aeff(process,postfix)
 
 #REMOVE ISOLATION FROM PF2PAT!!!
 addLooseLeptons(process)
@@ -234,7 +239,7 @@ process.allConversions = cms.EDProducer("PATConversionProducer",
 process.PassingWptCut = cms.EDProducer(
     "KyElectronSelector",
     version = cms.untracked.int32( 1 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut)
-    usepflow = cms.untracked.bool( True ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut)
+    usepflow = cms.untracked.bool( False ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut)
     #version = cms.untracked.int32( 5 ),# 10 = MVA, 5 = WP90?
     cut = cms.vstring("pt","eta","EcalGapCut"),
     electronLabel  = cms.InputTag("acceptedElectrons"),

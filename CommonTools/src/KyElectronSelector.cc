@@ -16,7 +16,7 @@ using namespace std;
 KyElectronSelector::KyElectronSelector(const edm::ParameterSet& cfg)
 {
   version_ = cfg.getUntrackedParameter<int>("version", 13);
-  //usepflow_ = cfg.getUntrackedParameter<bool>("usepflow",true);
+  usepflow_ = cfg.getUntrackedParameter<bool>("usepflow",true);
   cut_ = cfg.getParameter<std::vector<string> >("cut");
 
   //eidName_ = cfg.getUntrackedParameter<string>("eidName");
@@ -115,9 +115,9 @@ void KyElectronSelector::produce(edm::Event& iEvent, const edm::EventSetup& es)
     pat::strbitset eleIdSel = eleIdSelector_.getBitTemplate();
     eleIdSelector_(electron,beamSpot_, eleIdSel);
 
-    //if(usepflow_){
+    if(usepflow_){
     electron.setP4(electron.pfCandidateRef()->p4());
-    //}
+    }
     pt_ = electron.pt();
     eta_ = electron.eta();
     phi_ = electron.phi();
