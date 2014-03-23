@@ -1643,6 +1643,7 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
+      /***************
       pat::Electron it1 = ele1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -1866,50 +1867,6 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
 	//reco::TransientTrack transientTrk2(it2.track(),B);
 	Dimuon.KalmanVtxFit(transientTrk1, transientTrk2);
 	}
-	/***********
-	if( !isRD && GenZs.nLepts->size() > 0 && Channel == "Electron")
-	{
-	  //Loop all GenZs-------------
-	  for( unsigned int iGen(0);iGen<GenZs.nLepts->size();iGen++)
-	  {
-	    genDeltaR1 = -999;genDeltaR2 = -999;
-	    dPtRel1 = -999;dPtRel2 = -999;
-	    idxMatch = -999;
-	    if( (*GenZs.nLepts)[iGen] != 2)continue;
-	    if( abs((*GenZs.Lept1_id)[iGen]) != GenType::kElectron) continue;
-	    if( abs((*GenZs.Lept2_id)[iGen]) != GenType::kElectron) continue;
-	    genDeltaR1 = deltaR( (*GenZs.Lept1_eta)[iGen],(*GenZs.Lept1_phi)[iGen],
-	                          Lept1_eta, Lept1_phi);
-	    dPtRel1 = fabs(Lept1_pt-(*GenZs.Lept1_pt)[iGen])/(*GenZs.Lept1_pt)[iGen];
-	    genDeltaR2 = deltaR( (*GenZs.Lept2_eta)[iGen],(*GenZs.Lept2_phi)[iGen],
-		  Lept2_eta, Lept2_phi);
-	    dPtRel2 = fabs(Lept2_pt-(*GenZs.Lept2_pt)[iGen])/(*GenZs.Lept2_pt)[iGen];
-	    //if( genDeltaR1 < 0.025 && genDeltaR2 < 0.025) break;
-	    if( genDeltaR1 < 0.03 && genDeltaR2 < 0.03)
-	    //if( genDeltaR1 < 0.025 && genDeltaR2 < 0.025)
-	     // if(dPtRel1 < 0.025 && dPtRel2 < 0.025)
-	    {
-	        idxMatch = iGen;
-		break;
-	    }
-	    // vice versa
-	    genDeltaR1 = deltaR( (*GenZs.Lept2_eta)[iGen],(*GenZs.Lept2_phi)[iGen],
-		  Lept1_eta, Lept1_phi);
-	    dPtRel1 = fabs(Lept1_pt-(*GenZs.Lept2_pt)[iGen])/(*GenZs.Lept2_pt)[iGen];
-	    genDeltaR2 = deltaR( (*GenZs.Lept1_eta)[iGen],(*GenZs.Lept1_phi)[iGen],
-		  Lept2_eta, Lept2_phi);
-	    dPtRel2 = fabs(Lept2_pt-(*GenZs.Lept1_pt)[iGen])/(*GenZs.Lept1_pt)[iGen];
-	    //if( genDeltaR1 < 0.025 && genDeltaR2 < 0.025) break;
-	    if( genDeltaR1 < 0.03 && genDeltaR2 < 0.03)
-	    {
-	      idxMatch = iGen;
-	      break;
-	    }
-	    //if( genDeltaR1 < 0.025 && genDeltaR2 < 0.025)
-	    //  if(dPtRel1 < 0.025 && dPtRel2 < 0.025)break;
-	  }
-	}
-	***************/
 
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(genDeltaR1);
@@ -2036,6 +1993,7 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
         //break;
       }//ele1_hand
       //break;
+      ***********/
     }//ele1_hand
 }
 void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
@@ -2198,9 +2156,9 @@ void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSe
         h_lept2_pt->Fill(it2.pt());
         h_Zmass->Fill(DiTau.mass());
         //break;
-      }//ele1_hand
+      }//
       //break;
-    }//ele1_hand
+    }//
 }
 void ZZNtupleMaker::endJob()
 {
