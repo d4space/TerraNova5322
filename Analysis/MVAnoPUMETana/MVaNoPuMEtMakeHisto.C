@@ -123,7 +123,7 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirBase, Mode, AnaChannelEle);
   ZllMETking.Loop();
   ***********/
-
+  /***************
   cout<<"ZZ4L_S10==========================="<<endl;
   TChain *TC_ZZ4L_S10     = new TChain("ZZ4L/tree","");
   TChain *TC_ZZ4L_S10_Muon = new TChain("Muons/tree","");
@@ -132,6 +132,16 @@ TString AnaChannelTau  = "Tau2012";
   TString DirBase = "ZZ4Mu";
   ZZ4LMET ZZ4LMETking(TC_ZZ4L_S10,TC_ZZ4L_S10_Muon,
         LumiWeight, DirBase, Mode, AnaChannelMu);
+  ZZ4LMETking.Loop();
+  ***********/
+  cout<<"ZZ4L_S10==========================="<<endl;
+  TChain *TC_ZZ4L_S10     = new TChain("ZZ4L/tree","");
+  TChain *TC_ZZ4L_S10_Electron = new TChain("Electrons/tree","");
+  SetupTree("Test",TC_ZZ4L_S10);
+  SetupTree("Test",TC_ZZ4L_S10_Electron);
+  TString DirBase = "ZZ4El";
+  ZZ4LMET ZZ4LMETking(TC_ZZ4L_S10,TC_ZZ4L_S10_Electron,
+        LumiWeight, DirBase, Mode, AnaChannelEle);
   ZZ4LMETking.Loop();
 
   /**********

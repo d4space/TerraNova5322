@@ -8,8 +8,8 @@ source = cms.Source("PoolSource",
     )
 readFiles.extend([
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4Mu/ZZTo4Mu.root',
-  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4e/ZZTo4e.root',
-  #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo2e2Mu/ZZTo2e2Mu.root',
+  #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4e/ZZTo4e.root',
+  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo2e2Mu/ZZTo2e2Mu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ADDmonoJet/ADDmonoJet.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToHadronic/TTJetsToHadronic.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToSemiLept/TTJetsToSemiLept.root',
