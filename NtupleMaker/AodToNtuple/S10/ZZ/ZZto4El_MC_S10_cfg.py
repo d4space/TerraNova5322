@@ -136,6 +136,7 @@ process.p += getattr(process,"patPF2PATSequence"+postfix)
 #process.p += process.looseLeptonSequence
 process.p += process.acceptedMuons
 process.p += process.acceptedElectrons
+#process.p += process.allConversions
 #process.p += process.acceptedTaus
 #process.p += process.patMuEleTauFilter
 #process.p += process.acceptedMuonsFilter

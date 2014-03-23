@@ -1643,7 +1643,6 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
     bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
-      /***************
       pat::Electron it1 = ele1_hand->at(i);
       it1.setP4(it1.pfCandidateRef()->p4());
       const Ky::Lepton lep1(it1.p4(), (int) it1.charge());
@@ -1745,7 +1744,8 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
       Lept1_relIsoRho03 = (Lept1_chIso03 +
 	  max(0.0, Lept1_nhIso03 + Lept1_phIso03 - rhoIso*Lept1_AEff03))
 	/Lept1_pt;
-      Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
+      //Lept1_hasConversion = ConversionTools::hasMatchedConversion(it1,conversions_h, beamSpot_h->position());
+      Lept1_hasConversion = 0;
       Lept1_mHits = it1.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
       for(unsigned j = i+1; j < ele1_hand->size(); j++)
@@ -1847,7 +1847,8 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
         Lept2_relIsoRho03 = (Lept2_chIso03 +
             max(0.0, Lept2_nhIso03 + Lept2_phIso03 - rhoIso*Lept2_AEff03))
           /Lept2_pt;
-        Lept2_hasConversion = ConversionTools::hasMatchedConversion(it2,conversions_h, beamSpot_h->position());
+        Lept2_hasConversion = 0;
+        //Lept2_hasConversion = ConversionTools::hasMatchedConversion(it2,conversions_h, beamSpot_h->position());
         Lept2_mHits = it2.gsfTrack()->trackerExpectedHitsInner().numberOfHits();
 
         //vertexfit
@@ -1993,7 +1994,6 @@ void ZZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
         //break;
       }//ele1_hand
       //break;
-      ***********/
     }//ele1_hand
 }
 void ZZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
