@@ -96,15 +96,15 @@ TString AnaChannelTau  = "Tau2012";
   WeleNuMET.Loop();
   *************/
 
-  //cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
-  //TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
-  //TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
-  //SetupTree("Test",TC_WToMuNu_S10);
-  //SetupTree("Test",TC_WToMuNu_S10_Muon);
-  //TString DirBase = "WToMuNu";
-  //WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
-  //      LumiWeight, DirBase, Mode, AnaChannelMu);
-  //WMuNuMET.Loop();
+  cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
+  TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
+  TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
+  SetupTree("Test",TC_WToMuNu_S10);
+  SetupTree("Test",TC_WToMuNu_S10_Muon);
+  TString DirBase = "WToMuNu";
+  WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
+        LumiWeight, DirBase, Mode, AnaChannelMu);
+  WMuNuMET.Loop();
 
   /***********
   cout<<"Ele_DYJetsToLL_S10============================"<<endl;
@@ -118,6 +118,7 @@ TString AnaChannelTau  = "Tau2012";
   ZllMETking.Loop();
   ***********/
 
+  /**********
   cout<<"Muon_DYJetsToLL_S10==========================="<<endl;
   TChain *TC_DYMuMu_S10    = new TChain("ZMuMu/tree","");
   TChain *TC_DYMuMu_S10_Mu = new TChain("Muons/tree","");
@@ -127,6 +128,7 @@ TString AnaChannelTau  = "Tau2012";
   ZllMET ZllMETking(TC_DYMuMu_S10,TC_DYMuMu_S10_Mu,
       LumiWeight, DirBase, Mode, AnaChannelMu);
   ZllMETking.Loop();
+  ***********/
 
   /**********
   cout<<"Tau_WJetsToLNu_S10==========================="<<endl;
