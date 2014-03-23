@@ -38,6 +38,10 @@ TString AnaChannelTau  = "Tau2012";
   gSystem->CompileMacro("../EventSelection/ZllNT.C","k");
   gSystem->CompileMacro("../EventSelection/ZllBase.C","k");
   gSystem->CompileMacro("../EventSelection/ZllMET.C","k");
+
+  gSystem->CompileMacro("../EventSelection/ZZ4LNT.C","k");
+  gSystem->CompileMacro("../EventSelection/ZZ4LBase.C","k");
+  gSystem->CompileMacro("../EventSelection/ZZ4LMET.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
   double LumiWeight = 1;
@@ -96,6 +100,7 @@ TString AnaChannelTau  = "Tau2012";
   WeleNuMET.Loop();
   *************/
 
+  /*****************
   cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
   TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
   TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
@@ -105,6 +110,7 @@ TString AnaChannelTau  = "Tau2012";
   WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
         LumiWeight, DirBase, Mode, AnaChannelMu);
   WMuNuMET.Loop();
+  ************/
 
   /***********
   cout<<"Ele_DYJetsToLL_S10============================"<<endl;
@@ -117,6 +123,16 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirBase, Mode, AnaChannelEle);
   ZllMETking.Loop();
   ***********/
+
+  cout<<"ZZ4L_S10==========================="<<endl;
+  TChain *TC_ZZ4L_S10     = new TChain("ZZ4L/tree","");
+  TChain *TC_ZZ4L_S10_Muon = new TChain("Muons/tree","");
+  SetupTree("Test",TC_ZZ4L_S10);
+  SetupTree("Test",TC_ZZ4L_S10_Muon);
+  TString DirBase = "ZZ4Mu";
+  ZZ4LMET ZZ4LMETking(TC_ZZ4L_S10,TC_ZZ4L_S10_Muon,
+        LumiWeight, DirBase, Mode, AnaChannelMu);
+  ZZ4LMETking.Loop();
 
   /**********
   cout<<"Muon_DYJetsToLL_S10==========================="<<endl;
