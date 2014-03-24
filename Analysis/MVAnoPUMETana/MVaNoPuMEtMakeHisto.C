@@ -124,7 +124,7 @@ TString AnaChannelTau  = "Tau2012";
   ZllMETking.Loop();
   ***********/
   /***************
-  cout<<"ZZ4L_S10==========================="<<endl;
+  cout<<"ZZ4Mu_S10==========================="<<endl;
   TChain *TC_ZZ4L_S10     = new TChain("ZZ4L/tree","");
   TChain *TC_ZZ4L_S10_Muon = new TChain("Muons/tree","");
   SetupTree("Test",TC_ZZ4L_S10);
@@ -134,13 +134,25 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirBase, Mode, AnaChannelMu);
   ZZ4LMETking.Loop();
   ***********/
-  cout<<"ZZ4L_S10==========================="<<endl;
+  /***************
+  cout<<"ZZ4El_S10==========================="<<endl;
   TChain *TC_ZZ4L_S10     = new TChain("ZZ4L/tree","");
   TChain *TC_ZZ4L_S10_Electron = new TChain("Electrons/tree","");
   SetupTree("Test",TC_ZZ4L_S10);
   SetupTree("Test",TC_ZZ4L_S10_Electron);
   TString DirBase = "ZZ4El";
   ZZ4LMET ZZ4LMETking(TC_ZZ4L_S10,TC_ZZ4L_S10_Electron,
+        LumiWeight, DirBase, Mode, AnaChannelEle);
+  ZZ4LMETking.Loop();
+  *************/
+
+  cout<<"ZZMuEl_S10==========================="<<endl;
+  TChain *TC_ZZMuEl_S10     = new TChain("ZZ4L/tree","");
+  TChain *TC_ZZMuEl_S10_Electron = new TChain("Electrons/tree","");
+  SetupTree("Test",TC_ZZMuEl_S10);
+  SetupTree("Test",TC_ZZMuEl_S10_Electron);
+  TString DirBase = "ZZMuEl";
+  ZZ4LMET ZZ4LMETking(TC_ZZMuEl_S10,TC_ZZMuEl_S10_Electron,
         LumiWeight, DirBase, Mode, AnaChannelEle);
   ZZ4LMETking.Loop();
 
