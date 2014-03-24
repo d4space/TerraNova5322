@@ -294,6 +294,7 @@ class Wboson
 {
 public:
 
+  vector<int>*		Lept1_ptcID;
   vector<bool>*		Lept1_isGlobal;
   vector<bool>*		Lept1_isTrker;
   vector<double>*	Lept1_MedComIsoDelBetCorr3Hits;
@@ -372,6 +373,7 @@ public:
 
   void Register(TTree *tree)
   {
+    tree->Branch("W_Lept1_ptcID"	,&Lept1_ptcID);
     tree->Branch("W_Lept1_chIso03"	,&Lept1_chIso03);
     tree->Branch("W_Lept1_chIso04"	,&Lept1_chIso04);
     tree->Branch("W_Lept1_nhIso03"	,&Lept1_nhIso03);
