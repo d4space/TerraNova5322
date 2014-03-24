@@ -1,4 +1,4 @@
-// $Id: WNtupleMaker.h,v 1.17 2013/09/13 00:09:33 salee Exp $
+// $Id: WWNtupleMaker.h,v 1.17 2013/09/13 00:09:33 salee Exp $
 //
 //
 
@@ -106,11 +106,11 @@ using namespace reco;
 using namespace isodeposit;
 
 //template<typename T1, typename T2>
-class WNtupleMaker : public edm::EDAnalyzer{
+class WWNtupleMaker : public edm::EDAnalyzer{
  public:
-  explicit WNtupleMaker(const edm::ParameterSet& iConfig);
+  explicit WWNtupleMaker(const edm::ParameterSet& iConfig);
   ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
-  ~WNtupleMaker()
+  ~WWNtupleMaker()
   {
   }
 
@@ -393,7 +393,7 @@ private:
 
 };
 
-WNtupleMaker::WNtupleMaker(const edm::ParameterSet& iConfig)
+WWNtupleMaker::WWNtupleMaker(const edm::ParameterSet& iConfig)
 {
     //now do what ever initialization is needed
     Channel = iConfig.getUntrackedParameter< std::string >("Channel");
@@ -784,7 +784,7 @@ WNtupleMaker::WNtupleMaker(const edm::ParameterSet& iConfig)
 //    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
-void WNtupleMaker::beginJob()
+void WWNtupleMaker::beginJob()
 {
   std::vector< float > PuMC ;
   std::vector< float > PuReal;
@@ -816,7 +816,7 @@ void WNtupleMaker::beginJob()
   cout<<"EAtarget: "<<EAtarget<<endl;
 
 }
-void WNtupleMaker::beginRun( const edm::Run& iRun, const edm::EventSetup& iSetup)
+void WWNtupleMaker::beginRun( const edm::Run& iRun, const edm::EventSetup& iSetup)
 {
   //initialization
   FullHLTTriggerNames.clear();
@@ -862,7 +862,7 @@ void WNtupleMaker::beginRun( const edm::Run& iRun, const edm::EventSetup& iSetup
     }
   }
 }
-void WNtupleMaker::bookTree()
+void WWNtupleMaker::bookTree()
 {
   EventData.Register(tree);
   FSRph.Register(tree);
@@ -877,7 +877,7 @@ void WNtupleMaker::bookTree()
   GenZs.Register(tree);
   MEt.Register(tree);
 }
-bool WNtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
+bool WWNtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
   // Get L1 Trigger menu
   ESHandle<L1GtTriggerMenu> menuRcd;
@@ -908,7 +908,7 @@ bool WNtupleMaker::L1TriggerSelection( const edm::Event& iEvent, const edm::Even
   
   return algResult;
 }
-void WNtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   //Trigger Information----
   Handle<TriggerResults> trgRsltsHandle;
@@ -989,7 +989,7 @@ void WNtupleMaker::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup
     //cout<<"HLTTRiggers is 0 or HLTVersions.size is not the same"<<endl;
   }
 }
-void WNtupleMaker::clear()
+void WWNtupleMaker::clear()
 {
   EventData.EVENT	= -999;
   EventData.RUN		= -999;
@@ -1236,7 +1236,7 @@ void WNtupleMaker::clear()
 
     genttbarM = -999;
 }
-void WNtupleMaker::endLuminosityBlock(const edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
+void WWNtupleMaker::endLuminosityBlock(const edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
 {
   //cout<<"end lumi "<<endl;
     if(useEventCounter_){
@@ -1251,7 +1251,7 @@ void WNtupleMaker::endLuminosityBlock(const edm::LuminosityBlock & lumi, const e
       }
     }
 }
-bool WNtupleMaker::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
+bool WWNtupleMaker::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
 {
   bool overlap = false;
   if( reliso1 < relIso1_ ) {
@@ -1268,7 +1268,7 @@ bool WNtupleMaker::checkOverlap(const double & eta, const double & phi, const do
 
 }
 
-bool WNtupleMaker::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
+bool WWNtupleMaker::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
       const reco::Candidate::LorentzVector& proObj,
       bool exact )
 {
@@ -1287,7 +1287,7 @@ bool WNtupleMaker::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
   if( exact ) return ( dRval < 1e-3 && dPtRel < 1e-3 );
   else        return ( dRval < 0.025 && dPtRel < 0.025 );
 }
-bool WNtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
+bool WWNtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
 {
   for(unsigned int i(0);i<genPtcl->numberOfDaughters(); i++)
   {
@@ -1295,7 +1295,7 @@ bool WNtupleMaker::HasDaughter(reco::GenParticleRef genPtcl, int id)
   }
   return false;
 }
-reco::GenParticleRef WNtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
+reco::GenParticleRef WWNtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
 {
   reco::GenParticleRef daughter;
   for( unsigned int i(0);i<mom->numberOfDaughters();i++)
@@ -1305,7 +1305,7 @@ reco::GenParticleRef WNtupleMaker::FindDaughter(reco::GenParticleRef mom,int id)
   }
   return daughter;
 }
-void WNtupleMaker::GetGenInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::GetGenInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if (isRD) return;
   //if (iEvent.isRealData()) return;
@@ -1542,7 +1542,7 @@ void WNtupleMaker::GetGenInfoW(const edm::Event &iEvent, const edm::EventSetup& 
     }//W status 3
   }//GenPtcls
 }
-void WNtupleMaker::GetGenInfoZ(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::GetGenInfoZ(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
   GenInfo GenZinfo;
@@ -1667,7 +1667,7 @@ void WNtupleMaker::GetGenInfoZ(const edm::Event &iEvent, const edm::EventSetup& 
     }//Drell-Yan
   }//genPtcls
 }
-void WNtupleMaker::GetFSRInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::GetFSRInfoW(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   if(isRD) return;
 
@@ -1736,7 +1736,7 @@ void WNtupleMaker::GetFSRInfoW(const edm::Event &iEvent, const edm::EventSetup& 
     }
   }
 }
-double WNtupleMaker::alphaRatio(double pt){
+double WWNtupleMaker::alphaRatio(double pt){
 
       double pigaga = 0.;
 
@@ -1776,7 +1776,7 @@ double WNtupleMaker::alphaRatio(double pt){
       // Done
       return 1./(1.-pigaga);
 }
-void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     //cout<<"lepton size: "<<mu_hand->size()<<endl;
     reco::isodeposit::AbsVetos vetos_ch;
@@ -1900,7 +1900,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
       Lept1_pcIso03 = it1.isoDeposit(pat::PfPUChargedHadronIso)->depositAndCountWithin(0.3, vetos_pc).first;
       Lept1_pcIso04 = it1.isoDeposit(pat::PfPUChargedHadronIso)->depositAndCountWithin(0.4, vetos_pc).first;
 
-      //if(Lept1_pcIso04_tmp != Lept1_pcIso04) cout<<"WNtupleMaker: pcIso04 is not the same"<<endl;
+      //if(Lept1_pcIso04_tmp != Lept1_pcIso04) cout<<"WWNtupleMaker: pcIso04 is not the same"<<endl;
 
       Lept1_relIsoCom03 = (Lept1_chIso03 + Lept1_nhIso03 + Lept1_phIso03)/Lept1_pt;
       Lept1_relIsoCom04 = (Lept1_chIso04 + Lept1_nhIso04 + Lept1_phIso04)/Lept1_pt;
@@ -1973,7 +1973,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
       //break;
     }//mu_hand
 }
-void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < ele_hand->size(); i++)
@@ -2164,7 +2164,7 @@ void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
 
     }//ele_hand
 }
-void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     bool goodVtx=false;
     for(unsigned i = 0; i < tau_hand->size(); i++)
@@ -2233,12 +2233,12 @@ void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
 
     }//tau_hand
 }
-void WNtupleMaker::endJob()
+void WWNtupleMaker::endJob()
 {
 }
-void WNtupleMaker::endRun(edm::Run const&, edm::EventSetup const&)
+void WWNtupleMaker::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
-void WNtupleMaker::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+void WWNtupleMaker::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }

@@ -5,7 +5,7 @@
 //#include "DataFormats/METReco/interface/GenMET.h"
 //#include "DataFormats/ParticleFlowCandidate/interface/PFCandidate.h"
   //virtual void produce(const edm::Event& iEvent, const edm::EventSetup& iSetup)
-void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+void WWNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
 
@@ -232,5 +232,5 @@ void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     if(Nlepts >= 2) tree->Fill();
     //if(EvtPass) tree->Fill();
 }
-DEFINE_FWK_MODULE(WNtupleMaker);
+DEFINE_FWK_MODULE(WWNtupleMaker);
 
