@@ -227,7 +227,7 @@ private:
   TTree* tree;
   EventBranches	EventData;
   TrigBranches	HLTData;
-  ZZboson	Zs;
+  Zboson	Zs;
   GenZboson	GenZs;
   FSRphoton	FSRph;
   METs		MEt;

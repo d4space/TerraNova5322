@@ -111,7 +111,7 @@ void WZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
     iEvent.getByLabel(MuonLabel_,mu_hand);
     iEvent.getByLabel(ElectronLabel_,ele_hand);
-    iEvent.getByLabel(leptonLabel1_,tau_hand);
+    iEvent.getByLabel(TauLabel_,tau_hand);
 
     iEvent.getByLabel(pfMEtLabel_,pfMET_hand);
     pfMEt_It = pfMET_hand->begin();
