@@ -27,7 +27,8 @@
 #include "DataFormats/Common/interface/MergeableCounter.h"
 
 //
-#include "TerraNova/NtupleMaker/interface/WNtupleBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/WBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/ZBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 #include "TFile.h"
