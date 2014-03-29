@@ -222,11 +222,11 @@ void WZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     //h_genMEtCaloAndNonPrompt_MET->Fill(genMEtCaloAndNonPrompt_It->pt());
 
      // EventData.Channel = GenType::kMuon;
-    LoopMuon(iEvent, iSetup);
+    //LoopMuon(iEvent, iSetup);
       //EventData.Channel = GenType::kElectron;
-    LoopElectron(iEvent, iSetup);
+    //LoopElectron(iEvent, iSetup);
     //  EventData.Channel = GenType::kTau;
-    LoopTau(iEvent, iSetup);
+    //LoopTau(iEvent, iSetup);
 
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
