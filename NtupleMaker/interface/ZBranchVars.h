@@ -368,13 +368,3 @@ class GenZboson
       tree->Branch("GenZ_Lept2_phi",	&Lept2_phi);
     }
 };
-
-class FSRphoton
-{
-  public:
-    double	weightFSR;
-    void Register(TTree *tree)
-    {
-      tree->Branch("weightFSR", &weightFSR);
-    }
-};
