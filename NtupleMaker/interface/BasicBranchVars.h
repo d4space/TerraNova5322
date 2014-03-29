@@ -68,3 +68,15 @@ public:
   }
 };
 
+class FSRphoton
+{
+  public:
+    double	weightFSR;
+    void Register(TTree *tree)
+    {
+      tree->Branch("weightFSR", &weightFSR);
+    }
+};
+
+
+

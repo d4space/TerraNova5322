@@ -11,6 +11,7 @@ using namespace std;
 class Zboson
 {
 public:
+  vector<int>*		Channel;
   vector<bool>*		Lept1_isGlobal;
   vector<bool>*		Lept1_isTrker; 
   vector<double>*	Lept1_MedComIsoDelBetCorr3Hits;
@@ -149,6 +150,7 @@ public:
 
   void Register(TTree *tree)
   {
+    tree->Branch("Z_Channel",&Channel);
     tree->Branch("Z_Lept1_chIso03",&Lept1_chIso03);
     tree->Branch("Z_Lept1_chIso04",&Lept1_chIso04);
     tree->Branch("Z_Lept1_nhIso03",&Lept1_nhIso03);
@@ -326,8 +328,10 @@ class GenZboson
     vector<double>*	Lept2_eta;
     vector<double>*	Lept2_phi;
     double		Neut_pt;
+    vector<int>*		Channel;
     void Register(TTree *tree)
     {
+      tree->Branch("GenZ_Channel",&Channel);
       tree->Branch("GenZ_nLepts"	,&nLepts);
       //tree->Branch("GenZ_nLepts"	,&nLepts	,"Nlepts/i");
       tree->Branch("GenZ_id",&id);

@@ -87,7 +87,7 @@
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
 
-#include "TerraNova/NtupleMaker/interface/ZNtupleBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/ZBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 
@@ -560,8 +560,10 @@ ZNtupleMaker::ZNtupleMaker(const edm::ParameterSet& iConfig)
     Zs.Neut_px = new std::vector<double>;
     Zs.Neut_py = new std::vector<double>;
     Zs.Sign=new std::vector<double>; //--(-2), +-(0), ++(2)
+    Zs.Channel=new std::vector<int>; //--(-2), +-(0), ++(2)
 
 
+    GenZs.Channel	= new std::vector<int>;
     GenZs.nLepts	= new std::vector<int>;
     GenZs.id		= new std::vector<int>;
     GenZs.status	= new std::vector<int>;
@@ -993,9 +995,12 @@ void ZNtupleMaker::clear()
   Zs.genMEtCaloAndNonPrompt_phi->clear();
   Zs.genMEtCaloAndNonPrompt_px->clear();
   Zs.genMEtCaloAndNonPrompt_py->clear();
-*/  Zs.Sign->clear();
+*/  
+  Zs.Sign->clear();
+  Zs.Channel->clear();
 
 
+  GenZs.Channel->clear();
   GenZs.nLepts->clear();
   GenZs.id->clear();
   GenZs.status->clear();

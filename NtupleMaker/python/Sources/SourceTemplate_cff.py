@@ -7,7 +7,8 @@ source = cms.Source("PoolSource",
     fileNames = readFiles
     )
 readFiles.extend([
-  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WWTo2L2Nu/WWTo2L2Nu.root',
+  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WZTo3LNu/WZTo3LNu.root',
+  #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WWTo2L2Nu/WWTo2L2Nu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4Mu/ZZTo4Mu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4e/ZZTo4e.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo2e2Mu/ZZTo2e2Mu.root',

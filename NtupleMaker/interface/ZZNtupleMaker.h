@@ -87,7 +87,7 @@
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
 
-#include "TerraNova/NtupleMaker/interface/ZZNtupleBranchVars.h"
+#include "TerraNova/NtupleMaker/interface/ZBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 
