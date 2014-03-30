@@ -184,7 +184,8 @@ private:
   edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
   edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
-  edm::Handle<edm::View<pat::Photon> > photon_hand;
+  edm::Handle<std::vector<pat::Photon> > photon_hand;
+  //edm::Handle<edm::View<pat::Photon> > photon_hand;
   //edm::Handle<pat::JetCollection> Jets;
 
   //iterator------------------------------
