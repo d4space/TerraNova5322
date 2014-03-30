@@ -17,7 +17,6 @@ public:
 
   void Register(TTree *tree)
   {
-    tree->Branch("nIdJets"		,&nIdJets	,"nIdJets/i");
     tree->Branch("pt"	,&pt);
     tree->Branch("eta"	,&eta);
   }
