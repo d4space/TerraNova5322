@@ -558,6 +558,7 @@ WZNtupleMaker::WZNtupleMaker(const edm::ParameterSet& iConfig)
     Zs.Lept2_RelisoEm03      = new std::vector<double>; 
     Zs.Lept2_RelisoHad03     = new std::vector<double>; 
 
+    Zs.Channel= new std::vector<int>;
     Zs.Lept1_genIdxMatch= new std::vector<int>;
     Zs.Lept1_genDeltaR= new std::vector<double>;
     Zs.Lept1_genDPtRel= new std::vector<double>;
@@ -1128,6 +1129,7 @@ void WZNtupleMaker::clear()
   Zs.Lept2_RelisoEm03->clear();
   Zs.Lept2_RelisoHad03->clear();
 
+  Zs.Channel->clear();
   Zs.Lept1_genIdxMatch->clear();
   Zs.Lept1_genDeltaR->clear();
   Zs.Lept1_genDPtRel->clear();
@@ -2376,6 +2378,7 @@ void WZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iS
 
 	NZs++;
 	//Fill tree
+        Zs.Channel->push_back(GenType::kMuon);
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(BestGenDeltaR1);
         Zs.Lept1_genDPtRel->push_back(BesTdPtRel1);
@@ -2869,6 +2872,7 @@ void WZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup
 	}
 
 	NZs++;
+        Zs.Channel->push_back(GenType::kElectron);
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(genDeltaR1);
         Zs.Lept1_genDPtRel->push_back(dPtRel1);
@@ -3191,6 +3195,7 @@ void WZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSe
 	}
 
 	NZs++;
+        Zs.Channel->push_back(GenType::kTau);
         Zs.Lept1_genIdxMatch->push_back(idxMatch);
         Zs.Lept1_genDeltaR->push_back(genDeltaR1);
         Zs.Lept1_genDPtRel->push_back(dPtRel1);
