@@ -34,14 +34,12 @@ void WZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
 
   iEvent.getByLabel(edm::InputTag("addPileupInfo"), PupInfo);
   iEvent.getByLabel(beamSpotInputTag, beamSpot_h);
-  if( Channel == "Electron")
-  {
-    iEvent.getByLabel(rhoIsoInputTag, rhoIso_h);
-    iEvent.getByLabel(conversionsInputTag, conversions_h);
-    rhoIso = *(rhoIso_h.product());
-    EventData.rhoIso = rhoIso;
-  }
-    std::vector<PileupSummaryInfo>::const_iterator PVI;
+
+  iEvent.getByLabel(rhoIsoInputTag, rhoIso_h);
+  iEvent.getByLabel(conversionsInputTag, conversions_h);
+  rhoIso = *(rhoIso_h.product());
+  EventData.rhoIso = rhoIso;
+  std::vector<PileupSummaryInfo>::const_iterator PVI;
 
     int npv = -1;
     int npvin = -1;
@@ -222,11 +220,11 @@ void WZNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSe
     //h_genMEtCaloAndNonPrompt_MET->Fill(genMEtCaloAndNonPrompt_It->pt());
 
      // EventData.Channel = GenType::kMuon;
-    //LoopMuon(iEvent, iSetup);
+    LoopMuon(iEvent, iSetup);
       //EventData.Channel = GenType::kElectron;
-    //LoopElectron(iEvent, iSetup);
+    LoopElectron(iEvent, iSetup);
     //  EventData.Channel = GenType::kTau;
-    //LoopTau(iEvent, iSetup);
+    LoopTau(iEvent, iSetup);
 
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
