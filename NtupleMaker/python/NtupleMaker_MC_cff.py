@@ -596,7 +596,7 @@ MonoJet = cms.EDAnalyzer('MonoJetAnalyzer',
     useL1Selector = cms.bool( False ), #for Electron WP80
     L1Select = cms.untracked.string('L1_SingleEG22')
 )
-MonoPhoton = cms.EDAnalyzer('MonoPhtonAnalyzer',
+MonoPhoton = cms.EDAnalyzer('MonoPhotonAnalyzer',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
