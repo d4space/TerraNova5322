@@ -132,10 +132,7 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 
 ######### NTuple Chain ###############
 process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
-process.TT2Hadron.JetPtMin = cms.double(30)
 
-process.acceptedMuonsFilter.minNumber = 1
-process.patElectronFilter.minNumber = 0
 
 
 #process.load("FWCore.MessageLogger.MessageLogger_cfi")
