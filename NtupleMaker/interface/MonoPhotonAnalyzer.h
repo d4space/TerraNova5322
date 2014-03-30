@@ -89,6 +89,7 @@
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
 
+#include "TerraNova/NtupleMaker/interface/PhotonBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 
@@ -229,7 +230,7 @@ private:
   TTree* tree;
   EventBranches	EventData;
   TrigBranches	HLTData;
-  MonoPhoton	MJet;
+  PhotonBranch	BPhoton;
   METs		MEt;
 
   TH1F * tmp;
@@ -413,8 +414,8 @@ MonoPhotonAnalyzer::MonoPhotonAnalyzer(const edm::ParameterSet& iConfig)
     EventData.vtx_z = new std::vector<double>;
     EventData.vtx_Rho = new std::vector<double>;
 
-    MJet.pt	= new std::vector<double>;
-    MJet.eta	= new std::vector<double>;
+    BPhoton.pt	= new std::vector<double>;
+    BPhoton.eta	= new std::vector<double>;
 
     pfMEt4V = new math::XYZTLorentzVector();
 
@@ -536,7 +537,7 @@ void MonoPhotonAnalyzer::bookTree()
     HLTData.Register(tree,i);
   }
   MEt.Register(tree);
-  MJet.Register(tree);
+  BPhoton.Register(tree);
 }
 bool MonoPhotonAnalyzer::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
@@ -670,8 +671,8 @@ void MonoPhotonAnalyzer::clear()
   EventData.vtx_z->clear();
   EventData.vtx_Rho->clear();
 
-  MJet.pt->clear();
-  MJet.eta->clear();
+  BPhoton.pt->clear();
+  BPhoton.eta->clear();
 
   lepton1->clear();
   lepton2->clear();
