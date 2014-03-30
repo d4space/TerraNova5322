@@ -89,7 +89,6 @@
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
 
-#include "TerraNova/NtupleMaker/interface/MonoPhotonBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 
