@@ -142,6 +142,7 @@ process.load("TerraNova.NtupleMaker.NtupleMaker_MC_cff")
 #    threshold = cms.untracked.string('INFO'),
 #    FwkReport = cms.untracked.PSet(reportEvery=cms.untracked.int32(1000))
 #)
+process.load('PhysicsTools.PatAlgos.patSequences_cff')
 
 process.TFileService = cms.Service("TFileService",
     fileName = cms.string('TerraTuple.root')
@@ -168,6 +169,7 @@ process.p += getattr(process,"patPF2PATSequence"+postfix)
 #process.p += process.ak5PFJetsCorr
 #process.p += process.tightPFJetsPFlow
 #process.p += process.pileupJetIdProducer
+process.p += process.patDefaultSequence
 process.p += process.nEventsFiltered
 process.p += process.isomuonseq
 process.p += process.isoelectronseq
