@@ -17,8 +17,8 @@ public:
 
   void Register(TTree *tree)
   {
-    tree->Branch("pt"	,&pt);
-    tree->Branch("eta"	,&eta);
+    tree->Branch("Pho_pt"	,&pt);
+    tree->Branch("Pho_eta"	,&eta);
   }
 };
 
