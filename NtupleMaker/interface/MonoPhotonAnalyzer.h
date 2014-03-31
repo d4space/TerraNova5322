@@ -762,9 +762,13 @@ void MonoPhotonAnalyzer::LoopPhotons(const edm::Event &iEvent, const edm::EventS
     // Jet study =====================
     for(unsigned i=0; i< photon_hand->size(); ++i)
     {
-      EvtPass = true;
       pat::Photon photon = photon_hand->at(i);
-      cout<<"photon pt: "<<photon.pt()<<endl;
+      if(photon.pt() > 30 && photon.eta() < 2.5)
+      {
+	EvtPass = true;
+	BPhoton.pt->push_back(photon.pt());
+	BPhoton.eta->push_back(photon.eta());
+      }else continue;
     }
 }
 void MonoPhotonAnalyzer::endJob()
