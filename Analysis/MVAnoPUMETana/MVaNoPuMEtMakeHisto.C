@@ -31,6 +31,10 @@ TString AnaChannelTau  = "Tau2012";
   gSystem->CompileMacro("../EventSelection/MonoJetBase.C","k");
   gSystem->CompileMacro("../EventSelection/MonoJetMET.C","k");
 
+  gSystem->CompileMacro("../EventSelection/MonoPhotonNT.C","k");
+  gSystem->CompileMacro("../EventSelection/MonoPhotonBase.C","k");
+  gSystem->CompileMacro("../EventSelection/MonoPhotonMET.C","k");
+
   gSystem->CompileMacro("../EventSelection/WlnuNT.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuBase.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuMET.C","k");
@@ -94,6 +98,14 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   MonoJet_King.Loop();
   *************/
+
+  cout<<"MonoPhoton S10============================"<<endl;
+  TChain *TC_MPhoton_S10     = new TChain("MonoPhoton/tree","");
+  SetupTree("MPhoton_S10",TC_MPhoton_S10);
+  TString DirName = "MonoPhoton";
+  MonoPhotonMET MonoPhoton_King(TC_MPhoton_S10,
+        LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
+  MonoPhoton_King.Loop();
 
   //
   /***************
@@ -178,16 +190,17 @@ TString AnaChannelTau  = "Tau2012";
   WWMETking.Loop();
 
   ************/
+  /************
   cout<<"WZ_S10==========================="<<endl;
   TChain *TC_WZ_S10     = new TChain("WZ3LNu/tree","");
   TChain *TC_WZ_S10_Electron = new TChain("Electrons/tree","");
-  SetupTree("Test",TC_WZ_S10);
-  SetupTree("Test",TC_WZ_S10_Electron);
+  SetupTree("WZ_S10",TC_WZ_S10);
+  SetupTree("WZ_S10",TC_WZ_S10_Electron);
   TString DirBase = "WZ";
   WZ3LMET WZ3LMETking(TC_WZ_S10,TC_WZ_S10_Electron,
         LumiWeight, DirBase, Mode, AnaChannelEle);
   WZ3LMETking.Loop();
-
+  **********/
   /**********
   cout<<"Muon_DYJetsToLL_S10==========================="<<endl;
   TChain *TC_DYMuMu_S10    = new TChain("ZMuMu/tree","");
