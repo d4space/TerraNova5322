@@ -202,13 +202,13 @@ int MonoPhotonMET::Fill_METs()
   h1_genMEtTrue->Fill(genMEtTrueTL.Pt());
  // h1_MPhotonPt->Fill(MPhoton.pt);
 
-//  h2_pfMET  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
-//  h2_MVaMET ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
-//  h2_NoPuMET->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_pfMET  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
   
-//  h2_pfMET->ProfileX("pfMET",1,-1,"");
-//  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
-//  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
+  h2_pfMET->ProfileX("pfMET",1,-1,"");
+  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
+  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
 
 //  h2_NoPuMET->ProfileY("pfy",1,-1,"");
 //  h2_NoPuMET->ProjectionX("px",1,-1,"");
