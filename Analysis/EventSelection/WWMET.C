@@ -508,7 +508,7 @@ int WWMET::Fill_METs()
 
   return 0;
 }
-int Fill_METprofiles()
+int WWMET::Fill_METprofiles()
 {
   h2_pfMET->ProfileX("pfMET",1,-1,"");
   h2_MVaMET->ProfileX("MVaMET",1,-1,"");

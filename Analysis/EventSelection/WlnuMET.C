@@ -507,7 +507,7 @@ int WlnuMET::WlnuMET::Fill_METs()
 
   return 0;
 }
-int Fill_METprofiles()
+int WlnuMET::Fill_METprofiles()
 {
   h2_pfMET->ProfileX("pfMET",1,-1,"");
   h2_MVaMET->ProfileX("MVaMET",1,-1,"");
