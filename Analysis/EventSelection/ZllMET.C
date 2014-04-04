@@ -106,7 +106,7 @@ void ZllMET::Loop()
   }//Ntries
   cout<<"   Passed Z evts: "<<mNZevt<<endl;
   //Results======================
-
+  Fill_METprofiles();
   cout<<"selected converted: "<<evtSelected<<" +- "<<TMath::Sqrt(evtSelected)<<endl;
 
   h1_Zmass->Write();
@@ -281,9 +281,13 @@ int ZllMET::InitHistogram()
   h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",50,0.,100);
   h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",50,0.,100);
 
-  hp_pfMet  = new TProfile("hp_pfMet","pf - genMetTrue",50,0.,100);
-  hp_MVaMet = new TProfile("hp_MVaMet","MVA - genMetTrue",50,0.,100);
-  hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",50,0.,100);
+  h2_pfMET  = new TH2D("h2_pfMET","pf - genMETTrue",20,0.,80,2100,-100,2000);
+  h2_MVaMET = new TH2D("h2_MVaMET","MVA - genMETTrue",20,0.,80,2100,-100,2000);
+  h2_NoPuMET= new TH2D("h2_NoPuMET","NoPU - genMETTrue",20,0.,80,2100,-100,2000);
+
+//  hp_pfMet  = new TProfile("hp_pfMet","pf - genMetTrue",50,0.,100);
+//  hp_MVaMet = new TProfile("hp_MVaMet","MVA - genMetTrue",50,0.,100);
+//  hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",50,0.,100);
   return 0;
 }
 int ZllMET::Fill_METs()
@@ -294,9 +298,21 @@ int ZllMET::Fill_METs()
   h1_NoPU_Met->Fill(NoPuMEtTL.Pt());
   h1_genMEtTrue->Fill(genMEtTrueTL.Pt());
 
-  hp_pfMet  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
-  hp_MVaMet ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
-  hp_NoPuMet->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_pfMET  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
 
+//  hp_pfMet  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+//  hp_MVaMet ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+//  hp_NoPuMet->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+
+  return 0;
+}
+int Fill_METprofiles()
+{
+  h2_pfMET->ProfileX("pfMET",1,-1,"");
+  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
+  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
+	           
   return 0;
 }

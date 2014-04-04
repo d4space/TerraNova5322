@@ -26,12 +26,16 @@ protected:
    TH1D* h1_MVA_Met;
    TH1D* h1_NoPU_Met;
    TH1D* h1_genMEtTrue;
-   TProfile* hp_pfMet;
-   TProfile* hp_MVaMet;
-   TProfile* hp_NoPuMet;
+   TH2D* h2_pfMET;
+   TH2D* h2_MVaMET;
+   TH2D* h2_NoPuMET;
+//   TProfile* hp_pfMet;
+//   TProfile* hp_MVaMet;
+//   TProfile* hp_NoPuMet;
   TFile *myFile;
   int Fill_METs();
-   int InitVar(); // Init for Class
+  int Fill_METprofiles();
+  int InitVar(); // Init for Class
    int InitVar4Evt(); // Init for every event
    int VertexCut();
    double CalcEvtWeight();
