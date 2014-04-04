@@ -93,6 +93,9 @@ void MonoPhotonMET::Loop()
   }//Ntries
   cout<<"Passed MonoPhoton evts: "<<mNTTevt<<endl;
   //Results======================
+  h2_pfMET->ProfileX("pfMET",1,-1,"");
+  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
+  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
 
 //  TString mResultDir = AnaChannel;
 ////  TString mResultDir = "results";
@@ -206,9 +209,9 @@ int MonoPhotonMET::Fill_METs()
   h2_MVaMET ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
   h2_NoPuMET->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
   
-  h2_pfMET->ProfileX("pfMET",1,-1,"");
-  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
-  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
+//  h2_pfMET->ProfileX("pfMET",1,-1,"");
+//  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
+//  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
 
 //  h2_NoPuMET->ProfileY("pfy",1,-1,"");
 //  h2_NoPuMET->ProjectionX("px",1,-1,"");
