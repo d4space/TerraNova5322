@@ -39,7 +39,6 @@ protected:
    double CalcEvtWeight();
    int WbestSelect();
    int ZbestSelect();
-   int FillUnfoldInfo();
    int InitHistogram();
    // Member variables
    double mNselected4Bin[NwPtBin];

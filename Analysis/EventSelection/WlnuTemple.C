@@ -405,65 +405,6 @@ int WlnuTemple::ZbestSelect()
 
   return 0;
 }
-Int_t WlnuTemple::FillUnfoldInfo()
-{
-  h1_Truth_Rec->Fill(W.pt,mTTW);
-  h1_Truth_Post->Fill(genInfo.PostW_pt,mTTW);
-  if( evtCnt % 2 == 0 )
-  {
-      h1_Truth_Rec_Even->Fill(W.pt,mTTW);
-      h1_Truth_Post_Even->Fill(genInfo.PostW_pt,mTTW);
-    }else{              
-      h1_Truth_Rec_Odd->Fill(W.pt,mTTW);
-      h1_Truth_Post_Odd->Fill(genInfo.PostW_pt,mTTW);
-    }
-    //h2_Truth_Rec_AP_Post->Fill(W.pt,genInfo.PostW_pt,mTTW);
-    h2_Truth_Rec_AP_Post->Fill(W.pt,genInfo.PostW_pt);
-
-    unfoldInfo.recoPreFsrGenWptRes = (W.pt-genInfo.BornW_pt)/genInfo.BornW_pt;
-    unfoldInfo.recoPstFsrGenWptRes = (W.pt-genInfo.PostW_pt)/genInfo.PostW_pt;
-    h1_W_pt_RecoPreFsrGenRes[0]->Fill(unfoldInfo.recoPreFsrGenWptRes);
-    h1_W_pt_RecoPstFsrGenRes[0]->Fill(unfoldInfo.recoPstFsrGenWptRes);
-    for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
-    {
-      if(genInfo.BornW_pt > Bins[ipt] && genInfo.BornW_pt < Bins[ipt+1])
-      {
-        h1_W_pt_RecoPreFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPreFsrGenWptRes);
-        h1_W_pt_RecoPstFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPstFsrGenWptRes);
-      }
-      //if(genInfo.PostW_pt > Bins[ipt] && genInfo.PostW_pt < Bins[ipt+1])
-      //{
-      //  h1_pstFsr2ReconW_pt[ipt]->Fill(W.pt);
-      //}
-    }
-    //We've found the gen match, and get out of here
-    //if( AnaChannel=="ElectronLowPU")
-    //{
-    //  if( W.charge > 0)
-    //  {
-    //    SF = ElePlusEffiCorrection(W.lep_pt,W.lep_etaSC);
-    //  }
-    //  else  if( W.charge < 0)
-    //  {
-    //    SF = EleMinusEffiCorrection(W.lep_pt,W.lep_etaSC);
-    //  }
-    //}
-    //if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-    //{
-    //  if( W.charge > 0)
-    //  {
-    //    SF = MuonPlusEffiCorrection(W.lep_pt,W.lep_eta);
-    //  }
-    //  else  if( W.charge < 0)
-    //  {
-    //    SF = MuonMinusEffiCorrection(W.lep_pt,W.lep_eta);
-    //  }
-    //}
-    h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,mTTW*mEffSf);
-    if(weightFSR<0) weightFSR=1;
-    h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,mTTW*mEffSf*weightFSR);
-    return 0;
-}
 int WlnuTemple::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");

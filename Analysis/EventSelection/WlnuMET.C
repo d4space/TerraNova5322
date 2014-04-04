@@ -71,15 +71,6 @@ void WlnuMET::Loop()
     // Dump MET informations
     DumpMETs();
 
-    //==================
-    // Acceptance Study
-    //==================
-    if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
-    {
-      if( FillAcceptInfo() != 0 ) exit(-1);
-      // Don't go futher
-      continue;
-    }
     //===================
     // Check the channel : To check if the ntuple is for each lepton flavor
     //===================
