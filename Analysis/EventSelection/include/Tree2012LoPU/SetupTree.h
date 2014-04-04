@@ -9,7 +9,7 @@
 #include "chain_Muon_DYToTauTau_S8.h"
 #include "chain_Muon_TTJets_S8.h"
 #include "chain_Muon_RD_LowPU.h"
-#include "chain_Muon_Test.h"
+#include "chain_Test.h"
 //===============
 // Electron header
 //===============
@@ -82,7 +82,7 @@ void SetupTree( TString sample, TChain* chains )
   {
     chain_Electron_RD_LowPU(chains);
   }
-  else if(sample == "MuonTest")
+  else if(sample == "Test")
   {
     chain_Muon_Test(chains);
   }
