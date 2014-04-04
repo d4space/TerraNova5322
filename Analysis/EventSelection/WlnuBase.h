@@ -63,8 +63,6 @@ public :
    TH1D*        h1_npileup1;
 
 // MVAnoPUMETana study
-   TH1D*        h1_W_NoPU_Met;
-   TH1D*        h1_Z_Met;
    TH1D*        h1_Z_genMEtTrue;
    TH1D*        h1_Z_MVA_Met;
    TH1D*        h1_Z_NoPU_Met;
@@ -251,7 +249,6 @@ protected:
   int TriggerCut();
   double CalcEvtWeight(){mTTW =1; return mTTW;}
   int DumpWbestCand(int);
-  int DumpZMETs();
   //------------------
   // Member Variables
   //------------------
@@ -407,7 +404,6 @@ void WlnuBase::Init(TTree *tree)
    h1_W_Neut_pt1 = new TH1D("h1_W_Neut_pt1","W_Neut_pt1",100,0.,100);
 
 // MVAnoPUMETana study
-   h1_Z_Met = new TH1D("h1_Z_Met","Z_Neut_pt",20,0.,100);
    h1_Z_NoPU_Met = new TH1D("h1_Z_NoPU_Met","Z_NoPU_Neut_pt",20,0.,100);
    h1_Z_MVA_Met = new TH1D("h1_Z_MVA_Met","Z_MVA_Neut_pt",20,0.,100);
    h1_Z_genMEtTrue = new TH1D("h1_Z_genMEtTrue","Z_genMEtTrue",20,0.,100);
