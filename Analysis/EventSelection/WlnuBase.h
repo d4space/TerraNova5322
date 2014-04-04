@@ -58,46 +58,7 @@ public :
 
    TH1D*        h1_Vtx_Good1;
    TH1D*        h1_Vtx_Prim1;
-   TH1D*        h1_W_Lept1_pt1;
-   TH1D*        h1_W_Neut_pt1;
    TH1D*        h1_npileup1;
-
-// MVAnoPUMETana study
-   TH1D*        h1_Z_genMEtTrue;
-   TH1D*        h1_Z_MVA_Met;
-   TH1D*        h1_Z_NoPU_Met;
-
-   TH1D*	h1_W_Multi;
-   
-   TH1D*        h1_W_Lept1_pt;
-   TH1D*	h1_W_pt;
-   TH1D*        h1_Wp_pt;
-   TH1D*        h1_Wm_pt;
-   TH1D*	h1_W_pt_EffCorr;
-   TH1D*        h1_Wp_pt_EffCorr;
-   TH1D*        h1_Wm_pt_EffCorr;
-   TH1D*        h1_Wp_pt_NoLumiWeight;
-   TH1D*        h1_Wm_pt_NoLumiWeight;
-   TH2D*        h2_WpT_ReconPstFsr;
-
-   TH2D*        h2_WpT_lepPt;
-   TH2D*        h2_WpT_lepPt_Plus;
-   TH2D*        h2_WpT_lepPt_Minus;
-
-   TH2D*        h2_ZLep1_ZLep2;
-   TH2D*        h2_Zmass_ZLep1;
-   TH2D*        h2_Zmass_ZLep2;
-   TH2D*        h2_Zpt_ZLep1;
-   TH2D*        h2_Zpt_ZLep2;
-   TH1D*        h1_Zpt;
-
-   //MisChargeStudy
- //  TH1D*        h1_Zmass_QAll;
- //  TH1D*        h1_Zmass_QThree[lept1eta][lept2eta];
- //  TH1D*        h1_Zmass_QThreeSame[lept1eta][lept2eta];
- //  TH1D*        h1_Zmass_QNo[lept1eta][lept2eta];
- //  TH1D*        h1_Zmass_QNoSame[lept1eta][lept2eta];
-
 
    // Acceptance
    TH1D*	h1_Born_AP;
@@ -227,7 +188,6 @@ public :
   virtual Double_t    MuonSmearMC(double mu_eta);
    
    virtual Int_t    DumpTruthGenInfo(int i);
-   virtual Int_t    FillAcceptInfo();
  //  virtual Int_t    FillMisChargeInfo();//MisChargeStudy
    virtual Int_t    DoRecoilCorr();
    virtual Int_t    InitVar4Evt();
@@ -395,18 +355,12 @@ void WlnuBase::Init(TTree *tree)
 
    h1_Vtx_Prim	= new TH1D("h1_Vtx_Prim","N primary vertex",25,0,25);
    h1_Vtx_Good	= new TH1D("h1_Vtx_Good","N primary vertex",25,0,25);
-   h1_W_Multi= new TH1D("h1_W_Multi","W Multiplicity",10,-0.5,9.5);
 
    h1_Vtx_Prim1 = new TH1D("h1_Vtx_Prim1","Vtx_Prim1",60,0,60);
    h1_Vtx_Good1 = new TH1D("h1_Vtx_Good1","Vtx_Good1",60,0,60);
-   h1_W_Lept1_pt1 = new TH1D("h1_W_Lept1_pt1","W_Lept_pt1",50,0.,100);
    h1_npileup1 = new TH1D("h1_npileup1","npileup1",60,0.,60);
-   h1_W_Neut_pt1 = new TH1D("h1_W_Neut_pt1","W_Neut_pt1",100,0.,100);
 
 // MVAnoPUMETana study
-   h1_Z_NoPU_Met = new TH1D("h1_Z_NoPU_Met","Z_NoPU_Neut_pt",20,0.,100);
-   h1_Z_MVA_Met = new TH1D("h1_Z_MVA_Met","Z_MVA_Neut_pt",20,0.,100);
-   h1_Z_genMEtTrue = new TH1D("h1_Z_genMEtTrue","Z_genMEtTrue",20,0.,100);
 
    if(AnaChannel == "ElectronHighPU" )
   {
@@ -428,24 +382,11 @@ void WlnuBase::Init(TTree *tree)
      h1_WmSide_Neu_eta[i] = new TH1D(histName,"h1_WmSide_Neu_eta",50,0.,100);
    }
   }
-   h1_W_Lept1_pt = new TH1D("h1_W_Lept1_pt","W_Lept_pt",50,0.,100);
-   h1_W_pt	= new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,Bins);
-   h1_W_pt_EffCorr = new TH1D("h1_W_pt_EffCorr","Wpt_EffCorr",NWptBinPlus-1,Bins);
-   h2_WpT_lepPt =new TH2D("h2_WpT_lepPt","WpT_LepPt",600,0,600,600,0,600);
-   h2_WpT_lepPt_Plus =new TH2D("h2_WpT_lepPt_Plus","WpT_LepPt-Plus Charge",600,0,600,600,0,600);
-   h2_WpT_lepPt_Minus =new TH2D("h2_WpT_lepPt_Minus","WpT_LepPt-Minus Charge",600,0,600,600,0,600);
 
-   h2_ZLep1_ZLep2 =new TH2D("h2_ZLep1_ZLep2","Z_LepPt1-LepPt2",600,0,600,600,0,600);
-   h2_Zmass_ZLep1 =new TH2D("h2_Zmass_ZLep1","Zmass-LepPt1",600,0,600,600,0,600);
-   h2_Zmass_ZLep2 =new TH2D("h2_Zmass_ZLep2","Zmass-LepPt2",600,0,600,600,0,600);
 
-   h1_Zpt= new TH1D("h1_Zpt","Zpt",120,0,200);
-   h2_Zpt_ZLep1 =new TH2D("h2_Zpt_ZLep1","Zpt-LepPt1",400,0,400,400,0,400);
-   h2_Zpt_ZLep2 =new TH2D("h2_Zpt_ZLep2","Zpt-LepPt2",400,0,400,400,0,400);
 
 
    //Acceptance Histograms
-   h1_Born_AP=new TH1D("h1_Born_AP","Born WpT All Phase",NWptBinPlus-1,Bins);
    h1_Born_BornFid=new TH1D("h1_Born_BornFid","Born WpT at BornFid",NWptBinPlus-1,Bins);
    h1_Born_BornFid_Even=new TH1D("h1_Born_BornFid_Even","Born WpT at BornFid",NWptBinPlus-1,Bins);
    h1_Born_BothFid=new TH1D("h1_Born_BothFid","Born WpT at BothFid",NWptBinPlus-1,Bins);
@@ -488,21 +429,6 @@ void WlnuBase::Init(TTree *tree)
    h1_Truth_Post_EffCorr_weightFSR=new TH1D("h1_Truth_Post_EffCorr_weightFSR","Post Wpt Truth EffCorr weightFSR",NWptBinPlus-1,Bins);
    h2_Truth_Rec_AP_Post	=new TH2D("h2_Truth_Rec_AP_Post" ,"Truth Rec All Phase Post",NWptBinPlus-1,Bins,NWptBinPlus-1, Bins);
 
-   h1_Wp_pt = new TH1D("h1_Wp_pt","WplusPt",NWptBinPlus-1,Bins);
-   h1_Wm_pt = new TH1D("h1_Wm_pt","WminusPt",NWptBinPlus-1,Bins);
-   h1_Wp_pt_EffCorr = new TH1D("h1_Wp_pt_EffCorr","WplusPt_EffCorr",NWptBinPlus-1,Bins);
-   h1_Wm_pt_EffCorr = new TH1D("h1_Wm_pt_EffCorr","WminusPt_EffCorr",NWptBinPlus-1,Bins);
-   h1_Wp_pt_NoLumiWeight = new TH1D("h1_Wp_pt_NoLumiWeight ","WplusPt",NWptBinPlus-1,Bins);
-   h1_Wm_pt_NoLumiWeight = new TH1D("h1_Wm_pt_NoLumiWeight ","WminusPt",NWptBinPlus-1,Bins);
-   //for( int i(0);i<NWptBinPlus-1;i++)
-   //{
-   //  sprintf(histName,"h1_pstFsr2ReconW_pt_%d",i);
-   //  h1_pstFsr2ReconW_pt[i]=
-   //    new TH1D(histName,"pstFsr2ReconW_pt",NWptBinPlus-1,Bins);
-   //}
-   sprintf(histName,"h2_WpT_ReconPstFsr");
-   h2_WpT_ReconPstFsr=
-       new TH2D(histName,histName,NWptBinPlus-1,Bins,NWptBinPlus-1,Bins);
    for( int i=0;i<NWptBinPlus;i++){
      if( i==1 || i==2)
      {
@@ -2300,95 +2226,6 @@ Int_t WlnuBase::EtaRange(double lep1Eta)
 }
 */
 
-Int_t WlnuBase::FillAcceptInfo()
-{
-  isPostPassAcc = false;
-  isBornPassAcc = false;
-  int NGenW = GenW_Born_pt->size();
-  //Check W number and Lept1 id
-  if( NGenW != 1) cout<<"Notice: Number of GenW is not 1 but "<<NGenW<<endl;
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
-  {
-    cout<<"Error: Muon Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
-    exit(-1);
-  }
-  if( AnaChannel=="ElectronLowPU")
-    if( fabs((*GenW_BornLept1_id)[0]) != GenType::kElectron)
-  {
-    cout<<"Error: Electron Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
-    exit(-1);
-  }
-
-  // Gen Information
-  TVector2 genW_Post_2D(
-	(*GenW_PostLept1_px)[0] + (*GenW_PostLept2_px)[0],
-	(*GenW_PostLept1_py)[0] + (*GenW_PostLept2_py)[0]);
-  genInfo.PostW_pt = genW_Post_2D.Mod();
-  genInfo.BornW_pt = (*GenW_Born_pt)[0];
-
-  // Fill Born Level
-  // Acceptance
-    //Full Phase Spece
-  // Fiducial 
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-  if( (*GenW_BornLept1_pt)[0] > 20 )
-  //if( (*GenW_BornLept1_pt)[0] > 25 )
-  if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
-    isBornPassAcc = true;
-  if( AnaChannel=="ElectronLowPU")
-  if( (*GenW_BornLept1_pt)[0] > 25 )
-  if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
-  //if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
-  //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
-    isBornPassAcc = true;
-
-  // Fiducial of Post 
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-  if( (*GenW_PostLept1_pt)[0] > 20 )
-  //if( (*GenW_PostLept1_pt)[0] > 25 )
-  if( fabs( (*GenW_PostLept1_eta)[0]) < 2.1 )
-    isPostPassAcc = true;
-  if( AnaChannel=="ElectronLowPU")
-  if( (*GenW_PostLept1_pt)[0] > 25 )
-  if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
-  //if( fabs((*GenW_PostLept1_eta)[0]) < 2.1 )
-  //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
-    isPostPassAcc = true;
-  // Fill Histo
-  h1_Born_AP->Fill( genInfo.BornW_pt,mTTW);
-  //cout <<"Checking Lumiweight = "<<mTTW<<endl;
-  if( isBornPassAcc )
-  {
-    h1_Born_BornFid->Fill(genInfo.BornW_pt,mTTW);
-    if( evtCnt % 2 == 0 )
-    {
-      h1_Born_BornFid_Even->Fill(genInfo.BornW_pt,mTTW);
-    }
-  }
-  if( isPostPassAcc )
-  {
-    h1_Post_PostFid->Fill(genInfo.PostW_pt,mTTW);
-    if( evtCnt % 2 == 0 )
-    {
-      h1_Post_PostFid_Even->Fill(genInfo.PostW_pt,mTTW);
-    }
-  }
-  if( isPostPassAcc && isBornPassAcc )
-  {
-    h1_Born_BothFid->Fill(genInfo.BornW_pt,mTTW);
-    h1_Post_BothFid->Fill(genInfo.PostW_pt,mTTW);
-    if(weightFSR<0) weightFSR=1;
-    h1_Post_BothFid_weightFSR->Fill(genInfo.PostW_pt,mTTW*weightFSR);
-    h2_PostBorn_BothFid
-      ->Fill(genInfo.PostW_pt,genInfo.BornW_pt,mTTW);
-    if( evtCnt % 2 == 0 )
-    {
-      h1_Born_BothFid_Even->Fill(genInfo.BornW_pt,mTTW);
-      h1_Post_BothFid_Even->Fill(genInfo.PostW_pt,mTTW);
-    }
-  }
-  return 0;
-}
 Int_t WlnuBase::DumpTruthGenInfo(int i)
 {
   //Gen Level Study

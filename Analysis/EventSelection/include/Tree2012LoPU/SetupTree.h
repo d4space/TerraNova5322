@@ -84,7 +84,7 @@ void SetupTree( TString sample, TChain* chains )
   }
   else if(sample == "Test")
   {
-    chain_Muon_Test(chains);
+    chain_Test(chains);
   }
   else
   {

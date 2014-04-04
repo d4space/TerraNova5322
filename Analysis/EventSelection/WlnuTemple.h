@@ -4,8 +4,6 @@
 // from TChain WlnuTemple/tree/
 //////////////////////////////////////////////////////////
 //$Log: WlnuTemple.h,v $
-//Revision 1.9  2013/08/19 15:11:26  jungmin
-//*** empty log message ***
 
 #ifndef WlnuTemple_h
 #define WlnuTemple_h
