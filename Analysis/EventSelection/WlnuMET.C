@@ -53,7 +53,8 @@ void WlnuMET::Loop()
   //============================================
   // Looping for each Event 
   //============================================
-  for (int i(0); i<Ntries;i++)
+  //for (int i(0); i<Ntries;i++)
+  for (int i(0); i<100;i++)
   {
     evtCnt = i;
     //===============================
@@ -490,7 +491,7 @@ int WlnuMET::InitHistogram()
 //  hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",50,0.,100);
   return 0;
 }
-int WlnuMET::Fill_METs()
+int WlnuMET::WlnuMET::Fill_METs()
 {
   h1_PF_Met->Fill(pfMEtTL.Pt());
   h1_MVA_Met->Fill(MVaMEtTL.Pt());

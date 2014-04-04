@@ -48,7 +48,8 @@ void MonoPhotonMET::Loop()
   //============================================
   // Looping for each Event 
   //============================================
-  for (int i(0); i<Ntries;i++)
+  //for (int i(0); i<Ntries;i++)
+  for (int i(0); i<100;i++)
   {
     evtCnt = i;
     if(i % 100000 == 0) cout<<i<<"th event"<<endl;

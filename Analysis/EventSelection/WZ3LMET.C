@@ -53,7 +53,8 @@ void WZ3LMET::Loop()
   //============================================
   // Looping for each Event 
   //============================================
-  for (int i(0); i<Ntries;i++)
+  //for (int i(0); i<Ntries;i++)
+  for (int i(0); i<100;i++)
   {
     evtCnt = i;
     //===============================
@@ -494,7 +495,7 @@ int WZ3LMET::Fill_METs()
 
   return 0;
 }
-int Fill_METprofiles()
+int WZ3LMET::Fill_METprofiles()
 {
   h2_pfMET->ProfileX("pfMET",1,-1,"");
   h2_MVaMET->ProfileX("MVaMET",1,-1,"");

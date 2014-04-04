@@ -49,7 +49,8 @@ void TTsemiMET::Loop()
   //============================================
   // Looping for each Event 
   //============================================
-  for (int i(0); i<Ntries;i++)
+  //for (int i(0); i<Ntries;i++)
+  for (int i(0); i<100;i++)
   {
     evtCnt = i;
     if(i % 100000 == 0) cout<<i<<"th event"<<endl;
@@ -206,7 +207,7 @@ int TTsemiMET::Fill_METs()
 
   return 0;
 }
-int Fill_METprofiles()
+int TTsemiMET::Fill_METprofiles()
 {
   h2_pfMET->ProfileX("pfMET",1,-1,"");
   h2_MVaMET->ProfileX("MVaMET",1,-1,"");
