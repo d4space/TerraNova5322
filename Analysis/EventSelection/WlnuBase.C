@@ -27,6 +27,7 @@ int WlnuBase::InitVar()
 {
   cout<<"Initialize variables at WlnuBase Class ==================="<<endl;
   mResultDir = OutNameBase+"_"+Mode;
+  gSystem->mkdir(mResultDir);
 
   return 0;
 }

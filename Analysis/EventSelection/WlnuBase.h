@@ -15,6 +15,7 @@
 #ifndef WlnuBase_h
 #define WlnuBase_h
 
+#include <TSystem.h>
 #include "WMuons.h"
 #include <TROOT.h>
 #include <TChain.h>
@@ -60,13 +61,6 @@ public :
    TH1D*        h1_Vtx_Prim1;
    TH1D*        h1_npileup1;
 
-   // Acceptance
-
-   //-----
-   //   TH1D*	h1_ZmassDaughEta[ScaleBins][ScaleBins];
-   TH1D*        h1_ZmassDaughEta[ScElCombiBinsHighPU];
-   //TH1D*        h1_ZmassDaughEta[ScElCombiBins];
-   TH1D*        h1_ZmassDaughEtaMu[ScMuCombiBins];
 
    WlnuBase(TTree *tree=0,TTree *WMuonTree=0, double weight=1,
        TString OutNameBase_ = "output.root",TString Mode="analysis",
@@ -87,13 +81,7 @@ public :
    virtual Int_t    TauCutZ(int entry);
    virtual Int_t    ElectronCutZ(int entry);
    virtual Int_t    ElectronCutZHighPU(int entry);
-   virtual Int_t    EtaRange(double lep1Eta,double lep2Eta);
-   virtual Int_t    EtaRange(double lep1Eta);
   
-   virtual Int_t    FillMuZmassDaughEta(int etaRange1,int etaRange2);
-
-   //virtual Int_t    FillWMetEtaHisto(double W.lep_eta);//Added by Chang
-
   virtual Double_t    ElePlusEffiCorrection(double elePt, double eleEtaSC);
   virtual Double_t    EleMinusEffiCorrection(double elePt, double eleEtaSC);
   virtual Double_t    MuonPlusEffiCorrection(double muonPt, double muonEta);
@@ -103,14 +91,9 @@ public :
   virtual Double_t    EleSmearMC(double ele_etaSC);
   virtual Double_t    MuonSmearMC(double mu_eta);
    
-   virtual Int_t    DumpTruthGenInfo(int i);
- //  virtual Int_t    FillMisChargeInfo();//MisChargeStudy
    virtual Int_t    DoRecoilCorr();
    virtual Int_t    InitVar4Evt();
    virtual Int_t    DumpMETs();
-   virtual Int_t    DoScaleSmearScan(
-    double zlep1Pt,double zlep1Pz,double zlep1En,double zlep1Phi,
-    double zlep2Pt,double zlep2Pz,double zlep2En,double zlep2Phi, double TTW);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
@@ -339,11 +322,6 @@ void WlnuBase::Init(TTree *tree)
 
      if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
      {
-       for(int i(0);i<ScMuCombiBins;i++)
-       {
-	 sprintf(histName,"h1_ZmassDaughEtaMu_%d",i);
-	 h1_ZmassDaughEtaMu[i]= new TH1D(histName,"ZmassDaughterEtaMu",60,60,120);
-       }
      }
    }
    Notify();
@@ -640,43 +618,6 @@ Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
     if (muonEta > 1.2 && muonEta < 2.1 )   {return 0.9206;}
   }
 }
-
-//ScaleSmear Muon 15 category Fill
-
-Int_t WlnuBase::FillMuZmassDaughEta(int etaRange1, int etaRange2)
-{
-  if((etaRange1==0) && (etaRange2==0))
-    h1_ZmassDaughEtaMu[0]->Fill(Z.mass);
-  if((etaRange1==0 && etaRange2==1) || (etaRange1==1 && etaRange2==0))
-    h1_ZmassDaughEtaMu[1]->Fill(Z.mass);
-  if((etaRange1==0 && etaRange2==2) || (etaRange1==2 && etaRange2==0))
-    h1_ZmassDaughEtaMu[2]->Fill(Z.mass);
-  if((etaRange1==0 && etaRange2==3) || (etaRange1==3 && etaRange2==0))
-    h1_ZmassDaughEtaMu[3]->Fill(Z.mass);
-  if((etaRange1==0 && etaRange2==4) || (etaRange1==4 && etaRange2==0))
-    h1_ZmassDaughEtaMu[4]->Fill(Z.mass);
-  if((etaRange1==1) && (etaRange2==1))
-    h1_ZmassDaughEtaMu[5]->Fill(Z.mass);
-  if((etaRange1==1 && etaRange2==2) || (etaRange1==2 && etaRange2==1))
-    h1_ZmassDaughEtaMu[6]->Fill(Z.mass);
-  if((etaRange1==1 && etaRange2==3) || (etaRange1==3 && etaRange2==1))
-    h1_ZmassDaughEtaMu[7]->Fill(Z.mass);
-  if((etaRange1==1 && etaRange2==4) || (etaRange1==4 && etaRange2==1))
-    h1_ZmassDaughEtaMu[8]->Fill(Z.mass);
-  if((etaRange1==2) && (etaRange2==2))
-    h1_ZmassDaughEtaMu[9]->Fill(Z.mass);
-  if((etaRange1==2 && etaRange2==3) || (etaRange1==3 && etaRange2==2))
-    h1_ZmassDaughEtaMu[10]->Fill(Z.mass);
-  if((etaRange1==2 && etaRange2==4) || (etaRange1==4 && etaRange2==2))
-    h1_ZmassDaughEtaMu[11]->Fill(Z.mass);
-  if((etaRange1==3) && (etaRange2==3))
-    h1_ZmassDaughEtaMu[12]->Fill(Z.mass);
-  if((etaRange1==3 && etaRange2==4) || (etaRange1==4 && etaRange2==3))
-    h1_ZmassDaughEtaMu[13]->Fill(Z.mass);
-  if((etaRange1==4) && (etaRange2==4))
-    h1_ZmassDaughEtaMu[14]->Fill(Z.mass);
-}
-
 
    /// Scale Smear corrections
    Double_t WlnuBase::EleScaleRD(double ele_etaSC)
@@ -1584,213 +1525,6 @@ Int_t WlnuBase::TauCutZ(int i)
      return 1;
    }
 
-Int_t WlnuBase::DoScaleSmearScan(
-    double zlep1Pt,double zlep1Pz,double zlep1En,double zlep1Phi,
-    double zlep2Pt,double zlep2Pz,double zlep2En,double zlep2Phi,double TTW)
-{
-  //TLorentzVector Z_4(
-  //    zlep1Pt*cos(zlep1Phi)+zlep2Pt*cos(zlep2Phi),
-  //    zlep1Pt*sin(zlep1Phi)+zlep2Pt*sin(zlep2Phi),
-  //    zlep1Pz+zlep2Pz,
-  //    zlep1En+zlep2En);
-  //cout<<"ZmassOrg: "<<Z.mass<<"================="<<endl;
-  double scale, smear, newZlep1Pt,newZlep2Pt;
-  for(int i(0);i<=ScaleBins-1;i++)
-  {
-    for(int j(0);j<=ScaleBins-1;j++)
-    {
-      scale = ScaleL + i*(ScaleH-ScaleL)/(ScaleBins-1);
-      smear = SmearL + j*(SmearH-SmearL)/(ScaleBins-1);
-      newZlep1Pt = gRandom->Gaus(0,1)*smear+scale*zlep1Pt;
-      //newZlep2Pt = zlep2Pt;
-      newZlep2Pt = gRandom->Gaus(0,1)*smear+scale*zlep2Pt;
-      TLorentzVector Z_4(
-          newZlep1Pt*cos(zlep1Phi)+newZlep2Pt*cos(zlep2Phi),
-          newZlep1Pt*sin(zlep1Phi)+newZlep2Pt*sin(zlep2Phi),
-          zlep1Pz+zlep2Pz,
-          zlep1En+zlep2En);
-      //cout<<"scale smear "<<scale<<" "<<smear<<endl;
-      //cout<<"old lepPt "<<zlep1Pt<<" "<<zlep2Pt<<" new Pt diff "<<newZlep1Pt-zlep1Pt<<" "<<newZlep2Pt-zlep2Pt<<" Z.mass corr- org"<<Z_4.M()-Z.mass<<endl;
-      //      h1_ZmassDaughEta[i][j]->Fill(Z_4.M(),TTW);
-    }
-  }
-  return 0;
-}
-
-Int_t WlnuBase::EtaRange(double lep1Eta,double lep2Eta)
-{
-  int lep1Range(-1);
-  int lep2Range(-1);
-  if( AnaChannel=="ElectronLowPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.2)    lep1Range=2;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.4442) lep1Range=3;
-    if( fabs(lep1Eta) >= 1.566 && fabs(lep1Eta) < 2.0)    lep1Range=4;
-    if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.5)    lep1Range=5;
-
-    if( fabs(lep2Eta) >= 0.0   && fabs(lep2Eta) < 0.4)    lep2Range=0;
-    if( fabs(lep2Eta) >= 0.4   && fabs(lep2Eta) < 0.8)    lep2Range=1;
-    if( fabs(lep2Eta) >= 0.8   && fabs(lep2Eta) < 1.2)    lep2Range=2;
-    if( fabs(lep2Eta) >= 1.2   && fabs(lep2Eta) < 1.4442) lep2Range=3;
-    if( fabs(lep2Eta) >= 1.566 && fabs(lep2Eta) < 2.0)    lep2Range=4;
-    if( fabs(lep2Eta) >= 2.0   && fabs(lep2Eta) < 2.5)    lep2Range=5;
-  }
-
-  if(AnaChannel=="ElectronHighPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.2)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.2   && fabs(lep1Eta) < 0.4)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.6)    lep1Range=2;
-    if( fabs(lep1Eta) >= 0.6   && fabs(lep1Eta) < 0.8)    lep1Range=3;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.0)    lep1Range=4;
-    if( fabs(lep1Eta) >= 1.0   && fabs(lep1Eta) < 1.2)    lep1Range=5;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.4)    lep1Range=6;
-    //if( fabs(lep1Eta) >= 1.4   && fabs(lep1Eta) < 1.6)    lep1Range=7;
-    if( fabs(lep1Eta) >= 1.6   && fabs(lep1Eta) < 1.8)    lep1Range=7;
-    if( fabs(lep1Eta) >= 1.8   && fabs(lep1Eta) < 2.0)    lep1Range=8;
-    if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.2)    lep1Range=9;
-    if( fabs(lep1Eta) >= 2.2   && fabs(lep1Eta) < 2.4)    lep1Range=10;
-
-    if( fabs(lep2Eta) >= 0.0   && fabs(lep2Eta) < 0.2)    lep2Range=0;
-    if( fabs(lep2Eta) >= 0.2   && fabs(lep2Eta) < 0.4)    lep2Range=1;
-    if( fabs(lep2Eta) >= 0.4   && fabs(lep2Eta) < 0.6)    lep2Range=2;
-    if( fabs(lep2Eta) >= 0.6   && fabs(lep2Eta) < 0.8)    lep2Range=3;
-    if( fabs(lep2Eta) >= 0.8   && fabs(lep2Eta) < 1.0)    lep2Range=4;
-    if( fabs(lep2Eta) >= 1.0   && fabs(lep2Eta) < 1.2)    lep2Range=5;
-    if( fabs(lep2Eta) >= 1.2   && fabs(lep2Eta) < 1.4)    lep2Range=6;
-    //if( fabs(lep2Eta) >= 1.4   && fabs(lep2Eta) < 1.6)    lep2Range=7;
-    if( fabs(lep2Eta) >= 1.6   && fabs(lep2Eta) < 1.8)    lep2Range=7;
-    if( fabs(lep2Eta) >= 1.8   && fabs(lep2Eta) < 2.0)    lep2Range=8;
-    if( fabs(lep2Eta) >= 2.0   && fabs(lep2Eta) < 2.2)    lep2Range=9;
-    if( fabs(lep2Eta) >= 2.2   && fabs(lep2Eta) < 2.4)    lep2Range=10;
-  }
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.2)    lep1Range=2;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.6)    lep1Range=3;
-    if( fabs(lep1Eta) >= 1.6   && fabs(lep1Eta) < 2.1)    lep1Range=4;
-
-    if( fabs(lep2Eta) >= 0.0   && fabs(lep2Eta) < 0.4)    lep2Range=0;
-    if( fabs(lep2Eta) >= 0.4   && fabs(lep2Eta) < 0.8)    lep2Range=1;
-    if( fabs(lep2Eta) >= 0.8   && fabs(lep2Eta) < 1.2)    lep2Range=2;
-    if( fabs(lep2Eta) >= 1.2   && fabs(lep2Eta) < 1.6)    lep2Range=3;
-    if( fabs(lep2Eta) >= 1.6   && fabs(lep2Eta) < 2.1)    lep2Range=4;
-  }
-  
-  if( lep1Range == lep2Range )return lep1Range;
-  else return -1;
-}
-Int_t WlnuBase::EtaRange(double lep1Eta)
-{
-  int lep1Range(-1);
-  if( AnaChannel=="ElectronLowPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.2)    lep1Range=2;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.4442) lep1Range=3;
-    if( fabs(lep1Eta) >= 1.566 && fabs(lep1Eta) < 2.0)    lep1Range=4;
-    if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.5)    lep1Range=5;
-    
-  }
-  if(AnaChannel=="ElectronHighPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.2)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.2   && fabs(lep1Eta) < 0.4)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.6)    lep1Range=2;
-    if( fabs(lep1Eta) >= 0.6   && fabs(lep1Eta) < 0.8)    lep1Range=3;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.0)    lep1Range=4;
-    if( fabs(lep1Eta) >= 1.0   && fabs(lep1Eta) < 1.2)    lep1Range=5;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.4)    lep1Range=6;
-    //if( fabs(lep1Eta) >= 1.4   && fabs(lep1Eta) < 1.6)    lep1Range=7;
-    if( fabs(lep1Eta) >= 1.6   && fabs(lep1Eta) < 1.8)    lep1Range=7;
-    if( fabs(lep1Eta) >= 1.8   && fabs(lep1Eta) < 2.0)    lep1Range=8;
-    if( fabs(lep1Eta) >= 2.0   && fabs(lep1Eta) < 2.2)    lep1Range=9;
-    if( fabs(lep1Eta) >= 2.2   && fabs(lep1Eta) < 2.4)    lep1Range=10;
-  }
-  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
-  {
-    if( fabs(lep1Eta) >= 0.0   && fabs(lep1Eta) < 0.4)    lep1Range=0;
-    if( fabs(lep1Eta) >= 0.4   && fabs(lep1Eta) < 0.8)    lep1Range=1;
-    if( fabs(lep1Eta) >= 0.8   && fabs(lep1Eta) < 1.2)    lep1Range=2;
-    if( fabs(lep1Eta) >= 1.2   && fabs(lep1Eta) < 1.6)    lep1Range=3;
-    if( fabs(lep1Eta) >= 1.6   && fabs(lep1Eta) < 2.1)    lep1Range=4;
-  }
-  return lep1Range;
-}
-//MisChargeStudy
-/*Int_t WlnuBase::FillMisChargeInfo()
-{
-  h1_Zmass_QAll->Fill(Z.mass,mTTW);
-  for(int iz(0); iz<Z_size;iz++){
-  ZLep1eta = (*Z_Lept1_eta)[iz];
-  ZLep2eta = (*Z_Lept2_eta)[iz];
-  ZLep1charge = (*Z_Lept1_charge)[iz];
-  ZLep2charge = (*Z_Lept2_charge)[iz];
-  ZLep1Requirement = (*Z_Lept1_GsfCtfScPixchargeConsistentcheck)[iz];
-  ZLep2Requirement = (*Z_Lept2_GsfCtfScPixchargeConsistentcheck)[iz];
-  for(int i=0;i<lept1eta;i++){
-  for(int j=0;j<lept2eta;j++){
-  if (fabs(ZLep1eta) > wqaMetMNBins[i] && fabs(ZLep1eta) < wqaMetMXBins[i] ) {
-  if (fabs(ZLep2eta) > wqaMetMNBins[j] && fabs(ZLep2eta) < wqaMetMXBins[j] ) {
-    h1_Zmass_QNo[i][j]->Fill(Z.mass,mTTW);
-    if ( ZLep1Requirement == 1 && ZLep2Requirement == 1){
-    h1_Zmass_QThree[i][j]->Fill(Z.mass,mTTW);
-    }
-    if(ZLep1charge*ZLep2charge==1){
-    h1_Zmass_QNoSame[i][j]->Fill(Z.mass,mTTW);
-    }
-    if(ZLep1Requirement == 1 && ZLep2Requirement == 1 && ZLep1charge*ZLep2charge==1){
-    h1_Zmass_QThreeSame[i][j]->Fill(Z.mass,mTTW);
-    }
-   }
-   }
-  }
-  }
-  }
-  return 0;
-}
-*/
-
-Int_t WlnuBase::DumpTruthGenInfo(int i)
-{
-  //Gen Level Study
-  TruthRecoPost = true;
-  if(GenW_Born_Id->size()<1)
-  {
-    TruthRecoPost=false;
-    cout<<"Notice: No of GenW <1"<<endl;
-    return -1;
-  }
-  int NGenW = GenW_Born_pt->size();
-  if( NGenW != 1) cout<<"Notice: Number of GenW is not 1 but "<<NGenW<<endl;
-  // Assuming there is only one GenW
-  //Response 
-    W.genIdx = (*W_Lept1_genIdxMatch)[i];
-    // TODO use this at the moment
-    if(W.genIdx < 0)
-    {
-      TruthRecoPost=false;
-      //cout<<"Notice: genIdx < 0"<<endl;
-      return -1;
-    }
-    if(W.genIdx != 0)
-      cout<<"Warning: How come the gen Idx is not 0 ================"<<endl;
-    // Only for matched one
-    if( (*W_Lept1_genDeltaR)[i] > 0.025){TruthRecoPost=false;return -1;}
-    //if( (*W_Lept1_genDPtRel)[i] > 0.025) continue;
-    //Set W pt, phi
-    TVector2 genPostW_2D(
-      (*GenW_PostLept1_px)[W.genIdx]+(*GenW_PostLept2_px)[W.genIdx],
-      (*GenW_PostLept1_py)[W.genIdx]+(*GenW_PostLept2_py)[W.genIdx]);
-    genInfo.PostW_pt= genPostW_2D.Mod();
-    genInfo.BornW_pt = (*GenW_Born_pt)[W.genIdx];
-  return 0;
-}
 
 Int_t WlnuBase::DoRecoilCorr()
 {
