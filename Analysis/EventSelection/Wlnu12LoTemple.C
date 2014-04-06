@@ -1,4 +1,4 @@
-// $Log: WlnuTemple.C,v $
+// $Log: Wlnu12LoTemple.C,v $
 // Revision 1.8  2013/09/13 00:09:32  salee
 // *** empty log message ***
 //
@@ -8,13 +8,13 @@
 // Revision 1.6  2013/08/31 06:56:40  khakim
 // *** empty log message ***
 //
-#define WlnuTemple_cxx
+#define Wlnu12LoTemple_cxx
 //#include <iostream>
 //#include <TROOT.h>                        // access to gROOT, entry point to ROOT system
 //#include <TSystem.h>                      // interface to OS
 #include <TBenchmark.h>                   // class to track macro running statistics
 #include <algorithm>
-#include "WlnuTemple.h"
+#include "Wlnu12LoTemple.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -30,17 +30,17 @@
 typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMLorentzVectorD;
 typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
-void WlnuTemple::Loop()
+void Wlnu12LoTemple::Loop()
 {
   //gSystem->Load("libMathCore");
   //gSystem->Load("libPhysics");
   //using namespace ROOT::Math;
 
   Debug=false;
-  cout<<"==========================================================="<<endl;
-  cout<<"WlnuTemple Analysis with Mode: "<<Mode<<"  AnaChannel: "<<AnaChannel<<endl;
-  cout<<"==========================================================="<<endl;
-  gBenchmark->Start("WlnuTemple");
+  cout<<"==================================================================="<<endl;
+  cout<<"Wlnu12LoTemple Analysis with Mode: "<<Mode<<"  AnaChannel: "<<AnaChannel<<endl;
+  cout<<"==================================================================="<<endl;
+  gBenchmark->Start("Wlnu12LoTemple");
 
   gRandom->SetSeed(0);
 //
@@ -74,12 +74,12 @@ void WlnuTemple::Loop()
     //===================
     // Check the channel : To check if the ntuple is for each lepton flavor
     //===================
-    if(WlnuBase::CheckChannel()!=0) exit(-1);
+    if(Wlnu12LoBase::CheckChannel()!=0) exit(-1);
 
     //============
     //Trigger Cut
     //============
-    if(WlnuBase::TriggerCut() !=0) continue;
+    if(Wlnu12LoBase::TriggerCut() !=0) continue;
 
     //Vertex Study===========================
     if(VertexCut() !=0) continue;
@@ -124,21 +124,25 @@ void WlnuTemple::Loop()
     Fout<<i<<"   "<<mNselect4WptBin[i]<<endl;
   }
 
-  Write_Histo();
+  // Notice: Use one of Write_Histo or myFile->Write
+  // Write_Histo: to Save specific histograms
+  // myFile->Write: to Save all Histograms
+  //Write_Histo();
   myFile->Write();
+  myFile->Close();
   Fout.close();
-  gBenchmark->Show("WlnuTemple");
+  gBenchmark->Show("Wlnu12LoTemple");
 }
 
 
-void WlnuTemple::Nselected4Bin()
+void Wlnu12LoTemple::Nselected4Bin()
 {
   for(int i(0);i<NwPtBin;i++)
   {
     if( W.pt >= WptBins[i] && W.pt <WptBins[i+1]) mNselect4WptBin[i]+=mTTW;
   }
 }
-int WlnuTemple::InitVar()
+int Wlnu12LoTemple::InitVar()
 {
   cout<<"InitialWptize variable at WWptlnuTemple class ==========="<<endl;
   evtCnt = 0;
@@ -179,24 +183,24 @@ int WlnuTemple::InitVar()
   }
   return 0;
 }
-int WlnuTemple::InitVar4Evt()
+int Wlnu12LoTemple::InitVar4Evt()
 {
-  //cout<<"WlnuTemple::InitVar4Evt ==========================="<<endl;
-  WlnuBase::InitVar4Evt();
+  //cout<<"Wlnu12LoTemple::InitVar4Evt ==========================="<<endl;
+  Wlnu12LoBase::InitVar4Evt();
   return 0;
 }
-int WlnuTemple::InitHistogram()
+int Wlnu12LoTemple::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
   h1_W_pt	= new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
   return 0;
 }
-int WlnuTemple::Fill_Histo()
+int Wlnu12LoTemple::Fill_Histo()
 {
   h1_W_pt->Fill(W.pt, mTTW);
   return 0;
 }
-int WlnuTemple::Write_Histo()
+int Wlnu12LoTemple::Write_Histo()
 {
   h1_W_pt->Write();
   return 0;

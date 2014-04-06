@@ -19,41 +19,42 @@ TString AnaChannelEle = "Electron2012";//ElectronLowPU
 TString AnaChannelMu  = "Muon2012";
 TString AnaChannelTau  = "Tau2012";
 
-  gSystem->CompileMacro("../EventSelection/TTsemiNT.C","k");
-  gSystem->CompileMacro("../EventSelection/TTsemiBase.C","k");
-  gSystem->CompileMacro("../EventSelection/TTsemiMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/TTsemiNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/TTsemiBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/TTsemiMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/TT2HadNT.C","k");
-  gSystem->CompileMacro("../EventSelection/TT2HadBase.C","k");
-  gSystem->CompileMacro("../EventSelection/TT2HadMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/TT2HadNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/TT2HadBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/TT2HadMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/MonoJetNT.C","k");
-  gSystem->CompileMacro("../EventSelection/MonoJetBase.C","k");
-  gSystem->CompileMacro("../EventSelection/MonoJetMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoJetNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoJetBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoJetMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/MonoPhotonNT.C","k");
-  gSystem->CompileMacro("../EventSelection/MonoPhotonBase.C","k");
-  gSystem->CompileMacro("../EventSelection/MonoPhotonMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoPhotonNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoPhotonBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/MonoPhotonMET.C","k");
 
   gSystem->CompileMacro("../EventSelection/WlnuNT.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuBase.C","k");
   gSystem->CompileMacro("../EventSelection/WlnuMET.C","k");
+  gSystem->CompileMacro("../EventSelection/WlnuTemple.C","k");
 
-  gSystem->CompileMacro("../EventSelection/ZllNT.C","k");
-  gSystem->CompileMacro("../EventSelection/ZllBase.C","k");
-  gSystem->CompileMacro("../EventSelection/ZllMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZllNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZllBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZllMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/ZZ4LNT.C","k");
-  gSystem->CompileMacro("../EventSelection/ZZ4LBase.C","k");
-  gSystem->CompileMacro("../EventSelection/ZZ4LMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZZ4LNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZZ4LBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/ZZ4LMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/WWNT.C","k");
-  gSystem->CompileMacro("../EventSelection/WWBase.C","k");
-  gSystem->CompileMacro("../EventSelection/WWMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/WWNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/WWBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/WWMET.C","k");
 
-  gSystem->CompileMacro("../EventSelection/WZ3LNT.C","k");
-  gSystem->CompileMacro("../EventSelection/WZ3LBase.C","k");
-  gSystem->CompileMacro("../EventSelection/WZ3LMET.C","k");
+  //gSystem->CompileMacro("../EventSelection/WZ3LNT.C","k");
+  //gSystem->CompileMacro("../EventSelection/WZ3LBase.C","k");
+  //gSystem->CompileMacro("../EventSelection/WZ3LMET.C","k");
 // For Electron analysis: use the lines FROM HERE
 //Luminosity weight
   double LumiWeight = 1;
@@ -99,6 +100,7 @@ TString AnaChannelTau  = "Tau2012";
   MonoJet_King.Loop();
   *************/
 
+  /************
   cout<<"MonoPhoton S10============================"<<endl;
   TChain *TC_MPhoton_S10     = new TChain("MonoPhoton/tree","");
   SetupTree("MPhoton_S10",TC_MPhoton_S10);
@@ -106,31 +108,28 @@ TString AnaChannelTau  = "Tau2012";
   MonoPhotonMET MonoPhoton_King(TC_MPhoton_S10,
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   MonoPhoton_King.Loop();
+  *************/
 
   //
   /***************
   cout<<"Electron_WJetsToLNu_S10==========================="<<endl;
   TChain *TC_WToENu_S10     = new TChain("WEleNeu/tree","");
-  TChain *TC_WToENu_S10_Ele = new TChain("Electrons/tree","");
   SetupTree("Test",TC_WToENu_S10);
-  SetupTree("Test",TC_WToENu_S10_Ele);
   TString DirBase = "WToENu";
-  WlnuMET WeleNuMET(TC_WToENu_S10,TC_WToENu_S10_Ele,
-        LumiWeight, DirBase, Mode, AnaChannelEle);
+  WlnuMET WeleNuMET(TC_WToENu_S10,
+        LumiWeight, DirBase, Mode, AnaChannelEle, 1234);
   WeleNuMET.Loop();
   *************/
 
-  /*****************
+  //*****************
   cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
   TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
-  TChain *TC_WToMuNu_S10_Muon = new TChain("Muons/tree","");
   SetupTree("Test",TC_WToMuNu_S10);
-  SetupTree("Test",TC_WToMuNu_S10_Muon);
   TString DirBase = "WToMuNu";
-  WlnuMET WMuNuMET(TC_WToMuNu_S10,TC_WToMuNu_S10_Muon,
-        LumiWeight, DirBase, Mode, AnaChannelMu);
+  WlnuMET WMuNuMET(TC_WToMuNu_S10,
+        LumiWeight, DirBase, Mode, AnaChannelMu, 1234);
   WMuNuMET.Loop();
-  ************/
+  //************/
 
   /***********
   cout<<"Ele_DYJetsToLL_S10============================"<<endl;

@@ -98,7 +98,6 @@ void WlnuMET::Loop()
     // Select the Best W boson
     WbestSelect();
 
-//    ZbestSelect();
 
     if( W.Pass)
     {
@@ -117,7 +116,7 @@ void WlnuMET::Loop()
     }//good W
 
   }//Ntries
-  cout<<"Passed W evts: "<<mNWevt<<"   Passed Z evts: "<<mNZevt<<endl;
+  cout<<"Passed W evts: "<<mNWevt<<endl;
   //Results======================
   Fill_METprofiles();
   cout<<"selected converted: "<<evtSelected<<" +- "<<TMath::Sqrt(evtSelected)<<endl;
@@ -131,7 +130,7 @@ void WlnuMET::Nselected4Bin()
 {
   for(int i(0);i<NwPtBin;i++)
   {
-    if( W.pt >= Bins[i] && W.pt <Bins[i+1]) mNselected4Bin[i]+=mTTW;
+    if( W.pt >= WptBins[i] && W.pt <WptBins[i+1]) mNselected4Bin[i]+=mTTW;
   }
 }
 int WlnuMET::InitVar()
@@ -241,168 +240,6 @@ int WlnuMET::WbestSelect()
     }//Cut and Bigger pt
 
   }
-  return 0;
-}
-int WlnuMET::ZbestSelect()
-{
-  diLeptVtxProb = 0;
-  double tmpVar(0);
-  double ZLep2PtTmp;
-  for(int iz(0); iz<mZ_size;iz++)
-  {
-    if(AnaChannel == "TauHighPU")if( TauCutZ(iz) == -1) continue;
-    if(AnaChannel == "MuonLowPU" )if( MuonCutZ(iz) == -1) continue;
-    if(AnaChannel == "MuonHighPU")if( MuonCutZ(iz) == -1) continue;
-    if(AnaChannel == "ElectronLowPU" )if( ElectronCutZ(iz) == -1) continue;
-    if(AnaChannel == "ElectronHighPU")if( ElectronCutZHighPU(iz) == -1) continue;
-    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10 )continue;
-    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10 )continue;
-    if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))if((*Z_Lept2_pt)[iz] < 15 )continue;
-    //MC truth Check or Z_pass = false
-    //if(Mode == "RecoilMC")
-    //{
-	//Lepton MC truth
-//	if( fabs((*Z_Lept1_genDeltaR)[iz]) > 0.025 ||
-//	    fabs((*Z_Lept2_genDeltaR)[iz]) > 0.025)
-//	{
-//	  //cout<<"DeltaR Z_Lept1: "<<(*Z_Lept1_genDeltaR)[iz]<<
-//	  ///  "DeltaR Z_Lept2: "<<(*Z_Lept2_genDeltaR)[iz]<<endl;
-//	  continue;
-//	}
-//	if( (*Z_Lept1_genIdxMatch)[iz] != (*Z_Lept2_genIdxMatch)[iz] )continue;
-//	if( (*Z_Lept1_genIdxMatch)[iz] <0) continue;
-//	if( GenZ_id->size() == 0)continue;
-//	if( abs((*GenZ_id)[iz]) != 23 //Z
-//	    && abs((*GenZ_id)[iz]) != 22)continue; //Gamma
- //     }
-    Z.Pass=true;
-    tmpVar = (*Z_diLeptVtxProb)[iz];
-
-    if( fabs(Channel) != GenType::kTau) if( tmpVar > diLeptVtxProb )
-    {
-      Z.idxBest = iz;
-      diLeptVtxProb = tmpVar;
-	Z.mass		= (*Z_Mass)[iz];
-	Z.Lep1Pt	= (*Z_Lept1_pt)[iz];
-	Z.Lep1Pz	= (*Z_Lept1_pz)[iz];
-	Z.Lep1En	= (*Z_Lept1_en)[iz];
-	Z.Lep1Phi	= (*Z_Lept1_phi)[iz];
-	Z.Lep2Pt	= (*Z_Lept2_pt)[iz];
-	Z.Lep2Pz	= (*Z_Lept2_pz)[iz];
-	Z.Lep2En	= (*Z_Lept2_en)[iz];
-	Z.Lep2Phi	= (*Z_Lept2_phi)[iz];
-
-	TVector2 ZDiLep2D(
-                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
-                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
-        Zpt = ZDiLep2D.Mod();
-
-	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
-	  Z.Lep1etaSC	= (*Z_Lept1_etaSC)[iz];
-	  Z.Lep2etaSC	= (*Z_Lept2_etaSC)[iz];
-	}else{
-	  Z.Lep1etaSC	= (*Z_Lept1_eta)[iz];
-	  Z.Lep2etaSC	= (*Z_Lept2_eta)[iz];
-	}
-
-	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<Zep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
-	if(Mode == "RecoilEvaRD" || Mode =="RecoilEvaMC"){
-	  //Recoil = -Met - Z
-	  TVector2 RecoilVector(
-	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
-	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
-	  //if(Mode == "RecoilEvaRD")
-	  //{
-	    TVector2 DiLep2D(
-	      (*Z_px)[iz],
-	      (*Z_py)[iz]
-	      );
-	    ZptRecoil = (*Z_pt)[iz];
-	    //u1 = B.u, u2=B cross u
-	    Rcl.u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
-	    Rcl.u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
-	    Rcl.u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
-	    //Rcl.u1Z = ( (*Z_px)[iz]*Rcl.ux+(*Z_py)[iz]*Rcl.uy )/BosonNorm;
-	    //Rcl.u2Z = ( (*Z_px)[iz]*Rcl.uy - (*Z_py)[iz]*Rcl.ux)/BosonNorm;
-	  //}else if(Mode == "RecoilMC")
-	  //{
-	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
-	    //TVector2 genDiLep2D(
-//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
-//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
-//	    ZptRecoil = genDiLep2D.Mod();
-//	    //u1 = B.u, u2=B cross u
-//	    Rcl.u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
-//	    Rcl.u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
-	    //Rcl.u1Z = ((*GenZ_px)[iz]*Rcl.ux+(*GenZ_py)[iz]*Rcl.uy )/BosonNorm;
-	    //Rcl.u2Z = ((*GenZ_px)[iz]*Rcl.uy-(*GenZ_py)[iz]*Rcl.ux)/BosonNorm;
-//	  }
-	}//fi Recoil or RecoilMC
-    }//fi diLeptVtxProb
-    ZLep2PtTmp = (*Z_Lept2_pt)[iz];
-    if( fabs(Channel) == GenType::kTau) if( ZLep2PtTmp > Z.Lep2Pt )
-    {
-      Z.idxBest = iz;
-	Z.mass		= (*Z_Mass)[iz];
-	Z.Lep1Pt	= (*Z_Lept1_pt)[iz];
-	Z.Lep1Pz	= (*Z_Lept1_pz)[iz];
-	Z.Lep1En	= (*Z_Lept1_en)[iz];
-	Z.Lep1Phi	= (*Z_Lept1_phi)[iz];
-	Z.Lep2Pt	= (*Z_Lept2_pt)[iz];
-	Z.Lep2Pz	= (*Z_Lept2_pz)[iz];
-	Z.Lep2En	= (*Z_Lept2_en)[iz];
-	Z.Lep2Phi	= (*Z_Lept2_phi)[iz];
-
-	TVector2 ZDiLep2D(
-                (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
-                (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
-        Zpt = ZDiLep2D.Mod();
-
-	if((AnaChannel == "ElectronLowPU" ) ||AnaChannel=="ElectronHighPU"){
-	  Z.Lep1etaSC	= (*Z_Lept1_etaSC)[iz];
-	  Z.Lep2etaSC	= (*Z_Lept2_etaSC)[iz];
-	}else{
-	  Z.Lep1etaSC	= (*Z_Lept1_eta)[iz];
-	  Z.Lep2etaSC	= (*Z_Lept2_eta)[iz];
-	}
-
-	//cout<<"ZLep1 px: "<<(*Z_Lept1_px)[iz]<<" pt cos phi :"<<Zep1Pt*cos((*Z_Lept1_phi)[iz])<<endl;
-	if(Mode == "RecoilEvaRD" || Mode =="RecoilEvaMC")
-	{
-	  //Recoil = -Met - Z
-	  TVector2 RecoilVector(
-	  	-(*Z_Neut_px)[iz]-(*Z_px)[iz],
-	  	-(*Z_Neut_py)[iz]-(*Z_py)[iz]);
-	  //if(Mode == "RecoilEvaRD")
-	  //{
-	    TVector2 DiLep2D(
-	      (*Z_px)[iz],
-	      (*Z_py)[iz]
-	      );
-	    ZptRecoil = (*Z_pt)[iz];
-	    //u1 = B.u, u2=B cross u
-	    Rcl.u1Z = RecoilVector*DiLep2D/DiLep2D.Mod();
-	    Rcl.u2Z = (RecoilVector.Px()*DiLep2D.Py()-RecoilVector.Py()*DiLep2D.Px())/DiLep2D.Mod();
-	    Rcl.u3Z = RecoilVector*DiLep2D/DiLep2D.Mod()+DiLep2D.Mod();
-	    //Rcl.u1Z = ( (*Z_px)[iz]*Rcl.ux+(*Z_py)[iz]*Rcl.uy )/BosonNorm;
-	    //Rcl.u2Z = ( (*Z_px)[iz]*Rcl.uy - (*Z_py)[iz]*Rcl.ux)/BosonNorm;
-	  //}else if(Mode == "RecoilMC")
-	  //{
-	    //int gi = (*Z_Lept1_genIdxMatch)[iz];
-	    //TVector2 genDiLep2D(
-//		(*GenZ_Lept1_px)[gi]+(*GenZ_Lept2_px)[gi],
-//		(*GenZ_Lept1_py)[gi]+(*GenZ_Lept2_py)[gi]);
-//	    ZptRecoil = genDiLep2D.Mod();
-//	    //u1 = B.u, u2=B cross u
-//	    Rcl.u1Z = RecoilVector*genDiLep2D/genDiLep2D.Mod();
-//	    Rcl.u2Z = (RecoilVector.Px()*genDiLep2D.Py()-RecoilVector.Py()*genDiLep2D.Px())/genDiLep2D.Mod();
-	    //Rcl.u1Z = ((*GenZ_px)[iz]*Rcl.ux+(*GenZ_py)[iz]*Rcl.uy )/BosonNorm;
-	    //Rcl.u2Z = ((*GenZ_px)[iz]*Rcl.uy-(*GenZ_py)[iz]*Rcl.ux)/BosonNorm;
-//	  }
-	}//fi Recoil or RecoilMC
-    }//fi diLeptVtxProb
-  }//Z
-
   return 0;
 }
 /*

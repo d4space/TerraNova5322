@@ -1,21 +1,21 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Wed May 16 17:32:24 2012 by ROOT version 5.32/00
-// from TChain WlnuTemple/tree/
+// from TChain Wlnu12LoTemple/tree/
 //////////////////////////////////////////////////////////
-//$Log: WlnuTemple.h,v $
+//$Log: Wlnu12LoTemple.h,v $
 
-#ifndef WlnuTemple_h
-#define WlnuTemple_h
+#ifndef Wlnu12LoTemple_h
+#define Wlnu12LoTemple_h
 
-#include "WlnuBase.h"
+#include "Wlnu12LoBase.h"
 #include "TProfile.h"
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
-class WlnuTemple: public WlnuBase {
+class Wlnu12LoTemple: public Wlnu12LoBase {
 public :
-   WlnuTemple(TTree *tree=0,double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int Seed=0);//Electron
-   ~WlnuTemple();
+   Wlnu12LoTemple(TTree *tree=0,double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int Seed=0);//Electron
+   ~Wlnu12LoTemple();
    virtual void     Loop();
 protected:
   void Nselected4Bin();
@@ -34,25 +34,25 @@ protected:
 
 #endif
 
-#ifdef WlnuTemple_cxx
+#ifdef Wlnu12LoTemple_cxx
 
 
-WlnuTemple::WlnuTemple(
-    TTree *WlnuTempleTree, double lumiweight,TString OutFileName_,
+Wlnu12LoTemple::Wlnu12LoTemple(
+    TTree *Wlnu12LoTempleTree, double lumiweight,TString OutFileName_,
     TString mode_, TString AnaChannel_,double Wcharge, bool runOnMC,int Seed) :
-WlnuBase::WlnuBase(
-    WlnuTempleTree,lumiweight,OutFileName_, mode_, AnaChannel_,Wcharge, runOnMC, Seed)
+Wlnu12LoBase::Wlnu12LoBase(
+    Wlnu12LoTempleTree,lumiweight,OutFileName_, mode_, AnaChannel_,Wcharge, runOnMC, Seed)
 {
   // Initialize Variables
   InitVar();
   InitHistogram();
 }
 
-WlnuTemple::~WlnuTemple()
+Wlnu12LoTemple::~Wlnu12LoTemple()
 {
   if (!fChain) return;
   delete fChain->GetCurrentFile();
 }
-#endif // #ifdef WlnuTemple_cxx
+#endif // #ifdef Wlnu12LoTemple_cxx
 
 

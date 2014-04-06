@@ -1,11 +1,11 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Apr  6 17:43:57 2014 by ROOT version 5.34/14
+// Sun Apr  6 21:17:12 2014 by ROOT version 5.34/14
 // from TChain WMuNeu/tree/
 //////////////////////////////////////////////////////////
 
-#ifndef WlnuNT_h
-#define WlnuNT_h
+#ifndef Wlnu12LoNT_h
+#define Wlnu12LoNT_h
 
 #include <TROOT.h>
 #include <TChain.h>
@@ -18,7 +18,7 @@
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
 
-class WlnuNT {
+class Wlnu12LoNT {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
@@ -88,8 +88,6 @@ public :
    vector<double>  *Z_Lept2_RelisoHad03;
    vector<bool>    *Z_Lept1_isGlobal;
    vector<bool>    *Z_Lept1_isTrker;
-   vector<double>  *Z_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept1_decModFind;
    vector<double>  *Z_Lept1_pt;
    vector<double>  *Z_Lept1_et;
    vector<double>  *Z_Lept1_charge;
@@ -103,8 +101,6 @@ public :
    vector<double>  *Z_Lept1_dB;
    vector<bool>    *Z_Lept2_isGlobal;
    vector<bool>    *Z_Lept2_isTrker;
-   vector<double>  *Z_Lept2_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept2_decModFind;
    vector<double>  *Z_Lept2_pt;
    vector<double>  *Z_Lept2_et;
    vector<double>  *Z_Lept2_charge;
@@ -201,8 +197,6 @@ public :
    vector<double>  *W_Lept1_RelisoHad03;
    vector<bool>    *W_Lept1_isGlobal;
    vector<bool>    *W_Lept1_isTrker;
-   vector<double>  *W_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *W_Lept1_decModFind;
    vector<double>  *W_Lept1_pt;
    vector<double>  *W_Lept1_et;
    vector<double>  *W_Lept1_charge;
@@ -309,7 +303,6 @@ public :
    vector<double>  *GenW_PostLept2_charge;
    vector<double>  *GenW_PostLept2_eta;
    vector<double>  *GenW_PostLept2_phi;
-   Double_t        GenW_Neut_pt;
    vector<int>     *GenZ_nLepts;
    vector<int>     *GenZ_id;
    vector<int>     *GenZ_status;
@@ -318,7 +311,6 @@ public :
    vector<double>  *GenZ_py;
    vector<double>  *GenZ_pz;
    vector<double>  *GenZ_pt;
-   Double_t        GenZ_Neut_pt;
    vector<double>  *GenZ_eta;
    vector<double>  *GenZ_phi;
    vector<int>     *GenZ_Lept1_id;
@@ -343,54 +335,6 @@ public :
    vector<double>  *GenZ_Lept2_charge;
    vector<double>  *GenZ_Lept2_eta;
    vector<double>  *GenZ_Lept2_phi;
-   Double_t        pfMEt_x;
-   Double_t        pfMEt_y;
-   Double_t        pfMEtSumEt;
-   Double_t        pfMEtNeuEM;
-   Double_t        pfMEtNeuHad;
-   Double_t        pfMEtChHad;
-   Double_t        pfMEtChEM;
-   Double_t        pfMEtMu;
-   Double_t        NoPuMEt_x;
-   Double_t        NoPuMEt_y;
-   Double_t        NoPuMEtSumEt;
-   Double_t        NoPuMEtNeuEM;
-   Double_t        NoPuMEtNeuHad;
-   Double_t        NoPuMEtChHad;
-   Double_t        NoPuMEtChEM;
-   Double_t        NoPuMEtMu;
-   Double_t        MVaMEt_x;
-   Double_t        MVaMEt_y;
-   Double_t        MVaMEtSumEt;
-   Double_t        MVaMEtNeuEM;
-   Double_t        MVaMEtNeuHad;
-   Double_t        MVaMEtChHad;
-   Double_t        MVaMEtChEM;
-   Double_t        MVaMEtMu;
-   Double_t        genMEtTrue_x;
-   Double_t        genMEtTrue_y;
-   Double_t        genMEtTrueSumEt;
-   Double_t        genMEtTrueNeuEM;
-   Double_t        genMEtTrueNeuHad;
-   Double_t        genMEtTrueChHad;
-   Double_t        genMEtTrueChEM;
-   Double_t        genMEtTrueMu;
-   Double_t        genMEtCalo_x;
-   Double_t        genMEtCalo_y;
-   Double_t        genMEtCaloSumEt;
-   Double_t        genMEtCaloNeuEM;
-   Double_t        genMEtCaloNeuHad;
-   Double_t        genMEtCaloChHad;
-   Double_t        genMEtCaloChEM;
-   Double_t        genMEtCaloMu;
-   Double_t        genMEtCaloAndNonPrompt_x;
-   Double_t        genMEtCaloAndNonPrompt_y;
-   Double_t        genMEtCaloAndNonPromptSumEt;
-   Double_t        genMEtCaloAndNonPromptNeuEM;
-   Double_t        genMEtCaloAndNonPromptNeuHad;
-   Double_t        genMEtCaloAndNonPromptChHad;
-   Double_t        genMEtCaloAndNonPromptChEM;
-   Double_t        genMEtCaloAndNonPromptMu;
 
    // List of branches
    TBranch        *b_EVENT;   //!
@@ -445,8 +389,6 @@ public :
    TBranch        *b_Z_Lept2_RelisoHad03;   //!
    TBranch        *b_Z_Lept1_isGlobal;   //!
    TBranch        *b_Z_Lept1_isTrker;   //!
-   TBranch        *b_Z_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept1_decModFind;   //!
    TBranch        *b_Z_Lept1_pt;   //!
    TBranch        *b_Z_Lept1_et;   //!
    TBranch        *b_Z_Lept1_charge;   //!
@@ -460,8 +402,6 @@ public :
    TBranch        *b_Z_Lept1_dB;   //!
    TBranch        *b_Z_Lept2_isGlobal;   //!
    TBranch        *b_Z_Lept2_isTrker;   //!
-   TBranch        *b_Z_Lept2_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept2_decModFind;   //!
    TBranch        *b_Z_Lept2_pt;   //!
    TBranch        *b_Z_Lept2_et;   //!
    TBranch        *b_Z_Lept2_charge;   //!
@@ -558,8 +498,6 @@ public :
    TBranch        *b_W_Lept1_RelisoHad03;   //!
    TBranch        *b_W_Lept1_isGlobal;   //!
    TBranch        *b_W_Lept1_isTrker;   //!
-   TBranch        *b_W_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_W_Lept1_decModFind;   //!
    TBranch        *b_W_Lept1_pt;   //!
    TBranch        *b_W_Lept1_et;   //!
    TBranch        *b_W_Lept1_charge;   //!
@@ -666,7 +604,6 @@ public :
    TBranch        *b_GenW_PostLept2_charge;   //!
    TBranch        *b_GenW_PostLept2_eta;   //!
    TBranch        *b_GenW_PostLept2_phi;   //!
-   TBranch        *b_GenW_Neut_pt;   //!
    TBranch        *b_GenZ_nLepts;   //!
    TBranch        *b_GenZ_id;   //!
    TBranch        *b_GenZ_status;   //!
@@ -675,7 +612,6 @@ public :
    TBranch        *b_GenZ_py;   //!
    TBranch        *b_GenZ_pz;   //!
    TBranch        *b_GenZ_pt;   //!
-   TBranch        *b_GenZ_Neut_pt;   //!
    TBranch        *b_GenZ_eta;   //!
    TBranch        *b_GenZ_phi;   //!
    TBranch        *b_GenZ_Lept1_id;   //!
@@ -700,57 +636,9 @@ public :
    TBranch        *b_GenZ_Lept2_charge;   //!
    TBranch        *b_GenZ_Lept2_eta;   //!
    TBranch        *b_GenZ_Lept2_phi;   //!
-   TBranch        *b_pfMEt_x;   //!
-   TBranch        *b_pfMEt_y;   //!
-   TBranch        *b_pfMEtSumEt;   //!
-   TBranch        *b_pfMEtNeuEM;   //!
-   TBranch        *b_pfMEtNeuHad;   //!
-   TBranch        *b_pfMEtChHad;   //!
-   TBranch        *b_pfMEtChEM;   //!
-   TBranch        *b_pfMEtMu;   //!
-   TBranch        *b_NoPuMEt_x;   //!
-   TBranch        *b_NoPuMEt_y;   //!
-   TBranch        *b_NoPuMEtSumEt;   //!
-   TBranch        *b_NoPuMEtNeuEM;   //!
-   TBranch        *b_NoPuMEtNeuHad;   //!
-   TBranch        *b_NoPuMEtChHad;   //!
-   TBranch        *b_NoPuMEtChEM;   //!
-   TBranch        *b_NoPuMEtMu;   //!
-   TBranch        *b_MVaMEt_x;   //!
-   TBranch        *b_MVaMEt_y;   //!
-   TBranch        *b_MVaMEtSumEt;   //!
-   TBranch        *b_MVaMEtNeuEM;   //!
-   TBranch        *b_MVaMEtNeuHad;   //!
-   TBranch        *b_MVaMEtChHad;   //!
-   TBranch        *b_MVaMEtChEM;   //!
-   TBranch        *b_MVaMEtMu;   //!
-   TBranch        *b_genMEtTrue_x;   //!
-   TBranch        *b_genMEtTrue_y;   //!
-   TBranch        *b_genMEtTrueSumEt;   //!
-   TBranch        *b_genMEtTrueNeuEM;   //!
-   TBranch        *b_genMEtTrueNeuHad;   //!
-   TBranch        *b_genMEtTrueChHad;   //!
-   TBranch        *b_genMEtTrueChEM;   //!
-   TBranch        *b_genMEtTrueMu;   //!
-   TBranch        *b_genMEtCalo_x;   //!
-   TBranch        *b_genMEtCalo_y;   //!
-   TBranch        *b_genMEtCaloSumEt;   //!
-   TBranch        *b_genMEtCaloNeuEM;   //!
-   TBranch        *b_genMEtCaloNeuHad;   //!
-   TBranch        *b_genMEtCaloChHad;   //!
-   TBranch        *b_genMEtCaloChEM;   //!
-   TBranch        *b_genMEtCaloMu;   //!
-   TBranch        *b_genMEtCaloAndNonPrompt_x;   //!
-   TBranch        *b_genMEtCaloAndNonPrompt_y;   //!
-   TBranch        *b_genMEtCaloAndNonPromptSumEt;   //!
-   TBranch        *b_genMEtCaloAndNonPromptNeuEM;   //!
-   TBranch        *b_genMEtCaloAndNonPromptNeuHad;   //!
-   TBranch        *b_genMEtCaloAndNonPromptChHad;   //!
-   TBranch        *b_genMEtCaloAndNonPromptChEM;   //!
-   TBranch        *b_genMEtCaloAndNonPromptMu;   //!
 
-   WlnuNT(TTree *tree=0);
-   virtual ~WlnuNT();
+   Wlnu12LoNT(TTree *tree=0);
+   virtual ~Wlnu12LoNT();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -762,8 +650,8 @@ public :
 
 #endif
 
-#ifdef WlnuNT_cxx
-WlnuNT::WlnuNT(TTree *tree) : fChain(0) 
+#ifdef Wlnu12LoNT_cxx
+Wlnu12LoNT::Wlnu12LoNT(TTree *tree) : fChain(0) 
 {
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
@@ -783,7 +671,7 @@ WlnuNT::WlnuNT(TTree *tree) : fChain(0)
       // The following code should be used if you want this class to access a chain
       // of trees.
       TChain * chain = new TChain("WMuNeu/tree","");
-      chain->Add("/terranova_1/TestNtuple/TerraTuple.root/WMuNeu/tree");
+      chain->Add("/terranova_1/W_Ntuple2012LowPU/Muon/V21/DYToMuMu/wNTuple_1.root/WMuNeu/tree");
       tree = chain;
 #endif // SINGLE_TREE
 
@@ -791,19 +679,19 @@ WlnuNT::WlnuNT(TTree *tree) : fChain(0)
    Init(tree);
 }
 
-WlnuNT::~WlnuNT()
+Wlnu12LoNT::~Wlnu12LoNT()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
 }
 
-Int_t WlnuNT::GetEntry(Long64_t entry)
+Int_t Wlnu12LoNT::GetEntry(Long64_t entry)
 {
 // Read contents of entry.
    if (!fChain) return 0;
    return fChain->GetEntry(entry);
 }
-Long64_t WlnuNT::LoadTree(Long64_t entry)
+Long64_t Wlnu12LoNT::LoadTree(Long64_t entry)
 {
 // Set the environment to read one entry
    if (!fChain) return -5;
@@ -816,7 +704,7 @@ Long64_t WlnuNT::LoadTree(Long64_t entry)
    return centry;
 }
 
-void WlnuNT::Init(TTree *tree)
+void Wlnu12LoNT::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -865,8 +753,6 @@ void WlnuNT::Init(TTree *tree)
    Z_Lept2_RelisoHad03 = 0;
    Z_Lept1_isGlobal = 0;
    Z_Lept1_isTrker = 0;
-   Z_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept1_decModFind = 0;
    Z_Lept1_pt = 0;
    Z_Lept1_et = 0;
    Z_Lept1_charge = 0;
@@ -880,8 +766,6 @@ void WlnuNT::Init(TTree *tree)
    Z_Lept1_dB = 0;
    Z_Lept2_isGlobal = 0;
    Z_Lept2_isTrker = 0;
-   Z_Lept2_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept2_decModFind = 0;
    Z_Lept2_pt = 0;
    Z_Lept2_et = 0;
    Z_Lept2_charge = 0;
@@ -978,8 +862,6 @@ void WlnuNT::Init(TTree *tree)
    W_Lept1_RelisoHad03 = 0;
    W_Lept1_isGlobal = 0;
    W_Lept1_isTrker = 0;
-   W_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   W_Lept1_decModFind = 0;
    W_Lept1_pt = 0;
    W_Lept1_et = 0;
    W_Lept1_charge = 0;
@@ -1176,8 +1058,6 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept2_RelisoHad03", &Z_Lept2_RelisoHad03, &b_Z_Lept2_RelisoHad03);
    fChain->SetBranchAddress("Z_Lept1_isGlobal", &Z_Lept1_isGlobal, &b_Z_Lept1_isGlobal);
    fChain->SetBranchAddress("Z_Lept1_isTrker", &Z_Lept1_isTrker, &b_Z_Lept1_isTrker);
-   fChain->SetBranchAddress("Z_Lept1_MedComIsoDelBetCorr3Hits", &Z_Lept1_MedComIsoDelBetCorr3Hits, &b_Z_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept1_decModFind", &Z_Lept1_decModFind, &b_Z_Lept1_decModFind);
    fChain->SetBranchAddress("Z_Lept1_pt", &Z_Lept1_pt, &b_Z_Lept1_pt);
    fChain->SetBranchAddress("Z_Lept1_et", &Z_Lept1_et, &b_Z_Lept1_et);
    fChain->SetBranchAddress("Z_Lept1_charge", &Z_Lept1_charge, &b_Z_Lept1_charge);
@@ -1191,8 +1071,6 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_dB", &Z_Lept1_dB, &b_Z_Lept1_dB);
    fChain->SetBranchAddress("Z_Lept2_isGlobal", &Z_Lept2_isGlobal, &b_Z_Lept2_isGlobal);
    fChain->SetBranchAddress("Z_Lept2_isTrker", &Z_Lept2_isTrker, &b_Z_Lept2_isTrker);
-   fChain->SetBranchAddress("Z_Lept2_MedComIsoDelBetCorr3Hits", &Z_Lept2_MedComIsoDelBetCorr3Hits, &b_Z_Lept2_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept2_decModFind", &Z_Lept2_decModFind, &b_Z_Lept2_decModFind);
    fChain->SetBranchAddress("Z_Lept2_pt", &Z_Lept2_pt, &b_Z_Lept2_pt);
    fChain->SetBranchAddress("Z_Lept2_et", &Z_Lept2_et, &b_Z_Lept2_et);
    fChain->SetBranchAddress("Z_Lept2_charge", &Z_Lept2_charge, &b_Z_Lept2_charge);
@@ -1289,8 +1167,6 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("W_Lept1_RelisoHad03", &W_Lept1_RelisoHad03, &b_W_Lept1_RelisoHad03);
    fChain->SetBranchAddress("W_Lept1_isGlobal", &W_Lept1_isGlobal, &b_W_Lept1_isGlobal);
    fChain->SetBranchAddress("W_Lept1_isTrker", &W_Lept1_isTrker, &b_W_Lept1_isTrker);
-   fChain->SetBranchAddress("W_Lept1_MedComIsoDelBetCorr3Hits", &W_Lept1_MedComIsoDelBetCorr3Hits, &b_W_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("W_Lept1_decModFind", &W_Lept1_decModFind, &b_W_Lept1_decModFind);
    fChain->SetBranchAddress("W_Lept1_pt", &W_Lept1_pt, &b_W_Lept1_pt);
    fChain->SetBranchAddress("W_Lept1_et", &W_Lept1_et, &b_W_Lept1_et);
    fChain->SetBranchAddress("W_Lept1_charge", &W_Lept1_charge, &b_W_Lept1_charge);
@@ -1397,7 +1273,6 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenW_PostLept2_charge", &GenW_PostLept2_charge, &b_GenW_PostLept2_charge);
    fChain->SetBranchAddress("GenW_PostLept2_eta", &GenW_PostLept2_eta, &b_GenW_PostLept2_eta);
    fChain->SetBranchAddress("GenW_PostLept2_phi", &GenW_PostLept2_phi, &b_GenW_PostLept2_phi);
-   fChain->SetBranchAddress("GenW_Neut_pt", &GenW_Neut_pt, &b_GenW_Neut_pt);
    fChain->SetBranchAddress("GenZ_nLepts", &GenZ_nLepts, &b_GenZ_nLepts);
    fChain->SetBranchAddress("GenZ_id", &GenZ_id, &b_GenZ_id);
    fChain->SetBranchAddress("GenZ_status", &GenZ_status, &b_GenZ_status);
@@ -1406,7 +1281,6 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenZ_py", &GenZ_py, &b_GenZ_py);
    fChain->SetBranchAddress("GenZ_pz", &GenZ_pz, &b_GenZ_pz);
    fChain->SetBranchAddress("GenZ_pt", &GenZ_pt, &b_GenZ_pt);
-   fChain->SetBranchAddress("GenZ_Neut_pt", &GenZ_Neut_pt, &b_GenZ_Neut_pt);
    fChain->SetBranchAddress("GenZ_eta", &GenZ_eta, &b_GenZ_eta);
    fChain->SetBranchAddress("GenZ_phi", &GenZ_phi, &b_GenZ_phi);
    fChain->SetBranchAddress("GenZ_Lept1_id", &GenZ_Lept1_id, &b_GenZ_Lept1_id);
@@ -1431,58 +1305,10 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenZ_Lept2_charge", &GenZ_Lept2_charge, &b_GenZ_Lept2_charge);
    fChain->SetBranchAddress("GenZ_Lept2_eta", &GenZ_Lept2_eta, &b_GenZ_Lept2_eta);
    fChain->SetBranchAddress("GenZ_Lept2_phi", &GenZ_Lept2_phi, &b_GenZ_Lept2_phi);
-   fChain->SetBranchAddress("pfMEt_x", &pfMEt_x, &b_pfMEt_x);
-   fChain->SetBranchAddress("pfMEt_y", &pfMEt_y, &b_pfMEt_y);
-   fChain->SetBranchAddress("pfMEtSumEt", &pfMEtSumEt, &b_pfMEtSumEt);
-   fChain->SetBranchAddress("pfMEtNeuEM", &pfMEtNeuEM, &b_pfMEtNeuEM);
-   fChain->SetBranchAddress("pfMEtNeuHad", &pfMEtNeuHad, &b_pfMEtNeuHad);
-   fChain->SetBranchAddress("pfMEtChHad", &pfMEtChHad, &b_pfMEtChHad);
-   fChain->SetBranchAddress("pfMEtChEM", &pfMEtChEM, &b_pfMEtChEM);
-   fChain->SetBranchAddress("pfMEtMu", &pfMEtMu, &b_pfMEtMu);
-   fChain->SetBranchAddress("NoPuMEt_x", &NoPuMEt_x, &b_NoPuMEt_x);
-   fChain->SetBranchAddress("NoPuMEt_y", &NoPuMEt_y, &b_NoPuMEt_y);
-   fChain->SetBranchAddress("NoPuMEtSumEt", &NoPuMEtSumEt, &b_NoPuMEtSumEt);
-   fChain->SetBranchAddress("NoPuMEtNeuEM", &NoPuMEtNeuEM, &b_NoPuMEtNeuEM);
-   fChain->SetBranchAddress("NoPuMEtNeuHad", &NoPuMEtNeuHad, &b_NoPuMEtNeuHad);
-   fChain->SetBranchAddress("NoPuMEtChHad", &NoPuMEtChHad, &b_NoPuMEtChHad);
-   fChain->SetBranchAddress("NoPuMEtChEM", &NoPuMEtChEM, &b_NoPuMEtChEM);
-   fChain->SetBranchAddress("NoPuMEtMu", &NoPuMEtMu, &b_NoPuMEtMu);
-   fChain->SetBranchAddress("MVaMEt_x", &MVaMEt_x, &b_MVaMEt_x);
-   fChain->SetBranchAddress("MVaMEt_y", &MVaMEt_y, &b_MVaMEt_y);
-   fChain->SetBranchAddress("MVaMEtSumEt", &MVaMEtSumEt, &b_MVaMEtSumEt);
-   fChain->SetBranchAddress("MVaMEtNeuEM", &MVaMEtNeuEM, &b_MVaMEtNeuEM);
-   fChain->SetBranchAddress("MVaMEtNeuHad", &MVaMEtNeuHad, &b_MVaMEtNeuHad);
-   fChain->SetBranchAddress("MVaMEtChHad", &MVaMEtChHad, &b_MVaMEtChHad);
-   fChain->SetBranchAddress("MVaMEtChEM", &MVaMEtChEM, &b_MVaMEtChEM);
-   fChain->SetBranchAddress("MVaMEtMu", &MVaMEtMu, &b_MVaMEtMu);
-   fChain->SetBranchAddress("genMEtTrue_x", &genMEtTrue_x, &b_genMEtTrue_x);
-   fChain->SetBranchAddress("genMEtTrue_y", &genMEtTrue_y, &b_genMEtTrue_y);
-   fChain->SetBranchAddress("genMEtTrueSumEt", &genMEtTrueSumEt, &b_genMEtTrueSumEt);
-   fChain->SetBranchAddress("genMEtTrueNeuEM", &genMEtTrueNeuEM, &b_genMEtTrueNeuEM);
-   fChain->SetBranchAddress("genMEtTrueNeuHad", &genMEtTrueNeuHad, &b_genMEtTrueNeuHad);
-   fChain->SetBranchAddress("genMEtTrueChHad", &genMEtTrueChHad, &b_genMEtTrueChHad);
-   fChain->SetBranchAddress("genMEtTrueChEM", &genMEtTrueChEM, &b_genMEtTrueChEM);
-   fChain->SetBranchAddress("genMEtTrueMu", &genMEtTrueMu, &b_genMEtTrueMu);
-   fChain->SetBranchAddress("genMEtCalo_x", &genMEtCalo_x, &b_genMEtCalo_x);
-   fChain->SetBranchAddress("genMEtCalo_y", &genMEtCalo_y, &b_genMEtCalo_y);
-   fChain->SetBranchAddress("genMEtCaloSumEt", &genMEtCaloSumEt, &b_genMEtCaloSumEt);
-   fChain->SetBranchAddress("genMEtCaloNeuEM", &genMEtCaloNeuEM, &b_genMEtCaloNeuEM);
-   fChain->SetBranchAddress("genMEtCaloNeuHad", &genMEtCaloNeuHad, &b_genMEtCaloNeuHad);
-   fChain->SetBranchAddress("genMEtCaloChHad", &genMEtCaloChHad, &b_genMEtCaloChHad);
-   fChain->SetBranchAddress("genMEtCaloChEM", &genMEtCaloChEM, &b_genMEtCaloChEM);
-   fChain->SetBranchAddress("genMEtCaloMu", &genMEtCaloMu, &b_genMEtCaloMu);
-   fChain->SetBranchAddress("genMEtCaloAndNonPrompt_x", &genMEtCaloAndNonPrompt_x, &b_genMEtCaloAndNonPrompt_x);
-   fChain->SetBranchAddress("genMEtCaloAndNonPrompt_y", &genMEtCaloAndNonPrompt_y, &b_genMEtCaloAndNonPrompt_y);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptSumEt", &genMEtCaloAndNonPromptSumEt, &b_genMEtCaloAndNonPromptSumEt);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptNeuEM", &genMEtCaloAndNonPromptNeuEM, &b_genMEtCaloAndNonPromptNeuEM);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptNeuHad", &genMEtCaloAndNonPromptNeuHad, &b_genMEtCaloAndNonPromptNeuHad);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptChHad", &genMEtCaloAndNonPromptChHad, &b_genMEtCaloAndNonPromptChHad);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptChEM", &genMEtCaloAndNonPromptChEM, &b_genMEtCaloAndNonPromptChEM);
-   fChain->SetBranchAddress("genMEtCaloAndNonPromptMu", &genMEtCaloAndNonPromptMu, &b_genMEtCaloAndNonPromptMu);
    Notify();
 }
 
-Bool_t WlnuNT::Notify()
+Bool_t Wlnu12LoNT::Notify()
 {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -1493,18 +1319,18 @@ Bool_t WlnuNT::Notify()
    return kTRUE;
 }
 
-void WlnuNT::Show(Long64_t entry)
+void Wlnu12LoNT::Show(Long64_t entry)
 {
 // Print contents of entry.
 // If entry is not specified, print current entry
    if (!fChain) return;
    fChain->Show(entry);
 }
-Int_t WlnuNT::Cut(Long64_t entry)
+Int_t Wlnu12LoNT::Cut(Long64_t entry)
 {
 // This function may be called from Loop.
 // returns  1 if entry is accepted.
 // returns -1 otherwise.
    return 1;
 }
-#endif // #ifdef WlnuNT_cxx
+#endif // #ifdef Wlnu12LoNT_cxx

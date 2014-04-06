@@ -1,14 +1,14 @@
-// $Log: WlnuBase.C,v $
+// $Log: Wlnu12LoBase.C,v $
 // Revision 1.8  2013/09/13 00:09:32  salee
 // *** empty log message ***
 //
-#define WlnuBase_cxx
+#define Wlnu12LoBase_cxx
 //#include <iostream>
 //#include <TROOT.h>                        // access to gROOT, entry point to ROOT system
 //#include <TSystem.h>                      // interface to OS
 #include <TBenchmark.h>                   // class to track macro running statistics
 #include <algorithm>
-#include "WlnuBase.h"
+#include "Wlnu12LoBase.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -24,17 +24,17 @@
 typedef ROOT::Math::LorentzVector<ROOT::Math::PtEtaPhiM4D<double> > PtEtaPhiMLorentzVectorD;
 typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
-void WlnuBase::Loop()
+void Wlnu12LoBase::Loop()
 {
-  gBenchmark->Start("WlnuBase");
+  gBenchmark->Start("Wlnu12LoBase");
   gRandom->SetSeed(0);
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   Ntries = fChain->GetEntries();
-  gBenchmark->Show("WlnuBase");
+  gBenchmark->Show("Wlnu12LoBase");
 }
-int WlnuBase::CheckChannel()
+int Wlnu12LoBase::CheckChannel()
 {
   //cout<<"CheckChannel============"<<endl;
   //cout<<AnaChannel<<"\t"<<Channel<<endl;
@@ -45,14 +45,14 @@ int WlnuBase::CheckChannel()
   if(AnaChannel == "TauHighPU")if(fabs(Channel) != GenType::kTau) return-1;
   return 0;
 }
-int WlnuBase::TriggerCut()
+int Wlnu12LoBase::TriggerCut()
 {
     if(AnaChannel == "MuonLowPU" )if( HLT_Mu15_eta2p1_fired < 1) return -1;
     if(AnaChannel == "ElectronLowPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1) return -1;
     if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1) return -1;
   return 0;
 }
-int WlnuBase::DumpWbestCand(int i)
+int Wlnu12LoBase::DumpWbestCand(int i)
 {
   W.charge = (*W_Charge)[i];
   //Muon Variable Study----------------------
@@ -85,8 +85,6 @@ int WlnuBase::DumpWbestCand(int i)
   // Common for all flavor of leptons
   W.lep_pt = (*W_Lept1_pt)[i];
   W.lep_phi = (*W_Lept1_phi)[i];
-  W.Nu_px	= pfMEt_x;
-  W.Nu_py	= pfMEt_y;
   W.lep_eta = (*W_Lept1_eta)[i];
   W.pt = (*W_pt)[i];
   W.acop= (*W_Acop)[i];
@@ -150,7 +148,7 @@ int WlnuBase::DumpWbestCand(int i)
   }
   return 0;
 }
-int WlnuBase::WbestSelect()
+int Wlnu12LoBase::WbestSelect()
 {
   for(int iw(0); iw<W.size; iw++)
   {
@@ -177,7 +175,7 @@ int WlnuBase::WbestSelect()
   }
   return 0;
 }
-int WlnuBase::VertexCut()
+int Wlnu12LoBase::VertexCut()
 {
   mVtxVar.nPrim = vtx_isFake->size();
   if(mVtxVar.nPrim < 1 ) return -1;

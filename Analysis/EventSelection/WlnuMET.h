@@ -17,7 +17,7 @@
 // Fixed size dimensions of array or collections stored in the TTree if any.
 class WlnuMET: public WlnuBase {
 public :
-   WlnuMET(TTree *tree=0,TTree *WMuonTree=0, double weight=1, TString OutFileName = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);//Electron
+   WlnuMET(TTree *tree=0, double weight=1, TString OutNameBase = "Out",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int Seed=0);//Electron
    ~WlnuMET();
    virtual void     Loop();
 protected:
@@ -40,7 +40,6 @@ protected:
    int VertexCut();
    double CalcEvtWeight();
    int WbestSelect();
-   int ZbestSelect();
    int FillUnfoldInfo();
    int InitHistogram();
    // Member variables
@@ -53,12 +52,12 @@ protected:
 #ifdef WlnuMET_cxx
 
 
-WlnuMET::WlnuMET(TTree *WlnuMETTree,TTree *WLepTree, double lumiweight,TString OutFileName_, TString mode_, TString AnaChannel_,double Wcharge, bool runOnMC,int etaRange_) :
-WlnuBase::WlnuBase(WlnuMETTree,WLepTree, lumiweight,OutFileName_, mode_, AnaChannel_,Wcharge, runOnMC, etaRange_)
+WlnuMET::WlnuMET(TTree *WlnuMETTree, double lumiweight,TString OutNameBase, TString mode_, TString AnaChannel_,double Wcharge, bool runOnMC,int Seed) :
+WlnuBase::WlnuBase(WlnuMETTree,lumiweight,OutNameBase, mode_, AnaChannel_,Wcharge, runOnMC, Seed)
 {
   // Initialize Variables
   InitVar();
-  gSystem->mkdir(mResultDir);
+  //gSystem->mkdir(mResultDir);
   InitHistogram();
 }
 

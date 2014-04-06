@@ -1,15 +1,15 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
 // Wed May 16 17:32:24 2012 by ROOT version 5.32/00
-// from TChain WlnuBase/tree/
+// from TChain Wlnu12LoBase/tree/
 //////////////////////////////////////////////////////////
-//$Log: WlnuBase.h,v $
+//$Log: Wlnu12LoBase.h,v $
 //Revision 1.13  2013/09/13 00:09:32  salee
 //*** empty log message ***
 //
 
-#ifndef WlnuBase_h
-#define WlnuBase_h
+#ifndef Wlnu12LoBase_h
+#define Wlnu12LoBase_h
 
 #include <TSystem.h>
 #include <TROOT.h>
@@ -30,7 +30,7 @@
 #include "../Utils/const.h"
 #include "../Utils/RecoilCorrector.hh"//class to handle recoil corrections for MET
 #include "../Utils/MyTools.hh"
-#include "WlnuNT.h"
+#include "Wlnu12LoNT.h"
 
 
 #include "Math/PtEtaPhiE4D.h"
@@ -42,7 +42,7 @@ typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 
 
 // Fixed size dimensions of array or collections stored in the TTree if any.
-class WlnuBase: public WlnuNT {
+class Wlnu12LoBase: public Wlnu12LoNT {
 public :
   //WMuons	wMuons;
 
@@ -50,11 +50,11 @@ public :
    double 	RecoilBins[U1Bin+1]; //Recoil Study Wpt bins
    double 	WptBins[NWptBinPlus]; //Wpt bins
      
-   WlnuBase(TTree *tree=0,double weight=1,
+   Wlnu12LoBase(TTree *tree=0,double weight=1,
        TString OutNameBase_ = "Output",TString Mode="analysis",
        TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int RndSeed=0);
 
-   virtual ~WlnuBase();
+   virtual ~Wlnu12LoBase();
    
    virtual Int_t    GetEntry(Long64_t entry);
    virtual Long64_t LoadTree(Long64_t entry);
@@ -203,9 +203,9 @@ protected:
 
 #endif
 
-#ifdef WlnuBase_cxx
+#ifdef Wlnu12LoBase_cxx
 
-void WlnuBase::Init(TTree *tree)
+void Wlnu12LoBase::Init(TTree *tree)
 {
    // The Init() function is called when the selector needs to initialize
    // a new tree or chain. Typically here the branch addresses and branch
@@ -216,8 +216,8 @@ void WlnuBase::Init(TTree *tree)
    // (once per file to be processed).
    //
    // Initialization for the member
-  WlnuNT::Init(tree);
-  cout<<"Initialize variables at WlnuBase Class ==================="<<endl;
+  Wlnu12LoNT::Init(tree);
+  cout<<"Initialize variables at Wlnu12LoBase Class ==================="<<endl;
   mResultDir = OutNameBase+"_"+Mode;
   gSystem->mkdir(mResultDir);
 
@@ -227,12 +227,12 @@ void WlnuBase::Init(TTree *tree)
 
    Notify();
 }
-WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
+Wlnu12LoBase::Wlnu12LoBase(TTree *Wlnu12LoBaseTree, double lumiweight,
        TString OutNameBase_, TString mode_, TString AnaChannel_,
        double Wcharge, bool runOnMC, int Seed)
 {
   fChain=0;
-   cout<<"WlnuBase constructor"<<endl;
+   cout<<"Wlnu12LoBase constructor"<<endl;
    cout<<"initialization for bins"<<endl;
    // Final Bins
    WptBins[0]=     0.;
@@ -269,11 +269,11 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
    RecoilBins[15]       = 120.;
    RecoilBins[16]       = 150.;
 
-   if (WlnuBaseTree == 0 ) {
-     cout<<"Usage: WlnuBase(TTree*... ) "<<endl;
+   if (Wlnu12LoBaseTree == 0 ) {
+     cout<<"Usage: Wlnu12LoBase(TTree*... ) "<<endl;
      exit(-1);
    }
-     cout<<"WlnuBase.h: initializing the trees"<<endl;
+     cout<<"Wlnu12LoBase.h: initializing the trees"<<endl;
    LumiWeight = lumiweight;
    cout<<"Input Value of Lumiweight = "<<lumiweight<<" Initialized as = "<<LumiWeight<<endl;
    OutNameBase = OutNameBase_;
@@ -282,23 +282,23 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
    WCHARGE = Wcharge;
    RunOnMC = runOnMC;
    RandomSeed = Seed;
-   Init(WlnuBaseTree);
+   Init(Wlnu12LoBaseTree);
 }
 
-   WlnuBase::~WlnuBase()
+   Wlnu12LoBase::~Wlnu12LoBase()
    {
      if (!fChain) return;
      delete fChain->GetCurrentFile();
    }
 
-   Int_t WlnuBase::GetEntry(Long64_t entry)
+   Int_t Wlnu12LoBase::GetEntry(Long64_t entry)
    {
      // Read contents of entry.
      if (!fChain) return 0;
      return fChain->GetEntry(entry);
    }
 
-   Long64_t WlnuBase::LoadTree(Long64_t entry)
+   Long64_t Wlnu12LoBase::LoadTree(Long64_t entry)
    {
      // Set the environment to read one entry
      if (!fChain) return -5;
@@ -311,7 +311,7 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
      return centry;
    }
    
-   Bool_t WlnuBase::Notify()
+   Bool_t Wlnu12LoBase::Notify()
    {
    // The Notify() function is called when a new file is opened. This
    // can be either for a new TTree in a TChain or when when a new TTree
@@ -323,7 +323,7 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
    }
 
 
-   void WlnuBase::Show(Long64_t entry)
+   void Wlnu12LoBase::Show(Long64_t entry)
    {
      // Print contents of entry.
      // If entry is not specified, print current entry
@@ -331,7 +331,7 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
      fChain->Show(entry);
    }
 // Electron effi correction
-Double_t WlnuBase::ElePlusEffiCorrection(double elePt, double eleEtaSC)
+Double_t Wlnu12LoBase::ElePlusEffiCorrection(double elePt, double eleEtaSC)
 {
   if (elePt>25. && elePt <=35.)
   {
@@ -362,7 +362,7 @@ Double_t WlnuBase::ElePlusEffiCorrection(double elePt, double eleEtaSC)
   exit(-1);
 
 }
-Double_t WlnuBase::EleMinusEffiCorrection(double elePt, double eleEtaSC)
+Double_t Wlnu12LoBase::EleMinusEffiCorrection(double elePt, double eleEtaSC)
 {
   if (elePt>25. && elePt <=35.)
   {
@@ -392,7 +392,7 @@ Double_t WlnuBase::EleMinusEffiCorrection(double elePt, double eleEtaSC)
 }
 
 // Muon effi correction
-Double_t WlnuBase::MuonPlusEffiCorrection(double muonPt, double muonEta)
+Double_t Wlnu12LoBase::MuonPlusEffiCorrection(double muonPt, double muonEta)
 {
   if (muonPt>20. && muonPt <=40.)
   {
@@ -421,7 +421,7 @@ Double_t WlnuBase::MuonPlusEffiCorrection(double muonPt, double muonEta)
   }
 }
 
-Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
+Double_t Wlnu12LoBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
 {
   if (muonPt>20. && muonPt <=40.)
   {
@@ -450,7 +450,7 @@ Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
   }
 }
    /// Scale Smear corrections
-   Double_t WlnuBase::EleScaleRD(double ele_etaSC)
+   Double_t Wlnu12LoBase::EleScaleRD(double ele_etaSC)
    {
      if(fabs(ele_etaSC) >= 0.0   && fabs(ele_etaSC) < 0.4) {return 0.999315  ;}
      if(fabs(ele_etaSC) >= 0.4   && fabs(ele_etaSC) < 0.8) {return 1.00358   ;}
@@ -460,7 +460,7 @@ Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
      if(fabs(ele_etaSC) >= 2.0   && fabs(ele_etaSC) < 2.5) {return 0.992737  ; }
    }
 
-   Double_t WlnuBase::EleSmearMC(double ele_etaSC)
+   Double_t Wlnu12LoBase::EleSmearMC(double ele_etaSC)
    {
      if(fabs(ele_etaSC) >= 0.0   && fabs(ele_etaSC) < 0.4) {return 0.382443   ;}
      if(fabs(ele_etaSC) >= 0.4   && fabs(ele_etaSC) < 0.8) {return 0.356171   ;}
@@ -470,7 +470,7 @@ Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
      if(fabs(ele_etaSC) >= 2.0   && fabs(ele_etaSC) < 2.5) {return 1.84788    ;}
    }
 
-   Double_t WlnuBase::MuonSmearMC(double mu_eta)
+   Double_t Wlnu12LoBase::MuonSmearMC(double mu_eta)
    {
      if(fabs(mu_eta) >= 0.0   && fabs(mu_eta) < 0.4) { return 0.01   ;}
      if(fabs(mu_eta) >= 0.4   && fabs(mu_eta) < 0.8) { return 0.381253    ;}
@@ -479,7 +479,7 @@ Double_t WlnuBase::MuonMinusEffiCorrection(double muonPt, double muonEta)
      if(fabs(mu_eta) >= 1.6   && fabs(mu_eta) < 2.1) { return 0.611946     ;}
    }
 
-Int_t WlnuBase::TauCut(int i)
+Int_t Wlnu12LoBase::TauCut(int i)
 {
   //if( (*W_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
   //if( (*W_Lept1_decModFind)[i] < 0.5 )return -1;
@@ -488,7 +488,7 @@ Int_t WlnuBase::TauCut(int i)
   return 1;
 }
 
-Int_t WlnuBase::MuonCut(int i)
+Int_t Wlnu12LoBase::MuonCut(int i)
 {
   if( !(*W_Lept1_isGlobal)[i])return -1;
   if((*W_Lept1_pt)[i] < 20) return -1;
@@ -517,7 +517,7 @@ Int_t WlnuBase::MuonCut(int i)
   return 1;
 }
 
-Int_t WlnuBase::MuonCutSide(int i)
+Int_t Wlnu12LoBase::MuonCutSide(int i)
 {
   if( !(*W_Lept1_isGlobal)[i])return -1;
   if((*W_Lept1_pt)[i] < 20) return -1;
@@ -546,7 +546,7 @@ Int_t WlnuBase::MuonCutSide(int i)
   return 1;
 }
 
-Int_t WlnuBase::AddMuonCut(int i)
+Int_t Wlnu12LoBase::AddMuonCut(int i)
 {
   if( !(*W_Lept1_isTrker)[i] || !(*W_Lept1_isGlobal)[i]) return -1; //Signal Band only. For Side Band comment this line.
   if((*W_Lept1_pt)[i] <= 10) return -1;
@@ -566,7 +566,7 @@ Int_t WlnuBase::AddMuonCut(int i)
   return 1;
 }
 
-   Int_t WlnuBase::ElectronCut(int i)
+   Int_t Wlnu12LoBase::ElectronCut(int i)
    {
      //RD Scale Correction
      if(Mode == "AllCorrectionsRD")
@@ -671,7 +671,7 @@ Int_t WlnuBase::AddMuonCut(int i)
      return 1;
    }
 
-   Int_t WlnuBase::ElectronCutHighPU(int i)
+   Int_t Wlnu12LoBase::ElectronCutHighPU(int i)
    {
      //////////////  Ele   V5 =======================================
      double RelComIsoEB = (*W_Lept1_RelisolPtTrks03)[i]+max(0.,((*W_Lept1_RelisoEm03)[i]*(*W_Lept1_pt)[i])-1.)+(*W_Lept1_RelisoHad03)[i];
@@ -722,7 +722,7 @@ Int_t WlnuBase::AddMuonCut(int i)
    }
 
 
-   Int_t WlnuBase::ElectronCutSide(int i)
+   Int_t Wlnu12LoBase::ElectronCutSide(int i)
    {
      //RD Scale Correction
      if(Mode == "AllCorrectionsRD")
@@ -825,7 +825,7 @@ Int_t WlnuBase::AddMuonCut(int i)
      return 1;
    }
 
-   Int_t WlnuBase::ElectronCutSideHighPU(int i)
+   Int_t Wlnu12LoBase::ElectronCutSideHighPU(int i)
    {
      double RelComIsoEB = (*W_Lept1_RelisolPtTrks03)[i]+max(0.,((*W_Lept1_RelisoEm03)[i]*(*W_Lept1_pt)[i])-1.)+(*W_Lept1_RelisoHad03)[i];
      double RelComIsoEE = (*W_Lept1_RelisolPtTrks03)[i]+(*W_Lept1_RelisoEm03)[i]+(*W_Lept1_RelisoHad03)[i]; 
@@ -870,7 +870,7 @@ Int_t WlnuBase::AddMuonCut(int i)
    }
 
 
-   Int_t WlnuBase::AddElectronCut(int i)
+   Int_t Wlnu12LoBase::AddElectronCut(int i)
    {
      
      //RD Scale Correction
@@ -954,7 +954,7 @@ Int_t WlnuBase::AddMuonCut(int i)
    }
 
 
-   Int_t WlnuBase::AddElectronCutHighPU(int i)
+   Int_t Wlnu12LoBase::AddElectronCutHighPU(int i)
    {
 
      if((*W_Lept1_pt)[i] < 25) return -1;
@@ -983,7 +983,7 @@ Int_t WlnuBase::AddMuonCut(int i)
      return 1;
    }
 
-Int_t WlnuBase::DoRecoilCorr()
+Int_t Wlnu12LoBase::DoRecoilCorr()
 {
   if(RunOnMC){
 
@@ -1056,18 +1056,18 @@ Int_t WlnuBase::DoRecoilCorr()
   //}
   return 0;
 }
-int WlnuBase::DumpMETs()
+int Wlnu12LoBase::DumpMETs()
 {
   // MET
-  pfMEtTL.SetPxPyPzE(pfMEt_x,pfMEt_y,0,toolbox::pT(pfMEt_x,pfMEt_y));
-  NoPuMEtTL.SetPxPyPzE(NoPuMEt_x,NoPuMEt_y,0,toolbox::pT(NoPuMEt_x,NoPuMEt_y));
-  MVaMEtTL.SetPxPyPzE(MVaMEt_x,MVaMEt_y,0,toolbox::pT(MVaMEt_x,MVaMEt_y));
-  genMEtTrueTL.SetPxPyPzE(genMEtTrue_x,genMEtTrue_y,0,toolbox::pT(genMEtTrue_x,genMEtTrue_y));
-  genMEtCaloTL.SetPxPyPzE(genMEtCalo_x,genMEtCalo_y,0,toolbox::pT(genMEtCalo_x,genMEtCalo_y));
-  genMEtCaloAndNonPromptTL.SetPxPyPzE(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y,0,toolbox::pT(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y));
+  //pfMEtTL.SetPxPyPzE(pfMEt_x,pfMEt_y,0,toolbox::pT(pfMEt_x,pfMEt_y));
+  //NoPuMEtTL.SetPxPyPzE(NoPuMEt_x,NoPuMEt_y,0,toolbox::pT(NoPuMEt_x,NoPuMEt_y));
+  //MVaMEtTL.SetPxPyPzE(MVaMEt_x,MVaMEt_y,0,toolbox::pT(MVaMEt_x,MVaMEt_y));
+  //genMEtTrueTL.SetPxPyPzE(genMEtTrue_x,genMEtTrue_y,0,toolbox::pT(genMEtTrue_x,genMEtTrue_y));
+  //genMEtCaloTL.SetPxPyPzE(genMEtCalo_x,genMEtCalo_y,0,toolbox::pT(genMEtCalo_x,genMEtCalo_y));
+  //genMEtCaloAndNonPromptTL.SetPxPyPzE(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y,0,toolbox::pT(genMEtCaloAndNonPrompt_x,genMEtCaloAndNonPrompt_y));
   return 0;
 }
-Int_t WlnuBase::InitVar4Evt()
+Int_t Wlnu12LoBase::InitVar4Evt()
 {
   // Recoil
   W.RecoilT2=0;
@@ -1075,7 +1075,7 @@ Int_t WlnuBase::InitVar4Evt()
   mTTW = 1;
   mVtxVar.nPrim = 0;
   mVtxVar.nGood = 0;
-  //cout<<"WlnuBase::InitVar4Evt ==========================="<<endl;
+  //cout<<"Wlnu12LoBase::InitVar4Evt ==========================="<<endl;
   W.size = W_pt->size();
   W.pt=0;
   W.Mt=0;
@@ -1102,7 +1102,7 @@ Int_t WlnuBase::InitVar4Evt()
 
   return 0;
 }
-double WlnuBase::CalcEvtWeight()
+double Wlnu12LoBase::CalcEvtWeight()
 {
   if(!RunOnMC){mTTW = 1;return mTTW;}
       //mTTW= LumiWeight*weightin; //weight is right but S8 strange
@@ -1115,6 +1115,6 @@ double WlnuBase::CalcEvtWeight()
   return mTTW;
 }
 
-#endif // #ifdef WlnuBase_cxx
+#endif // #ifdef Wlnu12LoBase_cxx
 
 
