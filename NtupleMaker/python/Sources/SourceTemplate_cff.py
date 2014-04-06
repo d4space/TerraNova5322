@@ -7,7 +7,7 @@ source = cms.Source("PoolSource",
     fileNames = readFiles
     )
 readFiles.extend([
-  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ADDmonoPhoton/ADDmonoPhoton.root',
+  #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ADDmonoPhoton/ADDmonoPhoton.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WZTo3LNu/WZTo3LNu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WWTo2L2Nu/WWTo2L2Nu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo4Mu/ZZTo4Mu.root',
@@ -15,7 +15,7 @@ readFiles.extend([
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ZZTo2e2Mu/ZZTo2e2Mu.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/ADDmonoJet/ADDmonoJet.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToHadronic/TTJetsToHadronic.root',
-  #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToSemiLept/TTJetsToSemiLept.root',
+  'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/TTJetsToSemiLept/TTJetsToSemiLept.root',
   #'file:/afs/cern.ch/work/d/dhkim/public/MC_sample/WJetsToLNu/WJetsToLNu.root',
   #'file:/afs/cern.ch/work/s/salee/DataSample/S8/WplusToMuNu_AODSIM_1_1_2YJ.root',
   #'file:/afs/cern.ch/work/s/salee/DataSample/S10/DYToMuMu_5000_3_1_f18.root',
