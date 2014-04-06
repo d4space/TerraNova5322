@@ -84,14 +84,13 @@ process.PFJet50 = cms.EDFilter("CandViewSelector",
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
     filterParams = pfJetIDSelector.clone(quality=cms.string("TIGHT")),
-    src = cms.InputTag(PFJet50)
+    src = cms.InputTag("PFJet50")
     #src = cms.InputTag(PFJetCollectionCorr)
     )
 process.goodPhotons = cms.EDFilter(
     "PhotonSelector",
     src = cms.InputTag("photons"),
-    cut = cms.string()
-    cut = cms.string("hadronicOverEm<0.15 && (abs(superCluster.eta)<2.5) && !(1.4442<abs(superCluster.eta)<1.566) && ((isEB && sigmaIetaIeta<0.01) || (isEE && sigmaIetaIeta<0.03)) && (superCluster.energy*sin(superCluster.position.theta)>30)"
+    cut = cms.string("hadronicOverEm<0.15 && (abs(superCluster.eta)<2.5) && !(1.4442<abs(superCluster.eta)<1.566) && ((isEB && sigmaIetaIeta<0.01) || (isEE && sigmaIetaIeta<0.03)) && (superCluster.energy*sin(superCluster.position.theta)>30)")
     )
 
 process.load('RecoJets.JetProducers.PileupJetID_cfi')
