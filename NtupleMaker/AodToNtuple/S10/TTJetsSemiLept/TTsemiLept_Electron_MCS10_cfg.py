@@ -75,11 +75,23 @@ process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
     src = cms.InputTag(PFJetCollection),
     correctors = cms.vstring(JetCorrection) # NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for Data
     )
+process.PFJet50 = cms.EDFilter("CandViewSelector",
+    src = cms.InputTag("ak5PFJetsCorr"),
+    cut = cms.string("pt > 50"),
+    filter = cms.bool(True),
+    )
 
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
     filterParams = pfJetIDSelector.clone(quality=cms.string("TIGHT")),
-    src = cms.InputTag(PFJetCollectionCorr)
+    src = cms.InputTag(PFJet50)
+    #src = cms.InputTag(PFJetCollectionCorr)
+    )
+process.goodPhotons = cms.EDFilter(
+    "PhotonSelector",
+    src = cms.InputTag("photons"),
+    cut = cms.string()
+    cut = cms.string("hadronicOverEm<0.15 && (abs(superCluster.eta)<2.5) && !(1.4442<abs(superCluster.eta)<1.566) && ((isEB && sigmaIetaIeta<0.01) || (isEE && sigmaIetaIeta<0.03)) && (superCluster.energy*sin(superCluster.position.theta)>30)"
     )
 
 process.load('RecoJets.JetProducers.PileupJetID_cfi')
@@ -100,7 +112,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForNoPileUpPFMEt.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus")
+process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus","tightPFJetsPFlow","goodPhotons")
 
 ### MVA MET
 process.load('RecoMET.METPUSubtraction.mvaPFMET_cff')
@@ -109,7 +121,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus") #selectedPatMuons
+process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus","tightPFJetsPFlow","goodPhotons")# #selectedPatMuons
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
 #process.pfPileUpIso.checkClosestZVertex = cms.bool(False)
@@ -172,8 +184,10 @@ if produceTaus:
 process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 process.p += process.ak5PFJetsCorr
-#process.p += process.tightPFJetsPFlow
+process.p += process.PFJet50
+process.p += process.tightPFJetsPFlow
 process.p += process.pileupJetIdProducer
+process.p += process.goodPhotons
 #process.p += process.looseLeptonSequence
 #process.p += process.acceptedMuons
 #process.p += process.METsrcMuons
