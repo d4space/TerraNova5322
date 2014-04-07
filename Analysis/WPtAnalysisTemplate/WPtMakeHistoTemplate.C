@@ -23,7 +23,8 @@ void WPtMakeHistoTemplate()
 
   gSystem->CompileMacro("../EventSelection/Wlnu12LoNT.C","k");
   gSystem->CompileMacro("../EventSelection/Wlnu12LoBase.C","k");
-  gSystem->CompileMacro("../EventSelection/Wlnu12LoTemple.C","k");
+  //gSystem->CompileMacro("../EventSelection/Wlnu12LoTemple.C","k");
+  gSystem->CompileMacro("../EventSelection/Wlnu12LoMET.C","k");
 
 //====================
 /////////// Muon LowPU
@@ -44,7 +45,8 @@ void WPtMakeHistoTemplate()
   TChain *TC_WpToMuNu_S8    = new TChain("WMuNeu/tree","");
   SetupTree("Muon_WpToMuNu_S8",TC_WpToMuNu_S8);
   TString WpToMuNu_BaseName = "WpToMuNu_S8";
-  Wlnu12LoTemple Wlnu12LoTempleEG(
+  //Wlnu12LoTemple Wlnu12LoTempleEG(
+  Wlnu12LoMET Wlnu12LoTempleEG(
       TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,Mode,AnaChannelMu,1,true,1234);
   Wlnu12LoTempleEG.Loop();
 }
