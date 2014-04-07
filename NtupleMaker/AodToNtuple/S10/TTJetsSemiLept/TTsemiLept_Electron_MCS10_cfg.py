@@ -84,8 +84,8 @@ process.PFJet50 = cms.EDFilter("CandViewSelector",
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
     filterParams = pfJetIDSelector.clone(quality=cms.string("TIGHT")),
-    src = cms.InputTag("PFJet50")
-    #src = cms.InputTag(PFJetCollectionCorr)
+    #src = cms.InputTag("PFJet50")
+    src = cms.InputTag(PFJetCollectionCorr)
     )
 process.goodPhotons = cms.EDFilter(
     "PhotonSelector",
