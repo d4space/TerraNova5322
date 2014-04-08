@@ -26,7 +26,7 @@ process.GlobalTag.globaltag = cms.string('START52_V5::All')
 ## ==== Fast Filters ====
 process.goodVertexFilter = cms.EDFilter("VertexSelector",
     src = cms.InputTag("offlinePrimaryVertices"),
-    cut = cms.string("!isFake && ndof > 2 && abs(z) <= 25 && position.Rho <= 2"),
+    cut = cms.string("!isFake && ndof > 4 && abs(z) <= 25 && position.Rho <= 2"),
     filter = cms.bool(True),
 )
 process.noScraping = cms.EDFilter("FilterOutScraping",
@@ -73,7 +73,7 @@ process.load("MuonAnalysis.TagAndProbe.common_modules_cff")
 process.tagMuons = cms.EDFilter("PATMuonSelector",
     src = cms.InputTag("patMuonsWithTrigger"),
     #cut = cms.string("pt > 15 && "+MuonIDFlags.Tight2012.value()+" && !triggerObjectMatchesByCollection('hltL3MuonCandidates').empty()"),
-    cut = cms.string("pt > 15 && "+MuonIDFlags.WptTight2012.value()+" && !triggerObjectMatchesByCollection('hltL3MuonCandidates').empty()"),
+    cut = cms.string("pt > 20 && "+MuonIDFlags.WptTight2012.value()+" && !triggerObjectMatchesByCollection('hltL3MuonCandidates').empty()"),
 )
 
 process.oneTag  = cms.EDFilter("CandViewCountFilter", src = cms.InputTag("tagMuons"), minNumber = cms.uint32(1))
