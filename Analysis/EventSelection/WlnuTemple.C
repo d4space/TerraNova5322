@@ -124,7 +124,11 @@ void WlnuTemple::Loop()
     Fout<<i<<"   "<<mNselect4WptBin[i]<<endl;
   }
 
-  Write_Histo();
+  // Usie one of the Write_Histo ro myFile->Write
+  // Write_Histo: to write specific ones
+  // myFile->Write ==> All
+  //
+  //Write_Histo();
   myFile->Write();
   Fout.close();
   gBenchmark->Show("WlnuTemple");

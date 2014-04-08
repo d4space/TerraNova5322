@@ -273,7 +273,7 @@ WlnuBase::WlnuBase(TTree *WlnuBaseTree, double lumiweight,
      cout<<"Usage: WlnuBase(TTree*... ) "<<endl;
      exit(-1);
    }
-     cout<<"WlnuBase.h: initializing the trees"<<endl;
+   cout<<"WlnuBase.h: initializing the trees"<<endl;
    LumiWeight = lumiweight;
    cout<<"Input Value of Lumiweight = "<<lumiweight<<" Initialized as = "<<LumiWeight<<endl;
    OutNameBase = OutNameBase_;

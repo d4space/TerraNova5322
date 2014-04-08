@@ -19,9 +19,9 @@ TString AnaChannelEle = "Electron2012";//ElectronLowPU
 TString AnaChannelMu  = "Muon2012";
 TString AnaChannelTau  = "Tau2012";
 
-  //gSystem->CompileMacro("../EventSelection/TTsemiNT.C","k");
-  //gSystem->CompileMacro("../EventSelection/TTsemiBase.C","k");
-  //gSystem->CompileMacro("../EventSelection/TTsemiMET.C","k");
+  gSystem->CompileMacro("../EventSelection/TTsemiNT.C","k");
+  gSystem->CompileMacro("../EventSelection/TTsemiBase.C","k");
+  gSystem->CompileMacro("../EventSelection/TTsemiMET.C","k");
 
   //gSystem->CompileMacro("../EventSelection/TT2HadNT.C","k");
   //gSystem->CompileMacro("../EventSelection/TT2HadBase.C","k");
@@ -70,7 +70,7 @@ TString AnaChannelTau  = "Tau2012";
         LumiWeight, DirName, Mode, AnaChannelMu, 0, true, -999);
   TTsemiMET_Mu.Loop();
   ****/
-  /*********
+  //*********
   cout<<"TTsemi Electron S10============================"<<endl;
   TChain *TC_TTsemi_S10     = new TChain("TTsemiLept/tree","");
   TChain *TC_TTsemi_Electron       = new TChain("Electrons/tree","");
@@ -80,7 +80,7 @@ TString AnaChannelTau  = "Tau2012";
   TTsemiMET TTsemiMET_Ele(TC_TTsemi_S10,TC_TTsemi_Electron,
         LumiWeight, DirName, Mode, AnaChannelEle, 0, true, -999);
   TTsemiMET_Ele.Loop();
-  *************/
+  //*************/
   /*************
   cout<<"TT2Hadron S10============================"<<endl;
   TChain *TC_TT2Had_S10     = new TChain("TT2Hadron/tree","");
@@ -121,7 +121,7 @@ TString AnaChannelTau  = "Tau2012";
   WeleNuMET.Loop();
   *************/
 
-  //*****************
+  /*****************
   cout<<"Muon_WJetsToLNu_S10==========================="<<endl;
   TChain *TC_WToMuNu_S10     = new TChain("WMuNeu/tree","");
   SetupTree("Test",TC_WToMuNu_S10);
@@ -129,7 +129,7 @@ TString AnaChannelTau  = "Tau2012";
   WlnuMET WMuNuMET(TC_WToMuNu_S10,
         LumiWeight, DirBase, Mode, AnaChannelMu, 1234);
   WMuNuMET.Loop();
-  //************/
+  ************/
 
   /***********
   cout<<"Ele_DYJetsToLL_S10============================"<<endl;
