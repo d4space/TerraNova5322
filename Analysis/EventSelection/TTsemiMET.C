@@ -174,14 +174,14 @@ int TTsemiMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
   h1_nIdJets   = new TH1D("h1_nIdJets","number of pileupJets",10,0.,10);
-  h1_PF_Met   = new TH1D("h1_PF_Met","PF MET",50,0.,200);
-  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",50,0.,200);
-  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",50,0.,200);
-  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",50,0.,200);
+  h1_PF_Met   = new TH1D("h1_PF_Met","PF MET",20,0.,200);
+  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",20,0.,200);
+  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",20,0.,200);
+  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",20,0.,200);
 
-  h2_pfMET  = new TH2D("h2_pfMET","pf - genMETTrue",20,0.,80,2100,-100,2000);
-  h2_MVaMET = new TH2D("h2_MVaMET","MVA - genMETTrue",20,0.,80,2100,-100,2000);
-  h2_NoPuMET= new TH2D("h2_NoPuMET","NoPU - genMETTrue",20,0.,80,2100,-100,2000);
+  h2_pfMET  = new TH2D("h2_pfMET","pf - genMETTrue",20,0.,200,2100,-100,2000);
+  h2_MVaMET = new TH2D("h2_MVaMET","MVA - genMETTrue",20,0.,200,2100,-100,2000);
+  h2_NoPuMET= new TH2D("h2_NoPuMET","NoPU - genMETTrue",20,0.,200,2100,-100,2000);
 
 //  hp_pfMet  = new TProfile("hp_pfMet","pf - genMetTrue",50,0.,200);
 //  hp_MVaMet = new TProfile("hp_MVaMet","MVA - genMetTrue",50,0.,200);
