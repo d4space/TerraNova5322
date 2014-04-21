@@ -23,13 +23,13 @@ public :
    virtual void     Loop();
 protected:
    TH1D* h1_Zmass;
-   TH1D* h1_PF_Met;
-   TH1D* h1_MVA_Met;
-   TH1D* h1_NoPU_Met;
-   TH1D* h1_genMEtTrue;
-   TH2D* h2_pfMET;
-   TH2D* h2_MVaMET;
-   TH2D* h2_NoPuMET;
+   TH1D* h1_PF_Met[PUrangeBin];
+   TH1D* h1_MVA_Met[PUrangeBin];
+   TH1D* h1_NoPU_Met[PUrangeBin];
+   TH1D* h1_genMEtTrue[PUrangeBin];
+   TH2D* h2_pfMET[PUrangeBin];
+   TH2D* h2_MVaMET[PUrangeBin];
+   TH2D* h2_NoPuMET[PUrangeBin];
 //   TProfile* hp_pfMet;
 //   TProfile* hp_MVaMet;
 //   TProfile* hp_NoPuMet;

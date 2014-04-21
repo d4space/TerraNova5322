@@ -164,7 +164,7 @@ int MonoPhotonMET::Photonbest()
     }
 
     //h1_PhotonpT->Fill(MonoPhoton.PhotonpT);
-    h1_PhotonpT->Fill((*Pho_pt)[MonoPhoton.idxBest]);
+    h1_PhotonpT[0]->Fill((*Pho_pt)[MonoPhoton.idxBest]);
     //if(MonoPhoton.PhotonpT > 30)MonoPhoton.Pass = true;
     if((*Pho_pt)[MonoPhoton.idxBest] > 30)MonoPhoton.Pass = true;
    // if(MonoPhoton.Pass)
@@ -176,47 +176,97 @@ int MonoPhotonMET::Photonbest()
 int MonoPhotonMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  //h1_nIdJets   = new TH1D("h1_nIdJets","number of pileupJets",10,0.,10);
-  //h1_MPhotonPt   = new TH1D("h1_MPhotonPt","Bigest Photon Pt",60,3.,300);
-  h1_PhotonpT   = new TH1D("h1_MPhotonPt","Bigest Photon Pt",50,0.,500);
-  h1_PF_Met   = new TH1D("h1_PF_Met","PF MET",50,0.,100);
-  h1_MVA_Met   = new TH1D("h1_MVA_Met","MVA MET",50,0.,100);
-  h1_NoPU_Met  = new TH1D("h1_NoPU_Met","NoPU MET",50,0.,100);
-  h1_genMEtTrue= new TH1D("h1_genMEtTrue","genMEtTrue",50,0.,100);
+  for(int i(0);i<PUrangeBin;i++)
+  {
+  sprintf(histName,"h1_nIdJets_%d",i);
+  h1_nIdJets[i]    = new TH1D(histName,"number of pileupJets",10,0.,10);
+  sprintf(histName,"h1_PhotonpT_%d",i);
+  h1_PhotonpT[i]   = new TH1D(histName,"Bigest Photon Pt",60,30.,300);
+  sprintf(histName,"h1_PF_Met_%d",i);
+  h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,80);
+  sprintf(histName,"h1_MVA_Met_%d",i);
+  h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,80);
+  sprintf(histName,"h1_NoPU_Met_%d",i);
+  h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,80);
+  sprintf(histName,"h1_genMEtTrue_%d",i);
+  h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,80);
 
-  h2_pfMET  = new TH2D("h2_pfMET","pf - genMETTrue",20,0.,80,2100,-100,2000);
-  h2_MVaMET = new TH2D("h2_MVaMET","MVA - genMETTrue",20,0.,80,2100,-100,2000);
-  h2_NoPuMET= new TH2D("h2_NoPuMET","NoPU - genMETTrue",20,0.,80,2100,-100,2000);
-  
-//  hp_pfMet  = new TProfile("hp_pfMet","pf - genMetTrue",20,0.,80);
-//  hp_MVaMet = new TProfile("hp_MVaMet","MVA - genMetTrue",20,0.,80);
-//  hp_NoPuMet= new TProfile("hp_NoPuMet","NoPU - genMetTrue",20,0.,80);
+  sprintf(histName,"h2_pfMET_%d",i);
+  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,80,2100,-100,2000);
+  sprintf(histName,"h2_MVaMET_%d",i);
+  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,80,2100,-100,2000);
+  sprintf(histName,"h2_NoPuMET_%d",i);
+  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,80,2100,-100,2000);
+  }
+
   return 0;
 }
 int MonoPhotonMET::Fill_METs()
 {
-  //h1_nIdJets->Fill(nIdJets);
-  h1_PF_Met->Fill(pfMEtTL.Pt());
-  h1_MVA_Met->Fill(MVaMEtTL.Pt());
-  h1_NoPU_Met->Fill(NoPuMEtTL.Pt());
-  h1_genMEtTrue->Fill(genMEtTrueTL.Pt());
- // h1_MPhotonPt->Fill(MPhoton.pt);
+  //h1_nIdJets[0]->Fill(nIdJets);
+  h1_PF_Met[0]->Fill(pfMEtTL.Pt());
+  h1_MVA_Met[0]->Fill(MVaMEtTL.Pt());
+  h1_NoPU_Met[0]->Fill(NoPuMEtTL.Pt());
+  h1_genMEtTrue[0]->Fill(genMEtTrueTL.Pt());
+  //h1_PhotonpT[0]->Fill(MPhoton.pt);
 
-  h2_pfMET  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
-  h2_MVaMET ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
-  h2_NoPuMET->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_pfMET[0]  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET[0] ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET[0]->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
 
-//  hp_pfMet  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
-//  hp_MVaMet ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
-//  hp_NoPuMet->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  if(mVtxVar.nGood>=0 && mVtxVar.nGood<7){
+  //h1_nIdJets[1]->Fill(nIdJets);
+  h1_PF_Met[1]->Fill(pfMEtTL.Pt());
+  h1_MVA_Met[1]->Fill(MVaMEtTL.Pt());
+  h1_NoPU_Met[1]->Fill(NoPuMEtTL.Pt());
+  h1_genMEtTrue[1]->Fill(genMEtTrueTL.Pt());
+  //h1_PhotonpT[1]->Fill(MPhoton.pt);
+
+  h2_pfMET[1]  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET[1] ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET[1]->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  }
+  else if(mVtxVar.nGood>=7 && mVtxVar.nGood<21){
+  //h1_nIdJets[2]->Fill(nIdJets);
+  h1_PF_Met[2]->Fill(pfMEtTL.Pt());
+  h1_MVA_Met[2]->Fill(MVaMEtTL.Pt());
+  h1_NoPU_Met[2]->Fill(NoPuMEtTL.Pt());
+  h1_genMEtTrue[2]->Fill(genMEtTrueTL.Pt());
+  //h1_PhotonpT[3]->Fill(MPhoton.pt);
+
+  h2_pfMET[2]  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET[2] ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET[2]->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  }
+  else if(mVtxVar.nGood>=21){
+  //h1_nIdJets[3]->Fill(nIdJets);
+  h1_PF_Met[3]->Fill(pfMEtTL.Pt());
+  h1_MVA_Met[3]->Fill(MVaMEtTL.Pt());
+  h1_NoPU_Met[3]->Fill(NoPuMEtTL.Pt());
+  h1_genMEtTrue[3]->Fill(genMEtTrueTL.Pt());
+  //h1_PhotonpT[3]->Fill(MPhoton.pt);
+
+  h2_pfMET[3]  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_MVaMET[3] ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
+  h2_NoPuMET[3]->Fill(genMEtTrueTL.Pt(), NoPuMEtTL.Pt()-genMEtTrueTL.Pt());
+  }
 
   return 0;
 }
 int MonoPhotonMET::Fill_METprofiles()
 {
-  h2_pfMET->ProfileX("pfMET",1,-1,"");
-  h2_MVaMET->ProfileX("MVaMET",1,-1,"");
-  h2_NoPuMET->ProfileX("NoPuMET",1,-1,"");
- 
-  return 0;
+ h2_pfMET[0]->ProfileX("pfMET_0",1,-1,"");
+ h2_MVaMET[0]->ProfileX("MVaMET_0",1,-1,"");
+ h2_NoPuMET[0]->ProfileX("NoPuMET_0",1,-1,"");
+ h2_pfMET[1]->ProfileX("pfMET_1",1,-1,"");
+ h2_MVaMET[1]->ProfileX("MVaMET_1",1,-1,"");
+ h2_NoPuMET[1]->ProfileX("NoPuMET_1",1,-1,"");
+ h2_pfMET[2]->ProfileX("pfMET_2",1,-1,"");
+ h2_MVaMET[2]->ProfileX("MVaMET_2",1,-1,"");
+ h2_NoPuMET[2]->ProfileX("NoPuMET_2",1,-1,"");
+ h2_pfMET[3]->ProfileX("pfMET_3",1,-1,"");
+ h2_MVaMET[3]->ProfileX("MVaMET_3",1,-1,"");
+ h2_NoPuMET[3]->ProfileX("NoPuMET_3",1,-1,"");
+
+ return 0;
 }

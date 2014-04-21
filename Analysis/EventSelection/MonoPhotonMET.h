@@ -20,18 +20,15 @@ public :
    MonoPhotonMET(TTree *tree=0,double weight=1, TString OutNameBase = "output.root",TString Mode="analysis", TString AnaChannel ="Muon",double WCHARGE=0, bool runOnMC=true, int etaRange_=-999);//Electron
    ~MonoPhotonMET();
    virtual void     Loop();
-   TH1D* h1_nIdJets;
-   TH1D* h1_PhotonpT;
-   TH1D* h1_PF_Met;
-   TH1D* h1_MVA_Met;
-   TH1D* h1_NoPU_Met;
-   TH1D* h1_genMEtTrue;
-   TH2D* h2_pfMET;
-   TH2D* h2_MVaMET;
-   TH2D* h2_NoPuMET;
-   TProfile* hp_pfMet;
-   TProfile* hp_MVaMet;
-   TProfile* hp_NoPuMet;
+   TH1D* h1_nIdJets[PUrangeBin];
+   TH1D* h1_PhotonpT[PUrangeBin];
+   TH1D* h1_PF_Met[PUrangeBin];
+   TH1D* h1_MVA_Met[PUrangeBin];
+   TH1D* h1_NoPU_Met[PUrangeBin];
+   TH1D* h1_genMEtTrue[PUrangeBin];
+   TH2D* h2_pfMET[PUrangeBin];
+   TH2D* h2_MVaMET[PUrangeBin];
+   TH2D* h2_NoPuMET[PUrangeBin];
 protected:
   TFile *myFile;
   int Fill_METs();
