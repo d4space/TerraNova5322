@@ -20,21 +20,16 @@
 
 using namespace std;
 
-//class JetIDSelector : public Selector<pat::Jet>  {
 class JetIDSelector : public Selector<reco::Jet>  {
 
  public: // interface
 
-  //typedef pat::Jet ObjectType;
   typedef reco::Jet ObjectType;
   typedef math::XYZPoint Point;
 
-   
   JetIDSelector();
   
   void initialize( const edm::ParameterSet& ps );
-  
-
 
 void initialize(double pt,
 		double eta,
