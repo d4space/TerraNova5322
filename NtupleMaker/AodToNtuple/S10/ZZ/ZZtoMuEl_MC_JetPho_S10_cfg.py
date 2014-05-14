@@ -77,7 +77,13 @@ process.PFJet50 = cms.EDFilter("CandViewSelector",
     cut = cms.string("pt > 50"),
     filter = cms.bool(True),
     )
-
+from TerraNova.CommonTools.jetSelectorPSet_cff import jetSelectorPSet
+process.acceptedJets = cms.EDProducer(
+    "KyJetSelector",
+    jetLabel  = cms.InputTag("ak5PFJetsCorr"),
+    PUJetDiscriminant = cms.InputTag("pileupJetIdProducer","fullDiscriminant"),
+    PUJetId             = cms.InputTag("pileupJetIdProducer","fullId"),
+    )
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
     filterParams = pfJetIDSelector.clone(quality=cms.string("TIGHT")),
@@ -87,7 +93,7 @@ process.tightPFJetsPFlow = cms.EDFilter("PFJetIDSelectionFunctorBasicFilter",
 process.goodPhotons = cms.EDFilter(
     "PhotonSelector",
     src = cms.InputTag("photons"),
-    cut = cms.string("hadronicOverEm<0.15 && (abs(superCluster.eta)<2.5) && !(1.4442<abs(superCluster.eta)<1.566) && ((isEB && sigmaIetaIeta<0.01) || (isEE && sigmaIetaIeta<0.03)) && (superCluster.energy*sin(superCluster.position.theta)>30)")
+    cut = cms.string("hadronicOverEm<0.15 && (abs(superCluster.eta)<2.5) && !(1.4442<abs(superCluster.eta)<1.566) && ((isEB && sigmaIetaIeta<0.01) || (isEE && sigmaIetaIeta<0.03)) && (superCluster.energy*sin(superCluster.position.theta)>30) && pt>30")
     )
 
 process.load('RecoJets.JetProducers.PileupJetID_cfi')
@@ -107,7 +113,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForNoPileUpPFMEt.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus","tightPFJetsPFlow","goodPhotons")
+process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus","acceptedJets","goodPhotons")
 #process.noPileUpPFMEt.srcLeptons = cms.VInputTag("isomuons","isoelectrons","isotaus")
 
 ### MVA MET
@@ -117,7 +123,7 @@ if runOnMC:
 else:
   process.calibratedAK5PFJetsForPFMEtMVA.correctors = cms.vstring('ak5PFL1FastL2L3Residual')
 
-process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus","tightPFJetsPFlow","goodPhotons")# #selectedPatMuons
+process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus","acceptedJets","goodPhotons")# #selectedPatMuons
 #process.pfMEtMVA.srcLeptons = cms.VInputTag( "isomuons","isoelectrons","isotaus") #selectedPatMuons
 
 #process.pfPileUpIsoPFlow.checkClosestZVertex = cms.bool(False)
@@ -167,8 +173,9 @@ process.p += process.nEventsHLT
 process.p += getattr(process,"patPF2PATSequence"+postfix)
 process.p += process.ak5PFJetsCorr
 process.p += process.PFJet50
-process.p += process.tightPFJetsPFlow
 process.p += process.pileupJetIdProducer
+process.p += process.acceptedJets
+process.p += process.tightPFJetsPFlow
 process.p += process.goodPhotons
 #process.p += process.looseLeptonSequence
 process.p += process.acceptedMuons

@@ -14,6 +14,8 @@ produceNoPUPFMET = True
 produceMVAPFMET = True
 
 process.load("TerraNova.NtupleMaker.pf2pat_template_MC_cfg")
+process.acceptedElectronFilter.minNumber = 2
+#process.acceptedMuonsFilter.minNumber = 4
 
 from PhysicsTools.PatAlgos.tools.pfTools import *
 from TerraNova.NtupleMaker.pat_22Jan2013_MC_cfg import *
@@ -50,7 +52,6 @@ process.out = cms.OutputModule("PoolOutputModule",
     outputCommands = cms.untracked.vstring('drop *')
 )
 
-
 if runOnMC:
   usePF2PAT(process,runPF2PAT=True, jetAlgo=jetAlgo, runOnMC=runOnMC, postfix=postfix, jetCorrections=('AK5PFchs',['L1FastJet','L2Relative', 'L3Absolute'] ), typeIMetCorrections=True)
 else :
@@ -64,17 +65,17 @@ UseCHS=''
 JetCorrection          = "ak5PFL1FastL2L3"
 PFJetCollection   = 'ak5PFJets'+UseCHS
 PFJetCollectionCorr   = 'ak5PFJetsCorr'
-
+    
 process.ak5PFJetsCorr = cms.EDProducer('PFJetCorrectionProducer',
     src = cms.InputTag(PFJetCollection),
     correctors = cms.vstring(JetCorrection) # NOTE: use "ak5PFL1FastL2L3" for MC / "ak5PFL1FastL2L3Residual" for Data
     )
-
 process.PFJet50 = cms.EDFilter("CandViewSelector",
     src = cms.InputTag("ak5PFJetsCorr"),
     cut = cms.string("pt > 50"),
     filter = cms.bool(True),
     )
+
 from TerraNova.CommonTools.jetSelectorPSet_cff import jetSelectorPSet
 process.acceptedJets = cms.EDProducer(
     "KyJetSelector",
@@ -176,12 +177,12 @@ process.p += process.acceptedJets
 process.p += process.tightPFJetsPFlow
 process.p += process.goodPhotons
 #process.p += process.looseLeptonSequence
-#process.p += process.acceptedMuons
+process.p += process.acceptedMuons
 process.p += process.acceptedElectrons
+#process.p += process.allConversions
 #process.p += process.acceptedTaus
 #process.p += process.patMuEleTauFilter
 #process.p += process.acceptedMuonsFilter
-#process.p += process.patElectronFilter
 process.p += process.acceptedElectronFilter
 #process.p += process.patTauFilter
 process.p += process.nEventsFiltered
@@ -190,4 +191,4 @@ process.p += process.isoelectronseq
 process.p += process.isotauseq
 process.p += process.noPileUpPFMEtSequence
 process.p += process.pfMEtMVAsequence
-process.p += process.WEleNeuAnalysisMCSequence
+process.p += process.ZZ4LAnalysisMCSequence
