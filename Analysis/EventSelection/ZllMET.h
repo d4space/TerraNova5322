@@ -29,7 +29,10 @@ protected:
    TH2D* h2_pfMET[PUrangeBin];
    TH2D* h2_MVaMET[PUrangeBin];
    TH2D* h2_NoPuMET[PUrangeBin];
- 
+   TH2D* h2_pfMET_pxpy;
+   TH2D* h2_MVaMET_pxpy;
+   TH2D* h2_NoPuMET_pxpy;
+
   TFile *myFile;
   int Fill_METs();
   int Fill_METprofiles();

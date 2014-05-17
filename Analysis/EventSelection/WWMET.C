@@ -477,7 +477,9 @@ Int_t WWMET::FillUnfoldInfo()
 int WWMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-600,600,100,-600,600);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-600,600,100,-600,600);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-600,600,100,-600,600);
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_PF_Met_%d",i);
@@ -500,6 +502,10 @@ int WWMET::InitHistogram()
 }
 int WWMET::Fill_METs()
 {
+  h2_pfMET_pxpy ->Fill(pfMEt_x, pfMEt_y);
+  h2_MVaMET_pxpy ->Fill(MVaMEt_x, MVaMEt_y);
+  h2_NoPuMET_pxpy ->Fill(NoPuMEt_x, NoPuMEt_y);
+
   h1_PF_Met[0]->Fill(pfMEtTL.Pt());
   h1_MVA_Met[0]->Fill(MVaMEtTL.Pt());
   h1_NoPU_Met[0]->Fill(NoPuMEtTL.Pt());

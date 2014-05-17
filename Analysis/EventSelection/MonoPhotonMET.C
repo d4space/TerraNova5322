@@ -176,6 +176,9 @@ int MonoPhotonMET::Photonbest()
 int MonoPhotonMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",40,-1000,1000,40,-1000,1000);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",40,-1000,1000,40,-1000,1000);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",40,-1000,1000,40,-1000,1000);
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_nIdJets_%d",i);
@@ -203,6 +206,10 @@ int MonoPhotonMET::InitHistogram()
 }
 int MonoPhotonMET::Fill_METs()
 {
+  h2_pfMET_pxpy ->Fill(pfMEt_x, pfMEt_y);
+  h2_MVaMET_pxpy ->Fill(MVaMEt_x, MVaMEt_y);
+  h2_NoPuMET_pxpy ->Fill(NoPuMEt_x, NoPuMEt_y);
+
   //h1_nIdJets[0]->Fill(nIdJets);
   h1_PF_Met[0]->Fill(pfMEtTL.Pt());
   h1_MVA_Met[0]->Fill(MVaMEtTL.Pt());

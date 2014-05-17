@@ -31,6 +31,9 @@ public :
 //   TProfile* hp_pfMet;
 //   TProfile* hp_MVaMet;
 //   TProfile* hp_NoPuMet;
+   TH2D* h2_pfMET_pxpy;
+   TH2D* h2_MVaMET_pxpy;
+   TH2D* h2_NoPuMET_pxpy;
 protected:
   TFile *myFile;
   int Fill_METs();
