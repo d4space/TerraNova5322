@@ -167,9 +167,9 @@ int MonoJetMET::TTbestSelect()
 int MonoJetMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",40,-1000,1000,40,-1000,1000);
-  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",40,-1000,1000,40,-1000,1000);
-  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",40,-1000,1000,40,-1000,1000);
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-1000,1000,100,-1000,1000);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-1000,1000,100,-1000,1000);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-1000,1000,100,-1000,1000);
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_nIdJets_%d",i);
