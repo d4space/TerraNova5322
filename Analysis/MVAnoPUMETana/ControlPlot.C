@@ -1,7 +1,7 @@
 #include <TLatex.h>
 void ControlPlot()
 {
-  InpFile = new TFile("../allbatch_v2_bin40/TTsemiMuon_MET/TTsemiMuon.root");
+  InpFile = new TFile("../allbatch/TTsemiMuon_MET/TTsemiMuon.root");
   //InpFile = new TFile("../allbatch/TTsemiElectron_MET/TTsemiElectron.root");
   //InpFile = new TFile("../allbatch/MonoJet_MET/MonoJet.root");
   //InpFile = new TFile("../allbatch/TT2Hadron_MET/TT2Hadron.root");
@@ -22,65 +22,49 @@ void ControlPlot()
   char histName[100];
   char histName_org[100];
 
-  TH2D *NoPuMET;
+  TH2D *pfMET;
 
-  sprintf(histName,"NoPuMET");
-  sprintf(histName_org,"h2_NoPuMET_pxpy");
-  NoPuMET =(TH2D*)InpFile->Get(histName_org)->Clone(histName);NoPuMET->Sumw2();
+  sprintf(histName,"pfMET");
+  sprintf(histName_org,"h2_pfMET_pxpy");
+  pfMET =(TH2D*)InpFile->Get(histName_org)->Clone(histName);pfMET->Sumw2();
 
-  sprintf(ylabel,"py",NoPuMET->GetBinWidth(1));
-  NoPuMET->GetYaxis()->SetTitle(ylabel);
-  NoPuMET->GetYaxis()->SetTitleOffset(1.2);
-  NoPuMET->GetYaxis()->SetTitleSize(0.04);
-  NoPuMET->GetYaxis()->SetLabelSize(0.04);
-  NoPuMET->GetXaxis()->SetTitle("px");
-  NoPuMET->GetXaxis()->SetTitleOffset(1.0);
+  sprintf(ylabel,"py",pfMET->GetBinWidth(1));
+  pfMET->GetYaxis()->SetTitle(ylabel);
+  pfMET->GetYaxis()->SetTitleOffset(1.2);
+  pfMET->GetYaxis()->SetTitleSize(0.04);
+  pfMET->GetYaxis()->SetLabelSize(0.04);
+  pfMET->GetXaxis()->SetTitle("px");
+  pfMET->GetXaxis()->SetTitleOffset(1.0);
 
-  //NoPuMET->GetYaxis()->SetRangeUser(-500,500);//TT2Had
-  //NoPuMET->GetXaxis()->SetRangeUser(-500,500);//TT2Had
- 
-  //NoPuMET->GetYaxis()->SetRangeUser(-600,600);//W WW
-  //NoPuMET->GetXaxis()->SetRangeUser(-600,600);//W WW
-  
-  //NoPuMET->GetYaxis()->SetRangeUser(-700,700);//WZ
-  //NoPuMET->GetXaxis()->SetRangeUser(-700,700);//WZ
-  
-  //NoPuMET->GetYaxis()->SetRangeUser(-500,500);//D
-  //NoPuMET->GetXaxis()->SetRangeUser(-500,500);//D
-
-  //NoPuMET->GetYaxis()->SetRangeUser(-200,200);//ZZ
-  //NoPuMET->GetXaxis()->SetRangeUser(-200,200);//ZZ
-  
-  
   
   TCanvas c1("c1","c1",800,700);
   gStyle->SetOptTitle(0);
 
-   //NoPuMET->Draw("CONT3");
+   //pfMET->Draw("CONT3");
    gStyle->SetPalette(1);
-   NoPuMET->Draw("COL");
+   pfMET->Draw("COL");
 
    TLegend *rL =new TLegend(0.75,0.68,0.99,0.95);
    rL->SetFillColor(0); rL->SetBorderSize(0);
-   rL->AddEntry(NoPuMET,"NoPuMET","PL");
+   rL->AddEntry(pfMET,"pfMET","PL");
    rL->Draw();
 
-   sprintf(histName,"muonTTJetsemiLept_NoPuMET.png");
-   //sprintf(histName,"electronTTJetsemiLept_NoPuMET.png");
-   //sprintf(histName,"monoJet_NoPuMET.png");
-   //sprintf(histName,"hadronTT2hadron_NoPuMET.png");
-   //sprintf(histName,"electronWToENu_NoPuMET.png");
-   //sprintf(histName,"muonWToMuNu_NoPuMET.png");
-   //sprintf(histName,"electronDYElEl_NoPuMET.png");
-   //sprintf(histName,"muonDYMuNu_NoPuMET.png");
-   //sprintf(histName,"ZZ4Mu_NoPuMET.png");
-   //sprintf(histName,"ZZ4El_NoPuMET.png");
-   //sprintf(histName,"ZZ2Mu2El_NoPuMET.png");
-   //sprintf(histName,"ZZ2Mu2Nu_NoPuMET.png");
-   //sprintf(histName,"ZZ2El2Nu_NoPuMET.png");
-   //sprintf(histName,"WW_NoPuMET.png");
-   //sprintf(histName,"WZ_NoPuMET.png");
-   //sprintf(histName,"monoPhoton_NoPuMET.png");
+   sprintf(histName,"muonTTJetsemiLept_pfMET.png");
+   //sprintf(histName,"electronTTJetsemiLept_pfMET.png");
+   //sprintf(histName,"monoJet_pfMET.png");
+   //sprintf(histName,"hadronTT2hadron_pfMET.png");
+   //sprintf(histName,"electronWToENu_pfMET.png");
+   //sprintf(histName,"muonWToMuNu_pfMET.png");
+   //sprintf(histName,"electronDYElEl_pfMET.png");
+   //sprintf(histName,"muonDYMuNu_pfMET.png");
+   //sprintf(histName,"ZZ4Mu_pfMET.png");
+   //sprintf(histName,"ZZ4El_pfMET.png");
+   //sprintf(histName,"ZZ2Mu2El_pfMET.png");
+   //sprintf(histName,"ZZ2Mu2Nu_pfMET.png");
+   //sprintf(histName,"ZZ2El2Nu_pfMET.png");
+   //sprintf(histName,"WW_pfMET.png");
+   //sprintf(histName,"WZ_pfMET.png");
+   //sprintf(histName,"monoPhoton_pfMET.png");
    
    c1.SaveAs(histName);
 
