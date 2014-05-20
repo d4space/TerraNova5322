@@ -282,37 +282,37 @@ int ZZ4LMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
   h1_Zmass   = new TH1D("h1_Zmass","Z Mass",60,50.,130);
-  //h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-100,100,100,-100,100);
-  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
-  //h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-100,100,100,-100,100);
-  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
-  //h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-100,100,100,-100,100);
-  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-60,60,100,-60,60);
+  //h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-300,300,100,-300,300);//2Lep2Nu
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-60,60,100,-60,60);
+  //h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-300,300,100,-300,300);//2Lep2Nu
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-60,60,100,-60,60);
+  //h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-300,300,100,-300,300);//2Lep2Nu
 
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_PF_Met_%d",i);
-  //h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,100);
-  h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,400);//2Lep2Nu
+  h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,100);
+  //h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_MVA_Met_%d",i);
-  //h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,100);
-  h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,400);//2Lep2Nu
+  h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,100);
+  //h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_NoPU_Met_%d",i);
-  //h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,100);
-  h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,400);//2Lep2Nu
+  h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,100);
+  //h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_genMEtTrue_%d",i);
-  //h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,100);
-  h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,400);//2Lep2Nu
+  h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,100);
+  //h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,400);//2Lep2Nu
 
   sprintf(histName,"h2_pfMET_%d",i);
-  //h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,200,2100,-100,2000);
-  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
+  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,200,2100,-100,2000);
+  //h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   sprintf(histName,"h2_MVaMET_%d",i);
-  //h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,200,2100,-100,2000);
-  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
+  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,200,2100,-100,2000);
+  //h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   sprintf(histName,"h2_NoPuMET_%d",i);
-  //h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,200,2100,-100,2000);
-  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
+  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,200,2100,-100,2000);
+  //h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   }
 
   return 0;
