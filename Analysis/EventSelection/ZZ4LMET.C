@@ -273,7 +273,7 @@ int ZZ4LMET::ZbestSelect()
     }//fi diLeptVtxProb
   }//Z
   //if(nZs >= 2)Z.Pass=true;
-  if(nZs >= 1)Z.Pass=true;
+  if(nZs >= 1)Z.Pass=true;//2Lept2Nu
     
 
   return 0;
@@ -282,11 +282,11 @@ int ZZ4LMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
   h1_Zmass   = new TH1D("h1_Zmass","Z Mass",60,50.,130);
-  //h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-200,200,100,-200,200);
+  //h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-100,100,100,-100,100);
   h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
-  //h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-200,200,100,-400,400);
+  //h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-100,100,100,-100,100);
   h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
-  //h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-200,200,100,-200,200);
+  //h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-100,100,100,-100,100);
   h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
 
   for(int i(0);i<PUrangeBin;i++)

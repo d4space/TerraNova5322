@@ -477,9 +477,9 @@ Int_t WWMET::FillUnfoldInfo()
 int WWMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-600,600,100,-600,600);
-  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-600,600,100,-600,600);
-  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-600,600,100,-600,600);
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-300,300,100,-300,300);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-300,300,100,-300,300);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-300,300,100,-300,300);
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_PF_Met_%d",i);
@@ -547,6 +547,14 @@ int WWMET::Fill_METs()
 }
 int WWMET::Fill_METprofiles()
 {
+  TH1D* projX_pfMET = h2_pfMET_pxpy ->ProjectionX();
+  TH1D* projX_MVaMEt = h2_MVaMET_pxpy ->ProjectionX();
+  TH1D* projX_NoPuMEt = h2_NoPuMET_pxpy ->ProjectionX();
+
+  TH1D* projY_pfMET = h2_pfMET_pxpy ->ProjectionY();
+  TH1D* projY_MVaMEt = h2_MVaMET_pxpy ->ProjectionY();
+  TH1D* projY_NoPuMEt = h2_NoPuMET_pxpy ->ProjectionY();
+
   h2_pfMET[0]->ProfileX("pfMET_0",1,-1,"");
   h2_MVaMET[0]->ProfileX("MVaMET_0",1,-1,"");
   h2_NoPuMET[0]->ProfileX("NoPuMET_0",1,-1,"");
