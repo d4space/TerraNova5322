@@ -272,7 +272,8 @@ int ZZ4LMET::ZbestSelect()
 
     }//fi diLeptVtxProb
   }//Z
-  if(nZs >= 2)Z.Pass=true;
+  //if(nZs >= 2)Z.Pass=true;
+  if(nZs >= 1)Z.Pass=true;
     
 
   return 0;
@@ -281,27 +282,37 @@ int ZZ4LMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
   h1_Zmass   = new TH1D("h1_Zmass","Z Mass",60,50.,130);
-  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-200,200,100,-200,200);
-  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-200,200,100,-200,200);
-  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-200,200,100,-200,200);
+  //h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-200,200,100,-200,200);
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
+  //h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-200,200,100,-400,400);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
+  //h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-200,200,100,-200,200);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-400,400,100,-400,400);//2Lep2Nu
 
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_PF_Met_%d",i);
-  h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,100);
+  //h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,100);
+  h1_PF_Met[i]     = new TH1D(histName,"PF MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_MVA_Met_%d",i);
-  h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,100);
+  //h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,100);
+  h1_MVA_Met[i]    = new TH1D(histName,"MVA MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_NoPU_Met_%d",i);
-  h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,100);
+  //h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,100);
+  h1_NoPU_Met[i]   = new TH1D(histName,"NoPU MET",20,0.,400);//2Lep2Nu
   sprintf(histName,"h1_genMEtTrue_%d",i);
-  h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,100);
+  //h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,100);
+  h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",20,0.,400);//2Lep2Nu
 
   sprintf(histName,"h2_pfMET_%d",i);
-  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,100,2100,-100,2000);
+  //h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,200,2100,-100,2000);
+  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   sprintf(histName,"h2_MVaMET_%d",i);
-  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,100,2100,-100,2000);
+  //h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,200,2100,-100,2000);
+  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   sprintf(histName,"h2_NoPuMET_%d",i);
-  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,100,2100,-100,2000);
+  //h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,200,2100,-100,2000);
+  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,400,2100,-100,2000);//2Lep2Nu
   }
 
   return 0;
@@ -355,6 +366,14 @@ int ZZ4LMET::Fill_METs()
 }
 int ZZ4LMET::Fill_METprofiles()
 {
+  TH1D* projX_pfMET = h2_pfMET_pxpy ->ProjectionX();
+  TH1D* projX_MVaMEt = h2_MVaMET_pxpy ->ProjectionX();
+  TH1D* projX_NoPuMEt = h2_NoPuMET_pxpy ->ProjectionX();
+
+  TH1D* projY_pfMET = h2_pfMET_pxpy ->ProjectionY();
+  TH1D* projY_MVaMEt = h2_MVaMET_pxpy ->ProjectionY();
+  TH1D* projY_NoPuMEt = h2_NoPuMET_pxpy ->ProjectionY();
+
   h2_pfMET[0]->ProfileX("pfMET_0",1,-1,"");
   h2_MVaMET[0]->ProfileX("MVaMET_0",1,-1,"");
   h2_NoPuMET[0]->ProfileX("NoPuMET_0",1,-1,"");
