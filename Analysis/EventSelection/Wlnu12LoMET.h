@@ -21,7 +21,6 @@ protected:
   void Nselected4Bin();
   int InitVar(); // Init for Class
   int InitVar4Evt(); // Init for every event
-  int WSideSelect(int); //Side Band event selection
   int InitHistogram();
   int Fill_Histo();
   int Fill_SideHisto(); //Side Band histograms
@@ -29,6 +28,8 @@ protected:
   ofstream Fout;
   TFile *myFile;
   TH1D*	h1_W_pt;
+  TH1D*	h1_Wp_pt;
+  TH1D*	h1_Wm_pt;
   TH1D* h1_W_Neu_pt[NWptBinPlus];
   TH1D* h1_WSide_Neu_pt[NWptBinPlus];
   TH1D* h1_Wp_Neu_pt[NWptBinPlus];
@@ -64,5 +65,3 @@ Wlnu12LoMET::~Wlnu12LoMET()
   delete fChain->GetCurrentFile();
 }
 #endif // #ifdef Wlnu12LoMET_cxx
-
-

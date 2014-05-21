@@ -27,7 +27,8 @@ typedef PtEtaPhiMLorentzVectorD PtEtaPhiMLorentzVector;
 void Wlnu12LoBase::Loop()
 {
   gBenchmark->Start("Wlnu12LoBase");
-  gRandom->SetSeed(0);
+  //gRandom->SetSeed(0);
+  //gRandom->SetSeed(0x1234);
 //
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
@@ -38,17 +39,17 @@ int Wlnu12LoBase::CheckChannel()
 {
   //cout<<"CheckChannel============"<<endl;
   //cout<<AnaChannel<<"\t"<<Channel<<endl;
-  if(AnaChannel == "MuonLowPU" )if(fabs(Channel) != GenType::kMuon) return -1;
+  if(AnaChannel == "Muon2012LoPU" )if(fabs(Channel) != GenType::kMuon) return -1;
   if(AnaChannel == "MuonHighPU")if(fabs(Channel) != GenType::kMuon) return-1;
-  if(AnaChannel == "ElectronLowPU")if(fabs(Channel) != GenType::kElectron) return-1;
+  if(AnaChannel == "Electron2012LoPU")if(fabs(Channel) != GenType::kElectron) return-1;
   if(AnaChannel == "ElectronHighPU")if(fabs(Channel) != GenType::kElectron) return-1;
   if(AnaChannel == "TauHighPU")if(fabs(Channel) != GenType::kTau) return-1;
   return 0;
 }
 int Wlnu12LoBase::TriggerCut()
 {
-    if(AnaChannel == "MuonLowPU" )if( HLT_Mu15_eta2p1_fired < 1) return -1;
-    if(AnaChannel == "ElectronLowPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1) return -1;
+    if(AnaChannel == "Muon2012LoPU" )if( HLT_Mu15_eta2p1_fired < 1) return -1;
+    if(AnaChannel == "Electron2012LoPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1) return -1;
     if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1) return -1;
   return 0;
 }
@@ -56,7 +57,7 @@ int Wlnu12LoBase::DumpWbestCand(int i)
 {
   W.charge = (*W_Charge)[i];
   //Muon Variable Study----------------------
-  if(AnaChannel == "MuonLowPU" ){
+  if(AnaChannel == "Muon2012LoPU" ){
     glbMuChi2 = (*W_Lept1_globalNormChi2)[i];
     W.muonHit = (*W_Lept1_muonHits)[i];
     W.matchStation = (*W_Lept1_matchStations)[i];
@@ -72,7 +73,7 @@ int Wlnu12LoBase::DumpWbestCand(int i)
     W.pcIso03 = (*W_Lept1_pcIso03)[i];
     W.pcIso04 = (*W_Lept1_pcIso04)[i];
   }
-  if(AnaChannel == "ElectronLowPU" )
+  if(AnaChannel == "Electron2012LoPU" )
   {
     W.lep_etaSC = (*W_Lept1_etaSC)[i];
   }
@@ -172,6 +173,23 @@ int Wlnu12LoBase::WbestSelect()
 
     }//Cut and Bigger pt
 
+  }
+  return 0;
+}
+
+int Wlnu12LoBase::DumpWSideCand()
+{
+  for(int iw(0); iw<W.size; iw++)
+  {
+    if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(iw) >0)||
+      ((AnaChannel == "Electron2012LoPU") && ElectronCutSide(iw) > 0)||
+      (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
+      )
+    {
+      W.pt_side = (*W_pt)[iw];
+      W.Met_side = (*W_Neut_pt)[iw];
+      W.charge_side = (*W_Charge)[iw];
+    }
   }
   return 0;
 }
