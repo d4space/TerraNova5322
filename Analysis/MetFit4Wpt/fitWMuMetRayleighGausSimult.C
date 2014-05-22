@@ -125,14 +125,14 @@ void fitWMuMetRayleighGausSimult(const TString  outputDir,   // output directory
   vector <double> nEventWToTauNuM;
 
   int ewkNumber(0);
-  fnamev.push_back("../EventSelection/MuonLowPU/Muon_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
-  fnamev.push_back("../EventSelection/MuonLowPU/Muon_DYToMuMu_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU/Muon_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU/Muon_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
-  fnamev.push_back("../EventSelection/MuonLowPU/Muon_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon_RD_LowPU_AllCorrectionsRD/Muon_RD_LowPU_AllCorrectionsRD.root"); typev.push_back(eData);
+  fnamev.push_back("../WPtMET/Muon_DYToMuMu_S8_Analysis/Muon_DYToMuMu_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon_DYToTauTau_S8_Analysis/Muon_DYToTauTau_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon_TTJets_S8_Analysis/Muon_TTJets_S8_Analysis.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon_WToTauNu_S8_Analysis/Muon_WToTauNu_S8_Analysis.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../WPtMET/WpToMuNu_S8_AllCorrectionsMC/WpToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../WPtMET/WmToMuNu_S8_AllCorrectionsMC/WmToMuNu_S8_AllCorrectionsMC.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
