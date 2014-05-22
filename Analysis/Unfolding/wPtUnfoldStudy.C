@@ -143,6 +143,8 @@ int wPtUnfoldStudy
     TH1D *unfRes;
     TH1D *dDist;
     TH1D *svDist;
+    TH1D *DetUnf;
+    TH1D *FSRUnf;
     TH2D *uTotalCovMat;
     TH2D *uTotalSystCov;
     TH2D *uStatCov;
@@ -215,6 +217,7 @@ int wPtUnfoldStudy
   TH1D *h1_Truth_Post_Odd;
   TH2D *h2_Truth_Rec_AP_Post;
   TH2D *h2_Truth_Rec_AP_Post_Ivs;
+  TH2D *h2_Truth_Rec_AP_PostEffCorr;
   TH1D *h1_Unfolded_Post_InvMthd;
   TH1D *EqBin_Truth_Rec_Even;
 
@@ -238,6 +241,7 @@ int wPtUnfoldStudy
   double TotalStat[NWptBinPlus]={0.};
   double TotalError[NWptBinPlus]={0.};
   double TotalUncertErr[NWptBinPlus]={0.};
+  double errPowheg[NWptBinPlus]={0.};
   
   double dUnf_SVD[NWptBinPlus-1]={0.};
   double FSRUnf_SVD[NWptBinPlus-1]={0.};
@@ -256,6 +260,8 @@ int wPtUnfoldStudy
   SVD_Post.xini = new TH1D("xini_Post","Post true",NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.bini = new TH1D("bini_Post","Reco thruth" ,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.data = new TH1D("data_Rec","data_Rec"    ,NWptBinPlus-1,0,NWptBinPlus-1);
+  SVD_Post.DetUnf = new TH1D("DetUnf","dUnf data",13,Bins);
+  SVD_Born.FSRUnf = new TH1D("FSRUnf","FSRUnf data",13,Bins);
   SVD_Post.True = new TH1D("SVD_Post.True","SVD_Post.True",NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.Gen  = new TH1D("SVD_Post.Gen","SVD_Post.Gen",NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.Adet = new TH2D("Adet_Post","detector response"
@@ -426,6 +432,11 @@ int wPtUnfoldStudy
   InitHist2D(h2_Truth_Rec_AP_Post);
   h2_Truth_Rec_AP_Post->Sumw2();
 
+  sprintf(tmpName,"h2_Truth_Rec_AP_PostEffCorr");
+  h2_Truth_Rec_AP_PostEffCorr=(TH2D*)f_Unfold->Get(tmpName)->Clone(tmpName);
+  InitHist2D(h2_Truth_Rec_AP_PostEffCorr);
+  h2_Truth_Rec_AP_PostEffCorr->Sumw2();
+  
   cout<<"Simulated event========================="<<endl;
   int nbins = h1_Truth_Rec->GetNbinsX();
   cout<<"Nsimul N of bins: "<<nbins<<endl;
@@ -440,8 +451,11 @@ int wPtUnfoldStudy
   cout<<"NsimulOdd: "<<setw(20)<<setprecision(7)<<NsimulOdd<<endl;
   Fout<<"NsimulOdd: "<<setw(20)<<setprecision(7)<<NsimulOdd<<endl;
   double NdetectorResponse = h2_Truth_Rec_AP_Post->Integral();
+  double NdetectorResponseEffCorr = h2_Truth_Rec_AP_Post->Integral();
   cout<<"NdetectorResponse: "<<NdetectorResponse<<endl;
+  cout<<"NdetectorResponseEffCorr: "<<NdetectorResponseEffCorr<<endl;
   Fout<<"NdetectorResponse: "<<NdetectorResponse<<endl;
+  Fout<<"NdetectorResponseEffCorr: "<<NdetectorResponseEffCorr<<endl;
   //======================
   // Histo from Acceptance 
   //======================
@@ -597,12 +611,19 @@ int wPtUnfoldStudy
     for( int j(1);j<=nbins;j++)//gen idx
     {
       if(i==5) checkNumber += h2_Truth_Rec_AP_Post->GetBinContent(i,j);
-      SVD_Post.Adet->SetBinContent(i,j,h2_Truth_Rec_AP_Post->GetBinContent(i,j));
+      //SVD_Post.Adet->SetBinContent(i,j,h2_Truth_Rec_AP_Post->GetBinContent(i,j));
+      SVD_Post.Adet->SetBinContent(i,j,h2_Truth_Rec_AP_PostEffCorr->GetBinContent(i,j));
       SVD_Born.Adet->SetBinContent(i,j,h2_PostBorn_BothFid->GetBinContent(i,j));
       //Adet_Post->SetBinError(i,j,h2_Truth_Rec_AP_Post->GetBinError(i,j));
     }
   }
-  cout<<"check the number 5th bin(h1,response) "<<h1_Truth_Rec->GetBinContent(5)<<" "<<checkNumber<<endl;
+  Fout<<"xini, bini in Detector Unfolding"<<endl;
+  for(int i(1);i<=h1_Data_SigYild->GetNbinsX();i++)
+  {
+    Fout<<i<<"\t"<<SVD_Post.xini->GetBinContent(i)<<"\t"<<SVD_Post.bini->GetBinContent(i)<<endl;
+  }
+  
+  //cout<<"check the number 5th bin(h1,response) "<<h1_Truth_Rec->GetBinContent(5)<<" "<<checkNumber<<endl;
   //=================================================================
   //=================================================================
   // Unfolding from Rec to Post           ===========================
@@ -625,7 +646,8 @@ int wPtUnfoldStudy
     for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
     {
       if (i==j)
-	SVD_Post.RecoStatisticCovMat->SetBinContent(i,i, h1_Data_SigYild->GetBinError(i)*h1_Data_SigYild->GetBinError(i));
+	//SVD_Post.RecoStatisticCovMat->SetBinContent(i,i, h1_Data_SigYild->GetBinError(i)*h1_Data_SigYild->GetBinError(i));
+	SVD_Post.RecoStatisticCovMat->SetBinContent(i,i, h1_Data_SigYild->GetBinContent(i));
       else
 	SVD_Post.RecoStatisticCovMat->SetBinContent(i,j, 0.,0. );
     }
@@ -803,6 +825,23 @@ int wPtUnfoldStudy
       Fout<<TotalStat[i]<<endl;
     }
   
+  Fout <<"Unfolding response Matrices"<<endl;
+  Fout <<"Bin\t dUnf\t FSR Unf"<<endl;
+  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+  {
+    for( int j(1);j<=h1_Data_SigYild->GetNbinsX(); j++)
+    {
+      Fout<<i<<" "<<j<<"\t"<<SVD_Post.Adet->GetBinContent(i,j)<<"\t"<<SVD_Born.Adet->GetBinContent(i,j)<<endl;
+    }
+  }
+  
+  Fout <<"bini and xini in Unfolding"<<endl;
+  Fout <<"Bin\t dUnf bini\t dUnf xini\t FSR Unf bini\t FSR Unf xini"<<endl;
+  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+  {
+    Fout<<i<<"\t"<<SVD_Post.bini->GetBinContent(i)<<"\t"<<SVD_Post.xini->GetBinContent(i)<<"\t"<<SVD_Born.bini->GetBinContent(i)<<"\t"<<SVD_Born.xini->GetBinContent(i)<<endl;
+  }
+
   //SVD_Post.RecoStatisticCovMat->Write();
   //SVD_Post.RecoScaleCovMat->Write();
   //SVD_Post.RecoEffiCovMat->Write();
@@ -838,6 +877,10 @@ int wPtUnfoldStudy
   pltUnfPost_InputCov -> AddHist2D(SVD_Post.TotalRecoCovMat,"COLTEXTZ",kWhite,kBlack);
   pltUnfPost_InputCov -> Draw(myCan,kTRUE,"png");
 
+
+  cout<<"SVD_Post.xini:  Total Number of post distr  :   h1_Truth_Post -->   "<<SVD_Post.xini->Integral()<<endl;
+  cout<<"SVD_Post.bini:  Total Number of recon distr :   h1_Truth_Rec  -->   "<<SVD_Post.bini->Integral()<<endl;
+
   //=================================================================
   //=================================================================
   // Detector Unfolding (Error propagation of Cov matrix) ===========
@@ -857,6 +900,7 @@ int wPtUnfoldStudy
   //SVD_Post.statCov = tsvdData->GetBCov();
   tsvdData->SetNormalize( kFALSE );
   SVD_Post.unfRes = tsvdData->Unfold(4); 
+  //SVD_Post.unfRes = tsvdData->Unfold(3); 
   //SVD_Post.unfRes = tsvdData->Unfold(5); 
   //SVD_Post.unfRes = tsvdData->Unfold(6); 
   //SVD_Post.unfRes = tsvdData->Unfold(7); 
@@ -865,6 +909,13 @@ int wPtUnfoldStudy
   SVD_Post.dDist = tsvdData->GetD();
   SVD_Post.svDist = tsvdData->GetSV();
   
+  for(int i(1);i<=h1_Data_SigYild->GetNbinsX();i++)
+  {
+    SVD_Post.DetUnf -> SetBinContent(i,SVD_Post.unfRes->GetBinContent(i));
+  }
+  //SVD_Post.DetUnf = (TH1D*)SVD_Post.unfRes->Clone("DetUnf");
+  //SVD_Post.DetUnf -> Sumw2();
+
   SVD_Post.uStatCov = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 1000);
   //SVD_Post.uTotalCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 100);
   SVD_Post.uTotalCovMat = (TH2D*)SVD_Post.uStatCov->Clone("uTotalCovMat");
@@ -1005,7 +1056,6 @@ int wPtUnfoldStudy
       Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
     }
   }
-  cout<<"Check5"<<endl;
   Fout << "Statistic Detector Unfolding stage"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1014,7 +1064,6 @@ int wPtUnfoldStudy
     Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
   }
    
-  cout<<"Check6"<<endl;
   Fout << "Stat+Syst+RespMatErr systematic after Detector Unfolding"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1022,7 +1071,6 @@ int wPtUnfoldStudy
   {
     Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uTotalCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uTotalCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uTotalCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
   }
-  cout<<"Check7"<<endl;
   Fout << ""<< endl;
   Fout << ""<< endl;
   Fout << ""<< endl;
@@ -1039,13 +1087,11 @@ int wPtUnfoldStudy
     {
       Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
-  cout<<"Check8"<<endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
       Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoScaleCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
-  cout<<"Check9"<<endl;
   
   Fout << ""<< endl;
   Fout << ""<< endl;
@@ -1205,14 +1251,54 @@ int wPtUnfoldStudy
     SVD_Post.unfRes->SetBinError(i, TMath::Sqrt(SVD_Post.uTauCov->GetBinContent(i,i)));
   }
   
+//  //Make FSR Covariance Matrix from MC Eff
+//  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
+//  {
+//    for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
+//    {
+//      SVD_Post.MCEventEffFSRCovMat->SetBinContent(i,j, SVD_Post.unfRes->GetBinContent(i)*SVD_Post.unfRes->GetBinContent(j)
+//	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(i) - h1_Post_BothOvTruth_eqBin->GetBinContent(i))
+//	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(j) - h1_Post_BothOvTruth_eqBin->GetBinContent(j)));
+//    }
+//  }
+//  
+//  SVD_Post.MCEventEffFSRCovMat->Write();
+//
+//  Fout << "FSR Syst "<< endl;
+//  Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
+//  Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
+//  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+//  {
+//    Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.RecoStatisticCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.unfRes->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
+//  }
+//
+//  //FSR Covariance Matrix
+//  tmpTStr = "EffFSRCovMat_"+BaseName;
+//  pltEffFSRCov = new CPlot(tmpTStr,"FSR Covariance Matrix from Event Efficiency","","");
+//  pltEffFSRCov -> setOutDir(resultDir);
+//  gPad->SetLogz(0);
+//  SVD_Post.MCEventEffFSRCovMat -> SetMarkerSize(0.8);
+//  pltEffFSRCov -> AddHist2D(SVD_Post.MCEventEffFSRCovMat,"COLTEXTZ",kWhite,kBlack);
+//  pltEffFSRCov -> Draw(myCan,kTRUE,"png");
+
+  SVD_Post.EffCorr = (TH1D*)SVD_Post.unfRes->Clone("PostEffCorr");
+  SVD_Post.EffCorr->Sumw2();
+  SVD_Post.EffCorr->Multiply(h1_Post_BothOvTruth_eqBin);
+
+  Fout<<"Yields after Detector Unfolding (dUnf, MC efficiency and MC event SF correction)"<<endl;
+  for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
+  {    
+    Fout<<i<<"\t"<<SVD_Post.DetUnf->GetBinContent(i)<<"\t"<<h1_Post_BothOvTruth_eqBin->GetBinContent(i)<<"\t"<<SVD_Post.EffCorr->GetBinContent(i)<<endl;
+  }
+
   //Make FSR Covariance Matrix from MC Eff
   for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
   {
     for( int j(1); j<= SVD_Post.data->GetNbinsX(); j++)
     {
-      SVD_Post.MCEventEffFSRCovMat->SetBinContent(i,j, SVD_Post.unfRes->GetBinContent(i)*SVD_Post.unfRes->GetBinContent(j)
-	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(i) - h1_Post_BothOvTruth_eqBin->GetBinContent(i))
-	  *(h1_Post_BothOvTruth_weightFSR_eqBin->GetBinContent(j) - h1_Post_BothOvTruth_eqBin->GetBinContent(j)));
+      if (i==j) SVD_Post.MCEventEffFSRCovMat->SetBinContent(i,i, SVD_Post.EffCorr->GetBinContent(i));
+      else SVD_Post.MCEventEffFSRCovMat->SetBinContent(i,j, 0.);
+
     }
   }
   
@@ -1235,9 +1321,7 @@ int wPtUnfoldStudy
   pltEffFSRCov -> AddHist2D(SVD_Post.MCEventEffFSRCovMat,"COLTEXTZ",kWhite,kBlack);
   pltEffFSRCov -> Draw(myCan,kTRUE,"png");
 
-  SVD_Post.EffCorr = (TH1D*)SVD_Post.unfRes->Clone("PostEffCorr");
-  SVD_Post.EffCorr->Sumw2();
-  SVD_Post.EffCorr->Multiply(h1_Post_BothOvTruth_eqBin);
+
 
 //Compare MC EffCorrected D_Unf Result to Post_BothFid  
   tmpTStr = "MCEffcorr_SVD_Unf_"+BaseName;
@@ -1538,15 +1622,18 @@ int wPtUnfoldStudy
   //    SVD_Born.data,SVD_Post.Eff_uTotalRecoCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
   
   TSVDUnfold *svdBorn = new TSVDUnfold(
-      SVD_Born.data,SVD_Born.InputCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
+      SVD_Born.data,SVD_Post.MCEventEffFSRCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
+      //SVD_Born.data,SVD_Born.InputCovMat, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
   
   //TSVDUnfold *svdBorn = new TSVDUnfold(
   //    SVD_Born.data,SVD_Post.Eff_uTauCov, SVD_Born.bini, SVD_Born.xini,SVD_Born.Adet);
   
   SVD_Born.statCov = svdBorn->GetBCov();
   svdBorn->SetNormalize( kFALSE );
-  SVD_Born.unfRes = svdBorn->Unfold(3);
-  //SVD_Born.unfRes = svdBorn->Unfold(4);
+  if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
+    SVD_Born.unfRes = svdBorn->Unfold(3);
+  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+    SVD_Born.unfRes = svdBorn->Unfold(4);
   //SVD_Born.unfRes = svdBorn->Unfold(5);
   //SVD_Born.unfRes = svdBorn->Unfold(6);
   //SVD_Born.unfRes = svdBorn->Unfold(7);
@@ -1554,6 +1641,14 @@ int wPtUnfoldStudy
   //SVD_Born.unfRes = svdBorn->Unfold(9);
   SVD_Born.dDist = svdBorn->GetD();
   SVD_Born.svDist = svdBorn->GetSV();
+  
+  for(int i(1);i<=h1_Data_SigYild->GetNbinsX();i++)
+  {
+    SVD_Born.FSRUnf -> SetBinContent(i,SVD_Born.unfRes->GetBinContent(i));
+  }
+  //SVD_Born.FSRUnf = (TH1D*)SVD_Born.unfRes->Clone("FSRUnf");
+  //SVD_Born.FSRUnf -> Sumw2();
+  
   SVD_Born.uStatCov = svdBorn->GetUnfoldCovMatrix( SVD_Born.statCov, 1000);
 
   SVD_Born.uInputCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Born.InputCovMat, 1000);
@@ -1881,6 +1976,12 @@ int wPtUnfoldStudy
   h1_Born_BothOvBorn_eqBin->Sumw2();
   SVD_Born.EffCorr->Divide(h1_Born_BothOvBorn_eqBin);
 
+  Fout<<"Yields after FSR Unfolding and SF and bin-by-bin correction"<<endl;
+  for( int i(1); i<= SVD_Born.unfRes->GetNbinsX(); i++)
+  {    
+    Fout<<i<<"\t"<<SVD_Born.FSRUnf->GetBinContent(i)<<"\t"<<h1_Born_BothOvBorn_eqBin->GetBinContent(i)<<"\t"<<SVD_Born.EffCorr->GetBinContent(i)<<endl;
+  }
+
   tmpTStr = "Born_Unf_"+BaseName;
   pltUnfBorn = new CPlot(tmpTStr,"Post to Born Unfolding with SVD","W pT [GeV]","Event");
   pltUnfBorn->setOutDir(resultDir);
@@ -1954,86 +2055,163 @@ int wPtUnfoldStudy
       Fout<<"TotalError = "<<TotalError[i]<<endl;
       //SVD_Born.EffCorr->SetBinError(i,0.01*TotalError[i]*SVD_Born.EffCorr->GetBinContent(i));
     }
-  
+
   if(BaseName == "WpToMuNu"){
     TotalUncertErr[0] = 0; 
-    TotalUncertErr[1] = 2.84 ; 
-    TotalUncertErr[2] = 2.79 ; 
-    TotalUncertErr[3] = 2.93 ; 
-    TotalUncertErr[4] = 3.02 ; 
-    TotalUncertErr[5] = 3.12 ; 
-    TotalUncertErr[6] = 3.33 ; 
-    TotalUncertErr[7] = 3.15 ; 
-    TotalUncertErr[8] = 3.85 ; 
-    TotalUncertErr[9] = 4.05 ; 
-    TotalUncertErr[10]= 5.41 ; 
-    TotalUncertErr[11]= 8.61 ; 
-    TotalUncertErr[12]= 13.57; 
-    TotalUncertErr[13]= 17.86; 
+    TotalUncertErr[1] = 3.36 ; 
+    TotalUncertErr[2] = 3.30 ; 
+    TotalUncertErr[3] = 3.33 ; 
+    TotalUncertErr[4] = 4.70 ; 
+    TotalUncertErr[5] = 4.33 ; 
+    TotalUncertErr[6] = 4.99 ; 
+    TotalUncertErr[7] = 5.02 ; 
+    TotalUncertErr[8] = 6.84 ; 
+    TotalUncertErr[9] = 6.71 ; 
+    TotalUncertErr[10]= 6.49 ; 
+    TotalUncertErr[11]= 10.13; 
+    TotalUncertErr[12]= 16.63; 
+    TotalUncertErr[13]= 21.79; 
   }else if(BaseName == "WmToMuNu"){
     TotalUncertErr[0] = 0; 
-    TotalUncertErr[1] = 2.88 ;
-    TotalUncertErr[2] = 2.87 ;
-    TotalUncertErr[3] = 2.95 ;
-    TotalUncertErr[4] = 3.08 ;
-    TotalUncertErr[5] = 3.29 ;
-    TotalUncertErr[6] = 3.44 ;
-    TotalUncertErr[7] = 4.38 ;
-    TotalUncertErr[8] = 4.75 ;
-    TotalUncertErr[9] = 4.01 ;
-    TotalUncertErr[10]= 6.37 ;
-    TotalUncertErr[11]= 10.38;
-    TotalUncertErr[12]= 13.30;
-    TotalUncertErr[13]= 25.62;
+    TotalUncertErr[1] = 3.36 ;
+    TotalUncertErr[2] = 3.37 ;
+    TotalUncertErr[3] = 3.44 ;
+    TotalUncertErr[4] = 4.15 ;
+    TotalUncertErr[5] = 4.30 ;
+    TotalUncertErr[6] = 5.17 ;
+    TotalUncertErr[7] = 5.09 ;
+    TotalUncertErr[8] = 6.35 ;
+    TotalUncertErr[9] = 7.37 ;
+    TotalUncertErr[10]= 10.17;
+    TotalUncertErr[11]= 15.69;
+    TotalUncertErr[12]= 20.63;
+    TotalUncertErr[13]= 35.22;
   }else if(BaseName == "WpToEleNu"){
     TotalUncertErr[0] = 0; 
-    TotalUncertErr[1] = 2.90 ;  
-    TotalUncertErr[2] = 2.85 ; 
-    TotalUncertErr[3] = 2.94 ; 
-    TotalUncertErr[4] = 3.02 ; 
-    TotalUncertErr[5] = 3.33 ; 
-    TotalUncertErr[6] = 3.34 ; 
-    TotalUncertErr[7] = 3.87 ; 
-    TotalUncertErr[8] = 4.63 ; 
-    TotalUncertErr[9] = 4.29 ; 
-    TotalUncertErr[10]= 6.86 ; 
-    TotalUncertErr[11]= 11.19; 
-    TotalUncertErr[12]= 13.50; 
-    TotalUncertErr[13]= 15.81;
+    TotalUncertErr[1] = 3.84 ;  
+    TotalUncertErr[2] = 3.53 ; 
+    TotalUncertErr[3] = 3.35 ; 
+    TotalUncertErr[4] = 3.76 ; 
+    TotalUncertErr[5] = 4.22 ; 
+    TotalUncertErr[6] = 4.92 ; 
+    TotalUncertErr[7] = 5.63 ; 
+    TotalUncertErr[8] = 7.47 ; 
+    TotalUncertErr[9] = 7.50 ; 
+    TotalUncertErr[10]= 8.38 ; 
+    TotalUncertErr[11]= 11.44; 
+    TotalUncertErr[12]= 14.93; 
+    TotalUncertErr[13]= 18.70;
   }else if(BaseName == "WmToEleNu"){
     TotalUncertErr[0] = 0; 
-    TotalUncertErr[1] = 3.00 ; 
-    TotalUncertErr[2] = 2.96 ; 
-    TotalUncertErr[3] = 3.06 ; 
-    TotalUncertErr[4] = 3.17 ; 
-    TotalUncertErr[5] = 3.63 ; 
-    TotalUncertErr[6] = 3.45 ; 
-    TotalUncertErr[7] = 4.60 ; 
-    TotalUncertErr[8] = 5.01 ; 
-    TotalUncertErr[9] = 5.57 ; 
-    TotalUncertErr[10]= 9.40 ; 
-    TotalUncertErr[11]= 14.93; 
-    TotalUncertErr[12]= 19.05; 
-    TotalUncertErr[13]= 20.63;
+    TotalUncertErr[1] = 4.12 ; 
+    TotalUncertErr[2] = 3.60 ; 
+    TotalUncertErr[3] = 3.48 ; 
+    TotalUncertErr[4] = 3.87 ; 
+    TotalUncertErr[5] = 4.29 ; 
+    TotalUncertErr[6] = 4.96 ; 
+    TotalUncertErr[7] = 5.84 ; 
+    TotalUncertErr[8] = 7.47 ; 
+    TotalUncertErr[9] = 8.13 ; 
+    TotalUncertErr[10]= 9.25 ; 
+    TotalUncertErr[11]= 13.18; 
+    TotalUncertErr[12]= 18.40; 
+    TotalUncertErr[13]= 22.64;
   }
   
   for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
   {
     SVD_Born.EffCorr->SetBinError(i,0.01*TotalUncertErr[i]*SVD_Born.EffCorr->GetBinContent(i));
   }
-  
+
+  if (BaseName=="WpToMuNu")
+  {
+  errPowheg[0] = 0; 
+  errPowheg[1] = 4.268; 
+  errPowheg[2] = 4.147; 
+  errPowheg[3] = 4.122; 
+  errPowheg[4] = 4.123; 
+  errPowheg[5] = 4.132; 
+  errPowheg[6] = 4.126; 
+  errPowheg[7] = 4.143; 
+  errPowheg[8] = 5.279; 
+  errPowheg[9] = 4.222; 
+  errPowheg[10] = 4.426;
+  errPowheg[11]= 4.819; 
+  errPowheg[12]= 5.075; 
+  errPowheg[13]= 6.084; 
+  }
+  if (BaseName=="WmToMuNu")
+  {
+  errPowheg[0] = 0; 
+  errPowheg[1]  = 4.398;
+  errPowheg[2]  = 4.382;
+  errPowheg[3]  = 4.423;
+  errPowheg[4]  = 4.443;
+  errPowheg[5]  = 5.604;
+  errPowheg[6]  = 4.532;
+  errPowheg[7]  = 7.792;
+  errPowheg[8]  = 3.349;
+  errPowheg[9]  = 4.622;
+  errPowheg[10] = 19.15;
+  errPowheg[11] = 4.587;
+  errPowheg[12] = 4.323;
+  errPowheg[13]= 5.229;
+  }
+  if (BaseName=="WpToEleNu")
+  {
+  errPowheg[0] = 0; 
+  errPowheg[1]   = 4.37 ; 
+  errPowheg[2] = 4.314; 
+  errPowheg[3] = 4.109; 
+  errPowheg[4] = 12.58; 
+  errPowheg[5] = 19.8 ; 
+  errPowheg[6] = 7.864; 
+  errPowheg[7] = 3.68 ; 
+  errPowheg[8] = 3.741; 
+  errPowheg[9] = 19.27; 
+  errPowheg[10]= 6.264;
+  errPowheg[11]= 4.312; 
+  errPowheg[12]= 4.235; 
+  errPowheg[13]= 5.534; 
+  }
+  if (BaseName=="WmToEleNu")
+  {
+  errPowheg[0] = 0; 
+  errPowheg[1] = 4.285; 
+  errPowheg[2] = 4.156; 
+  errPowheg[3] = 4.132; 
+  errPowheg[4] = 4.129; 
+  errPowheg[5] = 4.128; 
+  errPowheg[6] = 7.152; 
+  errPowheg[7] = 4.143; 
+  errPowheg[8] = 18.56; 
+  errPowheg[9] = 16.32; 
+  errPowheg[10]= 4.427;
+  errPowheg[11]= 4.582; 
+  errPowheg[12]= 4.939; 
+  errPowheg[13]= 5.144; 
+  }
+
+  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
+  {
+    SVD_Born.Gen->SetBinError(i, 0.01*errPowheg[i]*SVD_Born.Gen->GetBinContent(i));
+  }
+
+
+
   // Write to root file
   SVD_Post.data->Write();
-
-  SVD_Born.EffCorr->Write();
-
-  SVD_Born.Gen->Write();
-
   SVD_Post.True->Write();
-
-  SVD_Post.unfRes->Write();
-
   SVD_Post.Gen->Write();
   
+  SVD_Post.DetUnf -> Write();
+  SVD_Post.unfRes->Write();
+  SVD_Post.EffCorr->Write();
+  
+  SVD_Born.Gen->Write();
+  
+  SVD_Born.FSRUnf -> Write();
+  SVD_Born.unfRes->Write();
+  SVD_Born.EffCorr->Write();
   return 0;
 }
