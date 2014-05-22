@@ -39,7 +39,9 @@ protected:
   
   TFitResult *fitresPFu1mean, *fitresPFu1sigma1, *fitresPFu1sigma2,  *fitresPFu1sigma0;
   TFitResult *fitresPFu2mean, *fitresPFu2sigma1, *fitresPFu2sigma2,  *fitresPFu2sigma0;
-  
+
+  TRandom3 *recoilRandom;
+
   Double_t pfu1meanCov[2][2];
   Double_t pfu2meanCov[2][2];
   Double_t pfu1sigma1Cov[3][3];
@@ -143,7 +145,9 @@ Double_t dSigma(const TF1 *fcn, const Double_t x, const Double_t cov[3][3]) {
 
 RecoilCorrector::RecoilCorrector(TString fname, TString fname_Wp, TString fname_Wm, TString fname_Z, Int_t seed)
 {
-  gRandom->SetSeed(seed);
+  recoilRandom = new TRandom3();
+  recoilRandom->SetSeed(seed);
+  //gRandom->SetSeed(seed);
 
   TFile infile(fname);
 
@@ -496,11 +500,19 @@ void RecoilCorrector::Correct(Double_t &pfmet, Double_t &pfmetphi,
   Double_t pfu2frac2  = (pfu2sigma0 - pfu2sigma1)/(pfu2sigma2 - pfu2sigma1);
   
   
-  Double_t z1 = gRandom->Gaus(0,1);
-  Double_t z2 = gRandom->Gaus(0,1);
+  Double_t z1 = recoilRandom->Gaus(0,1);
+  Double_t z2 = recoilRandom->Gaus(0,1);
+  cout<<"Recoil TRandom: "<<recoilRandom->Gaus(0,1)<<endl;
 
-  Double_t pfu1 = (gRandom->Uniform(0,1) < pfu1frac2) ? z1*pfu1sigma2+pfu1mean : z1*pfu1sigma1+pfu1mean;
-  Double_t pfu2 = (gRandom->Uniform(0,1) < pfu2frac2) ? z2*pfu2sigma2+pfu2mean : z2*pfu2sigma1+pfu2mean;
+  Double_t pfu1 = (recoilRandom->Uniform(0,1) < pfu1frac2) ? z1*pfu1sigma2+pfu1mean : z1*pfu1sigma1+pfu1mean;
+  Double_t pfu2 = (recoilRandom->Uniform(0,1) < pfu2frac2) ? z2*pfu2sigma2+pfu2mean : z2*pfu2sigma1+pfu2mean;
+  
+  //Double_t z1 = gRandom->Gaus(0,1);
+  //Double_t z2 = gRandom->Gaus(0,1);
+  //cout<<"Recoil gRandom: "<<gRandom->Gaus(0,1)<<endl;
+
+  //Double_t pfu1 = (gRandom->Uniform(0,1) < pfu1frac2) ? z1*pfu1sigma2+pfu1mean : z1*pfu1sigma1+pfu1mean;
+  //Double_t pfu2 = (gRandom->Uniform(0,1) < pfu2frac2) ? z2*pfu2sigma2+pfu2mean : z2*pfu2sigma1+pfu2mean;
  
   TVector2 vpfmet(-pfu1*cos(genWPhi)+pfu2*sin(genWPhi)-lepPt*cos(lepPhi), -pfu1*sin(genWPhi)-pfu2*cos(genWPhi)-lepPt*sin(lepPhi));  
   pfmet    = vpfmet.Mod();

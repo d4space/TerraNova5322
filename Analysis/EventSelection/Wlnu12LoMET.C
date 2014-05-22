@@ -48,16 +48,16 @@ void Wlnu12LoMET::Loop()
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   Ntries = fChain->GetEntries();
-
+  TTW =1;
   cout<<"Total: "<<Ntries<<endl;
 
   //============================================
   // Looping for each Event 
   //============================================
   //for (int i(0); i<Ntries;i++)
-  for (int i(0); i<15;i++)
+  for (int i(0); i<20;i++)
   {
-    cout<<i<<" th Event"<<endl;
+   // cout<<i<<" th Event"<<endl;
     evtCnt = i;
     //===============================
     //W study
@@ -70,6 +70,14 @@ void Wlnu12LoMET::Loop()
     //Initialization of Variables
     //===========================
     InitVar4Evt();
+
+    if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0) 
+    {    
+      //TTW = 1;
+      if( FillAcceptInfo() != 0 ) exit(-1);
+      // Don't go futher
+      continue;
+    }    
 
     // Dump MET informations
     DumpMETs();
@@ -353,6 +361,162 @@ int Wlnu12LoMET::Fill_SideHisto()
   }
   return 0;
 }
+int Wlnu12LoMET::DefineAcceptHist()
+{
+   //Acceptance Histograms
+   h1_Born_AP=new TH1D("h1_Born_AP","Born WpT All Phase",NWptBinPlus-1,Bins);
+   h1_Born_BornFid=new TH1D("h1_Born_BornFid","Born WpT at BornFid",NWptBinPlus-1,Bins);
+   h1_Born_BornFid_Even=new TH1D("h1_Born_BornFid_Even","Born WpT at BornFid",NWptBinPlus-1,Bins);
+   h1_Born_BothFid=new TH1D("h1_Born_BothFid","Born WpT at BothFid",NWptBinPlus-1,Bins);
+   h1_Born_BothFid_Even=new TH1D("h1_Born_BothFid_Even","Born WpT at BothFid",NWptBinPlus-1,Bins);
+
+   h1_Post_PostFid=new TH1D("h1_Post_PostFid","Post WpT at PostFid",NWptBinPlus-1,Bins);
+   h1_Post_PostFid_Even=new TH1D("h1_Post_PostFid_Even","Post WpT at PostFid",NWptBinPlus-1,Bins);
+   h1_Post_BothFid=new TH1D("h1_Post_BothFid","Post WpT at BothFid",NWptBinPlus-1,Bins);
+   h1_Post_BothFid_weightFSR=new TH1D("h1_Post_BothFid_weightFSR","Post WpT at BothFid weightFSR",NWptBinPlus-1,Bins);
+   h1_Post_BothFid_Even=new TH1D("h1_Post_BothFid_Even","Post WpT at BothFid",NWptBinPlus-1,Bins);
+   h2_PostBorn_BothFid=new TH2D("h2_PostBorn_BothFid","Post vs Born at BothFid",NWptBinPlus-1,Bins, NWptBinPlus-1,Bins);
+}
+
+int Wlnu12LoMET::FillAcceptInfo()
+{
+  cout << "check 1" << endl;
+  isPostPassAcc = false;
+  isBornPassAcc = false;
+  int NGenW = GenW_Born_pt->size();
+  //Check W number and Lept1 id
+  if( NGenW != 1) cout<<"Notice: Number of GenW is not 1 but "<<NGenW<<endl;
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")if( fabs((*GenW_BornLept1_id)[0]) != GenType::kMuon)
+  {
+    cout<<"Error: Muon Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
+    exit(-1);
+  }
+  cout << "check 2" << endl;
+  if( AnaChannel=="ElectronLowPU")
+    if( fabs((*GenW_BornLept1_id)[0]) != GenType::kElectron)
+  {
+    cout<<"Error: Electron Channel but BornLept1_id is "<<(*GenW_BornLept1_id)[0]<<endl;
+    exit(-1);
+  }
+  cout << "check 3" << endl;
+
+  // Gen Information
+  TVector2 genW_Post_2D(
+	(*GenW_PostLept1_px)[0] + (*GenW_PostLept2_px)[0],
+	(*GenW_PostLept1_py)[0] + (*GenW_PostLept2_py)[0]);
+  genInfo.PostW_pt = genW_Post_2D.Mod();
+  genInfo.BornW_pt = (*GenW_Born_pt)[0];
+
+  // Fill Born Level
+  // Acceptance
+    //Full Phase Spece
+  // Fiducial 
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+  if( (*GenW_BornLept1_pt)[0] > 20 )
+  if( fabs( (*GenW_BornLept1_eta)[0]) < 2.1 )
+    isBornPassAcc = true;
+  if( AnaChannel=="ElectronLowPU")
+  if( (*GenW_BornLept1_pt)[0] > 25 )
+  if( fabs( (*GenW_BornLept1_eta)[0]) < 2.5 )
+  //if( (fabs((*GenW_BornLept1_eta)[0]) < 1.444) || (fabs( (*GenW_BornLept1_eta)[0]) >1.566 ) )  
+    isBornPassAcc = true;
+  cout << "check 4" << endl;
+
+  // Fiducial of Post 
+  if( AnaChannel=="MuonLowPU" || AnaChannel=="MuonHighPU")
+  if( (*GenW_PostLept1_pt)[0] > 20 )
+  if( fabs( (*GenW_PostLept1_eta)[0]) < 2.1 )
+    isPostPassAcc = true;
+  if( AnaChannel=="ElectronLowPU")
+  if( (*GenW_PostLept1_pt)[0] > 25 )
+  if( fabs((*GenW_PostLept1_eta)[0]) < 2.5 )
+  //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
+    isPostPassAcc = true;
+  // Fill Histo
+  cout << "check 5" << endl;
+  h1_Born_AP->Fill( genInfo.BornW_pt,TTW);
+  cout << "check 6" << endl;
+  //cout <<"Checking Lumiweight = "<<TTW<<endl;
+  if( isBornPassAcc )
+  {
+    /*
+    ////PDFsyst calculation
+    for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
+    {
+      //if( wCand.pt >= Bins[iBin] && wCand.pt < Bins[iBin+1] )
+      if( genInfo.BornW_pt >= Bins[iBin] && genInfo.BornW_pt < Bins[iBin+1] )
+      {
+        for(int j=0; j<weightPDF->size(); ++j)
+        {
+          weightedSelectedEvents[iBin][j] += (*weightPDF)[j];
+          weighted2SelectedEvents[iBin][j] += (*weightPDF)[j] * (*weightPDF)[j];
+          //cout<<wCand.pt<<" weightPDF: "<<j<<"\t"<<(*weightPDF)[j]<<"\t"<<weightedSelectedEvents[iBin][j]<<"\t"<<weighted2SelectedEvents[iBin][j]<<endl;
+        }
+      }
+    }
+  for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
+  {
+    unsigned int nmembers = weightPDF->size();
+    unsigned int npairs = (nmembers-1)/2;
+    //cout<<npairs<<endl;
+    events_central[iBin] = weightedSelectedEvents[iBin][0];
+    events2_central[iBin] = weighted2SelectedEvents[iBin][0];
+    if (npairs>0){
+      for (unsigned int j=0; j<npairs; ++j) {
+        wa[iBin] = weightedSelectedEvents[iBin][2*j+1]/events_central[iBin]-1.;
+        wb[iBin] = weightedSelectedEvents[iBin][2*j+2]/events_central[iBin]-1.; 
+        if (wa[iBin]>wb[iBin]) {
+          if (wa[iBin]<0.) wa[iBin] = 0.;
+          if (wb[iBin]>0.) wb[iBin] = 0.;
+          wplus[iBin] += wa[iBin]*wa[iBin];
+          wminus[iBin] += wb[iBin]*wb[iBin];
+        } else {
+          if (wb[iBin]<0.) wb[iBin] = 0.;
+          if (wa[iBin]>0.) wa[iBin] = 0.;
+          wplus[iBin] += wb[iBin]*wb[iBin];
+          wminus[iBin] += wa[iBin]*wa[iBin];
+        }
+        //cout<<iBin<<"\t"<<wa[iBin]<<"\t"<<wb[iBin]<<"\t"<<wplus[iBin]<<"\t"<<wminus[iBin]<<endl;
+      }
+      if (wplus[iBin]>0) wplus[iBin] = sqrt(wplus[iBin]);
+      if (wminus[iBin]>0) wminus[iBin] = sqrt(wminus[iBin]);
+      //cout<<wplus[iBin]<<"\t"<<wminus[iBin]<<"\t"<<endl;
+    }else{
+      cout << "\tNO eigenvectors for uncertainty estimation" << endl;
+    }
+    cout <<iBin+1<<" Bin: Relative uncertainty with respect to central member: +" << setprecision(4) << 100.*wplus[iBin] << " / -" << setprecision(4) << 100.*wminus[iBin] << " [%]" << endl;
+    //cout<<"End"<<endl;
+  }
+ */
+    h1_Born_BornFid->Fill(genInfo.BornW_pt,TTW);
+    if( evtCnt % 2 == 0 )
+    {
+      h1_Born_BornFid_Even->Fill(genInfo.BornW_pt,TTW);
+    }
+  }
+  if( isPostPassAcc )
+  {
+    h1_Post_PostFid->Fill(genInfo.PostW_pt,TTW);
+    if( evtCnt % 2 == 0 )
+    {
+      h1_Post_PostFid_Even->Fill(genInfo.PostW_pt,TTW);
+    }
+  }
+  if( isPostPassAcc && isBornPassAcc )
+  {
+    h1_Born_BothFid->Fill(genInfo.BornW_pt,TTW);
+    h1_Post_BothFid->Fill(genInfo.PostW_pt,TTW);
+    if(weightFSR<0) weightFSR=1;
+    h1_Post_BothFid_weightFSR->Fill(genInfo.PostW_pt,TTW*weightFSR);
+    h2_PostBorn_BothFid->Fill(genInfo.PostW_pt,genInfo.BornW_pt,TTW);
+    if( evtCnt % 2 == 0 )
+    {
+      h1_Born_BothFid_Even->Fill(genInfo.BornW_pt,TTW);
+      h1_Post_BothFid_Even->Fill(genInfo.PostW_pt,TTW);
+    }
+  }
+  return 0;
+}
 
 int Wlnu12LoMET::Write_Histo()
 {
@@ -368,5 +532,6 @@ int Wlnu12LoMET::Write_Histo()
     h1_Wm_Neu_pt[ipt]->Write();
     h1_WmSide_Neu_pt[ipt]->Write();
   }
+
   return 0;
 }

@@ -19,7 +19,6 @@ TString ModeMC = "Acceptance";//Analysis,Recoil, RecoilMC, RecoilCorr, Unfold,
 TString AnaChannelEle = "Electron2012LoPU"; 
 TString AnaChannelMu  = "Muon2012LoPU";
 
-  //gSystem->CompileMacro("../EventSelection/Wlnu12LoAccptNT.C","k");
   gSystem->CompileMacro("../EventSelection/Wlnu12LoNT.C","k");
   gSystem->CompileMacro("../EventSelection/Wlnu12LoBase.C","k");
   gSystem->CompileMacro("../EventSelection/Wlnu12LoMET.C","k");

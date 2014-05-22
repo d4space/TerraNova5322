@@ -144,7 +144,7 @@ int Wlnu12LoBase::DumpWbestCand(int i)
       genInfo.BornW_Nu_Pt = (*GenW_BornLept2_pt)[W.trthIdx];
       genInfo.BornW_Nu_Cnt ++;
     }else{
-      cout << "There is no BornW_Nu_Pt" << endl;
+      //cout << "There is no BornW_Nu_Pt" << endl;
     }
   }
   return 0;

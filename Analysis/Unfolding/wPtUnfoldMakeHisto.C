@@ -8,7 +8,7 @@
 using namespace std;
 
 //using namespace ROOT::Math;
-void WPtMEtMakeHisto()
+void wPtUnfoldMakeHisto()
 {
 //======================================
 // choose Mode and AnaChannel here  !!!
@@ -60,7 +60,7 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wmunu12LoWpMuNu(
       TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,true,0x1234);
   Wmunu12LoWpMuNu.Loop();
-
+/*
 //WmToMuNu========================================
   cout<<"WmToMuNu_S8===================="<<endl;
   TChain *TC_WmToMuNu_S8    = new TChain("WMuNeu/tree","");
@@ -71,7 +71,7 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wmunu12LoWmMuNu(
       TC_WmToMuNu_S8,LumiW_WmToMuNu, WmToMuNu_BaseName,ModeMC,AnaChannelMu,-1,true,1234);
   Wmunu12LoWmMuNu.Loop();
-
+*/
 
   
 //====================
@@ -95,7 +95,7 @@ void WPtMEtMakeHisto()
   //double LumiWeight_Ele_WmToEleNu_S8= RealLumi*1*4697.0/2127666;
   LumiW_WpToElNu = 1;
   LumiW_WmToElNu = 1;
-  
+ /* 
 //WpToEleNu========================================
   cout<<"WpToEleNu_S8===================="<<endl;
   TChain *TC_WpToEleNu_S8     = new TChain("WEleNeu/tree","");
@@ -116,4 +116,5 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wenu12LoWmEleNu(
       TC_WmToEleNu_S8,LumiW_WmToEleNu, WmToEleNu_BaseName,ModeMC,AnaChannelEle,-1,true,1234);
   Wenu12LoWmEleNu.Loop();
+  */
 }

@@ -92,7 +92,7 @@ protected:
   virtual Int_t    DoSmearCorr(int entry);
   virtual Int_t    DoRecoilCorr();
   virtual Double_t DoEffiCorr();
-  TRandom3 *myRandom;
+  TRandom3 *smearRandom;
   int RandomSeed;
   bool Debug;
   //------------------
@@ -218,8 +218,8 @@ void Wlnu12LoBase::Init(TTree *tree)
   mResultDir = OutNameBase+"_"+Mode;
   gSystem->mkdir(mResultDir);
 
-  myRandom = new TRandom3();
-  myRandom->SetSeed(RandomSeed);
+  smearRandom = new TRandom3();
+  smearRandom->SetSeed(RandomSeed);
   mEffSf = 1;
 
    Notify();
@@ -514,9 +514,9 @@ Int_t Wlnu12LoBase::DoSmearCorr(int i)
     if(fabs((*W_Lept1_eta)[i]) >= 1.6 && fabs((*W_Lept1_eta)[i]) < 2.1) smearcorr = 0.611946;
 
     PtEtaPhiMLorentzVector Wmu_4((*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
-    smearSF = myRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
+    smearSF = smearRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
     Wmu_4= smearSF*Wmu_4;
-    cout<<myRandom->Gaus(0,1)<<endl;;
+    cout<<"Smear gRandom: "<<smearRandom->Gaus(0,1)<<endl;
   }
   if(AnaChannel == "Electron2012LoPU")
   {
@@ -528,7 +528,7 @@ Int_t Wlnu12LoBase::DoSmearCorr(int i)
     if(fabs((*W_Lept1_etaSC)[i]) >= 2.0   && fabs((*W_Lept1_etaSC)[i]) < 2.5) smearcorr = 1.84788;
      
     PtEtaPhiMLorentzVector WeleMC_4((*W_Lept1_pt)[i],(*W_Lept1_etaSC)[i],(*W_Lept1_phi)[i],0.000511);
-    smearSF = myRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
+    smearSF = smearRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
     WeleMC_4=smearSF*WeleMC_4;
   }
 }

@@ -32,15 +32,15 @@
 
 int effStudy()
 {
-  TString Acc_WpMuNu = "../Acceptance_WpT/MuonLowPU/Muon_WpToMuNu_S8_Acceptance.root";
-  TString Acc_WmMuNu = "../Acceptance_WpT/MuonLowPU/Muon_WmToMuNu_S8_Acceptance.root";
-  TString Acc_WpElNu = "../Acceptance_WpT/ElectronLowPU/Ele_WpToEleNu_S8_Acceptance.root";
-  TString Acc_WmElNu = "../Acceptance_WpT/ElectronLowPU/Ele_WmToEleNu_S8_Acceptance.root";
+  TString Acc_WpMuNu = "../Acceptance_WpT/WpToMuNu_S8_Acceptance/WpToMuNu_S8_Acceptance.root";
+  TString Acc_WmMuNu = "../Acceptance_WpT/WmToMuNu_S8_Acceptance/WmToMuNu_S8_Acceptance.root";
+  TString Acc_WpElNu = "../Acceptance_WpT/WpToEleNu_S8_Acceptance/WpToEleNu_S8_Acceptance.root";
+  TString Acc_WmElNu = "../Acceptance_WpT/WmToEleNu_S8_Acceptance/WmToEleNu_S8_Acceptance.root";
 
-  TString Rec_WpMuNu = "MuonLowPU/Muon_WpToMuNu_S8_Unfold.root";
-  TString Rec_WmMuNu = "MuonLowPU/Muon_WmToMuNu_S8_Unfold.root";
-  TString Rec_WpElNu = "ElectronLowPU/Ele_WpToEleNu_S8_Unfold.root";
-  TString Rec_WmElNu = "ElectronLowPU/Ele_WmToEleNu_S8_Unfold.root";
+  TString Rec_WpMuNu = "../WPtMET/WpToMuNu_S8_AllCorrectionsMC/WpToMuNu_S8_AllCorrectionsMC.root";   
+  TString Rec_WmMuNu = "../WPtMET/WmToMuNu_S8_AllCorrectionsMC/WmToMuNu_S8_AllCorrectionsMC.root";   
+  TString Rec_WpElNu = "../WPtMET/WpToEleNu_S8_AllCorrectionsMC/WpToEleNu_S8_AllCorrectionsMC.root"; 
+  TString Rec_WmElNu = "../WPtMET/WmToEleNu_S8_AllCorrectionsMC/WmToEleNu_S8_AllCorrectionsMC.root"; 
 
   double Bins[NWptBinPlus];
    // Final Bins7
@@ -76,7 +76,7 @@ int effStudy()
   Fout << "Bin" << "\t" << "Systematics" << endl;
   
   //ofstream of_Post_WpT_PostFid;
-
+  cout << "check 1" <<endl;
   TFile *f_Acc[4];
   TFile *f_Rec[4];
   f_Acc[0] = new TFile(Acc_WpMuNu);
@@ -91,6 +91,7 @@ int effStudy()
 
   gSystem->mkdir(resultDir,kTRUE);
   TFile f_out(resultDir+"/eff.root","recreate");
+  cout << "check 2" <<endl;
 
   // Unfolding to Post
   TH1D *h1_Truth_Post_EffCorr[4];
@@ -126,6 +127,7 @@ int effStudy()
   
   TH1D *h1_MCEventFSRSyst = new TH1D("h1_MCEventFSRSyst","h1_MCEventFSRSyst",13,Bins);h1_MCEventFSRSyst->Sumw2();
 
+  cout << "check 3" <<endl;
   // Plot
   CPlot *pltEff;
   TCanvas *myCan = MakeCanvas("myCan","myCan",900,800);
@@ -142,8 +144,10 @@ int effStudy()
     // Get the Histograms from files
     sprintf(tmpNameOrg,"h1_Truth_Post_EffCorr");
     sprintf(tmpName,"h1_Truth_Post_EffCorr_%d",i);
+  cout << "check 4" <<endl;
     h1_Truth_Post_EffCorr[i] = (TH1D*)f_Rec[i]->Get(tmpNameOrg)->Clone(tmpName);
     h1_Truth_Post_EffCorr[i]-> Sumw2();
+  cout << "check 5" <<endl;
 
     sprintf(tmpNameOrg,"h1_Truth_Post_EffCorr_weightFSR");
     sprintf(tmpName,"h1_Truth_Post_EffCorr_weightFSR_%d",i);
