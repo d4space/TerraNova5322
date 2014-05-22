@@ -5,7 +5,7 @@
 #include "MitStyleRemix.hh"
 
 void MitStyleRemix() {
-  const char* author   = "$Author: sangilpark $$";
+  const char* author   = "$Author: MIT $$";
   const char* modified = "$Modified by ksung $$";
   printf(" MIT root style REMIX(%s,%s).\n",author,modified);
   printf("\n");
