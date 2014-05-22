@@ -13,66 +13,86 @@ double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double ax[13]  = {4.25,10,15,20.75,27,35,45,60,90,130,170,220,425};
 double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
-void drawDifference(TH1* iH0,TH1 *iH1,TGraphAsymmErrors* iH2,TH1 *iHH=0,TH1 *iHL=0) {
+void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGraphErrors* iH4,TGraphAsymmErrors* iH5){
   std::string lName = std::string(iH0->GetName());
-  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins); lHDiff->Sumw2();
-  TH1F *lHDiffH = new TH1F((lName+"DiffH").c_str(),(lName+"DiffH").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax()); lHDiffH->SetLineWidth(1); lHDiffH->SetLineColor(kRed);
-  TH1F *lHDiffL = new TH1F((lName+"DiffL").c_str(),(lName+"DiffL").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax()); lHDiffL->SetLineWidth(1); lHDiffL->SetLineColor(kBlue);
-  lHDiff->SetFillColor(kViolet); lHDiff->SetFillStyle(1001); lHDiff->SetLineWidth(1);
+  TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);// lHDiff->Sumw2();
   TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
-  TH1F *lXHDiff2 = new TH1F((lName+"XDiff2").c_str(),(lName+"XDiff2").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
   int i1 = 0;
-  lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); lXHDiff1->SetLineStyle(2);
-  lXHDiff2->SetLineWidth(2); lXHDiff2->SetLineColor(kRed);
+  lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); //lXHDiff1->SetLineStyle(2);
   
-  lHDiff->GetYaxis()->SetRangeUser(0.6,1.2);
-  lHDiff->GetYaxis()->SetTitleOffset(0.6);
-  lHDiff->GetYaxis()->SetTitleSize(0.08);
-  lHDiff->GetYaxis()->SetLabelSize(0.08);
+  //lHDiff->GetYaxis()->SetRangeUser(0.2,1.8);
+  lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
+  if (clr == 2)
+    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
+  if (clr == 3)
+    lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
+  lHDiff->GetYaxis()->SetTitleOffset(0.2);
+  lHDiff->GetYaxis()->SetTitleSize(0.16);
+  lHDiff->GetYaxis()->SetLabelSize(0.16);
   lHDiff->GetYaxis()->CenterTitle();
   lHDiff->GetXaxis()->SetTitleOffset(1.2);
-  lHDiff->GetXaxis()->SetTitleSize(0.10);
-  lHDiff->GetXaxis()->SetLabelSize(0.08);
-  lHDiff->GetXaxis()->SetTitle(" W p_{T} ");
-  lHDiff->GetYaxis()->SetTitle("Data/ResBos");
+  lHDiff->GetXaxis()->SetTitleSize(0.16);
+  lHDiff->GetXaxis()->SetLabelSize(0.16);
+  lHDiff->GetYaxis()->SetNdivisions(405);
+  if (clr == 3)
+    lHDiff->GetXaxis()->SetTitle(" W p_{T} ");
+  lHDiff->GetYaxis()->SetTitle("Theory/Data");
+  //lHDiff->GetYaxis()->SetTitle("Data/ResBos");
   gStyle->SetOptStat(0);
   
   for(int i0 = 0; i0 < lHDiff->GetNbinsX()+1; i0++) {
     double lXCenter = lHDiff->GetBinCenter(i0);
     double lXVal     = iH0   ->GetBinContent(i0);
     lXHDiff1->SetBinContent(i0, 1.0);
-    lXHDiff2->SetBinContent(i0, 1.0);
     while(iH1->GetBinCenter(i1) < lXCenter) {i1++;}
     if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinContent(i0,lXVal/(iH1->GetBinContent(i0)));
-    if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinError(i0,iH0->GetBinError(i0)/(iH1->GetBinContent(i0)));
+    //if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinError(i0,iH0->GetBinError(i0)/(iH1->GetBinContent(i0)));
+    if(iH1->GetBinContent(i0) > 0) lHDiff->SetBinError(i0,0.00001);
   }
-  lHDiff->SetMarkerStyle(kFullCircle); lHDiff->SetLineColor(kBlack); lHDiff->SetMarkerColor(kBlack);
   
-  Double_t ay[13];
-  Double_t aeyl[13];
-  Double_t aeyh[13];
-  
-  for( int ipt(0);ipt<13;ipt++)
-  {
-    ay[ipt] = 1.;
-    aeyl[ipt] = iH2->GetErrorYlow(ipt)/iH1->GetBinContent(ipt+1);
-    aeyh[ipt] = iH2->GetErrorYhigh(ipt)/iH1->GetBinContent(ipt+1);
-    cout<<iH2->GetErrorYlow(ipt)<<"\t"<<iH2->GetErrorYhigh(ipt)<<"\t"<<iH1->GetBinContent(ipt+1)<<endl;
-  }
-
-  TGraphAsymmErrors* ErrBand = new TGraphAsymmErrors(13,ax,ay,aex,aex,aeyl,aeyh);
-  ErrBand->SetFillColor(kBlue);
+  TGraphErrors* ErrBand = new TGraphErrors(iH2);
+  ErrBand->SetFillColor(kBlack);
   ErrBand->SetFillStyle(3354);
+  ErrBand->SetLineWidth(1);
+  
+  if (clr == 1)
+  {
+    lHDiff->SetMarkerStyle(kOpenCircle);
+    lHDiff->SetMarkerColor(kBlue);
+    lHDiff->SetLineColor(kBlue);
+  }
+  if (clr == 2)
+  {
+    lHDiff->SetMarkerStyle(kOpenTriangleUp);
+    lHDiff->SetMarkerColor(kRed);
+    lHDiff->SetLineColor(kRed);
+  }
+  if (clr == 3)
+  {
+    lHDiff->SetMarkerStyle(kOpenSquare);
+    lHDiff->SetMarkerColor(kGreen+3);
+    lHDiff->SetLineColor(kGreen+3);
+  }
+  
+  lHDiff->SetMarkerSize(0.8);
+  
+  //lHDiff->SetLineColor(kBlack); lHDiff->SetMarkerColor(kBlack);
   
   lHDiff->SetTitle("");
-  lHDiff->Draw("E1");
+  lHDiff->Draw("E");
+  if (clr == 2 || clr == 3)
+    iH3->Draw("2");
+  if (clr == 1)
+    iH5->Draw("2");
+  if (clr == 2 || clr == 3)
+    iH4->Draw("2");
+  lXHDiff1->Draw("histsame");
   ErrBand->Draw("2");
-  lXHDiff1->Draw("hist sames");
+  lHDiff->Draw("Esame");
 }
 
 int theoryStudy(const TString BaseName)
 {
-
   TString tmpTStr;
   char tmpName[30],tmpName_org[30];
   int Numb;
@@ -82,7 +102,8 @@ int theoryStudy(const TString BaseName)
   TFile *f_Data;
 
   f_Resbos = new TFile("../../RstResbos/Resbos_"+BaseName+".root");
-  f_Data = new TFile("../RstUnfold/Result_"+BaseName+".root");
+  //f_Data = new TFile("../RstUnfold/Result_"+BaseName+".root");
+  f_Data = new TFile("../Result"+BaseName+"/Result_"+BaseName+".root");
 
   if (BaseName=="WpToMuNu")
     f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
@@ -103,8 +124,12 @@ int theoryStudy(const TString BaseName)
   TH1D *hFewzLog     = new TH1D("hFewzLog","hFewzLog",13,WptLogBins);hFewzLog->Sumw2();
   TH1D *hPowhegLog   = new TH1D("hPowhegLog","hPowhegLog",13,WptLogBins);hPowhegLog->Sumw2();
   TH1D *hDataLog     = new TH1D("hDataLog","hDataLog",13,WptLogBins);hDataLog->Sumw2();
-  
-  TH1D *hDataNoLog     = new TH1D("hDataNoLog","hDataNoLog",13,WptBins);hDataNoLog->Sumw2();
+  TH1D *hDataNoLog   = new TH1D("hDataNoLog","hDataNoLog",13,WptBins);hDataNoLog->Sumw2();
+  TH1D *hDataErrBand = new TH1D("hDataErrBand","hDataErrBand",13,WptLogBins);hDataErrBand->Sumw2();
+  TH1D *hPowhegErrBand = new TH1D("hPowhegErrBand","hPowhegErrBand",13,WptLogBins);hPowhegErrBand->Sumw2();
+  TH1D *hPowhegErrBandPDF = new TH1D("hPowhegErrBandPDF","hPowhegErrBandPDF",13,WptLogBins);hPowhegErrBandPDF->Sumw2();
+  TH1D *hFewzErrBand = new TH1D("hFewzErrBand","hFewzErrBand",13,WptLogBins);hFewzErrBand->Sumw2();
+  TH1D *hFewzTheoryErrBand = new TH1D("hFewzTheoryErrBand","hFewzTheoryErrBand",13,WptLogBins);hFewzTheoryErrBand->Sumw2();
   
   TH1D* lResbos[7];
   TH1D* lResbos30;
@@ -128,6 +153,7 @@ int theoryStudy(const TString BaseName)
   
   lFEWZ   = (TH1D*)f_Fewz->Get("hxsec")->Clone();
   lPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
+  orgPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
 
   lPowheg->Scale(1./18.429);
@@ -136,28 +162,14 @@ int theoryStudy(const TString BaseName)
   cout << "Resbos Total Xsec: " << lResbos30->Integral() << endl;
   cout << "Data Total Xsec: " << lData->Integral() << endl;
 
-  Double_t resb30[nBins-1],resb30_errHi[nBins-1],resb30_errLo[nBins-1];
-
-  for( int ipt(0);ipt<nBins-1;ipt++)
-  {
-    //resb30[ipt] = lResbos30->GetBinContent(ipt+1);
-    //resb30_errHi[ipt] = lResbos31->GetBinContent(ipt+1) - lResbos30->GetBinContent(ipt+1);
-    //resb30_errLo[ipt] = lResbos30->GetBinContent(ipt+1) - lResbos34->GetBinContent(ipt+1);
-    //cout <<ipt<<"\t"<<resb30[ipt]<<"\t"<<resb30_errLo[ipt]<<"\t"<<resb30_errHi[ipt]<<endl;
-  
-  
-    resb30[ipt] = lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
-    resb30_errHi[ipt] = lResbos31->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1) - lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
-    resb30_errLo[ipt] = lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1) - lResbos34->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
-    cout <<"Resbos errors(high,low): "<<ipt<<"\t"<<resb30_errHi[ipt]<<"\t"<<resb30_errLo[ipt]<<endl;
-  }
-
+  Double_t resb30[nBins-1];
   Double_t errMax[nBins-1];
   Double_t errMin[nBins-1];
   double tmpVal,tmpDiff;
 
   for( int ipt(0);ipt<nBins-1;ipt++)
   {
+    resb30[ipt] = lResbos30->GetBinContent(ipt+1)/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
     double norVal  = lResbos[1]->GetBinContent(ipt+1);
     errMax[ipt] = -99999;
     errMin[ipt] = 990009;
@@ -175,11 +187,80 @@ int theoryStudy(const TString BaseName)
     errMax[ipt] = errMax[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
     errMin[ipt] = errMin[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
   }
-  
+ 
+  Double_t errPowheg[nBins-1];
+  Double_t errFewz[nBins-1];
+  Double_t vPowheg[nBins-1];
+  Double_t vFewz[nBins-1];
+  Double_t resbVal[nBins-1],errResbosDataLo[nBins-1],errResbosDataHi[nBins-1];
+
+  if (BaseName=="WpToMuNu")
+  {
+  errPowheg[0] = 4.268; 
+  errPowheg[1] = 4.147; 
+  errPowheg[2] = 4.122; 
+  errPowheg[3] = 4.123; 
+  errPowheg[4] = 4.132; 
+  errPowheg[5] = 4.126; 
+  errPowheg[6] = 4.143; 
+  errPowheg[7] = 5.279; 
+  errPowheg[8] = 4.222; 
+  errPowheg[9] = 4.426;
+  errPowheg[10]= 4.819; 
+  errPowheg[11]= 5.075; 
+  errPowheg[12]= 6.084; 
+  }
+  if (BaseName=="WmToMuNu")
+  {
+  errPowheg[0] = 4.398; 
+  errPowheg[1] = 4.382; 
+  errPowheg[2] = 4.423; 
+  errPowheg[3] = 4.443; 
+  errPowheg[4] = 5.604; 
+  errPowheg[5] = 4.532; 
+  errPowheg[6] = 7.792; 
+  errPowheg[7] = 3.349; 
+  errPowheg[8] = 4.622; 
+  errPowheg[9] = 19.15;
+  errPowheg[10]= 4.587; 
+  errPowheg[11]= 4.323; 
+  errPowheg[12]= 5.229; 
+  }
+  if (BaseName=="WpToEleNu")
+  {
+  errPowheg[0] = 4.37 ; 
+  errPowheg[1] = 4.314; 
+  errPowheg[2] = 4.109; 
+  errPowheg[3] = 12.58; 
+  errPowheg[4] = 19.8 ; 
+  errPowheg[5] = 7.864; 
+  errPowheg[6] = 3.68 ; 
+  errPowheg[7] = 3.741; 
+  errPowheg[8] = 19.27; 
+  errPowheg[9] = 6.264;
+  errPowheg[10]= 4.312; 
+  errPowheg[11]= 4.235; 
+  errPowheg[12]= 5.534; 
+  }
+  if (BaseName=="WmToEleNu")
+  {
+  errPowheg[0] = 4.285; 
+  errPowheg[1] = 4.156; 
+  errPowheg[2] = 4.132; 
+  errPowheg[3] = 4.129; 
+  errPowheg[4] = 4.128; 
+  errPowheg[5] = 7.152; 
+  errPowheg[6] = 4.143; 
+  errPowheg[7] = 18.56; 
+  errPowheg[8] = 16.32; 
+  errPowheg[9] = 4.427;
+  errPowheg[10]= 4.582; 
+  errPowheg[11]= 4.939; 
+  errPowheg[12]= 5.144; 
+  }
+
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
-    cout<<"Bin Width   "<<ipt<<"  "<<hDataNoLog->GetXaxis()->GetBinWidth(ipt)<<endl;
-
     hResbosLog30->SetBinContent(ipt,lResbos30->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) );
     hResbosLog31->SetBinContent(ipt,lResbos31->GetBinContent(ipt));
     hResbosLog34->SetBinContent(ipt,lResbos34->GetBinContent(ipt));
@@ -188,15 +269,29 @@ int theoryStudy(const TString BaseName)
     hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     
     hPowhegLog->SetBinContent(ipt,lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    //hPowhegLog->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hPowhegLog->SetBinError(ipt,sqrt(lPowheg->GetBinContent(ipt))/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    
-    //cout<<"x-axis "<<hPowhegLog->GetBinCenter()<<endl;
     
     hDataLog->SetBinContent(ipt,lData->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hDataLog->SetBinError(ipt,lData->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-
-    cout<<ipt<<"\t"<<hResbosLog30->GetBinContent(ipt)<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<hPowhegLog->GetBinError(ipt)<<endl;
+    hDataErrBand->SetBinContent(ipt,1.);
+    hDataErrBand->SetBinError(ipt,lData->GetBinError(ipt)/lData->GetBinContent(ipt));
+    
+    hPowhegErrBand->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
+    hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
+    hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
+    hPowhegErrBandPDF->SetBinError(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt) * errPowheg[ipt-1]/100 );
+    cout << "" << hPowhegErrBandPDF->GetBinContent(ipt) << " " << hPowhegErrBandPDF->GetBinError(ipt) << endl; 
+    hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzErrBand->SetBinError(ipt,0.01);
+    hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzTheoryErrBand->SetBinError(ipt,hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    
+    resbVal[ipt-1]=hResbosLog30->GetBinContent(ipt)/hDataLog->GetBinContent(ipt);
+    errResbosDataLo[ipt-1]=errMin[ipt-1]/hDataLog->GetBinContent(ipt);
+    errResbosDataHi[ipt-1]=errMax[ipt-1]/hDataLog->GetBinContent(ipt);
+    
+    cout<<ipt<<"\t"<<errMin[ipt-1]<<"\t"<<errMax[ipt-1]<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<errResbosDataLo[ipt-1]<<"\t"<<errResbosDataHi[ipt-1]<<endl;
+    //cout<<ipt<<"\t"<<hResbosLog30->GetBinContent(ipt)<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<hPowhegLog->GetBinError(ipt)<<endl;
   }
 
   hDataLog->SetMarkerStyle(kFullCircle); hDataLog->SetMarkerColor(kBlack); hDataLog->SetMarkerSize(1);
@@ -204,32 +299,40 @@ int theoryStudy(const TString BaseName)
   TGraphErrors *hData = new TGraphErrors(hDataLog);
   TGraphErrors *hPowheg = new TGraphErrors(hPowhegLog);
   TGraphErrors *hFewz = new TGraphErrors(hFewzLog);
-  //TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, resb30_errLo, resb30_errHi);
   TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, errMin, errMax);
+  TGraphAsymmErrors* ResbosErrBand = new TGraphAsymmErrors(nBins-1, ax, resbVal, aex, aex, errResbosDataLo, errResbosDataHi);
+  TGraphErrors* pRatio = new TGraphErrors(hPowhegErrBand);
+  TGraphErrors* pRatioPDF = new TGraphErrors(hPowhegErrBandPDF);
+  TGraphErrors* fRatio = new TGraphErrors(hFewzErrBand);
+  TGraphErrors* fTheoryRatio = new TGraphErrors(hFewzTheoryErrBand);
+  
+  ResbosErrBand->SetFillColor(kBlue-7);
+  ResbosErrBand->SetFillStyle(3001);
+  
+  pRatio->SetFillColor(kRed-7);
+  pRatio->SetFillStyle(3001);
+  
+  pRatioPDF->SetFillColor(kRed+2);
+  pRatioPDF->SetFillStyle(3001);
+  
+  fRatio->SetFillColor(kGreen);
+  fRatio->SetFillStyle(3001);
+  
+  fTheoryRatio->SetFillColor(kGreen-9);
+  fTheoryRatio->SetFillStyle(3001);
 
   hFewz->SetFillColor(kGreen);
-  hFewz->SetFillStyle(1001);
+  hFewz->SetFillStyle(3305);
 
   hPowheg->SetFillColor(kRed);
   hPowheg->SetFillStyle(3345);
   hResbos->SetFillColor(kBlue);
   hResbos->SetFillStyle(3354);
- 
 
-
- // hPowheg->Scale(1./18.429);
- // hData->Scale(1./18.429);
- // hFewz->Scale(1./18.429);
- // hResbos->Scale(1./18.429);
-  
- // cout << "Resbos Total Differentail Xsec: " << lResbos30->Integral() << endl;
- // cout << "Data Total Differentail Xsec: " << lData->Integral() << endl;
-  
-  
   TLegend *lL =new TLegend(0.6,0.65,0.92,0.85); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(hData,"Unfolded","PL");
   lL->AddEntry(hPowheg,"Powheg CT10 NLO","f");
- // lL->AddEntry(hFewz,"FEWZ CTEQ12 NNLO","f");
+  lL->AddEntry(hFewz,"FEWZ CT10 NNLO","f");
   lL->AddEntry(hResbos,"ResBos CT10 NNLO","f");
 
   TPaveText *tb = new TPaveText(0.6,0.44,0.9,0.58,"NDC");
@@ -249,11 +352,12 @@ int theoryStudy(const TString BaseName)
   if (BaseName=="WInclToEleNu")
     tb->AddText("W #rightarrow e #nu");
 
+  //TCanvas *lC0 = new TCanvas("Can","Can",800,1200); lC0->cd(); lC0->SetLogy();
   TCanvas *lC0 = new TCanvas("Can","Can",800,800); lC0->cd(); lC0->SetLogy();
-  lC0->Divide(1,2,0,0);
-  lC0->cd(1)->SetPad(0,0.35,0.95,1.0);
+  lC0->Divide(1,4,0,0);
+  lC0->cd(1)->SetPad(0,0.44,0.95,1.0);
   lC0->cd(1)->SetTopMargin(0.1);
-  lC0->cd(1)->SetBottomMargin(0.01);
+  lC0->cd(1)->SetBottomMargin(0.0);
   lC0->cd(1)->SetLeftMargin(0.15);
   lC0->cd(1)->SetRightMargin(0.07);
   lC0->cd(1)->SetTickx(1);
@@ -264,28 +368,93 @@ int theoryStudy(const TString BaseName)
   gStyle->SetHatchesSpacing(0.75);
   gStyle->SetHatchesLineWidth(2);
   gPad->SetLogx(1);
+  //gPad->SetLogy(1);
 
-  hPowheg->GetYaxis()->SetRangeUser(0.,1.14*resb30[0]);
+  hPowheg->GetYaxis()->SetRangeUser(-5,1.14*resb30[0]);
   hPowheg->SetTitle("");
-  hPowheg->GetYaxis()->SetTitle("Xsec [pb]");
-  hPowheg->GetYaxis()->SetTitleOffset(1.2);
+  hPowheg->GetYaxis()->SetTitle("Xsec [pb (GeV/c)^{-1}]");
+  hPowheg->GetYaxis()->SetTitleOffset(1.0);
   
   hPowheg->Draw("A2");
-//  hFewz->Draw("2");
+  hFewz->Draw("2");
   hResbos->Draw("2");
   hData->Draw("p");
   lL->Draw();
   tb->Draw();
 
-  lC0->cd(2)->SetPad(0,0,0.95,0.34);
-  lC0->cd(2)->SetTopMargin(0.025);
-  lC0->cd(2)->SetBottomMargin(0.3);
+  lC0->cd(2)->SetPad(0,0.31,0.95,0.44);
+  lC0->cd(2)->SetTopMargin(0.0);
+  lC0->cd(2)->SetBottomMargin(0.0);
   lC0->cd(2)->SetLeftMargin(0.15);
   lC0->cd(2)->SetRightMargin(0.07);
   lC0->cd(2)->SetTickx(1);
   lC0->cd(2)->SetTicky(1);
   lC0->cd(2)->SetLogx(1);
-  drawDifference(hDataLog,hResbosLog30,hResbos);
+
+  TPaveText *tb1 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
+  tb1->SetBorderSize(0);
+  tb1->SetFillStyle(0);
+  tb1->SetTextSize(0.18);
+  tb1->AddText("ResBos");
+  TLegend *rL1 =new TLegend(0.2,0.05,0.44,0.17); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  rL1->AddEntry(ResbosErrBand,"Theoretical unc. (gen)","F");
+  rL1->SetTextSize(0.12);
+
+  drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand);
+  rL1->Draw();
+  tb1->Draw();
+
+  lC0->cd(3)->SetPad(0,0.18,0.95,0.31);
+  lC0->cd(3)->SetTopMargin(0.0);
+  lC0->cd(3)->SetBottomMargin(0.0);
+  lC0->cd(3)->SetLeftMargin(0.15);
+  lC0->cd(3)->SetRightMargin(0.07);
+  lC0->cd(3)->SetTickx(1);
+  lC0->cd(3)->SetTicky(1);
+  lC0->cd(3)->SetLogx(1);
+
+  TPaveText *tb2 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
+  tb2->SetBorderSize(0);
+  tb2->SetFillStyle(0);
+  tb2->SetTextSize(0.18);
+  tb2->AddText("Powheg");
+  TLegend *rL2 =new TLegend(0.2,0.05,0.6,0.17); rL2->SetFillColor(0); rL2->SetBorderSize(0);
+  rL2-> SetNColumns(2);
+  rL2->AddEntry(pRatioPDF,"Theory unc. (gen)","F");
+  rL2->AddEntry(pRatio,"Statistical unc. (gen)","F");
+  rL2->SetTextSize(0.12);
+
+  drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand);
+  rL2->Draw();
+  tb2->Draw();
+
+  lC0->cd(4)->SetPad(0,0.05,0.95,0.18);
+  lC0->cd(4)->SetTopMargin(0.0);
+  lC0->cd(4)->SetBottomMargin(0.05);
+  lC0->cd(4)->SetLeftMargin(0.15);
+  lC0->cd(4)->SetRightMargin(0.07);
+  lC0->cd(4)->SetTickx(1);
+  lC0->cd(4)->SetTicky(1);
+  lC0->cd(4)->SetLogx(1);
+
+  TPaveText *tb3 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
+  tb3->SetBorderSize(0);
+  tb3->SetFillStyle(0);
+  tb3->SetTextSize(0.18);
+  tb3->AddText("Fewz");
+  TLegend *rL3 =new TLegend(0.2,0.1,0.6,0.22); rL3->SetFillColor(0); rL3->SetBorderSize(0);
+  rL3-> SetNColumns(2);
+  rL3->AddEntry(fTheoryRatio,"Theory unc. (gen)","F");
+  rL3->AddEntry(fRatio,"Statistical unc. (gen)","F");
+  rL3->SetTextSize(0.12);
+
+  drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand);
+  rL3->Draw();
+  tb3->Draw();
+
   lC0->SaveAs(BaseName+"_Result_diffXsec.png");
+
+  TFile f_out("Resbos_"+BaseName+".root","recreate");
+  hResbos->Write();
   return 0;
 }
