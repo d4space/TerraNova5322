@@ -135,36 +135,34 @@ int theoryCompChannel(const TString BaseName)
   TFile *f_Data_Ele;
 
   if (BaseName=="Wplus"){
-    f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WpToMuNu.root");
-    f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WpToEleNu.root");
-    //f_Data_Mu    = new TFile("../RstUnfold/Result_WpToMuNu.root");
-    //f_Data_Ele   = new TFile("../RstUnfold/Result_WpToEleNu.root");
-    f_Data_Mu    = new TFile("../ResultWpToMuNu_Nom/Result_WpToMuNu.root");
-    f_Data_Ele   = new TFile("../ResultWpToEleNu_Nom/Result_WpToEleNu.root");
+    f_Resbos_Mu  = new TFile("WinclMu_NNLO.root");
+    f_Resbos_Ele = new TFile("WinclEle_NNLO.root");
+    f_Data_Mu    = new TFile("Result_WinclMu.root");
+    f_Data_Ele   = new TFile("Result_WinclEle.root");
   }else if (BaseName=="Wminus"){
-    f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WmToMuNu.root");
-    f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WmToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WmToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WmToEleNu.root");
+    f_Resbos_Mu  = new TFile("WinclMu_NNLO.root");
+    f_Resbos_Ele = new TFile("WinclEle_NNLO.root");
+    f_Data_Mu    = new TFile("Result_WinclMu.root");
+    f_Data_Ele   = new TFile("Result_WinclEle.root");
   }else if (BaseName=="Wincl"){
-    f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WInclToMuNu.root");
-    f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WInclToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WInclToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WInclToEleNu.root");
+    f_Resbos_Mu  = new TFile("WinclMu_NNLO.root");
+    f_Resbos_Ele = new TFile("WinclEle_NNLO.root");
+    f_Data_Mu    = new TFile("Result_WinclMu.root");
+    f_Data_Ele   = new TFile("Result_WinclEle.root");
   }
 
   if (BaseName=="Wplus")
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
   if (BaseName=="Wminus")
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
   if (BaseName=="Wincl")
-    f_Fewz = new TFile("../../RstFEWZ/WIncl_Mu_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
   if (BaseName=="WpToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
   if (BaseName=="WmToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
   if (BaseName=="WInclToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/WIncl_Ele_NNLO.root");
+    f_Fewz = new TFile("WinclMu_NNLO.root");
 
   TH1D *hResbosLog30_Mu = new TH1D("hResbosLog30_Mu","hResbosLog30_Mu",13,WptLogBins);hResbosLog30_Mu->Sumw2();
   TH1D *hResbosLog30_Ele = new TH1D("hResbosLog30_Ele","hResbosLog30_Ele",13,WptLogBins);hResbosLog30_Ele->Sumw2();
@@ -233,9 +231,14 @@ int theoryCompChannel(const TString BaseName)
   //lResbos34 = (TH1D*)f_Resbos_Mu->Get("hResbos34")->Clone();
   
   lFEWZ   = (TH1D*)f_Fewz->Get("hxsec")->Clone();
-  lPowheg = (TH1D*)f_Data_Mu->Get("SVD_Born.Gen")->Clone();
+  lPowheg = (TH1D*)f_Data_Mu->Get("SVD_BornGen")->Clone();
   lData_Mu   = (TH1D*)f_Data_Mu->Get("BornEffCorr")->Clone("lData_Mu");
   lData_Ele   = (TH1D*)f_Data_Ele->Get("BornEffCorr")->Clone("lData_Ele");
+
+  for( int ipt(1);ipt<=nBins-1;ipt++)
+  {
+    cout<<ipt<<"\t"<<lData_Mu->GetBinContent(ipt)<<" +/- "<<lData_Mu->GetBinError(ipt)<<"\t"<<lData_Ele->GetBinContent(ipt)<<" +/- "<<lData_Ele->GetBinError(ipt)<<endl;
+  }
 
   lPowheg->Scale(1./18.429);
   lData_Mu->Scale(1./18.429);
