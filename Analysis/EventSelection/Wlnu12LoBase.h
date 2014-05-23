@@ -215,7 +215,8 @@ void Wlnu12LoBase::Init(TTree *tree)
    // Initialization for the member
   Wlnu12LoNT::Init(tree);
   cout<<"Initialize variables at Wlnu12LoBase Class ==================="<<endl;
-  mResultDir = OutNameBase+"_"+Mode;
+  //mResultDir = OutNameBase+"_"+Mode;
+  mResultDir = AnaChannel;
   gSystem->mkdir(mResultDir);
 
   smearRandom = new TRandom3();
@@ -351,7 +352,7 @@ Double_t Wlnu12LoBase::DoEffiCorr()
         if (W.lep_etaSC > 0.0 && W.lep_etaSC <= 0.5 )   {return 0.935623;}
         if (W.lep_etaSC > 0.5 && W.lep_etaSC <= 1.5 )   {return 0.972539;}
         if (W.lep_etaSC > 1.5 && W.lep_etaSC < 2.5 )    {return 1.00965;}
-      }else if (W.lep_pt>50. )
+      }else if (W.lep_pt>50.)
       {
         if (W.lep_etaSC >-2.5 && W.lep_etaSC <= -1.5 )  {return 1.02735;}
         if (W.lep_etaSC >-1.5 && W.lep_etaSC <= -0.5 )  {return 0.981588;}
@@ -379,7 +380,7 @@ Double_t Wlnu12LoBase::DoEffiCorr()
         if (W.lep_etaSC > 0.0 && W.lep_etaSC <= 0.5 )   {return 0.945777;}
         if (W.lep_etaSC > 0.5 && W.lep_etaSC <= 1.5 )   {return 0.954156;}
         if (W.lep_etaSC > 1.5 && W.lep_etaSC < 2.5 )    {return 0.98203;}
-      }else if (W.lep_pt>50. )
+      }else if (W.lep_pt>50.)
       {
         if (W.lep_etaSC >-2.5 && W.lep_etaSC <= -1.5 )  {return 0.983318;}
         if (W.lep_etaSC >-1.5 && W.lep_etaSC <= -0.5 )  {return 0.957025;}
@@ -418,7 +419,7 @@ Double_t Wlnu12LoBase::DoEffiCorr()
         if (W.lep_eta > 0.8 && W.lep_eta <= 1.2 )   {return 0.974650;}
         if (W.lep_eta > 1.2 && W.lep_eta <= 1.6 )   {return 0.947018;}
         if (W.lep_eta > 1.6 && W.lep_eta < 2.1 )    {return 1.016190;}
-      }else if (W.lep_pt>55. )
+      }else if (W.lep_pt>55.)
       { 
         if (W.lep_eta >-2.1 && W.lep_eta <= -1.6 )  {return 0.994098;}
         if (W.lep_eta >-1.6 && W.lep_eta <= -1.2 )  {return 0.997404;}
@@ -458,7 +459,7 @@ Double_t Wlnu12LoBase::DoEffiCorr()
         if (W.lep_eta > 0.8 && W.lep_eta <= 1.2 )   {return 0.973194;}
         if (W.lep_eta > 1.2 && W.lep_eta <= 1.6 )   {return 0.981252;}
         if (W.lep_eta > 1.6 && W.lep_eta < 2.1 )    {return 0.956579;}
-      }else if (W.lep_pt>55. )
+      }else if (W.lep_pt>55.)
       {
         if (W.lep_eta >-2.1 && W.lep_eta <= -1.6 )  {return 0.927956;}
         if (W.lep_eta >-1.6 && W.lep_eta <= -1.2 )  {return 0.992756;}
@@ -486,8 +487,7 @@ Int_t Wlnu12LoBase::DoScaleCorr(int i)
     if(fabs((*W_Lept1_eta)[i]) >= 1.2 && fabs((*W_Lept1_eta)[i]) < 1.6) scalecorr = 1.0018;
     if(fabs((*W_Lept1_eta)[i]) >= 1.6 && fabs((*W_Lept1_eta)[i]) < 2.1) scalecorr = 1.0007;
     
-    (*W_Lept1_pt)[i]= scalecorr*(*W_Lept1_pt)[i];
-    PtEtaPhiMLorentzVector WmuRD_4((*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
+    W.lep_pt_corr = scalecorr*(*W_Lept1_pt)[i];
   }
   if(AnaChannel == "Electron2012LoPU")
   {
@@ -497,8 +497,7 @@ Int_t Wlnu12LoBase::DoScaleCorr(int i)
     if(fabs((*W_Lept1_etaSC)[i]) >= 1.2   && fabs((*W_Lept1_etaSC)[i]) < 1.4442) scalecorr = 1.00244;
     if(fabs((*W_Lept1_etaSC)[i]) >= 1.566 && fabs((*W_Lept1_etaSC)[i]) < 2.0) scalecorr = 1.0067;
     if(fabs((*W_Lept1_etaSC)[i]) >= 2.0   && fabs((*W_Lept1_etaSC)[i]) < 2.5) scalecorr = 0.992737;
-    (*W_Lept1_pt)[i]= scalecorr*(*W_Lept1_pt)[i];
-    PtEtaPhiMLorentzVector WeleRD_4((*W_Lept1_pt)[i],(*W_Lept1_etaSC)[i],(*W_Lept1_phi)[i],0.000511);
+    W.lep_pt_corr = scalecorr*(*W_Lept1_pt)[i];
   }
   return 0;
 }
@@ -513,10 +512,11 @@ Int_t Wlnu12LoBase::DoSmearCorr(int i)
     if(fabs((*W_Lept1_eta)[i]) >= 1.2 && fabs((*W_Lept1_eta)[i]) < 1.6) smearcorr = 0.637325;
     if(fabs((*W_Lept1_eta)[i]) >= 1.6 && fabs((*W_Lept1_eta)[i]) < 2.1) smearcorr = 0.611946;
 
-    PtEtaPhiMLorentzVector Wmu_4((*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
-    smearSF = smearRandom->Gaus(Wmu_4.E(), smearcorr)/Wmu_4.E();
-    Wmu_4= smearSF*Wmu_4;
-    cout<<"Smear gRandom: "<<smearRandom->Gaus(0,1)<<endl;
+    PtEtaPhiMLorentzVector WmuMC_4((*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.1056);
+    smearSF = smearRandom->Gaus(WmuMC_4.E(), smearcorr)/WmuMC_4.E();
+    WmuMC_4= smearSF*WmuMC_4;
+    W.lep_pt_corr=WmuMC_4.Pt();
+    //cout<<"Smear gRandom: "<<smearRandom->Gaus(0,1)<<endl;
   }
   if(AnaChannel == "Electron2012LoPU")
   {
@@ -527,10 +527,12 @@ Int_t Wlnu12LoBase::DoSmearCorr(int i)
     if(fabs((*W_Lept1_etaSC)[i]) >= 1.566 && fabs((*W_Lept1_etaSC)[i]) < 2.0) smearcorr = 0.972944;
     if(fabs((*W_Lept1_etaSC)[i]) >= 2.0   && fabs((*W_Lept1_etaSC)[i]) < 2.5) smearcorr = 1.84788;
      
-    PtEtaPhiMLorentzVector WeleMC_4((*W_Lept1_pt)[i],(*W_Lept1_etaSC)[i],(*W_Lept1_phi)[i],0.000511);
+    PtEtaPhiMLorentzVector WeleMC_4((*W_Lept1_pt)[i],(*W_Lept1_eta)[i],(*W_Lept1_phi)[i],0.000511);
     smearSF = smearRandom->Gaus(WeleMC_4.E(), smearcorr)/WeleMC_4.E();
     WeleMC_4=smearSF*WeleMC_4;
+    W.lep_pt_corr=WeleMC_4.Pt();
   }
+  return 0;
 }
 
 Int_t Wlnu12LoBase::TauCut(int i)
@@ -538,22 +540,15 @@ Int_t Wlnu12LoBase::TauCut(int i)
   //if( (*W_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5 )return -1;
   //if( (*W_Lept1_decModFind)[i] < 0.5 )return -1;
   if( fabs((*W_Lept1_eta)[i]) > 2.3 )return -1;
-  if( fabs((*W_Lept1_pt)[i]) < 20 )return -1;
+  if( fabs(W.lep_pt_corr) < 20 )return -1;
   return 1;
 }
 
 Int_t Wlnu12LoBase::MuonCut(int i)
 {
   if( !(*W_Lept1_isGlobal)[i])return -1;
-  
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  
-  if((*W_Lept1_pt)[i] < 20) return -1;
-  
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  //if((*W_Lept1_pt)[i] < 20) return -1;
+  if(W.lep_pt_corr < 20) return -1;
   if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
   if( (*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
   if( (*W_Lept1_muonHits)[i] <1) return -1;
@@ -564,22 +559,14 @@ Int_t Wlnu12LoBase::MuonCut(int i)
   if( fabs( (*W_Lept1_dz)[i]) >0.5 )return -1;
   //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
   double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-  if( ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.12) return -1;
+  if( ((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr > 0.12) return -1;
   return 1;
 }
 
 Int_t Wlnu12LoBase::MuonCutSide(int i)
 {
   if(!(*W_Lept1_isGlobal)[i])return -1;
-  
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  
-  if((*W_Lept1_pt)[i] < 20) return -1;
-  
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  if(W.lep_pt_corr < 20) return -1;
   if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
   if((*W_Lept1_globalNormChi2)[i]<0 || (*W_Lept1_globalNormChi2)[i] >= 10) return -1;
   if((*W_Lept1_muonHits)[i] <1) return -1;
@@ -589,7 +576,7 @@ Int_t Wlnu12LoBase::MuonCutSide(int i)
   if(fabs( (*W_Lept1_dB)[i]) >0.02)return -1;
   if(fabs( (*W_Lept1_dz)[i]) >0.5)return -1;
   double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-  if(((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.5) return -1; //Side Band
+  if(((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr < 0.3 || ((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr > 0.5) return -1; //Side Band
 
   return 1;
 }
@@ -597,30 +584,16 @@ Int_t Wlnu12LoBase::MuonCutSide(int i)
 Int_t Wlnu12LoBase::AddMuonCut(int i)
 {
   if(!(*W_Lept1_isTrker)[i] || !(*W_Lept1_isGlobal)[i]) return -1; //Signal Band only. For Side Band comment this line.
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  
-  if((*W_Lept1_pt)[i] <= 10) return -1;
-  
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  if(W.lep_pt_corr <= 10) return -1;
   if(fabs((*W_Lept1_eta)[i])>=2.4) return -1;
   double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
-  if(((*W_Lept1_chIso04)[i]+betaCor04)/(*W_Lept1_pt)[i] > 0.20) return -1;
+  if(((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr > 0.20) return -1;
   return 1;
 }
 
 Int_t Wlnu12LoBase::ElectronCut(int i)
 {
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  
-  if((*W_Lept1_pt)[i] < 25) return -1;
-  
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  if(W.lep_pt_corr < 25) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i])<1.566)return -1;
   if( fabs((*W_Lept1_etaSC)[i]) < 1.4442)
@@ -701,14 +674,7 @@ Int_t Wlnu12LoBase::ElectronCutHighPU(int i)
 
 Int_t Wlnu12LoBase::ElectronCutSide(int i)
 {
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  
-  if((*W_Lept1_pt)[i] < 25) return -1;
-  
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  if(W.lep_pt_corr < 25) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i]) < 1.566) return -1;
   
@@ -732,7 +698,6 @@ Int_t Wlnu12LoBase::ElectronCutSide(int i)
     if(fabs((*W_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
     if(fabs((*W_Lept1_mHits)[i]) > 1) return -1;
   }
-  
   if((*W_Lept1_hasConversion)[i]) return -1;
   return 1;
 }
@@ -782,16 +747,9 @@ Int_t Wlnu12LoBase::ElectronCutSideHighPU(int i)
 
 Int_t Wlnu12LoBase::AddElectronCut(int i)
 {
-  if (Mode=="AllCorrectionsRD")
-    DoScaleCorr(i);
-  if((*W_Lept1_pt)[i] < 20) return -1;
-
-  if(Mode == "AllCorrectionsMC" || Mode == "Unfold")
-    DoSmearCorr(i);
-
+  if(W.lep_pt_corr < 20) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>2.5) return -1;
   if(fabs((*W_Lept1_etaSC)[i])>1.4442 && fabs((*W_Lept1_etaSC)[i]) < 1.566) return -1;
-  
   if(fabs((*W_Lept1_etaSC)[i]) < 1.4442)
   {
     if((*W_Lept1_sigmaIEtaIEta)[i] > 0.01) return -1;
@@ -843,8 +801,6 @@ Int_t Wlnu12LoBase::AddElectronCutHighPU(int i)
 
 Int_t Wlnu12LoBase::DoRecoilCorr()
 {
-  //cout<<"Before: "<<W.pt<<endl;
-  W.lep_pt_corr = W.lep_pt;
   if(W.genIdx < 0) W.genIdx = 0;
   //genBeFsrW_pt = (*GenW_Born_pt)[WtruthIdx];
   //genW_phi = (*GenW_phi)[WtruthIdx];
@@ -858,9 +814,6 @@ Int_t Wlnu12LoBase::DoRecoilCorr()
   //    W.Nu_px+W.lep_pt_corr*cos(W.lep_phi),
   //    W.Nu_py+W.lep_pt_corr*sin(W.lep_phi));
   //W.pt = W2D_lepCorrOnly.Mod();
-  //if( W.pt < 100)
-  //{
-  //cout<<"RecoilInputs: "<<corrMet<<"\t"<<corrMetPhi<<"\t"<<genInfo.PostW_pt<<"\t"<<genInfo.PostW_phi<<"\t"<<W.lep_pt_corr<<"\t"<<W.lep_phi<<"\t"<<genInfo.charge<<endl;
   RecoilCorr->Correct(
       corrMet,corrMetPhi,
       genInfo.PostW_pt,genInfo.PostW_phi,//basedonthis,calculate correctedrecoilvectors
@@ -870,7 +823,6 @@ Int_t Wlnu12LoBase::DoRecoilCorr()
   TVector2 w_p_corr(corrMet*cos(corrMetPhi)+W.lep_pt_corr*cos(W.lep_phi),
       corrMet*sin(corrMetPhi)+W.lep_pt_corr*sin(W.lep_phi));
   W.pt = w_p_corr.Mod();
-  //cout<<"After: "<<W.pt<<endl;
   //}else{
   //  corrMet = W.Met;
   //}
@@ -915,6 +867,7 @@ Int_t Wlnu12LoBase::InitVar4Evt()
   W.genIdx=-999;
   W.charge=0;
   W.lep_pt = 0;
+  W.lep_pt_corr = 0;
   W.lep_phi = 0;
   W.lep_eta = 0;
   W.lep_etaSC = 0;

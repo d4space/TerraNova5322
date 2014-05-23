@@ -8,8 +8,7 @@
 #include "chain_Muon_WToTauNu_S8.h"
 #include "chain_Muon_DYToTauTau_S8.h"
 #include "chain_Muon_TTJets_S8.h"
-#include "chain_Muon_SingleMuPrompt.h"
-#include "chain_Muon_SingleMuReReco.h"
+#include "chain_Muon_RD_LowPU.h"
 #include "chain_Test.h"
 //===============
 // Electron header
@@ -19,8 +18,7 @@
 #include "chain_Electron_DYToEE_S8.h" 
 #include "chain_Electron_WToTauNu_S8.h"
 #include "chain_Electron_DYToTauTau_S8.h" 
-#include "chain_Electron_SingleElePrompt.h"
-#include "chain_Electron_SingleEleReReco.h"
+#include "chain_Electron_RD_LowPU.h"
 #include "chain_Electron_TTJets_S8.h"
 
 void SetupTree( TString sample, TChain* chains )
@@ -53,9 +51,7 @@ void SetupTree( TString sample, TChain* chains )
   }
   else if(sample == "Muon_RD_LowPU")
   {
-    chain_Muon_SingleMuPrompt(chains);
-    chain_Muon_SingleMuReReco(chains);
-    //chain_Muon_RD_LowPU(chains);
+    chain_Muon_RD_LowPU(chains);
   }
 //Electron Scripts
   else if( sample == "Ele_WpToEleNu_S8")
@@ -84,9 +80,7 @@ void SetupTree( TString sample, TChain* chains )
   }
   else if(sample == "Ele_RD_LowPU")
   {
-    chain_Electron_SingleElePrompt(chains);
-    chain_Electron_SingleEleReReco(chains);
-    //chain_Electron_RD_LowPU(chains);
+    chain_Electron_RD_LowPU(chains);
   }
   else if(sample == "Test")
   {

@@ -127,38 +127,42 @@ int Wlnu12LoBase::DumpWbestCand(int i)
           -W.RecoilT2->Py()*W.PostT2->Px())/W.Post_pt;
       Rcl.u3W =(*W.RecoilT2)*(*W.PostT2)/W.Post_pt+W.Post_pt;
     }
-  }
-
-  if( RunOnMC && (GenW_Born_Id->size() > 0))
-  {
-    if((abs((*GenW_BornLept1_id)[W.trthIdx])==12)
-     ||(abs((*GenW_BornLept1_id)[W.trthIdx])==14)
-     ||(abs((*GenW_BornLept1_id)[W.trthIdx])==16))
+    if( RunOnMC && (GenW_Born_Id->size() > 0))
     {
-      genInfo.BornW_Nu_Pt = (*GenW_BornLept1_pt)[W.trthIdx];
-      genInfo.BornW_Nu_Cnt ++;
-    }else if((abs((*GenW_BornLept2_id)[0])==12)
-	   ||(abs((*GenW_BornLept2_id)[0])==14)
-	   ||(abs((*GenW_BornLept2_id)[0])==16))
-    {
-      genInfo.BornW_Nu_Pt = (*GenW_BornLept2_pt)[W.trthIdx];
-      genInfo.BornW_Nu_Cnt ++;
-    }else{
-      //cout << "There is no BornW_Nu_Pt" << endl;
+      if((abs((*GenW_BornLept1_id)[W.trthIdx])==12)
+       ||(abs((*GenW_BornLept1_id)[W.trthIdx])==14)
+       ||(abs((*GenW_BornLept1_id)[W.trthIdx])==16))
+      {
+        genInfo.BornW_Nu_Pt = (*GenW_BornLept1_pt)[W.trthIdx];
+        genInfo.BornW_Nu_Cnt ++;
+      }else if((abs((*GenW_BornLept2_id)[0])==12)
+             ||(abs((*GenW_BornLept2_id)[0])==14)
+             ||(abs((*GenW_BornLept2_id)[0])==16))
+      {
+        genInfo.BornW_Nu_Pt = (*GenW_BornLept2_pt)[W.trthIdx];
+        genInfo.BornW_Nu_Cnt ++;
+      }else{
+        //cout << "There is no BornW_Nu_Pt" << endl;
+      }
     }
   }
   return 0;
 }
 int Wlnu12LoBase::WbestSelect()
 {
+  double lep_Big(0);
   for(int iw(0); iw<W.size; iw++)
   {
+    //Cut to W.lep_pt_corr
+    W.lep_pt_corr = (*W_Lept1_pt)[iw];
+    if (Mode=="AllCorrectionsRD")DoScaleCorr(iw);
+    if(Mode == "AllCorrectionsMC")DoSmearCorr(iw);
     //additional lepton count
-    if(AnaChannel == "Muon2012LoPU" ) if(AddMuonCut(iw)>0) addLepN++;
-    if(AnaChannel == "Muon2012")    if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "Muon2012LoPU")	if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "Muon2012")	if(AddMuonCut(iw)>0) addLepN++;
     if(AnaChannel == "Electron2012LoPU")if(AddElectronCut(iw)>0)addLepN++;
-    if(AnaChannel == "Electron2012")if(AddElectronCutHighPU(iw)>0) addLepN++;
-    if(AnaChannel == "Tau2012")if(TauCut(iw)>0) addLepN++;
+    if(AnaChannel == "Electron2012")	if(AddElectronCutHighPU(iw)>0) addLepN++;
+    if(AnaChannel == "Tau2012")		if(TauCut(iw)>0) addLepN++;
 
     if( ((AnaChannel == "Muon2012LoPU" ) && (MuonCut(iw) >0))||
 	((AnaChannel == "Muon2012") && (MuonCut(iw) >0))||
@@ -166,14 +170,14 @@ int Wlnu12LoBase::WbestSelect()
 	((AnaChannel =="Electron2012") &&(ElectronCutHighPU(iw) > 0)) ||
 	((AnaChannel =="Tau2012") && (TauCut(iw)) > 0)
 	  //Best Candidate selection
-    )if( W.lep_pt < (*W_Lept1_pt)[iw])
+    )if( lep_Big < W.lep_pt_corr)
     {
-	W.idxBest = iw;
-	W.Pass = true;
-
+      lep_Big = W.lep_pt_corr;
+      W.idxBest = iw;
+      W.Pass = true;
     }//Cut and Bigger pt
-
   }
+  W.lep_pt_corr = lep_Big;
   return 0;
 }
 

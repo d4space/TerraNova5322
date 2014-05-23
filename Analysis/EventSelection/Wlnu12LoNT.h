@@ -1,6 +1,6 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Thu May 22 22:52:50 2014 by ROOT version 5.34/09
+// Fri May 23 02:56:38 2014 by ROOT version 5.34/09
 // from TChain WMuNeu/tree/
 //////////////////////////////////////////////////////////
 
@@ -687,7 +687,7 @@ Wlnu12LoNT::Wlnu12LoNT(TTree *tree) : fChain(0)
       // The following code should be used if you want this class to access a chain
       // of trees.
       TChain * chain = new TChain("WMuNeu/tree","");
-      chain->Add("/d2/scratch/Storage_Area/W_Ntuple2012LowPU/Muon/V22/WpToMuNu/wNTuple_1.root/WMuNeu/tree");
+      chain->Add("/terranova_1/W_Ntuple2012LowPU/Muon/VFinal/WpToMuNu/wNTuple_1.root/WMuNeu/tree");
       tree = chain;
 #endif // SINGLE_TREE
 
