@@ -106,6 +106,8 @@ void Wlnu12LoTempl::Loop()
 
       evtSelected+=mTTW;
 
+      if(Mode == "AllCorrectionsMC")mTTW=mTTW*DoEffiCorr();
+      
       Fill_Histo();
 
       Nselected4Bin();
@@ -133,7 +135,6 @@ void Wlnu12LoTempl::Loop()
   Fout.close();
   gBenchmark->Show("Wlnu12LoTempl");
 }
-
 
 void Wlnu12LoTempl::Nselected4Bin()
 {

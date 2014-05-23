@@ -44,7 +44,7 @@ void WPtTemplMakeHisto()
   double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
   double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
   double LumiW_Muon_RD_LowPU = 1;
-
+/*
 //Muon_RD_LowPU========================================
   cout<<"Muon_RD_LowPU===================="<<endl;
   TChain *TC_Muon_RD_LowPU = new TChain("WMuNeu/tree","");
@@ -62,7 +62,7 @@ void WPtTemplMakeHisto()
   Wlnu12LoTempl Wmunu12LoWpMuNu(
       TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,RunOnMC,0x1235);
   Wmunu12LoWpMuNu.Loop();
-  
+*/  
 //WmToMuNu========================================
   cout<<"WmToMuNu_S8===================="<<endl;
   TChain *TC_WmToMuNu_S8    = new TChain("WMuNeu/tree","");
