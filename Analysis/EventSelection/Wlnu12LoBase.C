@@ -194,29 +194,27 @@ int Wlnu12LoBase::WbestSelect()
 
 int Wlnu12LoBase::FillWSide(int j)
 {
-  for(int j(0); j<W.size; j++)
+  if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(j) >0)||
+      ((AnaChannel == "Electron2012LoPU") && ElectronCutSide(j) > 0)||
+      (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(j) > 0)
+      )
   {
-    if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(j) >0)||
-	((AnaChannel == "Electron2012LoPU") && ElectronCutSide(j) > 0)||
-	(AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(j) > 0)
-	)
+    W.Met_side = (*W_Neut_pt)[j];
+    W.charge = (*W_Charge)[j];
+    W.lep_pt_corr = W_Lept1_pt_Corr[j];
+    TVector2 W_pt_corr(W.Met_side*cos((*W_Neut_phi)[j])+W.lep_pt_corr*cos((*W_Lept1_phi)[j]),
+	W.Met_side*sin((*W_Neut_phi)[j])+W.lep_pt_corr*sin((*W_Lept1_phi)[j]));
+    W.pt_side = W_pt_corr.Mod();
+    if(Mode == "SmeaRecEffCorr")
     {
-      W.Met_side = (*W_Neut_pt)[j];
-      W.charge = (*W_Charge)[j];
-      W.lep_pt_corr = W_Lept1_pt_Corr[j];
-      TVector2 W_pt_corr(W.Met_side*cos((*W_Neut_phi)[j])+W.lep_pt_corr*cos((*W_Lept1_phi)[j]),
-	  W.Met_side*sin((*W_Neut_phi)[j])+W.lep_pt_corr*sin((*W_Lept1_phi)[j]));
-      W.pt_side = W_pt_corr.Mod();
-      if(Mode == "SmeaRecEffCorr")
-      {
-	DoRecoilCorr();
-	W.Met_side = corrMet;
-	W.pt_side = W.pt;
-      }
+      DoRecoilCorr();
+      W.Met_side = corrMet;
+      W.pt_side = W.pt;
     }
   }
   return 0;
 }
+
 int Wlnu12LoBase::VertexCut()
 {
   mVtxVar.nPrim = vtx_isFake->size();
