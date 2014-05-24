@@ -27,9 +27,10 @@ protected:
   ofstream Fout;
   TFile *myFile;
   TH1D*	h1_W_pt;
+  TH1D*	h1_Wp_pt;
+  TH1D*	h1_Wm_pt;
   // Member variables
   double mNselect4WptBin[NwPtBin];
-
 };
 
 #endif

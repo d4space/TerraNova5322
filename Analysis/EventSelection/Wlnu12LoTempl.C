@@ -42,10 +42,12 @@ void Wlnu12LoTempl::Loop()
   cout<<"==================================================================="<<endl;
   gBenchmark->Start("Wlnu12LoTempl");
 
+  //gRandom->SetSeed(0);
+  //gRandom->SetSeed(0x1234);
+//
   if (fChain == 0) return;
    //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   Ntries = fChain->GetEntries();
-
   cout<<"Total: "<<Ntries<<endl;
 
   //============================================
@@ -53,6 +55,7 @@ void Wlnu12LoTempl::Loop()
   //============================================
   for (int i(0); i<Ntries;i++)
   {
+   // cout<<i<<" th Event"<<endl;
     evtCnt = i;
     //===============================
     //W study
@@ -66,7 +69,7 @@ void Wlnu12LoTempl::Loop()
     //===========================
     InitVar4Evt();
 
-    // Dump MET informations To put MET as TLorentz vector
+    // Dump MET informations
     //DumpMETs();
 
     //===================
@@ -98,22 +101,15 @@ void Wlnu12LoTempl::Loop()
     }
 
     //Fill the W==================
-    if( W.Pass && addLepN <2 ){
+    //GoodW
+    if(W.Pass && addLepN <2){
       DumpWbestCand(W.idxBest);
-
-      //Apply Recoil Correction
-      if(Mode == "AllCorrectionsMC")DoRecoilCorr();
-
+      if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
       evtSelected+=mTTW;
-
-      if(Mode == "AllCorrectionsMC")mTTW=mTTW*DoEffiCorr();
-      
+      if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
       Fill_Histo();
-
       Nselected4Bin();
-    
-    }//good W
-
+    }
   }//Ntries
   cout<<"Passed W evts: "<<mNWevt<<endl;
   Fout<<"Passed W evts: "<<mNWevt<<endl;
@@ -129,12 +125,13 @@ void Wlnu12LoTempl::Loop()
   // Notice: Use one of Write_Histo or myFile->Write
   // Write_Histo: to Save specific histograms
   // myFile->Write: to Save all Histograms
-  //Write_Histo();
-  myFile->Write();
+  Write_Histo();
+  //myFile->Write();
   myFile->Close();
   Fout.close();
   gBenchmark->Show("Wlnu12LoTempl");
 }
+
 
 void Wlnu12LoTempl::Nselected4Bin()
 {
@@ -145,10 +142,10 @@ void Wlnu12LoTempl::Nselected4Bin()
 }
 int Wlnu12LoTempl::InitVar()
 {
-  cout<<"Initialize variable at Wlnu12LoTempl class ==========="<<endl;
+  cout<<"Initialize variable at WlnuMET class ==========="<<endl;
   evtCnt = 0;
   mNWevt = 0;
-  TString FoutName = mResultDir+"/"+OutNameBase+".txt";
+  TString FoutName = mResultDir+"/"+OutNameBase+"_"+Mode+".txt";
   Fout.open(FoutName);
   for(int i(0);i<NwPtBin;i++)
   {
@@ -156,7 +153,7 @@ int Wlnu12LoTempl::InitVar()
   }
   // Recoil CorrWptection initializaWpttion
   // Recoil CorrWptection Parameter WptFiles
-  if( (  Mode == "AllCorrectionsMC"
+  if( (  Mode == "SmeaRecEffCorr"
       || Mode == "RecoilCorrMC")
       || Mode =="DumpUnfInfo" )
   {
@@ -166,7 +163,7 @@ int Wlnu12LoTempl::InitVar()
       Rcl.ZMCfilename="../Recoil/ZmmMC/fits.root";
       Rcl.Wpfilename="../Recoil/WmpMC/fits.root";
       Rcl.Wmfilename="../Recoil/WmmMC/fits.root";
-    }else if((AnaChannel == "Electron2012LoPU" ) || AnaChannel == "ElectronHighPU" )
+    }else if((AnaChannel == "Electron2012LoPU") || AnaChannel == "ElectronHighPU")
     {
       Rcl.ZRDfilename="../Recoil/ZeeData/fits.root";
       Rcl.ZMCfilename="../Recoil/ZeeMC/fits.root";
@@ -189,19 +186,28 @@ int Wlnu12LoTempl::InitVar4Evt()
   Wlnu12LoBase::InitVar4Evt();
   return 0;
 }
+
 int Wlnu12LoTempl::InitHistogram()
 {
-  myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  h1_W_pt	= new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
+  myFile   = new TFile(mResultDir+"/"+OutNameBase+"_"+Mode+".root","RECREATE");
+  h1_W_pt  = new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
+  h1_Wp_pt = new TH1D("h1_Wp_pt","Wpt",NWptBinPlus-1,WptBins);
+  h1_Wm_pt = new TH1D("h1_Wm_pt","Wpt",NWptBinPlus-1,WptBins);
+  
   return 0;
 }
 int Wlnu12LoTempl::Fill_Histo()
 {
   h1_W_pt->Fill(W.pt, mTTW);
+  if(W.charge>0)h1_Wp_pt->Fill(W.pt,mTTW);
+  if(W.charge<0)h1_Wm_pt->Fill(W.pt,mTTW);
   return 0;
 }
+
 int Wlnu12LoTempl::Write_Histo()
 {
   h1_W_pt->Write();
+  h1_Wp_pt->Write();
+  h1_Wm_pt->Write();
   return 0;
 }

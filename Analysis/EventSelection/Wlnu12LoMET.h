@@ -24,89 +24,21 @@ protected:
   int InitHistogram();
   int Fill_Histo();
   int Fill_SideHisto(); //Side Band histograms
-  int DefineAcceptHist(); 
-  int FillAcceptInfo(); 
   int Write_Histo();
   ofstream Fout;
   TFile *myFile;
   TH1D*	h1_W_pt;
   TH1D*	h1_Wp_pt;
   TH1D*	h1_Wm_pt;
-
-   // Acceptance
-   TH1D*	h1_Born_AP;
-   TH1D*	h1_Born_BornFid;
-   TH1D*	h1_Born_BornFid_Even;
-   TH1D*	h1_Born_BothFid;
-   TH1D*	h1_Born_BothFid_Even;
-
-   TH1D*	h1_Post_PostFid;
-   TH1D*	h1_Post_PostFid_Even;
-   TH1D*	h1_Post_BothFid;
-   TH1D*	h1_Post_BothFid_weightFSR;
-   TH1D*	h1_Post_BothFid_Even;
-
-   TH2D*	h2_PostBorn_BothFid;
-
-
-   // Unfolding
-   TH1D*	h1_Truth_Rec;
-   TH1D*	h1_Truth_Rec_Even;
-   TH1D*	h1_Truth_Rec_Odd;
-   TH1D*	h1_Truth_Post;
-   TH1D*	h1_Truth_Post_Even;
-   TH1D*	h1_Truth_Post_Odd;
-   TH1D*	h1_Truth_Post_EffCorr;
-   TH1D*	h1_Truth_Post_EffCorr_weightFSR;
-   TH2D*	h2_Truth_Rec_AP_Post;
-   TH2D*	h2_Truth_Rec_AP_PostEffCorr;
-   TH1D*	h1_Truth_Post_Fit;
-
-   TH1D*	h1_W_pt_RecoPreFsrGenRes[NWptBinPlus];
-   TH1D*	h1_W_pt_RecoPstFsrGenRes[NWptBinPlus];
-
-   TH1D*        h1_W_Lep1_eta;
-   TH1D*        h1_W_Neu_All;
-   TH1D*        h1_W_Neu_Eta_I[EtaBin];
-   TH1D*        h1_W_Neu_Eta_P[EtaBin];
-   TH1D*        h1_W_Neu_Eta_M[EtaBin];
-   TH1D*	h1_W_Neu_pt[NWptBinPlus];
-   TH1D*	h1_GenW_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WSide_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WSide_Neu_eta[EtaBin];
-
-   TH2D*	h2_Met_LepPt[NWptBinPlus];
-   TH2D*	h2_Met_WpT[NWptBinPlus];
-
-   TH1D*	h1_Wp_Neu_pt[NWptBinPlus];
-   TH1D*	h1_GenWp_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WpSide_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WpSide_Neu_eta[EtaBin];
-
-   TH1D*	h1_Wm_Neu_pt[NWptBinPlus];
-   TH1D*	h1_GenWm_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WmSide_Neu_pt[NWptBinPlus];
-   TH1D*	h1_WmSide_Neu_eta[EtaBin];
-   
-   TH1D*	h1_Wp_Lept_pt[NWptBinPlus];
-   TH1D*	h1_Wm_Lept_pt[NWptBinPlus];
+  TH1D*	h1_W_Neu_pt[NWptBinPlus];
+  TH1D*	h1_Wp_Neu_pt[NWptBinPlus];
+  TH1D*	h1_Wm_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WSide_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WpSide_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WmSide_Neu_pt[NWptBinPlus];
 
   // Member variables
   double mNselect4WptBin[NwPtBin];
-  double Bins[NWptBinPlus];
-  double TTW ; 
-  double effiSF;
-
-  struct GenInfo{
-    //bool W_MCtruth;
-    double BornW_pt;
-    double PostW_pt;
-    double PostW_phi;
-    double BornW_phi;
-    double charge;
-    double genWmet;
-  }genInfo;
-
 };
 
 #endif

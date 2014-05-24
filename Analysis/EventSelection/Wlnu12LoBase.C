@@ -87,12 +87,16 @@ int Wlnu12LoBase::DumpWbestCand(int i)
   W.lep_pt = (*W_Lept1_pt)[i];
   W.lep_phi = (*W_Lept1_phi)[i];
   W.lep_eta = (*W_Lept1_eta)[i];
-  W.pt = (*W_pt)[i];
-  W.acop= (*W_Acop)[i];
-
   W.Mt = (*W_Mt)[i];
   W.Met = (*W_Neut_pt)[i];
-  if(Mode == "AllCorrectionsMC" || Mode == "RecoilCorrMC")if(GenW_Born_Id->size()>0)
+  
+  TVector2 W_pt_corr(W.Met*cos((*W_Neut_phi)[i])+W.lep_pt_corr*cos(W.lep_phi),
+      W.Met*sin((*W_Neut_phi)[i])+W.lep_pt_corr*sin(W.lep_phi));
+  W.pt = W_pt_corr.Mod();
+  //W.pt = (*W_pt)[i];
+  W.acop= (*W_Acop)[i];
+
+  if(Mode == "SmeaRecEffCorr" || Mode == "RecoilCorrMC")if(GenW_Born_Id->size()>0)
   {
     W.genIdx = (*W_Lept1_genIdxMatch)[i];
   }//RecoilCorr
@@ -155,8 +159,9 @@ int Wlnu12LoBase::WbestSelect()
   {
     //Cut to W.lep_pt_corr
     W.lep_pt_corr = (*W_Lept1_pt)[iw];
-    if (Mode=="AllCorrectionsRD")DoScaleCorr(iw);
-    if(Mode == "AllCorrectionsMC")DoSmearCorr(iw);
+    if (Mode=="ScaleCorr")DoScaleCorr(iw);
+    if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")DoSmearCorr(iw);
+    W_Lept1_pt_Corr.push_back(W.lep_pt_corr);
     //additional lepton count
     if(AnaChannel == "Muon2012LoPU")	if(AddMuonCut(iw)>0) addLepN++;
     if(AnaChannel == "Muon2012")	if(AddMuonCut(iw)>0) addLepN++;
@@ -181,18 +186,27 @@ int Wlnu12LoBase::WbestSelect()
   return 0;
 }
 
-int Wlnu12LoBase::DumpWSideCand()
+int Wlnu12LoBase::FillWSide(int j)
 {
-  for(int iw(0); iw<W.size; iw++)
+  for(int j(0); j<W.size; j++)
   {
-    if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(iw) >0)||
-      ((AnaChannel == "Electron2012LoPU") && ElectronCutSide(iw) > 0)||
-      (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(iw) > 0)
-      )
+    if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(j) >0)||
+	((AnaChannel == "Electron2012LoPU") && ElectronCutSide(j) > 0)||
+	(AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(j) > 0)
+	)
     {
-      W.pt_side = (*W_pt)[iw];
-      W.Met_side = (*W_Neut_pt)[iw];
-      W.charge_side = (*W_Charge)[iw];
+      W.Met_side = (*W_Neut_pt)[j];
+      W.charge = (*W_Charge)[j];
+      W.lep_pt_corr = W_Lept1_pt_Corr[j];
+      TVector2 W_pt_corr(W.Met_side*cos((*W_Neut_phi)[j])+W.lep_pt_corr*cos((*W_Lept1_phi)[j]),
+	  W.Met_side*sin((*W_Neut_phi)[j])+W.lep_pt_corr*sin((*W_Lept1_phi)[j]));
+      W.pt_side = W_pt_corr.Mod();
+      if(Mode == "SmeaRecEffCorr")
+      {
+	DoRecoilCorr();
+	W.Met_side = corrMet;
+	W.pt_side = W.pt;
+      }
     }
   }
   return 0;
