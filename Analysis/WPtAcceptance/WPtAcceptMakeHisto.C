@@ -39,7 +39,7 @@ void WPtAcceptMakeHisto()
   Wlnu12LoAccept Wmunu12LoWpMuNu(
       TC_WpToMuNu_S8,LumiW_WpToMuNu,WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,RunOnMC,0x1235);
   Wmunu12LoWpMuNu.Loop();
-
+/*
 //WmToMuNu========================================
   cout<<"WmToMuNu_S8===================="<<endl;
   TChain *TC_WmToMuNu_S8 = new TChain("WAcceptanceMuon/tree","");
@@ -48,7 +48,7 @@ void WPtAcceptMakeHisto()
   Wlnu12LoAccept Wmunu12LoWmMuNu(
       TC_WmToMuNu_S8,LumiW_WmToMuNu,WmToMuNu_BaseName,ModeMC,AnaChannelMu,-1,RunOnMC,0x1235);
   Wmunu12LoWmMuNu.Loop();
-
+*/
 //====================
 /////////// Electron LowPU
 //====================
@@ -56,7 +56,7 @@ void WPtAcceptMakeHisto()
   //Luminosity weight
   double LumiW_WpToEleNu = 1;
   double LumiW_WmToEleNu = 1;
-
+/*
 //WpToEleNu========================================
   cout<<"WpToEleNu_S8===================="<<endl;
   TChain *TC_WpToEleNu_S8 = new TChain("WAcceptanceElectron/tree","");
@@ -74,4 +74,5 @@ void WPtAcceptMakeHisto()
   Wlnu12LoAccept Wenu12LoWmEleNu(
       TC_WmToEleNu_S8,LumiW_WmToEleNu,WmToEleNu_BaseName,ModeMC,AnaChannelEle,-1,true,0x1235);
   Wenu12LoWmEleNu.Loop();
+*/
 }

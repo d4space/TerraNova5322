@@ -70,7 +70,7 @@ void Wlnu12LoAccept::Loop()
     // Calculate Event Weight
     //=====================
     mTTW = CalcEvtWeight();
-    
+    cout << mTTW << endl; 
     // Acceptance
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
