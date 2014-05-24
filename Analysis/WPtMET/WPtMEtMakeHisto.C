@@ -2,7 +2,6 @@
 #include <iostream>
 #include "../EventSelection/include/Tree2012LoPU/SetupTree.h"
 #include "../Utils/const.h"
-//#include "../EventSelection/WpT.h"
 
 using namespace std;
 
@@ -12,16 +11,15 @@ void WPtMEtMakeHisto()
 //======================================
 // choose Mode and AnaChannel here  !!!
 //======================================
-//  TString AnaChannel = "MuonLowPU"; //ElectronLowPU
 
-  //TString ModeMC = "Analysis";//Analysis,Recoil, RecoilEvaMC,RecoilEvaRD, RecoilCorr, Unfold,DumpUnfInfo
-  TString ModeMC = "AllCorrectionsMC";
-  //TString ModeRD = "AllCorrectionsRD";
+  TString ModeEWK = "SmeaEffCorr";//Corrections applied to EWK
+  TString ModeMC = "SmeaRecEffCorr";//Corrections applied to MC signal
+  TString ModeRD = "ScaleCorr";//Corrections applied to RD
   TString AnaChannelEle = "Electron2012LoPU"; 
   TString AnaChannelMu  = "Muon2012LoPU";
 
-  //gSystem->Load("libMathCore");
-  //gSystem->Load("libPhysics");
+  bool RunOnMC(true);
+  bool RunOnRD(false);
 
   gSystem->CompileMacro("../EventSelection/Wlnu12LoNT.C","k");
   gSystem->CompileMacro("../EventSelection/Wlnu12LoBase.C","k");
@@ -41,59 +39,59 @@ void WPtMEtMakeHisto()
   double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
   double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
   double LumiW_Muon_RD_LowPU = 1;
-/*
+
 //Muon_RD_LowPU========================================
   cout<<"Muon_RD_LowPU===================="<<endl;
   TChain *TC_Muon_RD_LowPU = new TChain("WMuNeu/tree","");
   SetupTree("Muon_RD_LowPU",TC_Muon_RD_LowPU);
   TString Muon_RD_LowPU_BaseName = "Muon_RD_LowPU";
   Wlnu12LoMET Wmunu12LoRD(
-      TC_Muon_RD_LowPU,LumiW_Muon_RD_LowPU, Muon_RD_LowPU_BaseName,ModeRD,AnaChannelMu,0,false,0x1235);
+      TC_Muon_RD_LowPU,LumiW_Muon_RD_LowPU, Muon_RD_LowPU_BaseName,ModeRD,AnaChannelMu,0,RunOnRD,0x1235);
   Wmunu12LoRD.Loop();
-*/
-//*  
+  
 //WpToMuNu========================================
   cout<<"WpToMuNu_S8===================="<<endl;
   TChain *TC_WpToMuNu_S8    = new TChain("WMuNeu/tree","");
   SetupTree("Muon_WpToMuNu_S8",TC_WpToMuNu_S8);
   TString WpToMuNu_BaseName = "WpToMuNu_S8";
   Wlnu12LoMET Wmunu12LoWpMuNu(
-      TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,true,0x1235);
+      TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,RunOnMC,0x1235);
   Wmunu12LoWpMuNu.Loop();
-/*
-  //WmToMuNu========================================
+
+//WmToMuNu========================================
   cout<<"WmToMuNu_S8===================="<<endl;
   TChain *TC_WmToMuNu_S8    = new TChain("WMuNeu/tree","");
   SetupTree("Muon_WmToMuNu_S8",TC_WmToMuNu_S8);
   TString WmToMuNu_BaseName = "WmToMuNu_S8";
   Wlnu12LoMET Wmunu12LoWmMuNu(
-      TC_WmToMuNu_S8,LumiW_WmToMuNu, WmToMuNu_BaseName,ModeMC,AnaChannelMu,-1,true,0x1235);
+      TC_WmToMuNu_S8,LumiW_WmToMuNu, WmToMuNu_BaseName,ModeMC,AnaChannelMu,-1,RunOnMC,0x1235);
   Wmunu12LoWmMuNu.Loop();
-*/
-/*
+
 //DYToMuMu========================================
   cout<<"DYToMuMu_S8========================="<<endl;
   TChain *TC_Muon_DYToMuMu_S8	= new TChain("WMuNeu/tree","");
   SetupTree("Muon_DYToMuMu_S8",TC_Muon_DYToMuMu_S8);
   TString Muon_DYToMuMu_BaseName = "Muon_DYToMuMu_S8";
   Wlnu12LoMET Wmunu12LoDYToMuMu(
-      TC_Muon_DYToMuMu_S8,LumiW_Muon_DYToMuMu_S8, Muon_DYToMuMu_BaseName,ModeMC,AnaChannelMu,0,true,0x1235);
+      TC_Muon_DYToMuMu_S8,LumiW_Muon_DYToMuMu_S8, Muon_DYToMuMu_BaseName,ModeEWK,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoDYToMuMu.Loop();
-  //WToTauNu========================================
+
+//WToTauNu========================================
   cout<<"WToTauNu_S8========================="<<endl;
   TChain *TC_Muon_WToTauNu_S8	= new TChain("WMuNeu/tree","");
   SetupTree("Muon_WToTauNu_S8",TC_Muon_WToTauNu_S8);
   TString Muon_WToTauNu_BaseName = "Muon_WToTauNu_S8";
   Wlnu12LoMET Wmunu12LoWToTauNu(
-      TC_Muon_WToTauNu_S8,LumiW_Muon_WToTauNu_S8, Muon_WToTauNu_BaseName,ModeMC,AnaChannelMu,0,true,0x1235);
+      TC_Muon_WToTauNu_S8,LumiW_Muon_WToTauNu_S8, Muon_WToTauNu_BaseName,ModeEWK,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoWToTauNu.Loop();
+
 //DYToTauTau========================================
   cout<<"DYToTauTau_S8========================="<<endl;
   TChain *TC_Muon_DYToTauTau_S8	= new TChain("WMuNeu/tree","");
   SetupTree("Muon_DYToTauTau_S8",TC_Muon_DYToTauTau_S8);
   TString Muon_DYToTauTau_BaseName = "Muon_DYToTauTau_S8";
   Wlnu12LoMET Wmunu12LoDYToTauTau(
-      TC_Muon_DYToTauTau_S8,LumiW_Muon_DYToTauTau_S8, Muon_DYToTauTau_BaseName,ModeMC,AnaChannelMu,0,true,0x1235);
+      TC_Muon_DYToTauTau_S8,LumiW_Muon_DYToTauTau_S8, Muon_DYToTauTau_BaseName,ModeEWK,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoDYToTauTau.Loop();
 
 //TTJets========================================
@@ -102,9 +100,9 @@ void WPtMEtMakeHisto()
   SetupTree("Muon_TTJets_S8",TC_Muon_TTJets_S8);
   TString Muon_TTJets_BaseName = "Muon_TTJets_S8";
   Wlnu12LoMET Wmunu12LoTTJets(
-      TC_Muon_TTJets_S8,LumiW_Muon_TTJets_S8, Muon_TTJets_BaseName,ModeMC,AnaChannelMu,0,true,0x1235);
+      TC_Muon_TTJets_S8,LumiW_Muon_TTJets_S8, Muon_TTJets_BaseName,ModeEWK,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoTTJets.Loop();
-*/
+
 //====================
 /////////// Electron LowPU
 //====================
@@ -119,24 +117,23 @@ void WPtMEtMakeHisto()
   double LumiW_WpToEleNu = LumiWeight_Ele_WpToEleNu_S8;
   double LumiW_WmToEleNu = LumiWeight_Ele_WmToEleNu_S8;
   double LumiW_Ele_RD_LowPU = 1;
-/*
+
 //Ele_RD_LowPU========================================
   cout<<"Ele_RD_LowPU===================="<<endl;
   TChain *TC_Ele_RD_LowPU = new TChain("WEleNeu/tree","");
   SetupTree("Ele_RD_LowPU",TC_Ele_RD_LowPU);
   TString Ele_RD_LowPU_BaseName = "Ele_RD_LowPU";
   Wlnu12LoMET Wenu12LoRD(
-      TC_Ele_RD_LowPU,LumiW_Ele_RD_LowPU, Ele_RD_LowPU_BaseName,ModeRD,AnaChannelEle,0,false,0x1235);
+      TC_Ele_RD_LowPU,LumiW_Ele_RD_LowPU, Ele_RD_LowPU_BaseName,ModeRD,AnaChannelEle,0,RunOnRD,0x1235);
   Wenu12LoRD.Loop();
-*/
-/*
-  //WpToEleNu========================================
+
+//WpToEleNu========================================
   cout<<"WpToEleNu_S8===================="<<endl;
   TChain *TC_WpToEleNu_S8    = new TChain("WEleNeu/tree","");
   SetupTree("Ele_WpToEleNu_S8",TC_WpToEleNu_S8);
   TString WpToEleNu_BaseName = "WpToEleNu_S8";
   Wlnu12LoMET Wenu12LoWpEleNu(
-      TC_WpToEleNu_S8,LumiW_WpToEleNu, WpToEleNu_BaseName,ModeMC,AnaChannelEle,1,true,0x1235);
+      TC_WpToEleNu_S8,LumiW_WpToEleNu, WpToEleNu_BaseName,ModeMC,AnaChannelEle,1,RunOnMC,0x1235);
   Wenu12LoWpEleNu.Loop();
 //WmToEleNu========================================
   cout<<"WmToEleNu_S8===================="<<endl;
@@ -144,17 +141,16 @@ void WPtMEtMakeHisto()
   SetupTree("Ele_WmToEleNu_S8",TC_WmToEleNu_S8);
   TString WmToEleNu_BaseName = "WmToEleNu_S8";
   Wlnu12LoMET Wenu12LoWmEleNu(
-      TC_WmToEleNu_S8,LumiW_WmToEleNu, WmToEleNu_BaseName,ModeMC,AnaChannelEle,-1,true,0x1235);
+      TC_WmToEleNu_S8,LumiW_WmToEleNu, WmToEleNu_BaseName,ModeMC,AnaChannelEle,-1,RunOnMC,0x1235);
   Wenu12LoWmEleNu.Loop();
-*/
-/*
+
 //DYToEE========================================
   cout<<"DYToEE_S8========================="<<endl;
   TChain *TC_Ele_DYToEE_S8	= new TChain("WEleNeu/tree","");
   SetupTree("Ele_DYToEE_S8",TC_Ele_DYToEE_S8);
   TString Ele_DYToEE_BaseName = "Ele_DYToEE_S8";
   Wlnu12LoMET Wenu12LoDYToEE(
-      TC_Ele_DYToEE_S8,LumiW_Ele_DYToEE_S8, Ele_DYToEE_BaseName,ModeMC,AnaChannelEle,0,true,0x1235);
+      TC_Ele_DYToEE_S8,LumiW_Ele_DYToEE_S8, Ele_DYToEE_BaseName,ModeEWK,AnaChannelEle,0,RunOnMC,0x1235);
   Wenu12LoDYToEE.Loop();
 
 //DYToTauTau========================================
@@ -163,7 +159,7 @@ void WPtMEtMakeHisto()
   SetupTree("Ele_DYToTauTau_S8",TC_Ele_DYToTauTau_S8);
   TString Ele_DYToTauTau_BaseName = "Ele_DYToTauTau_S8";
   Wlnu12LoMET Wenu12LoDYToTauTau(
-      TC_Ele_DYToTauTau_S8,LumiW_Ele_DYToTauTau_S8, Ele_DYToTauTau_BaseName,ModeMC,AnaChannelEle,0,true,0x1235);
+      TC_Ele_DYToTauTau_S8,LumiW_Ele_DYToTauTau_S8, Ele_DYToTauTau_BaseName,ModeEWK,AnaChannelEle,0,RunOnMC,0x1235);
   Wenu12LoDYToTauTau.Loop();
 
 //WToTauNu========================================
@@ -172,7 +168,7 @@ void WPtMEtMakeHisto()
   SetupTree("Ele_WToTauNu_S8",TC_Ele_WToTauNu_S8);
   TString Ele_WToTauNu_BaseName = "Ele_WToTauNu_S8";
   Wlnu12LoMET Wenu12LoWToTauNu(
-      TC_Ele_WToTauNu_S8,LumiW_Ele_WToTauNu_S8, Ele_WToTauNu_BaseName,ModeMC,AnaChannelEle,0,true,0x1235);
+      TC_Ele_WToTauNu_S8,LumiW_Ele_WToTauNu_S8, Ele_WToTauNu_BaseName,ModeEWK,AnaChannelEle,0,RunOnMC,0x1235);
   Wenu12LoWToTauNu.Loop();
 
 //TTJets========================================
@@ -181,7 +177,6 @@ void WPtMEtMakeHisto()
   SetupTree("Ele_TTJets_S8",TC_Ele_TTJets_S8);
   TString Ele_TTJets_BaseName = "Ele_TTJets_S8";
   Wlnu12LoMET Wenu12LoTTJets(
-      TC_Ele_TTJets_S8,LumiW_Ele_TTJets_S8, Ele_TTJets_BaseName,ModeMC,AnaChannelEle,0,true,0x1235);
+      TC_Ele_TTJets_S8,LumiW_Ele_TTJets_S8, Ele_TTJets_BaseName,ModeEWK,AnaChannelEle,0,RunOnMC,0x1235);
   Wenu12LoTTJets.Loop();
-*/
 }

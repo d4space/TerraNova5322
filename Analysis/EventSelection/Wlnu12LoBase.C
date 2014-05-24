@@ -166,7 +166,7 @@ int Wlnu12LoBase::WbestSelect()
     //Cut to W.lep_pt_corr
     W.lep_pt_corr = (*W_Lept1_pt)[iw];
     if (Mode=="ScaleCorr")DoScaleCorr(iw);
-    if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")DoSmearCorr(iw);
+    if((Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr") || Mode == "Unfold")DoSmearCorr(iw);
     W_Lept1_pt_Corr.push_back(W.lep_pt_corr);
     //additional lepton count
     if(AnaChannel == "Muon2012LoPU")	if(AddMuonCut(iw)>0) addLepN++;
