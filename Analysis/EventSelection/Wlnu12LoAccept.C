@@ -70,7 +70,6 @@ void Wlnu12LoAccept::Loop()
     // Calculate Event Weight
     //=====================
     mTTW = CalcEvtWeight();
-    cout << mTTW << endl; 
     // Acceptance
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
@@ -111,7 +110,7 @@ void Wlnu12LoAccept::Nselected4Bin()
 {
   for(int i(0);i<NwPtBin;i++)
   {
-    if(genInfo.BornW_pt >= WptBins[iBin] && genInfo.BornW_pt < WptBins[iBin+1]) mNselect4WptBin[i]+=mTTW;
+    if(genInfo.BornW_pt >= WptBins[NwPtBin] && genInfo.BornW_pt < WptBins[NwPtBin+1]) mNselect4WptBin[i]+=mTTW;
   }
 }
 int Wlnu12LoAccept::InitVar()
@@ -264,39 +263,39 @@ int Wlnu12LoAccept::FillAcceptInfo()
   return 0;
 }
 
-int Wlnu12LoAccept::DoPDFsyst()
-{
-  for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
-  {
-    unsigned int nmembers = weightPDF->size();
-    unsigned int npairs = (nmembers-1)/2;
-    events_central[iBin] = weightedSelectedEvents[iBin][0];
-    events2_central[iBin] = weighted2SelectedEvents[iBin][0];
-    if(npairs>0){
-      for (unsigned int j=0; j<npairs; ++j)
-      {
-	wa[iBin] = weightedSelectedEvents[iBin][2*j+1]/events_central[iBin]-1.;
-	wb[iBin] = weightedSelectedEvents[iBin][2*j+2]/events_central[iBin]-1.;
-	if (wa[iBin]>wb[iBin]){
-	  if (wa[iBin]<0.) wa[iBin] = 0.;
-	  if (wb[iBin]>0.) wb[iBin] = 0.;
-	  wplus[iBin] += wa[iBin]*wa[iBin];
-	  wminus[iBin] += wb[iBin]*wb[iBin];
-	}else{
-	  if (wb[iBin]<0.) wb[iBin] = 0.;
-	  if (wa[iBin]>0.) wa[iBin] = 0.;
-	  wplus[iBin] += wb[iBin]*wb[iBin];
-	  wminus[iBin] += wa[iBin]*wa[iBin];
-	}
-      }
-      if (wplus[iBin]>0) wplus[iBin] = sqrt(wplus[iBin]);
-      if (wminus[iBin]>0) wminus[iBin] = sqrt(wminus[iBin]);
-    }else{
-      cout << "\tNO eigenvectors for uncertainty estimation" << endl;
-    }
-    cout <<iBin+1<<" Bin: Relative uncertainty with respect to central member: +" << setprecision(4) << 100.*wplus[iBin] << " / -" << setprecision(4) << 100.*wminus[iBin] << " [%]" << endl;
-  }
-}
+//int Wlnu12LoAccept::DoPDFsyst()
+//{
+//  for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
+//  {
+//    unsigned int nmembers = weightPDF->size();
+//    unsigned int npairs = (nmembers-1)/2;
+//    events_central[iBin] = weightedSelectedEvents[iBin][0];
+//    events2_central[iBin] = weighted2SelectedEvents[iBin][0];
+//    if(npairs>0){
+//      for (unsigned int j=0; j<npairs; ++j)
+//      {
+//	wa[iBin] = weightedSelectedEvents[iBin][2*j+1]/events_central[iBin]-1.;
+//	wb[iBin] = weightedSelectedEvents[iBin][2*j+2]/events_central[iBin]-1.;
+//	if (wa[iBin]>wb[iBin]){
+//	  if (wa[iBin]<0.) wa[iBin] = 0.;
+//	  if (wb[iBin]>0.) wb[iBin] = 0.;
+//	  wplus[iBin] += wa[iBin]*wa[iBin];
+//	  wminus[iBin] += wb[iBin]*wb[iBin];
+//	}else{
+//	  if (wb[iBin]<0.) wb[iBin] = 0.;
+//	  if (wa[iBin]>0.) wa[iBin] = 0.;
+//	  wplus[iBin] += wb[iBin]*wb[iBin];
+//	  wminus[iBin] += wa[iBin]*wa[iBin];
+//	}
+//      }
+//      if (wplus[iBin]>0) wplus[iBin] = sqrt(wplus[iBin]);
+//      if (wminus[iBin]>0) wminus[iBin] = sqrt(wminus[iBin]);
+//    }else{
+//      cout << "\tNO eigenvectors for uncertainty estimation" << endl;
+//    }
+//    cout <<iBin+1<<" Bin: Relative uncertainty with respect to central member: +" << setprecision(4) << 100.*wplus[iBin] << " / -" << setprecision(4) << 100.*wminus[iBin] << " [%]" << endl;
+//  }
+//}
 
 int Wlnu12LoAccept::Write_Histo()
 {

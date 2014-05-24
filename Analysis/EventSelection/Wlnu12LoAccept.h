@@ -22,7 +22,7 @@ protected:
   int InitVar4Evt(); // Init for every event
   int InitHistogram();
   int FillAcceptInfo();
-  int DoPDFsyst();
+  //int DoPDFsyst();
   int Write_Histo();
   ofstream Fout;
   TFile *myFile;
@@ -31,14 +31,14 @@ protected:
   double mNselect4WptBin[NwPtBin];
 
   //PDF systematic uncertainty
-  double weightedSelectedEvents[13,53];
-  double weighted2SelectedEvents[13,53];
-  double events_central[NWptBinPlus-1] = {0.0};
-  double events2_central[NWptBinPlus-1] = {0.0};
-  double wa[NWptBinPlus-1] = {0.0};
-  double wb[NWptBinPlus-1] = {0.0};
-  double wplus[NWptBinPlus-1] = {0.0};
-  double wminus[NWptBinPlus-1] = {0.0};
+  //double weightedSelectedEvents[13,53];
+  //double weighted2SelectedEvents[13,53];
+  //double events_central[NWptBinPlus-1] = {0.0};
+  //double events2_central[NWptBinPlus-1] = {0.0};
+  //double wa[NWptBinPlus-1] = {0.0};
+  //double wb[NWptBinPlus-1] = {0.0};
+  //double wplus[NWptBinPlus-1] = {0.0};
+  //double wminus[NWptBinPlus-1] = {0.0};
 
   // Acceptance
   TH1D* h1_Born_AP;

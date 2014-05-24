@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Fri May 23 02:56:38 2014 by ROOT version 5.34/09
-// from TChain WMuNeu/tree/
+// Sat May 24 15:45:46 2014 by ROOT version 5.34/09
+// from TChain WAcceptanceMuon/tree/
 //////////////////////////////////////////////////////////
 
 #ifndef Wlnu12LoNT_h
@@ -39,21 +39,6 @@ public :
    vector<double>  *vtx_z;
    vector<double>  *vtx_Rho;
    Double_t        weightFSR;
-   Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_version;
-   Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1prescale;
-   Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1fired;
-   Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_HLTprescale;
-   Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_fired;
-   Int_t           HLT_Ele27_WP80_version;
-   Int_t           HLT_Ele27_WP80_L1prescale;
-   Int_t           HLT_Ele27_WP80_L1fired;
-   Int_t           HLT_Ele27_WP80_HLTprescale;
-   Int_t           HLT_Ele27_WP80_fired;
-   Int_t           HLT_Mu15_eta2p1_version;
-   Int_t           HLT_Mu15_eta2p1_L1prescale;
-   Int_t           HLT_Mu15_eta2p1_L1fired;
-   Int_t           HLT_Mu15_eta2p1_HLTprescale;
-   Int_t           HLT_Mu15_eta2p1_fired;
    vector<double>  *Z_Lept1_chIso03;
    vector<double>  *Z_Lept1_chIso04;
    vector<double>  *Z_Lept1_nhIso03;
@@ -62,10 +47,6 @@ public :
    vector<double>  *Z_Lept1_phIso04;
    vector<double>  *Z_Lept1_pcIso03;
    vector<double>  *Z_Lept1_pcIso04;
-   vector<double>  *Z_Lept1_relIsoCom03;
-   vector<double>  *Z_Lept1_relIsoCom04;
-   vector<double>  *Z_Lept1_relIsoBeta03;
-   vector<double>  *Z_Lept1_relIsoBeta04;
    vector<double>  *Z_Lept1_relIsoRho03;
    vector<double>  *Z_Lept1_RelisolPtTrks03;
    vector<double>  *Z_Lept1_RelisoEm03;
@@ -78,18 +59,12 @@ public :
    vector<double>  *Z_Lept2_phIso04;
    vector<double>  *Z_Lept2_pcIso03;
    vector<double>  *Z_Lept2_pcIso04;
-   vector<double>  *Z_Lept2_relIsoCom03;
-   vector<double>  *Z_Lept2_relIsoCom04;
-   vector<double>  *Z_Lept2_relIsoBeta03;
-   vector<double>  *Z_Lept2_relIsoBeta04;
    vector<double>  *Z_Lept2_relIsoRho03;
    vector<double>  *Z_Lept2_RelisolPtTrks03;
    vector<double>  *Z_Lept2_RelisoEm03;
    vector<double>  *Z_Lept2_RelisoHad03;
    vector<bool>    *Z_Lept1_isGlobal;
    vector<bool>    *Z_Lept1_isTrker;
-   vector<double>  *Z_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept1_decModFind;
    vector<double>  *Z_Lept1_pt;
    vector<double>  *Z_Lept1_et;
    vector<double>  *Z_Lept1_charge;
@@ -103,8 +78,6 @@ public :
    vector<double>  *Z_Lept1_dB;
    vector<bool>    *Z_Lept2_isGlobal;
    vector<bool>    *Z_Lept2_isTrker;
-   vector<double>  *Z_Lept2_MedComIsoDelBetCorr3Hits;
-   vector<double>  *Z_Lept2_decModFind;
    vector<double>  *Z_Lept2_pt;
    vector<double>  *Z_Lept2_et;
    vector<double>  *Z_Lept2_charge;
@@ -201,8 +174,6 @@ public :
    vector<double>  *W_Lept1_RelisoHad03;
    vector<bool>    *W_Lept1_isGlobal;
    vector<bool>    *W_Lept1_isTrker;
-   vector<double>  *W_Lept1_MedComIsoDelBetCorr3Hits;
-   vector<double>  *W_Lept1_decModFind;
    vector<double>  *W_Lept1_pt;
    vector<double>  *W_Lept1_et;
    vector<double>  *W_Lept1_charge;
@@ -309,7 +280,6 @@ public :
    vector<double>  *GenW_PostLept2_charge;
    vector<double>  *GenW_PostLept2_eta;
    vector<double>  *GenW_PostLept2_phi;
-   Double_t        GenW_Neut_pt;
    vector<int>     *GenZ_nLepts;
    vector<int>     *GenZ_id;
    vector<int>     *GenZ_status;
@@ -318,7 +288,6 @@ public :
    vector<double>  *GenZ_py;
    vector<double>  *GenZ_pz;
    vector<double>  *GenZ_pt;
-   Double_t        GenZ_Neut_pt;
    vector<double>  *GenZ_eta;
    vector<double>  *GenZ_phi;
    vector<int>     *GenZ_Lept1_id;
@@ -360,9 +329,6 @@ public :
    TBranch        *b_vtx_z;   //!
    TBranch        *b_vtx_Rho;   //!
    TBranch        *b_weightFSR;   //!
-   TBranch        *b_HLT_Ele22_CaloIdL_CaloIsoVL;   //!
-   TBranch        *b_HLT_Ele27_WP80;   //!
-   TBranch        *b_HLT_Mu15_eta2p1;   //!
    TBranch        *b_Z_Lept1_chIso03;   //!
    TBranch        *b_Z_Lept1_chIso04;   //!
    TBranch        *b_Z_Lept1_nhIso03;   //!
@@ -371,10 +337,6 @@ public :
    TBranch        *b_Z_Lept1_phIso04;   //!
    TBranch        *b_Z_Lept1_pcIso03;   //!
    TBranch        *b_Z_Lept1_pcIso04;   //!
-   TBranch        *b_Z_Lept1_relIsoCom03;   //!
-   TBranch        *b_Z_Lept1_relIsoCom04;   //!
-   TBranch        *b_Z_Lept1_relIsoBeta03;   //!
-   TBranch        *b_Z_Lept1_relIsoBeta04;   //!
    TBranch        *b_Z_Lept1_relIsoRho03;   //!
    TBranch        *b_Z_Lept1_RelisolPtTrks03;   //!
    TBranch        *b_Z_Lept1_RelisoEm03;   //!
@@ -387,18 +349,12 @@ public :
    TBranch        *b_Z_Lept2_phIso04;   //!
    TBranch        *b_Z_Lept2_pcIso03;   //!
    TBranch        *b_Z_Lept2_pcIso04;   //!
-   TBranch        *b_Z_Lept2_relIsoCom03;   //!
-   TBranch        *b_Z_Lept2_relIsoCom04;   //!
-   TBranch        *b_Z_Lept2_relIsoBeta03;   //!
-   TBranch        *b_Z_Lept2_relIsoBeta04;   //!
    TBranch        *b_Z_Lept2_relIsoRho03;   //!
    TBranch        *b_Z_Lept2_RelisolPtTrks03;   //!
    TBranch        *b_Z_Lept2_RelisoEm03;   //!
    TBranch        *b_Z_Lept2_RelisoHad03;   //!
    TBranch        *b_Z_Lept1_isGlobal;   //!
    TBranch        *b_Z_Lept1_isTrker;   //!
-   TBranch        *b_Z_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept1_decModFind;   //!
    TBranch        *b_Z_Lept1_pt;   //!
    TBranch        *b_Z_Lept1_et;   //!
    TBranch        *b_Z_Lept1_charge;   //!
@@ -412,8 +368,6 @@ public :
    TBranch        *b_Z_Lept1_dB;   //!
    TBranch        *b_Z_Lept2_isGlobal;   //!
    TBranch        *b_Z_Lept2_isTrker;   //!
-   TBranch        *b_Z_Lept2_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_Z_Lept2_decModFind;   //!
    TBranch        *b_Z_Lept2_pt;   //!
    TBranch        *b_Z_Lept2_et;   //!
    TBranch        *b_Z_Lept2_charge;   //!
@@ -510,8 +464,6 @@ public :
    TBranch        *b_W_Lept1_RelisoHad03;   //!
    TBranch        *b_W_Lept1_isGlobal;   //!
    TBranch        *b_W_Lept1_isTrker;   //!
-   TBranch        *b_W_Lept1_MedComIsoDelBetCorr3Hits;   //!
-   TBranch        *b_W_Lept1_decModFind;   //!
    TBranch        *b_W_Lept1_pt;   //!
    TBranch        *b_W_Lept1_et;   //!
    TBranch        *b_W_Lept1_charge;   //!
@@ -618,7 +570,6 @@ public :
    TBranch        *b_GenW_PostLept2_charge;   //!
    TBranch        *b_GenW_PostLept2_eta;   //!
    TBranch        *b_GenW_PostLept2_phi;   //!
-   TBranch        *b_GenW_Neut_pt;   //!
    TBranch        *b_GenZ_nLepts;   //!
    TBranch        *b_GenZ_id;   //!
    TBranch        *b_GenZ_status;   //!
@@ -627,7 +578,6 @@ public :
    TBranch        *b_GenZ_py;   //!
    TBranch        *b_GenZ_pz;   //!
    TBranch        *b_GenZ_pt;   //!
-   TBranch        *b_GenZ_Neut_pt;   //!
    TBranch        *b_GenZ_eta;   //!
    TBranch        *b_GenZ_phi;   //!
    TBranch        *b_GenZ_Lept1_id;   //!
@@ -680,14 +630,14 @@ Wlnu12LoNT::Wlnu12LoNT(TTree *tree) : fChain(0)
       if (!f || !f->IsOpen()) {
          f = new TFile("Memory Directory");
       }
-      f->GetObject("WMuNeu/tree",tree);
+      f->GetObject("WAcceptanceMuon/tree",tree);
 
 #else // SINGLE_TREE
 
       // The following code should be used if you want this class to access a chain
       // of trees.
-      TChain * chain = new TChain("WMuNeu/tree","");
-      chain->Add("/terranova_1/W_Ntuple2012LowPU/Muon/VFinal/WpToMuNu/wNTuple_1.root/WMuNeu/tree");
+      TChain * chain = new TChain("WAcceptanceMuon/tree","");
+      chain->Add("/terranova_1/W_Ntuple2012LowPU/AcceptanceFSR/WpToMuNu/wAcceptance_1_1_FGW.root/WAcceptanceMuon/tree");
       tree = chain;
 #endif // SINGLE_TREE
 
@@ -743,10 +693,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    Z_Lept1_phIso04 = 0;
    Z_Lept1_pcIso03 = 0;
    Z_Lept1_pcIso04 = 0;
-   Z_Lept1_relIsoCom03 = 0;
-   Z_Lept1_relIsoCom04 = 0;
-   Z_Lept1_relIsoBeta03 = 0;
-   Z_Lept1_relIsoBeta04 = 0;
    Z_Lept1_relIsoRho03 = 0;
    Z_Lept1_RelisolPtTrks03 = 0;
    Z_Lept1_RelisoEm03 = 0;
@@ -759,18 +705,12 @@ void Wlnu12LoNT::Init(TTree *tree)
    Z_Lept2_phIso04 = 0;
    Z_Lept2_pcIso03 = 0;
    Z_Lept2_pcIso04 = 0;
-   Z_Lept2_relIsoCom03 = 0;
-   Z_Lept2_relIsoCom04 = 0;
-   Z_Lept2_relIsoBeta03 = 0;
-   Z_Lept2_relIsoBeta04 = 0;
    Z_Lept2_relIsoRho03 = 0;
    Z_Lept2_RelisolPtTrks03 = 0;
    Z_Lept2_RelisoEm03 = 0;
    Z_Lept2_RelisoHad03 = 0;
    Z_Lept1_isGlobal = 0;
    Z_Lept1_isTrker = 0;
-   Z_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept1_decModFind = 0;
    Z_Lept1_pt = 0;
    Z_Lept1_et = 0;
    Z_Lept1_charge = 0;
@@ -784,8 +724,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    Z_Lept1_dB = 0;
    Z_Lept2_isGlobal = 0;
    Z_Lept2_isTrker = 0;
-   Z_Lept2_MedComIsoDelBetCorr3Hits = 0;
-   Z_Lept2_decModFind = 0;
    Z_Lept2_pt = 0;
    Z_Lept2_et = 0;
    Z_Lept2_charge = 0;
@@ -882,8 +820,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    W_Lept1_RelisoHad03 = 0;
    W_Lept1_isGlobal = 0;
    W_Lept1_isTrker = 0;
-   W_Lept1_MedComIsoDelBetCorr3Hits = 0;
-   W_Lept1_decModFind = 0;
    W_Lept1_pt = 0;
    W_Lept1_et = 0;
    W_Lept1_charge = 0;
@@ -1043,9 +979,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("vtx_z", &vtx_z, &b_vtx_z);
    fChain->SetBranchAddress("vtx_Rho", &vtx_Rho, &b_vtx_Rho);
    fChain->SetBranchAddress("weightFSR", &weightFSR, &b_weightFSR);
-   fChain->SetBranchAddress("HLT_Ele22_CaloIdL_CaloIsoVL", &HLT_Ele22_CaloIdL_CaloIsoVL_version, &b_HLT_Ele22_CaloIdL_CaloIsoVL);
-   fChain->SetBranchAddress("HLT_Ele27_WP80", &HLT_Ele27_WP80_version, &b_HLT_Ele27_WP80);
-   fChain->SetBranchAddress("HLT_Mu15_eta2p1", &HLT_Mu15_eta2p1_version, &b_HLT_Mu15_eta2p1);
    fChain->SetBranchAddress("Z_Lept1_chIso03", &Z_Lept1_chIso03, &b_Z_Lept1_chIso03);
    fChain->SetBranchAddress("Z_Lept1_chIso04", &Z_Lept1_chIso04, &b_Z_Lept1_chIso04);
    fChain->SetBranchAddress("Z_Lept1_nhIso03", &Z_Lept1_nhIso03, &b_Z_Lept1_nhIso03);
@@ -1054,10 +987,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_phIso04", &Z_Lept1_phIso04, &b_Z_Lept1_phIso04);
    fChain->SetBranchAddress("Z_Lept1_pcIso03", &Z_Lept1_pcIso03, &b_Z_Lept1_pcIso03);
    fChain->SetBranchAddress("Z_Lept1_pcIso04", &Z_Lept1_pcIso04, &b_Z_Lept1_pcIso04);
-   fChain->SetBranchAddress("Z_Lept1_relIsoCom03", &Z_Lept1_relIsoCom03, &b_Z_Lept1_relIsoCom03);
-   fChain->SetBranchAddress("Z_Lept1_relIsoCom04", &Z_Lept1_relIsoCom04, &b_Z_Lept1_relIsoCom04);
-   fChain->SetBranchAddress("Z_Lept1_relIsoBeta03", &Z_Lept1_relIsoBeta03, &b_Z_Lept1_relIsoBeta03);
-   fChain->SetBranchAddress("Z_Lept1_relIsoBeta04", &Z_Lept1_relIsoBeta04, &b_Z_Lept1_relIsoBeta04);
    fChain->SetBranchAddress("Z_Lept1_relIsoRho03", &Z_Lept1_relIsoRho03, &b_Z_Lept1_relIsoRho03);
    fChain->SetBranchAddress("Z_Lept1_RelisolPtTrks03", &Z_Lept1_RelisolPtTrks03, &b_Z_Lept1_RelisolPtTrks03);
    fChain->SetBranchAddress("Z_Lept1_RelisoEm03", &Z_Lept1_RelisoEm03, &b_Z_Lept1_RelisoEm03);
@@ -1070,18 +999,12 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept2_phIso04", &Z_Lept2_phIso04, &b_Z_Lept2_phIso04);
    fChain->SetBranchAddress("Z_Lept2_pcIso03", &Z_Lept2_pcIso03, &b_Z_Lept2_pcIso03);
    fChain->SetBranchAddress("Z_Lept2_pcIso04", &Z_Lept2_pcIso04, &b_Z_Lept2_pcIso04);
-   fChain->SetBranchAddress("Z_Lept2_relIsoCom03", &Z_Lept2_relIsoCom03, &b_Z_Lept2_relIsoCom03);
-   fChain->SetBranchAddress("Z_Lept2_relIsoCom04", &Z_Lept2_relIsoCom04, &b_Z_Lept2_relIsoCom04);
-   fChain->SetBranchAddress("Z_Lept2_relIsoBeta03", &Z_Lept2_relIsoBeta03, &b_Z_Lept2_relIsoBeta03);
-   fChain->SetBranchAddress("Z_Lept2_relIsoBeta04", &Z_Lept2_relIsoBeta04, &b_Z_Lept2_relIsoBeta04);
    fChain->SetBranchAddress("Z_Lept2_relIsoRho03", &Z_Lept2_relIsoRho03, &b_Z_Lept2_relIsoRho03);
    fChain->SetBranchAddress("Z_Lept2_RelisolPtTrks03", &Z_Lept2_RelisolPtTrks03, &b_Z_Lept2_RelisolPtTrks03);
    fChain->SetBranchAddress("Z_Lept2_RelisoEm03", &Z_Lept2_RelisoEm03, &b_Z_Lept2_RelisoEm03);
    fChain->SetBranchAddress("Z_Lept2_RelisoHad03", &Z_Lept2_RelisoHad03, &b_Z_Lept2_RelisoHad03);
    fChain->SetBranchAddress("Z_Lept1_isGlobal", &Z_Lept1_isGlobal, &b_Z_Lept1_isGlobal);
    fChain->SetBranchAddress("Z_Lept1_isTrker", &Z_Lept1_isTrker, &b_Z_Lept1_isTrker);
-   fChain->SetBranchAddress("Z_Lept1_MedComIsoDelBetCorr3Hits", &Z_Lept1_MedComIsoDelBetCorr3Hits, &b_Z_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept1_decModFind", &Z_Lept1_decModFind, &b_Z_Lept1_decModFind);
    fChain->SetBranchAddress("Z_Lept1_pt", &Z_Lept1_pt, &b_Z_Lept1_pt);
    fChain->SetBranchAddress("Z_Lept1_et", &Z_Lept1_et, &b_Z_Lept1_et);
    fChain->SetBranchAddress("Z_Lept1_charge", &Z_Lept1_charge, &b_Z_Lept1_charge);
@@ -1095,8 +1018,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Lept1_dB", &Z_Lept1_dB, &b_Z_Lept1_dB);
    fChain->SetBranchAddress("Z_Lept2_isGlobal", &Z_Lept2_isGlobal, &b_Z_Lept2_isGlobal);
    fChain->SetBranchAddress("Z_Lept2_isTrker", &Z_Lept2_isTrker, &b_Z_Lept2_isTrker);
-   fChain->SetBranchAddress("Z_Lept2_MedComIsoDelBetCorr3Hits", &Z_Lept2_MedComIsoDelBetCorr3Hits, &b_Z_Lept2_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("Z_Lept2_decModFind", &Z_Lept2_decModFind, &b_Z_Lept2_decModFind);
    fChain->SetBranchAddress("Z_Lept2_pt", &Z_Lept2_pt, &b_Z_Lept2_pt);
    fChain->SetBranchAddress("Z_Lept2_et", &Z_Lept2_et, &b_Z_Lept2_et);
    fChain->SetBranchAddress("Z_Lept2_charge", &Z_Lept2_charge, &b_Z_Lept2_charge);
@@ -1193,8 +1114,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("W_Lept1_RelisoHad03", &W_Lept1_RelisoHad03, &b_W_Lept1_RelisoHad03);
    fChain->SetBranchAddress("W_Lept1_isGlobal", &W_Lept1_isGlobal, &b_W_Lept1_isGlobal);
    fChain->SetBranchAddress("W_Lept1_isTrker", &W_Lept1_isTrker, &b_W_Lept1_isTrker);
-   fChain->SetBranchAddress("W_Lept1_MedComIsoDelBetCorr3Hits", &W_Lept1_MedComIsoDelBetCorr3Hits, &b_W_Lept1_MedComIsoDelBetCorr3Hits);
-   fChain->SetBranchAddress("W_Lept1_decModFind", &W_Lept1_decModFind, &b_W_Lept1_decModFind);
    fChain->SetBranchAddress("W_Lept1_pt", &W_Lept1_pt, &b_W_Lept1_pt);
    fChain->SetBranchAddress("W_Lept1_et", &W_Lept1_et, &b_W_Lept1_et);
    fChain->SetBranchAddress("W_Lept1_charge", &W_Lept1_charge, &b_W_Lept1_charge);
@@ -1301,7 +1220,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenW_PostLept2_charge", &GenW_PostLept2_charge, &b_GenW_PostLept2_charge);
    fChain->SetBranchAddress("GenW_PostLept2_eta", &GenW_PostLept2_eta, &b_GenW_PostLept2_eta);
    fChain->SetBranchAddress("GenW_PostLept2_phi", &GenW_PostLept2_phi, &b_GenW_PostLept2_phi);
-   fChain->SetBranchAddress("GenW_Neut_pt", &GenW_Neut_pt, &b_GenW_Neut_pt);
    fChain->SetBranchAddress("GenZ_nLepts", &GenZ_nLepts, &b_GenZ_nLepts);
    fChain->SetBranchAddress("GenZ_id", &GenZ_id, &b_GenZ_id);
    fChain->SetBranchAddress("GenZ_status", &GenZ_status, &b_GenZ_status);
@@ -1310,7 +1228,6 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenZ_py", &GenZ_py, &b_GenZ_py);
    fChain->SetBranchAddress("GenZ_pz", &GenZ_pz, &b_GenZ_pz);
    fChain->SetBranchAddress("GenZ_pt", &GenZ_pt, &b_GenZ_pt);
-   fChain->SetBranchAddress("GenZ_Neut_pt", &GenZ_Neut_pt, &b_GenZ_Neut_pt);
    fChain->SetBranchAddress("GenZ_eta", &GenZ_eta, &b_GenZ_eta);
    fChain->SetBranchAddress("GenZ_phi", &GenZ_phi, &b_GenZ_phi);
    fChain->SetBranchAddress("GenZ_Lept1_id", &GenZ_Lept1_id, &b_GenZ_Lept1_id);
