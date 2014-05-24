@@ -102,9 +102,9 @@ void Wlnu12LoUnfold::Loop()
 
     //Fill the W==================
     //GoodW
-    if(W.Pass && addLepN <2){
-      DoRecoilCorr();
+    if(W.Pass && addLepN < 2){
       DumpWbestCand(W.idxBest);
+      if(GenW_Born_Id->size() > 0)DoRecoilCorr();
       DumpUnfInfo(W.idxBest);
       evtSelected+=mTTW;
       mTTW=mTTW*DoEffiCorr();
