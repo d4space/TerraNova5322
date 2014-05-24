@@ -283,6 +283,7 @@ Wlnu12LoBase::Wlnu12LoBase(TTree *Wlnu12LoBaseTree, double lumiweight,
    RunOnMC = runOnMC;
    RandomSeed = Seed;
    Init(Wlnu12LoBaseTree);
+   InitVar();
 }
 
    Wlnu12LoBase::~Wlnu12LoBase()
@@ -855,8 +856,6 @@ Int_t Wlnu12LoBase::InitVar4Evt()
 {
   W_Lept1_pt_Corr.clear();
   // Recoil
-  W.RecoilT2=0;
-  W.PostT2 =0;
   mTTW = 1;
   mVtxVar.nPrim = 0;
   mVtxVar.nGood = 0;

@@ -35,6 +35,12 @@ void Wlnu12LoBase::Loop()
   Ntries = fChain->GetEntries();
   gBenchmark->Show("Wlnu12LoBase");
 }
+int Wlnu12LoBase::InitVar()
+{ 
+  W.RecoilT2 = new TVector2();
+  W.PostT2 = new TVector2();
+  return 0;
+}
 int Wlnu12LoBase::CheckChannel()
 {
   //cout<<"CheckChannel============"<<endl;
