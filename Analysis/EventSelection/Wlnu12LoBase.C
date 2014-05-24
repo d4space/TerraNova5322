@@ -48,9 +48,9 @@ int Wlnu12LoBase::CheckChannel()
 }
 int Wlnu12LoBase::TriggerCut()
 {
-    //if(AnaChannel == "Muon2012LoPU" )if( HLT_Mu15_eta2p1_fired < 1) return -1;
-    //if(AnaChannel == "Electron2012LoPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1) return -1;
-    //if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1) return -1;
+    if(AnaChannel == "Muon2012LoPU" )if( HLT_Mu15_eta2p1_fired < 1) return -1;
+    if(AnaChannel == "Electron2012LoPU" )if(HLT_Ele22_CaloIdL_CaloIsoVL_fired<1) return -1;
+    if(AnaChannel=="ElectronHighPU")if(HLT_Ele27_WP80_fired<1) return -1;
   return 0;
 }
 int Wlnu12LoBase::DumpWbestCand(int i)
