@@ -772,7 +772,7 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
   //for( int ipt(10);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(1);ipt<2;ipt++)
+  //for( int ipt(9);ipt<10;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1316,18 +1316,18 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       aqcdPsigma2[ipt]->setVal(66.0511);
       aqcdMsigma2[ipt]->setVal(62.4798);
     }else if (ipt == 9){
-      nSig[ipt]  -> setVal(2542.06);
+      nSig[ipt]  -> setVal(2542.09);
       nSigp[ipt] -> setVal(1538.08);
-      nSigm[ipt] -> setVal(1011.34);
-      nAntiSig[ipt]  -> setVal(2.47263);
+      nSigm[ipt] -> setVal(1004.01);
+      nAntiSig[ipt]  -> setVal(2.71976);
       nAntiSigp[ipt] -> setVal(1.70856e-09);
-      nAntiSigm[ipt] -> setVal(1.28748);
+      nAntiSigm[ipt] -> setVal(2.47262);
       nQCD[ipt]  -> setVal(375.961);
       nQCDp[ipt] -> setVal(89.4058);
-      nQCDm[ipt] -> setVal(278.668);
+      nQCDm[ipt] -> setVal(286.5552);
       nAntiQCD[ipt]  -> setVal(1084.39);
       nAntiQCDp[ipt] -> setVal(533.877);
-      nAntiQCDm[ipt] -> setVal(551.977);
+      nAntiQCDm[ipt] -> setVal(550.513);
       qcdmean[ipt] ->setVal(33.7008);
       qcdPmean[ipt]->setVal(33.3972);
       qcdMmean[ipt]->setVal(34.8164);
