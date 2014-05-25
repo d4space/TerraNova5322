@@ -50,8 +50,12 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
     {
   //  f_Org  = new TFile("ElectronLowPU/Ele_WpToEleNu_S8_Analysis.root");
   //  f_Corr = new TFile("ElectronLowPU/Ele_WpToEleNu_S8_RecoilCorr.root");
-    f_Org  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
-    f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
+    
+    f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
+    f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
+    
+    //f_Org = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
+    //f_Corr  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
     }
   else if (filetype=="Minus")
     {
@@ -59,14 +63,14 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   //  f_Corr = new TFile("ElectronLowPU/Ele_WmToEleNu_S8_RecoilCorr.root");
   
     // Ele
-    //f_Org  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
+    f_Org  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
    		// f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
    		// f_Corr = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
-    //f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
+    f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
   
     // Muon
-    f_Org  = new TFile("MuonLowPU/Muon_DYToMuMu_S8_ScaleMakeMC_Eta_0.root");
-    f_Corr = new TFile("MuonLowPU/Muon_RD_LowPU_ScaleMakeRD_Eta_0.root");
+    //f_Org  = new TFile("MuonLowPU/Muon_DYToMuMu_S8_ScaleMakeMC_Eta_0.root");
+    //f_Corr = new TFile("MuonLowPU/Muon_RD_LowPU_ScaleMakeRD_Eta_0.root");
     
     }
     }
@@ -153,9 +157,9 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
 //  sprintf(histNameCorrNew,"h1_W_Neu_pt_%d_Corr",i);
   
   //sprintf(histNameOrg,"h1_ZmassCorr_BB");
-  sprintf(histNameOrg,"h1_Zmass");
+  sprintf(histNameOrg,"h1_ZmassCorr_EE");
   sprintf(histNameOrgNew,"h1_Zmass_Org");
-  sprintf(histNameCorrNew,"h1_Zmass");
+  sprintf(histNameCorrNew,"h1_Zmass_EE");
   
   if (i==1){
   sprintf(binlabel,"0 < p_{T} < 300");
@@ -192,13 +196,16 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   else
   sprintf(binlabel,"",(Int_t)Bins[i-1],(Int_t)Bins[i]);
   hOrg[i]=(TH1D*)f_Org->Get(histNameOrg)->Clone(histNameOrgNew);
+  //hOrg[i]=(TH1D*)f_Org->Get(histNameOrg)->Clone(histNameOrg);
   //hOrg[i]=(TH1D*)f_Org->Get(histNameOrgNew)->Clone(histNameOrgNew);
   hOrg[i]->Sumw2();
+  cout<<"MC Bin Contents: "<<hOrg[i]->Integral()<<endl;
   hOrg[i]->SetLineStyle(1);
   hOrg[i]->SetMarkerSize(0.1);
   hCorr[i]=(TH1D*)f_Corr->Get(histNameCorrNew)->Clone(histNameCorrNew);
   //hCorr[i]=(TH1D*)f_Corr->Get(histNameOrg)->Clone(histNameCorrNew);
   hCorr[i]->Sumw2();
+  cout<<"RD Bin Contents: "<<hCorr[i]->Integral()<<endl;
   hCorr[i]->SetLineStyle(1);
   hCorr[i]->SetMarkerSize(0.1);
   plotNeuComp= new CPlot(histNameOrg,"","","Events");
@@ -226,10 +233,10 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   hCorrDiff = makeDiffHist(hOrg[i],hCorr[i],"hCorrDiff");
   hCorrDiff->SetMarkerStyle(kFullCircle);
   hCorrDiff->SetMarkerSize(0.1);
-  plotCorrDiff=new CPlot(histNameOrg,"","Z mass, #eta-whole range ","#chi");
+ // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, #eta-whole range ","#chi");
  // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Barrel ","#chi");
  // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Endcap ","#chi");
- // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Endcap-Endcap ","#chi");
+  plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Endcap-Endcap ","#chi");
   plotCorrDiff->setOutDir(CPlot::sOutDir);
   plotCorrDiff->AddHist1D(hCorrDiff,"EX0",ratioColor);
   plotCorrDiff->SetYRange(-8,8);

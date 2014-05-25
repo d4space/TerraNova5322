@@ -428,10 +428,10 @@ int scaleSmearTemplateFit_Ele(TString RDFile, TString MCFile, char BaseName[30])
 
 
 
-cout<<" "<<i<<"\t"<<scaleRD[i]->getVal()/scaleMC[i]->getVal()<<"+-"<<(scaleRD[i]->getVal()/scaleMC[i]->getVal())*sqrt((scaleRD[i]->getError()*scaleRD[i]->getError())/scaleRD[i]->getVal()/scaleRD[i]->getVal()+(scaleMC[i]->getError()*scaleMC[i]->getError())/scaleMC[i]->getVal()/scaleMC[i]->getVal())<<"\t"<<smearRD[i]->getVal()- smearMC[i]->getVal()<<"+"<<sqrt(smearRD[i]->getError()*smearRD[i]->getError()+ smearMC[i]->getError()*smearMC[i]->getError())<<endl;
+cout<<" "<<i<<"\t"<<scaleRD[i]->getVal()/scaleMC[i]->getVal()<<"+-"<<(scaleRD[i]->getVal()/scaleMC[i]->getVal())*sqrt((scaleRD[i]->getError()*scaleRD[i]->getError())/scaleRD[i]->getVal()/scaleRD[i]->getVal()+(scaleMC[i]->getError()*scaleMC[i]->getError())/scaleMC[i]->getVal()/scaleMC[i]->getVal())<<"\t"<<sqrt(smearRD[i]->getVal()*smearRD[i]->getVal()- smearMC[i]->getVal()*smearMC[i]->getVal())<<"+"<<sqrt(smearRD[i]->getError()*smearRD[i]->getError()+ smearMC[i]->getError()*smearMC[i]->getError())<<endl;
 
   
-Fout<<" "<<i<<"\t"<<scaleRD[i]->getVal()/scaleMC[i]->getVal()<<"+-"<<(scaleRD[i]->getVal()/scaleMC[i]->getVal())*sqrt((scaleRD[i]->getError()*scaleRD[i]->getError())/scaleRD[i]->getVal()/scaleRD[i]->getVal()+(scaleMC[i]->getError()*scaleMC[i]->getError())/scaleMC[i]->getVal()/scaleMC[i]->getVal())<<"\t"<<smearRD[i]->getVal()- smearMC[i]->getVal()<<"+"<<sqrt(smearRD[i]->getError()*smearRD[i]->getError()+ smearMC[i]->getError()*smearMC[i]->getError())<<endl;
+Fout<<" "<<i<<"\t"<<scaleRD[i]->getVal()/scaleMC[i]->getVal()<<"+-"<<(scaleRD[i]->getVal()/scaleMC[i]->getVal())*sqrt((scaleRD[i]->getError()*scaleRD[i]->getError())/scaleRD[i]->getVal()/scaleRD[i]->getVal()+(scaleMC[i]->getError()*scaleMC[i]->getError())/scaleMC[i]->getVal()/scaleMC[i]->getVal())<<"\t"<<sqrt(smearRD[i]->getVal()*smearRD[i]->getVal()- smearMC[i]->getVal()*smearMC[i]->getVal())  <<"+"<<sqrt(smearRD[i]->getError()*smearRD[i]->getError()+ smearMC[i]->getError()*smearMC[i]->getError())<<endl;
 
   }
 //*
