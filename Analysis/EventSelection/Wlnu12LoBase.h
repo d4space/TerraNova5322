@@ -154,7 +154,8 @@ protected:
     int size;
     double charge;
 
-    int muonHit;
+    //int muonHit;
+    double muonHit;
     int matchStation;
     int trkLayers;
     double dB,dz;

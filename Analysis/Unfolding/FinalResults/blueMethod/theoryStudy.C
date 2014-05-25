@@ -21,7 +21,7 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGrap
   lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); //lXHDiff1->SetLineStyle(2);
   
   //lHDiff->GetYaxis()->SetRangeUser(0.2,1.8);
-  lHDiff->GetYaxis()->SetRangeUser(0.7,1.4);
+  lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
   if (clr == 2)
     lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
   if (clr == 3)
@@ -97,24 +97,17 @@ int theoryStudy(const TString BaseName)
   char tmpName[30],tmpName_org[30];
   int Numb;
 
-  TFile *f_Resbos;
-  TFile *f_Fewz;
+  TFile *f_theory;
   TFile *f_Data;
 
-  if (BaseName=="WpToMuNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
-  if (BaseName=="WmToMuNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
-  if (BaseName=="WInclToMuNu"){
-    f_Fewz = new TFile("WinclMu_NNLO.root");
+  if(BaseName=="WInclToMuNu")
+  {
+    f_theory = new TFile("Theory_Muon.root");
     f_Data = new TFile("Result_WinclMu.root");
   }
-  if (BaseName=="WpToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
-  if (BaseName=="WmToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
-  if (BaseName=="WInclToEleNu"){
-    f_Fewz = new TFile("WinclEle_NNLO.root");
+  if(BaseName=="WInclToEleNu")
+  {
+    f_theory = new TFile("Theory_Ele.root");
     f_Data = new TFile("Result_WinclEle.root");
   }
 
@@ -144,14 +137,14 @@ int theoryStudy(const TString BaseName)
     Numb = 29+i;
     sprintf(tmpName_org,"hResbos%d",Numb);
     sprintf(tmpName,"lResbos_%d",i);
-    lResbos[i] = (TH1D*)f_Fewz->Get(tmpName_org)->Clone(tmpName);
+    lResbos[i] = (TH1D*)f_theory->Get(tmpName_org)->Clone(tmpName);
   }
 
-  lResbos30 = (TH1D*)f_Fewz->Get("hResbos30")->Clone();
-  lResbos31 = (TH1D*)f_Fewz->Get("hResbos31")->Clone();
-  lResbos34 = (TH1D*)f_Fewz->Get("hResbos34")->Clone();
+  lResbos30 = (TH1D*)f_theory->Get("hResbos30")->Clone();
+  lResbos31 = (TH1D*)f_theory->Get("hResbos31")->Clone();
+  lResbos34 = (TH1D*)f_theory->Get("hResbos34")->Clone();
+  lFEWZ   = (TH1D*)f_theory->Get("hxsec")->Clone();
   
-  lFEWZ   = (TH1D*)f_Fewz->Get("hxsec")->Clone();
   lPowheg = (TH1D*)f_Data->Get("SVD_BornGen")->Clone();
   orgPowheg = (TH1D*)f_Data->Get("SVD_BornGen")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
@@ -188,7 +181,6 @@ int theoryStudy(const TString BaseName)
     errMin[ipt] = errMin[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
   }
   
-  Double_t errPowheg[nBins-1];
   Double_t errFewz[nBins-1];
   Double_t vPowheg[nBins-1];
   Double_t vFewz[nBins-1];
@@ -212,7 +204,7 @@ int theoryStudy(const TString BaseName)
     hPowhegErrBand->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
     hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
-    hPowhegErrBandPDF->SetBinError(ipt,hPowhegLog->GetBinError(ipt)/100.);
+    hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzErrBand->SetBinError(ipt,0.01);
     hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
@@ -294,7 +286,6 @@ int theoryStudy(const TString BaseName)
   lC0->cd(1)->SetRightMargin(0.07);
   lC0->cd(1)->SetTickx(1);
   lC0->cd(1)->SetTicky(1);
-  lC0->SetLogx(1);
   gStyle->SetLineWidth(2.);
   gStyle->SetOptStat(0);
   gStyle->SetHatchesSpacing(0.75);
@@ -383,10 +374,6 @@ int theoryStudy(const TString BaseName)
   drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand);
   rL3->Draw();
   tb3->Draw();
-
   lC0->SaveAs(BaseName+"_Result_diffXsec.png");
-
-  TFile f_out("Resbos_"+BaseName+".root","recreate");
-  hResbos->Write();
   return 0;
 }

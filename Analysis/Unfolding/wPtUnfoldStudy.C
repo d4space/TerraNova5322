@@ -367,6 +367,8 @@ int wPtUnfoldStudy
   CPlot *pltUnfBorn_InputCov;
   
   CPlot *pltRecoStatCov;
+  CPlot *pltDetUnfResMtrx;
+  CPlot *pltFSRUnfResMtrx;
   CPlot *pltRecoEffCov;
   CPlot *pltRecoRecoilCov;
   CPlot *pltRecoScaleCov;
@@ -673,6 +675,35 @@ int wPtUnfoldStudy
   SVD_Post.RecoStatisticCovMat -> SetMarkerSize(0.8);
   pltRecoStatCov->AddHist2D(SVD_Post.RecoStatisticCovMat,"COLTEXTZ",kWhite,kBlack);
   pltRecoStatCov-> Draw(myCan,kTRUE,"png");
+
+//Detector Unf. Response Matrix
+  Unfolder DetUnfold("Post");
+  DetUnfold.setTrue(h1_Truth_Post); //dumy for set up the bin ranges
+  DetUnfold.setMeas(h1_Data_SigYild);
+  DetUnfold.colNormalize(h2_Truth_Rec_AP_PostEffCorr);
+  DetUnfold.setMigrationMatrix(h2_Truth_Rec_AP_PostEffCorr);
+  DetUnfold.unfold();
+
+  h2_Truth_Rec_AP_PostEffCorr->GetYaxis()->SetMoreLogLabels();
+  h2_Truth_Rec_AP_PostEffCorr->GetYaxis()->SetNoExponent();
+  h2_Truth_Rec_AP_PostEffCorr->GetXaxis()->SetTitleSize(0.03);
+  h2_Truth_Rec_AP_PostEffCorr->GetXaxis()->SetLabelSize(0.03);
+  h2_Truth_Rec_AP_PostEffCorr->GetXaxis()->SetTitleOffset(1.6);
+  h2_Truth_Rec_AP_PostEffCorr->GetYaxis()->SetTitleSize(0.03);
+  h2_Truth_Rec_AP_PostEffCorr->GetYaxis()->SetLabelSize(0.03);
+  h2_Truth_Rec_AP_PostEffCorr->GetYaxis()->SetTitleOffset(1.8);
+  h2_Truth_Rec_AP_PostEffCorr->GetXaxis()->SetMoreLogLabels();
+  h2_Truth_Rec_AP_PostEffCorr->GetXaxis()->SetNoExponent();
+
+  gStyle->SetPaintTextFormat("3.2f"); 
+  tmpTStr = "dUnfResponseMatrix_"+BaseName;
+  pltDetUnfResMtrx = new CPlot(tmpTStr,"","Rec W p_{T} [GeV]","Post W p_{T} [GeV]");
+  pltDetUnfResMtrx->setOutDir(resultDir);
+  pltDetUnfResMtrx->AddHist2D(h2_Truth_Rec_AP_PostEffCorr,"COLTEXTZ",kWhite,kBlack);
+  pltDetUnfResMtrx->SetLogx();
+  pltDetUnfResMtrx->SetLogy();
+  h2_Truth_Rec_AP_PostEffCorr->SetMarkerSize(0.8);
+  pltDetUnfResMtrx-> Draw(myCan,kTRUE,"png");
 
 //Lepton Efficiency Correction Covariance Matrix
   tmpTStr = "RecoEffiCovMat_"+BaseName;
@@ -1603,6 +1634,35 @@ int wPtUnfoldStudy
   pltUnfBorn_InputCov -> AddHist2D(SVD_Born.InputCovMat,"COLTEXTZ",kWhite,kBlack);
   pltUnfBorn_InputCov -> Draw(myCan,kTRUE,"png");
 
+//FSR Unf.Response Matrix
+  Unfolder FSRUnfold("Born");
+  FSRUnfold.setTrue(h1_Born_BothFid); //dumy for set up the bin ranges
+  FSRUnfold.setMeas(SVD_Post.EffCorr);
+  FSRUnfold.colNormalize(h2_PostBorn_BothFid);
+  FSRUnfold.setMigrationMatrix(h2_PostBorn_BothFid);
+  FSRUnfold.unfold();
+
+  h2_PostBorn_BothFid->GetYaxis()->SetMoreLogLabels();
+  h2_PostBorn_BothFid->GetYaxis()->SetNoExponent();
+  h2_PostBorn_BothFid->GetXaxis()->SetMoreLogLabels();
+  h2_PostBorn_BothFid->GetXaxis()->SetNoExponent();
+  h2_PostBorn_BothFid->GetXaxis()->SetTitleSize(0.03);
+  h2_PostBorn_BothFid->GetXaxis()->SetLabelSize(0.03);
+  h2_PostBorn_BothFid->GetXaxis()->SetTitleOffset(1.6);
+  h2_PostBorn_BothFid->GetYaxis()->SetTitleSize(0.03);
+  h2_PostBorn_BothFid->GetYaxis()->SetLabelSize(0.03);
+  h2_PostBorn_BothFid->GetYaxis()->SetTitleOffset(1.8);
+
+  gStyle->SetPaintTextFormat("3.2f"); 
+  tmpTStr = "FSRUnfResponseMatrix_"+BaseName;
+  pltFSRUnfResMtrx = new CPlot(tmpTStr,"","Post W p_{T} [GeV]","Born W p_{T} [GeV]");
+  pltFSRUnfResMtrx->setOutDir(resultDir);
+  pltFSRUnfResMtrx->AddHist2D(h2_PostBorn_BothFid,"COLTEXTZ",kWhite,kBlack);
+  pltFSRUnfResMtrx->SetLogx();
+  pltFSRUnfResMtrx->SetLogy();
+  h2_PostBorn_BothFid -> SetMarkerSize(0.8);
+  pltFSRUnfResMtrx-> Draw(myCan,kTRUE,"png");
+
   //=================================================================
   //=================================================================
   // Unfolding from Post to Born          ===========================
@@ -2071,6 +2131,20 @@ int wPtUnfoldStudy
     TotalUncertErr[11]= 10.13; 
     TotalUncertErr[12]= 16.63; 
     TotalUncertErr[13]= 21.79; 
+    errPowheg[0] = 0; 
+    errPowheg[1] = 4.268; 
+    errPowheg[2] = 4.147; 
+    errPowheg[3] = 4.122; 
+    errPowheg[4] = 4.123; 
+    errPowheg[5] = 4.132; 
+    errPowheg[6] = 4.126; 
+    errPowheg[7] = 4.143; 
+    errPowheg[8] = 5.279; 
+    errPowheg[9] = 4.222; 
+    errPowheg[10]= 4.426;
+    errPowheg[11]= 4.819; 
+    errPowheg[12]= 5.075; 
+    errPowheg[13]= 6.084; 
   }else if(BaseName == "WmToMuNu"){
     TotalUncertErr[0] = 0; 
     TotalUncertErr[1] = 3.36 ;
@@ -2086,6 +2160,20 @@ int wPtUnfoldStudy
     TotalUncertErr[11]= 15.69;
     TotalUncertErr[12]= 20.63;
     TotalUncertErr[13]= 35.22;
+    errPowheg[0] = 0; 
+    errPowheg[1] = 4.398; 
+    errPowheg[2] = 4.382; 
+    errPowheg[3] = 4.423; 
+    errPowheg[4] = 4.443; 
+    errPowheg[5] = 5.604; 
+    errPowheg[6] = 4.532; 
+    errPowheg[7] = 7.792; 
+    errPowheg[8] = 3.349; 
+    errPowheg[9] = 4.622; 
+    errPowheg[10]= 19.15;
+    errPowheg[11]= 4.587; 
+    errPowheg[12]= 4.323; 
+    errPowheg[13]= 5.229; 
   }else if(BaseName == "WpToEleNu"){
     TotalUncertErr[0] = 0; 
     TotalUncertErr[1] = 3.84 ;  
@@ -2101,6 +2189,20 @@ int wPtUnfoldStudy
     TotalUncertErr[11]= 11.44; 
     TotalUncertErr[12]= 14.93; 
     TotalUncertErr[13]= 18.70;
+    errPowheg[0] = 0; 
+    errPowheg[1] = 4.37 ; 
+    errPowheg[2] = 4.314; 
+    errPowheg[3] = 4.109; 
+    errPowheg[4] = 12.58; 
+    errPowheg[5] = 19.8 ; 
+    errPowheg[6] = 7.864; 
+    errPowheg[7] = 3.68 ; 
+    errPowheg[8] = 3.741; 
+    errPowheg[9] = 19.27; 
+    errPowheg[10]= 6.264;
+    errPowheg[11]= 4.312; 
+    errPowheg[12]= 4.235; 
+    errPowheg[13]= 5.534; 
   }else if(BaseName == "WmToEleNu"){
     TotalUncertErr[0] = 0; 
     TotalUncertErr[1] = 4.12 ; 
@@ -2116,89 +2218,28 @@ int wPtUnfoldStudy
     TotalUncertErr[11]= 13.18; 
     TotalUncertErr[12]= 18.40; 
     TotalUncertErr[13]= 22.64;
+    errPowheg[0] = 0; 
+    errPowheg[1] = 4.285; 
+    errPowheg[2] = 4.156; 
+    errPowheg[3] = 4.132; 
+    errPowheg[4] = 4.129; 
+    errPowheg[5] = 4.128; 
+    errPowheg[6] = 7.152; 
+    errPowheg[7] = 4.143; 
+    errPowheg[8] = 18.56; 
+    errPowheg[9] = 16.32; 
+    errPowheg[10]= 4.427;
+    errPowheg[11]= 4.582; 
+    errPowheg[12]= 4.939; 
+    errPowheg[13]= 5.144; 
   }
   
   for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
   {
     SVD_Born.EffCorr->SetBinError(i,0.01*TotalUncertErr[i]*SVD_Born.EffCorr->GetBinContent(i));
+    SVD_Born.Gen->SetBinError(i,0.01*errPowheg[i]*SVD_Born.Gen->GetBinContent(i));
   }
-
-  if (BaseName=="WpToMuNu")
-  {
-  errPowheg[0] = 0; 
-  errPowheg[1] = 4.268; 
-  errPowheg[2] = 4.147; 
-  errPowheg[3] = 4.122; 
-  errPowheg[4] = 4.123; 
-  errPowheg[5] = 4.132; 
-  errPowheg[6] = 4.126; 
-  errPowheg[7] = 4.143; 
-  errPowheg[8] = 5.279; 
-  errPowheg[9] = 4.222; 
-  errPowheg[10] = 4.426;
-  errPowheg[11]= 4.819; 
-  errPowheg[12]= 5.075; 
-  errPowheg[13]= 6.084; 
-  }
-  if (BaseName=="WmToMuNu")
-  {
-  errPowheg[0] = 0; 
-  errPowheg[1]  = 4.398;
-  errPowheg[2]  = 4.382;
-  errPowheg[3]  = 4.423;
-  errPowheg[4]  = 4.443;
-  errPowheg[5]  = 5.604;
-  errPowheg[6]  = 4.532;
-  errPowheg[7]  = 7.792;
-  errPowheg[8]  = 3.349;
-  errPowheg[9]  = 4.622;
-  errPowheg[10] = 19.15;
-  errPowheg[11] = 4.587;
-  errPowheg[12] = 4.323;
-  errPowheg[13]= 5.229;
-  }
-  if (BaseName=="WpToEleNu")
-  {
-  errPowheg[0] = 0; 
-  errPowheg[1]   = 4.37 ; 
-  errPowheg[2] = 4.314; 
-  errPowheg[3] = 4.109; 
-  errPowheg[4] = 12.58; 
-  errPowheg[5] = 19.8 ; 
-  errPowheg[6] = 7.864; 
-  errPowheg[7] = 3.68 ; 
-  errPowheg[8] = 3.741; 
-  errPowheg[9] = 19.27; 
-  errPowheg[10]= 6.264;
-  errPowheg[11]= 4.312; 
-  errPowheg[12]= 4.235; 
-  errPowheg[13]= 5.534; 
-  }
-  if (BaseName=="WmToEleNu")
-  {
-  errPowheg[0] = 0; 
-  errPowheg[1] = 4.285; 
-  errPowheg[2] = 4.156; 
-  errPowheg[3] = 4.132; 
-  errPowheg[4] = 4.129; 
-  errPowheg[5] = 4.128; 
-  errPowheg[6] = 7.152; 
-  errPowheg[7] = 4.143; 
-  errPowheg[8] = 18.56; 
-  errPowheg[9] = 16.32; 
-  errPowheg[10]= 4.427;
-  errPowheg[11]= 4.582; 
-  errPowheg[12]= 4.939; 
-  errPowheg[13]= 5.144; 
-  }
-
-  for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-  {
-    SVD_Born.Gen->SetBinError(i, 0.01*errPowheg[i]*SVD_Born.Gen->GetBinContent(i));
-  }
-
-
-
+  
   // Write to root file
   SVD_Post.data->Write();
   SVD_Post.True->Write();

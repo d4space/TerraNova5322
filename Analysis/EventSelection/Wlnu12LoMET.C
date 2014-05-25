@@ -249,7 +249,6 @@ int Wlnu12LoMET::InitHistogram()
 int Wlnu12LoMET::Fill_Histo()
 {
   h1_W_pt->Fill(W.pt, mTTW);
-  
   if(W.charge>0)
   {
     h1_Wp_pt->Fill(W.pt,mTTW);

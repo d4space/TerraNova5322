@@ -137,34 +137,23 @@ int theoryCompChannel(const TString BaseName)
   if (BaseName=="Wplus"){
     f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WpToMuNu.root");
     f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WpToEleNu.root");
-    //f_Data_Mu    = new TFile("../RstUnfold/Result_WpToMuNu.root");
-    //f_Data_Ele   = new TFile("../RstUnfold/Result_WpToEleNu.root");
-    f_Data_Mu    = new TFile("../ResultWpToMuNu_Nom/Result_WpToMuNu.root");
-    f_Data_Ele   = new TFile("../ResultWpToEleNu_Nom/Result_WpToEleNu.root");
+    f_Data_Mu    = new TFile("../ResultWpToMuNu/Result_WpToMuNu.root");
+    f_Data_Ele   = new TFile("../ResultWpToEleNu/Result_WpToEleNu.root");
   }else if (BaseName=="Wminus"){
     f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WmToMuNu.root");
     f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WmToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WmToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WmToEleNu.root");
-  }else if (BaseName=="Wincl"){
-    f_Resbos_Mu  = new TFile("../../RstResbos/Resbos_WInclToMuNu.root");
-    f_Resbos_Ele = new TFile("../../RstResbos/Resbos_WInclToEleNu.root");
-    f_Data_Mu    = new TFile("../RstUnfold/Result_WInclToMuNu.root");
-    f_Data_Ele   = new TFile("../RstUnfold/Result_WInclToEleNu.root");
+    f_Data_Mu    = new TFile("../ResultWmToMuNu/Result_WmToMuNu.root");
+    f_Data_Ele   = new TFile("../ResultWmToEleNu/Result_WmToEleNu.root");
   }
 
   if (BaseName=="Wplus")
     f_Fewz = new TFile("../../RstFEWZ/Wp_Mu_NNLO.root");
   if (BaseName=="Wminus")
     f_Fewz = new TFile("../../RstFEWZ/Wm_Mu_NNLO.root");
-  if (BaseName=="Wincl")
-    f_Fewz = new TFile("../../RstFEWZ/WIncl_Mu_NNLO.root");
   if (BaseName=="WpToEleNu")
     f_Fewz = new TFile("../../RstFEWZ/Wp_Ele_NNLO.root");
   if (BaseName=="WmToEleNu")
     f_Fewz = new TFile("../../RstFEWZ/Wm_Ele_NNLO.root");
-  if (BaseName=="WInclToEleNu")
-    f_Fewz = new TFile("../../RstFEWZ/WIncl_Ele_NNLO.root");
 
   TH1D *hResbosLog30_Mu = new TH1D("hResbosLog30_Mu","hResbosLog30_Mu",13,WptLogBins);hResbosLog30_Mu->Sumw2();
   TH1D *hResbosLog30_Ele = new TH1D("hResbosLog30_Ele","hResbosLog30_Ele",13,WptLogBins);hResbosLog30_Ele->Sumw2();
@@ -352,17 +341,6 @@ int theoryCompChannel(const TString BaseName)
   hPowheg->SetFillStyle(3345);
   hResbos->SetFillColor(kBlue);
   hResbos->SetFillStyle(3354);
- 
-
-
- // hPowheg->Scale(1./18.429);
- // hData->Scale(1./18.429);
- // hFewz->Scale(1./18.429);
- // hResbos->Scale(1./18.429);
-  
- // cout << "Resbos Total Differentail Xsec: " << lResbos30->Integral() << endl;
- // cout << "Data Total Differentail Xsec: " << lData->Integral() << endl;
-  
   
   TLegend *lL =new TLegend(0.6,0.65,0.92,0.85); lL->SetFillColor(0); lL->SetBorderSize(0);
   lL->AddEntry(hData,"Unfolded","PL");
@@ -386,27 +364,6 @@ int theoryCompChannel(const TString BaseName)
   //gStyle->SetHatchesLineWidth(2);
   gStyle->SetHatchesLineWidth(1);
   gPad->SetLogx(1);
-
-  //hPowheg->GetYaxis()->SetRangeUser(0.,1.14*resb30_Mu[0]);
-  //hPowheg->SetTitle("");
-  //hPowheg->GetYaxis()->SetTitle("Xsec [pb]");
-  //hPowheg->GetYaxis()->SetTitleOffset(1.2);
-  
-//  hPowheg->Draw("A2");
-////  hFewz->Draw("2");
-//  hResbos->Draw("2");
-//  hData->Draw("p");
-//  lL->Draw();
-//  tb->Draw();
-
-//  lC0->cd(2)->SetPad(0,0,0.95,0.34);
-//  lC0->cd(2)->SetTopMargin(0.025);
-//  lC0->cd(2)->SetBottomMargin(0.3);
-//  lC0->cd(2)->SetLeftMargin(0.15);
-//  lC0->cd(2)->SetRightMargin(0.07);
-//  lC0->cd(2)->SetTickx(1);
-//  lC0->cd(2)->SetTicky(1);
-//  lC0->cd(2)->SetLogx(1);
 
   TH1F *RatioDataResb_Mu;
   TH1F *RatioDataResb_Ele;
@@ -448,15 +405,7 @@ int theoryCompChannel(const TString BaseName)
   }else if (BaseName=="Wminus"){
     rL->AddEntry(RatioDataResb_Mu,"W^{-} #rightarrow #mu^{-} #bar{#nu}","PL");
     rL->AddEntry(RatioDataResb_Ele,"W^{-} #rightarrow e^{-} #bar{#nu}","PL");
-  }else if (BaseName=="Wincl"){
-    rL->AddEntry(RatioDataResb_Mu,"W #rightarrow #mu #nu","PL");
-    rL->AddEntry(RatioDataResb_Ele,"W #rightarrow e #nu","PL");
   }
-  
-  //for( int ipt(0);ipt<13;ipt++)
-  //{
-  //  cout<<"Min = "<<ResbBand_Mu->GetErrorYlow(ipt)<<"\t Max = "<<ResbBand_Mu->GetErrorYhigh(ipt)<<endl; 
-  //}
   
   ResbBand_Ele = ResbosError(hDataLog_Ele,hResbosLog30_Ele,hResbos_Ele);
   ResbBand_Ele->SetFillColor(kRed);

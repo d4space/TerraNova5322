@@ -54,6 +54,7 @@ void Wlnu12LoUnfold::Loop()
   // Looping for each Event 
   //============================================
   for (int i(0); i<Ntries;i++)
+  //for (int i(2870); i<Ntries;i++)
   {
    // cout<<i<<" th Event"<<endl;
     evtCnt = i;
@@ -189,6 +190,9 @@ int Wlnu12LoUnfold::InitVar4Evt()
 int Wlnu12LoUnfold::InitHistogram()
 {
   myFile   = new TFile(mResultDir+"/"+OutNameBase+"_"+Mode+".root","RECREATE");
+  h1_W_pt  = new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
+  h1_Wp_pt = new TH1D("h1_Wp_pt","Wpt",NWptBinPlus-1,WptBins);
+  h1_Wm_pt = new TH1D("h1_Wm_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Truth_Rec         =new TH1D("h1_Truth_Rec","Simul Wpt Truth",NWptBinPlus-1,WptBins);
   h1_Truth_Rec_Even    =new TH1D("h1_Truth_Rec_Even","Simul Wpt Truth_Even",NWptBinPlus-1,WptBins);
   h1_Truth_Rec_Odd     =new TH1D("h1_Truth_Rec_Odd","Simul Wpt Truth_Odd",NWptBinPlus-1,WptBins);
@@ -199,21 +203,21 @@ int Wlnu12LoUnfold::InitHistogram()
   h2_Truth_Rec_AP_Post =new TH2D("h2_Truth_Rec_AP_Post" ,"Truth Rec All Phase Post",NWptBinPlus-1,WptBins,NWptBinPlus-1, WptBins);
   h2_Truth_Rec_AP_PostEffCorr = new TH2D("h2_Truth_Rec_AP_PostEffCorr" ,"Truth Rec All Phase Post EffCorr",NWptBinPlus-1,WptBins,NWptBinPlus-1, WptBins);
   h1_Truth_Post_EffCorr_weightFSR = new TH1D("h1_Truth_Post_EffCorr_weightFSR","Post Wpt Truth EffCorr weightFSR",NWptBinPlus-1,WptBins);
-  for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
-  {
-    if(ipt==1 || ipt==2)
-    {
-      sprintf(histName,"h1_W_pt_RecoPreFsrGenRes_%d",ipt);
-      h1_W_pt_RecoPreFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,3.1);
-      sprintf(histName,"h1_W_pt_RecoPstFsrGenRes_%d",ipt);
-      h1_W_pt_RecoPstFsrGenRes[ipt]=new TH1D(histName,"Reco Gen Resol",50,-1.1,3.1);
-    }else{
-      sprintf(histName,"h1_W_pt_RecoPreFsrGenRes_%d",ipt);
-      h1_W_pt_RecoPreFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,1.1);
-      sprintf(histName,"h1_W_pt_RecoPstFsrGenRes_%d",ipt);
-      h1_W_pt_RecoPstFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,1.1);
-    }
-  }
+  //for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
+  //{
+  //  if(ipt==1 || ipt==2)
+  //  {
+  //    sprintf(histName,"h1_W_pt_RecoPreFsrGenRes_%d",ipt);
+  //    h1_W_pt_RecoPreFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,3.1);
+  //    sprintf(histName,"h1_W_pt_RecoPstFsrGenRes_%d",ipt);
+  //    h1_W_pt_RecoPstFsrGenRes[ipt]=new TH1D(histName,"Reco Gen Resol",50,-1.1,3.1);
+  //  }else{
+  //    sprintf(histName,"h1_W_pt_RecoPreFsrGenRes_%d",ipt);
+  //    h1_W_pt_RecoPreFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,1.1);
+  //    sprintf(histName,"h1_W_pt_RecoPstFsrGenRes_%d",ipt);
+  //    h1_W_pt_RecoPstFsrGenRes[ipt] = new TH1D(histName,"Reco Gen Resol",50,-1.1,1.1);
+  //  }
+  //}
   return 0;
 }
 int Wlnu12LoUnfold::DumpUnfInfo(int i)
@@ -253,6 +257,9 @@ int Wlnu12LoUnfold::DumpUnfInfo(int i)
 
 int Wlnu12LoUnfold::FillUnfHisto()
 {
+  h1_W_pt->Fill(W.pt, mTTW);
+  if(W.charge>0)h1_Wp_pt->Fill(W.pt,mTTW);
+  if(W.charge<0)h1_Wm_pt->Fill(W.pt,mTTW);
   h1_Truth_Rec->Fill(W.pt,mTTW);//dUnf bini
   h1_Truth_Post->Fill(genInfo.PostW_pt,mTTW); //dUnf xini
   if( evtCnt % 2 == 0 )
@@ -266,19 +273,22 @@ int Wlnu12LoUnfold::FillUnfHisto()
   h2_Truth_Rec_AP_Post->Fill(W.pt,genInfo.PostW_pt);
   h2_Truth_Rec_AP_PostEffCorr->Fill(W.pt,genInfo.PostW_pt,mTTW); //dUnf Response Matrix
 
-  unfoldInfo.recoPreFsrGenWptRes = (W.pt-genInfo.BornW_pt)/genInfo.BornW_pt;
-  unfoldInfo.recoPstFsrGenWptRes = (W.pt-genInfo.PostW_pt)/genInfo.PostW_pt;
-  h1_W_pt_RecoPreFsrGenRes[0]->Fill(unfoldInfo.recoPreFsrGenWptRes);
-  h1_W_pt_RecoPstFsrGenRes[0]->Fill(unfoldInfo.recoPstFsrGenWptRes);
+  //if (W.pt>genInfo.BornW_pt && W.pt>genInfo.PostW_pt)
+  //{
+  //  unfoldInfo.recoPreFsrGenWptRes = (W.pt-genInfo.BornW_pt)/genInfo.BornW_pt;
+  //  unfoldInfo.recoPstFsrGenWptRes = (W.pt-genInfo.PostW_pt)/genInfo.PostW_pt;
+  //}
+  //h1_W_pt_RecoPreFsrGenRes[0]->Fill(unfoldInfo.recoPreFsrGenWptRes);
+  //h1_W_pt_RecoPstFsrGenRes[0]->Fill(unfoldInfo.recoPstFsrGenWptRes);
 
-  for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
-  {
-    if(genInfo.BornW_pt > WptBins[ipt] && genInfo.BornW_pt < WptBins[ipt+1])
-    {
-      h1_W_pt_RecoPreFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPreFsrGenWptRes);
-      h1_W_pt_RecoPstFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPstFsrGenWptRes);
-    }
-  }
+  //for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
+  //{
+  //  if(genInfo.BornW_pt > WptBins[ipt] && genInfo.BornW_pt < WptBins[ipt+1])
+  //  {
+  //    h1_W_pt_RecoPreFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPreFsrGenWptRes);
+  //    h1_W_pt_RecoPstFsrGenRes[ipt+1]->Fill(unfoldInfo.recoPstFsrGenWptRes);
+  //  }
+  //}
   h1_Truth_Post_EffCorr->Fill(genInfo.PostW_pt,mTTW);
   if(weightFSR<0) weightFSR=1;
   h1_Truth_Post_EffCorr_weightFSR->Fill(genInfo.PostW_pt,mTTW*weightFSR);
@@ -287,6 +297,9 @@ int Wlnu12LoUnfold::FillUnfHisto()
 
 int Wlnu12LoUnfold::Write_Histo()
 {
+  h1_W_pt->Write();
+  h1_Wp_pt->Write();
+  h1_Wm_pt->Write();
   h1_Truth_Rec->Write();
   h1_Truth_Rec_Even->Write();
   h1_Truth_Rec_Odd->Write();
@@ -297,10 +310,10 @@ int Wlnu12LoUnfold::Write_Histo()
   h1_Truth_Post_EffCorr_weightFSR->Write();
   h2_Truth_Rec_AP_Post->Write();
   h2_Truth_Rec_AP_PostEffCorr->Write();
-  for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
-  {
-    h1_W_pt_RecoPreFsrGenRes[ipt]->Write();
-    h1_W_pt_RecoPstFsrGenRes[ipt]->Write();
-  }
+  //for(int ipt(0);ipt<NWptBinPlus-1;ipt++)
+  //{
+  //  h1_W_pt_RecoPreFsrGenRes[ipt]->Write();
+  //  h1_W_pt_RecoPstFsrGenRes[ipt]->Write();
+  //}
   return 0;
 }

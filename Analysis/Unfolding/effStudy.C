@@ -32,15 +32,15 @@
 
 int effStudy()
 {
-  TString Acc_WpMuNu = "../Acceptance_WpT/WpToMuNu_S8_Acceptance/WpToMuNu_S8_Acceptance.root";
-  TString Acc_WmMuNu = "../Acceptance_WpT/WmToMuNu_S8_Acceptance/WmToMuNu_S8_Acceptance.root";
-  TString Acc_WpElNu = "../Acceptance_WpT/WpToEleNu_S8_Acceptance/WpToEleNu_S8_Acceptance.root";
-  TString Acc_WmElNu = "../Acceptance_WpT/WmToEleNu_S8_Acceptance/WmToEleNu_S8_Acceptance.root";
+  TString Acc_WpMuNu = "../WPtAcceptance/Muon2012LoPU/WpToMuNu_S8.root";
+  TString Acc_WmMuNu = "../WPtAcceptance/Muon2012LoPU/WmToMuNu_S8.root";
+  TString Acc_WpElNu = "../WPtAcceptance/Electron2012LoPU/WpToEleNu_S8.root";
+  TString Acc_WmElNu = "../WPtAcceptance/Electron2012LoPU/WmToEleNu_S8.root";
 
-  TString Rec_WpMuNu = "../WPtMET/WpToMuNu_S8_AllCorrectionsMC/WpToMuNu_S8_AllCorrectionsMC.root";   
-  TString Rec_WmMuNu = "../WPtMET/WmToMuNu_S8_AllCorrectionsMC/WmToMuNu_S8_AllCorrectionsMC.root";   
-  TString Rec_WpElNu = "../WPtMET/WpToEleNu_S8_AllCorrectionsMC/WpToEleNu_S8_AllCorrectionsMC.root"; 
-  TString Rec_WmElNu = "../WPtMET/WmToEleNu_S8_AllCorrectionsMC/WmToEleNu_S8_AllCorrectionsMC.root"; 
+  TString Rec_WpMuNu = "Muon2012LoPU/WpToMuNu_S8_Unfold.root";
+  TString Rec_WmMuNu = "Muon2012LoPU/WmToMuNu_S8_Unfold.root";
+  TString Rec_WpElNu = "Electron2012LoPU/WpToEleNu_S8_Unfold.root";
+  TString Rec_WmElNu = "Electron2012LoPU/WmToEleNu_S8_Unfold.root";
 
   double Bins[NWptBinPlus];
    // Final Bins7
@@ -76,7 +76,7 @@ int effStudy()
   Fout << "Bin" << "\t" << "Systematics" << endl;
   
   //ofstream of_Post_WpT_PostFid;
-  cout << "check 1" <<endl;
+
   TFile *f_Acc[4];
   TFile *f_Rec[4];
   f_Acc[0] = new TFile(Acc_WpMuNu);
@@ -91,7 +91,6 @@ int effStudy()
 
   gSystem->mkdir(resultDir,kTRUE);
   TFile f_out(resultDir+"/eff.root","recreate");
-  cout << "check 2" <<endl;
 
   // Unfolding to Post
   TH1D *h1_Truth_Post_EffCorr[4];
@@ -127,7 +126,6 @@ int effStudy()
   
   TH1D *h1_MCEventFSRSyst = new TH1D("h1_MCEventFSRSyst","h1_MCEventFSRSyst",13,Bins);h1_MCEventFSRSyst->Sumw2();
 
-  cout << "check 3" <<endl;
   // Plot
   CPlot *pltEff;
   TCanvas *myCan = MakeCanvas("myCan","myCan",900,800);
@@ -144,26 +142,27 @@ int effStudy()
     // Get the Histograms from files
     sprintf(tmpNameOrg,"h1_Truth_Post_EffCorr");
     sprintf(tmpName,"h1_Truth_Post_EffCorr_%d",i);
-  cout << "check 4" <<endl;
     h1_Truth_Post_EffCorr[i] = (TH1D*)f_Rec[i]->Get(tmpNameOrg)->Clone(tmpName);
     h1_Truth_Post_EffCorr[i]-> Sumw2();
-  cout << "check 5" <<endl;
 
     sprintf(tmpNameOrg,"h1_Truth_Post_EffCorr_weightFSR");
     sprintf(tmpName,"h1_Truth_Post_EffCorr_weightFSR_%d",i);
     h1_Truth_Post_EffCorr_weightFSR[i] = (TH1D*)f_Rec[i]->Get(tmpNameOrg)->Clone(tmpName);
     h1_Truth_Post_EffCorr_weightFSR[i] -> Sumw2();
 
+    cout<<"point 1"<<endl;
     sprintf(tmpName,"h1_W_pt");
     if (i == 0 || i == 2)
       h1_W_pt[i] = (TH1D*)f_Rec[i]->Get("h1_Wp_pt")->Clone(tmpName);
     else
       h1_W_pt[i] = (TH1D*)f_Rec[i]->Get("h1_Wm_pt")->Clone(tmpName);
+    cout<<"point 2"<<endl;
     h1_W_pt[i]-> Sumw2();
     
     sprintf(tmpName,"h1_Wpt");
     h1_Wpt[i] = (TH1D*)f_Rec[i]->Get("h1_W_pt")->Clone(tmpName);
     h1_Wpt[i]-> Sumw2();
+    cout<<"point 3"<<endl;
 
     for( int ipt(1);ipt<=h1_Wpt[i]->GetNbinsX(); ipt++)
     {

@@ -13,10 +13,3 @@ os.system(cmd_string)
 
 cmd_string = "rm -f *.d *.so"
 os.system(cmd_string)
-
-BaseName="Wincl"
-cmd_string = "root -l -q theoryCompChannel.C\(\\\"%s\\\"\)" %BaseName
-os.system(cmd_string)
-
-cmd_string = "rm -f *.d *.so"
-os.system(cmd_string)

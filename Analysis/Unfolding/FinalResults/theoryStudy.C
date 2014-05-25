@@ -188,76 +188,10 @@ int theoryStudy(const TString BaseName)
     errMin[ipt] = errMin[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt+1);
   }
  
-  Double_t errPowheg[nBins-1];
   Double_t errFewz[nBins-1];
   Double_t vPowheg[nBins-1];
   Double_t vFewz[nBins-1];
   Double_t resbVal[nBins-1],errResbosDataLo[nBins-1],errResbosDataHi[nBins-1];
-
-  if (BaseName=="WpToMuNu")
-  {
-  errPowheg[0] = 4.268; 
-  errPowheg[1] = 4.147; 
-  errPowheg[2] = 4.122; 
-  errPowheg[3] = 4.123; 
-  errPowheg[4] = 4.132; 
-  errPowheg[5] = 4.126; 
-  errPowheg[6] = 4.143; 
-  errPowheg[7] = 5.279; 
-  errPowheg[8] = 4.222; 
-  errPowheg[9] = 4.426;
-  errPowheg[10]= 4.819; 
-  errPowheg[11]= 5.075; 
-  errPowheg[12]= 6.084; 
-  }
-  if (BaseName=="WmToMuNu")
-  {
-  errPowheg[0] = 4.398; 
-  errPowheg[1] = 4.382; 
-  errPowheg[2] = 4.423; 
-  errPowheg[3] = 4.443; 
-  errPowheg[4] = 5.604; 
-  errPowheg[5] = 4.532; 
-  errPowheg[6] = 7.792; 
-  errPowheg[7] = 3.349; 
-  errPowheg[8] = 4.622; 
-  errPowheg[9] = 19.15;
-  errPowheg[10]= 4.587; 
-  errPowheg[11]= 4.323; 
-  errPowheg[12]= 5.229; 
-  }
-  if (BaseName=="WpToEleNu")
-  {
-  errPowheg[0] = 4.37 ; 
-  errPowheg[1] = 4.314; 
-  errPowheg[2] = 4.109; 
-  errPowheg[3] = 12.58; 
-  errPowheg[4] = 19.8 ; 
-  errPowheg[5] = 7.864; 
-  errPowheg[6] = 3.68 ; 
-  errPowheg[7] = 3.741; 
-  errPowheg[8] = 19.27; 
-  errPowheg[9] = 6.264;
-  errPowheg[10]= 4.312; 
-  errPowheg[11]= 4.235; 
-  errPowheg[12]= 5.534; 
-  }
-  if (BaseName=="WmToEleNu")
-  {
-  errPowheg[0] = 4.285; 
-  errPowheg[1] = 4.156; 
-  errPowheg[2] = 4.132; 
-  errPowheg[3] = 4.129; 
-  errPowheg[4] = 4.128; 
-  errPowheg[5] = 7.152; 
-  errPowheg[6] = 4.143; 
-  errPowheg[7] = 18.56; 
-  errPowheg[8] = 16.32; 
-  errPowheg[9] = 4.427;
-  errPowheg[10]= 4.582; 
-  errPowheg[11]= 4.939; 
-  errPowheg[12]= 5.144; 
-  }
 
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
@@ -279,8 +213,8 @@ int theoryStudy(const TString BaseName)
     hPowhegErrBand->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
     hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
-    hPowhegErrBandPDF->SetBinError(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt) * errPowheg[ipt-1]/100 );
-    cout << "" << hPowhegErrBandPDF->GetBinContent(ipt) << " " << hPowhegErrBandPDF->GetBinError(ipt) << endl; 
+    hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    cout<<hPowhegErrBandPDF->GetBinContent(ipt)<<" "<<hPowhegErrBandPDF->GetBinError(ipt)<<" "<<100*hPowhegErrBandPDF->GetBinError(ipt)/hPowhegErrBandPDF->GetBinContent(ipt)<<"  "<<100*orgPowheg->GetBinError(ipt)/orgPowheg->GetBinContent(ipt)<<endl; 
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzErrBand->SetBinError(ipt,0.01);
     hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
@@ -289,9 +223,6 @@ int theoryStudy(const TString BaseName)
     resbVal[ipt-1]=hResbosLog30->GetBinContent(ipt)/hDataLog->GetBinContent(ipt);
     errResbosDataLo[ipt-1]=errMin[ipt-1]/hDataLog->GetBinContent(ipt);
     errResbosDataHi[ipt-1]=errMax[ipt-1]/hDataLog->GetBinContent(ipt);
-    
-    cout<<ipt<<"\t"<<errMin[ipt-1]<<"\t"<<errMax[ipt-1]<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<errResbosDataLo[ipt-1]<<"\t"<<errResbosDataHi[ipt-1]<<endl;
-    //cout<<ipt<<"\t"<<hResbosLog30->GetBinContent(ipt)<<"\t"<<hDataLog->GetBinContent(ipt)<<"\t"<<hPowhegLog->GetBinError(ipt)<<endl;
   }
 
   hDataLog->SetMarkerStyle(kFullCircle); hDataLog->SetMarkerColor(kBlack); hDataLog->SetMarkerSize(1);

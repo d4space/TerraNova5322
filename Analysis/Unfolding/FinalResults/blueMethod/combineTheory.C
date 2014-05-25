@@ -19,23 +19,19 @@ int combineTheory(const TString BaseName)
   TFile *f_Resbos_1;
   TFile *f_Resbos_2;
 
-  if (BaseName=="Wplus"){
-    f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Mu_NNLO.root");
-    f_Fewz_2 = new TFile("../../../RstFEWZ/Wp_Ele_NNLO.root");
-  }else if (BaseName=="Wminus"){
-    f_Fewz_1 = new TFile("../../../RstFEWZ/Wm_Mu_NNLO.root");
-    f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Ele_NNLO.root");
-  }else if (BaseName=="Wincl"){
-  }
-  if (BaseName=="Wincl"){
+  if(BaseName == "Wmuon")
+  {
     f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Mu_NNLO.root");
     f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Mu_NNLO.root");
     f_Resbos_1 = new TFile("../../../RstResbos/Resbos_WpToMuNu.root");
     f_Resbos_2 = new TFile("../../../RstResbos/Resbos_WmToMuNu.root");
-    //f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Ele_NNLO.root");
-    //f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Ele_NNLO.root");
-    //f_Resbos_1 = new TFile("../../../RstResbos/Resbos_WpToEleNu.root");
-    //f_Resbos_2 = new TFile("../../../RstResbos/Resbos_WmToEleNu.root");
+  }
+  if(BaseName == "Wele")
+  {
+    f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Ele_NNLO.root");
+    f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Ele_NNLO.root");
+    f_Resbos_1 = new TFile("../../../RstResbos/Resbos_WpToEleNu.root");
+    f_Resbos_2 = new TFile("../../../RstResbos/Resbos_WmToEleNu.root");
   }
 
   TH1D* lFewz_1;
@@ -74,14 +70,10 @@ int combineTheory(const TString BaseName)
   TH1D* hResbos34 = new TH1D("hResbos34","hResbos34",13,0,13);hResbos34->Sumw2();
   TH1D* hResbos35 = new TH1D("hResbos35","hResbos35",13,0,13);hResbos35->Sumw2();
 
-  if (BaseName=="Wplus"){
-    TFile f_out("fewzWpMuEle_NNLO.root","recreate");
-  }else if (BaseName=="Wminus"){
-    TFile f_out("fewzWmMuEle_NNLO.root","recreate");
-  }else if (BaseName=="Wincl"){
-    TFile f_out("WinclMu_NNLO.root","recreate");
-    //TFile f_out("WinclEle_NNLO.root","recreate");
-  }
+  if(BaseName=="Wmuon")
+    TFile f_out("Theory_Muon.root","recreate");
+  if(BaseName=="Wele")
+    TFile f_out("Theory_Ele.root","recreate");
 
   for( int ipt(0);ipt<nBins-1;ipt++)
   {

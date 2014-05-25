@@ -27,6 +27,9 @@ protected:
   int Write_Histo();
   ofstream Fout;
   TFile *myFile;
+  TH1D*	h1_W_pt;
+  TH1D*	h1_Wp_pt;
+  TH1D*	h1_Wm_pt;
   TH1D* h1_Truth_Rec;
   TH1D* h1_Truth_Rec_Even;
   TH1D* h1_Truth_Rec_Odd;
@@ -37,8 +40,8 @@ protected:
   TH1D* h1_Truth_Post_EffCorr_weightFSR;
   TH2D* h2_Truth_Rec_AP_Post;
   TH2D* h2_Truth_Rec_AP_PostEffCorr;
-  TH1D* h1_W_pt_RecoPreFsrGenRes[NWptBinPlus];
-  TH1D* h1_W_pt_RecoPstFsrGenRes[NWptBinPlus];
+  //TH1D* h1_W_pt_RecoPreFsrGenRes[NWptBinPlus];
+  //TH1D* h1_W_pt_RecoPstFsrGenRes[NWptBinPlus];
 
   // Member variables
   double mNselect4WptBin[NwPtBin];

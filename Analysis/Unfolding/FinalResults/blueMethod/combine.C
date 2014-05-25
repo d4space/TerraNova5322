@@ -46,11 +46,10 @@ int combine(const TString BaseName)
   TH1D* SVD_BornGen = new TH1D("SVD_BornGen","SVD_BornGen",13,0,13);SVD_BornGen->Sumw2();
   TH1D* BornEffCorr = new TH1D("BornEffCorr","BornEffCorr",13,0,13);BornEffCorr->Sumw2();
 
-  if (BaseName=="Wmuon"){
+  if(BaseName=="Wmuon")
     TFile f_out("Result_WinclMu.root","recreate");
-  }else if (BaseName=="Wele"){
+  if(BaseName=="Wele")
     TFile f_out("Result_WinclEle.root","recreate");
-  }
 
   for( int ipt(0);ipt<nBins-1;ipt++)
   {
@@ -62,13 +61,14 @@ int combine(const TString BaseName)
     RDmean[ipt]=(RD1[ipt]/(RD1Err[ipt]*RD1Err[ipt])+RD2[ipt]/(RD2Err[ipt]*RD2Err[ipt]))/RDmeanErr[ipt];
     
     MC1[ipt] = lPowheg_1->GetBinContent(ipt+1);
-    MC1Err[ipt] =  sqrt(lPowheg_1->GetBinError(ipt+1)*lPowheg_1->GetBinError(ipt+1) + lPowheg_1->GetBinContent(ipt+1)) ;
+    MC1Err[ipt] =  lPowheg_1->GetBinError(ipt+1);
     MC2[ipt] = lPowheg_2->GetBinContent(ipt+1);
-    MC2Err[ipt] =  sqrt(lPowheg_2->GetBinError(ipt+1)*lPowheg_2->GetBinError(ipt+1) + lPowheg_2->GetBinContent(ipt+1));
+    MC2Err[ipt] =  lPowheg_2->GetBinError(ipt+1);
     MCmeanErr[ipt]=1.0/(MC1Err[ipt]*MC1Err[ipt])+1.0/(MC2Err[ipt]*MC2Err[ipt]);
     MCmean[ipt]=(MC1[ipt]/(MC1Err[ipt]*MC1Err[ipt])+MC2[ipt]/(MC2Err[ipt]*MC2Err[ipt]))/MCmeanErr[ipt];
+    cout<<100*MC1Err[ipt]/MC1[ipt]<<"  "<<100*MC2Err[ipt]/MC2[ipt]<<endl;
     
-    cout <<ipt+1<<"\t"<<(RD1[ipt]/(RD1Err[ipt]*RD1Err[ipt])+RD2[ipt]/(RD2Err[ipt]*RD2Err[ipt]))/(1./(RD1Err[ipt]*RD1Err[ipt])+1.0/(RD2Err[ipt]*RD2Err[ipt]))<<"\t"<<RDmean[ipt]<<"\t"<<sqrt(1.0/RDmeanErr[ipt])<<"\t"<<MCmean[ipt]<<"\t"<<sqrt(1.0/MCmeanErr[ipt])<<endl;
+    //cout <<ipt+1<<"\t"<<(RD1[ipt]/(RD1Err[ipt]*RD1Err[ipt])+RD2[ipt]/(RD2Err[ipt]*RD2Err[ipt]))/(1./(RD1Err[ipt]*RD1Err[ipt])+1.0/(RD2Err[ipt]*RD2Err[ipt]))<<"\t"<<RDmean[ipt]<<"\t"<<sqrt(1.0/RDmeanErr[ipt])<<"\t"<<MCmean[ipt]<<"\t"<<sqrt(1.0/MCmeanErr[ipt])<<endl;
     
     BornEffCorr->SetBinContent(ipt+1, RDmean[ipt]);
     BornEffCorr->SetBinError(ipt+1, sqrt(1.0/RDmeanErr[ipt]));
