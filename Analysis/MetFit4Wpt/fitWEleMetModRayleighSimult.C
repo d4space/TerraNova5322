@@ -754,7 +754,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(13);ipt<14;ipt++)
+  //for( int ipt(12);ipt<13;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1263,13 +1263,15 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       aqcdMsigma2[ipt]->setVal(12.0182);
     }else if (ipt == 9){
       nSig[ipt] -> setVal(2158.18);
-      nSigp[ipt]-> setVal(1231.17);
+      nSigp[ipt]-> setVal(1231.16);
       nSigm[ipt]-> setVal(930.905);
       nAntiSig[ipt] -> setVal(2.0908e-06);
-      nAntiSigp[ipt]-> setVal(1.08499e-10);
+      //nAntiSigp[ipt]-> setVal(1.08499e-10);
+      nAntiSigp[ipt]-> setVal(7.00828e-06);
       nAntiSigm[ipt]-> setVal(1.25979e-07);
       nQCD[ipt] -> setVal(2430.82);
-      nQCDp[ipt]-> setVal(1258.22);
+      //nQCDp[ipt]-> setVal(1258.22);
+      nQCDp[ipt]-> setVal(1065.64);
       nQCDm[ipt]-> setVal(1164.64);
       nAntiQCD[ipt] -> setVal(1539.99);
       nAntiQCDp[ipt]-> setVal(804.982);
@@ -1278,7 +1280,8 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       qcdPsigma1[ipt]->setVal(13.5481);
       qcdMsigma1[ipt]->setVal(21.3831);
       qcda1[ipt] ->setVal(-0.139205);
-      qcdPa1[ipt]->setVal(0.0305663);
+      //qcdPa1[ipt]->setVal(0.0305663);
+      qcdPa1[ipt]->setVal(0.0255663);
       qcdMa1[ipt]->setVal(-0.30412);
       dFrac1[ipt] ->setVal(0.5);
       dFrac1P[ipt]->setVal(0.499956);
@@ -1405,7 +1408,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       dFrac2M[ipt]->setVal(0.499995);
       aqcdsigma1[ipt] ->setVal(5.14769);
       aqcdPsigma1[ipt]->setVal(5.99326);
-      aqcdMsigma1[ipt]->setVal(5.37902);
+      aqcdMsigma1[ipt]->setVal(6.83763);
       aqcdsigma2[ipt] ->setVal(15.2418);
       aqcdPsigma2[ipt]->setVal(15.9374);
       aqcdMsigma2[ipt]->setVal(15.6185);
