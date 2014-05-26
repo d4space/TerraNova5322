@@ -643,8 +643,8 @@ Double_t Wlnu12LoScaleSmearCorr::GetSmearCorr(double LepEta)
     if(fabs(LepEta) >= 1.2   && fabs(LepEta) < 1.4442)   {return  0.01;}
     //if(fabs(LepEta) >= 1.566 && fabs(LepEta) < 2.0)  	 {return  0.972944*EndcapSystFactor ;}
     //if(fabs(LepEta) >= 2.0   && fabs(LepEta) < 2.5)  	 {return  1.84788*EndcapSystFactor;}
-    if(fabs(LepEta) >= 1.566 && fabs(LepEta) < 2.0)  	 {return  0.972944;}
-    if(fabs(LepEta) >= 2.0   && fabs(LepEta) < 2.5)  	 {return  1.84788;}
+    if(fabs(LepEta) >= 1.566 && fabs(LepEta) < 2.0)  	 {return  0.972944*2.5 ;}
+    if(fabs(LepEta) >= 2.0   && fabs(LepEta) < 2.5)  	 {return  1.84788*2.5;}
     
     
     ///6 category result: smear to be applied on MC to check on Z 

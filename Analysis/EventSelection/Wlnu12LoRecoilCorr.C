@@ -51,8 +51,8 @@ void Wlnu12LoRecoilCorr::Loop()
   //============================================
   // Looping for each Event 
   //============================================
-  //for (int i(0); i<Ntries;i++)
-  for (int i(0); i<20;i++)
+  for (int i(0); i<Ntries;i++)
+  //for (int i(0); i<100;i++)
   {
     evtCnt = i;
     //===============================
@@ -93,27 +93,22 @@ void Wlnu12LoRecoilCorr::Loop()
     // Select the Best W boson
     WbestSelect();
 
-    if( W.Pass)
+    if(W.Pass)
     {
     }
 
     //Fill the W==================
-    if( W.Pass && addLepN <2 ){
+    if( W.Pass && addLepN <2){
       DumpWbestCand(W.idxBest);
-
-      //Apply Recoil Correction
-      if(Mode == "AllCorrectionsMC")DoRecoilCorr();
-
       evtSelected+=mTTW;
-
-      if(Mode == "AllCorrectionsMC")mTTW=mTTW*DoEffiCorr();
-      
-      Fill_Histo();
-
       Nselected4Bin();
-    
     }//good W
 
+    ZbestSelect();
+    if(Z.Pass)
+    {
+    }
+    Fill_Histo();
   }//Ntries
   cout<<"Passed W evts: "<<mNWevt<<endl;
   Fout<<"Passed W evts: "<<mNWevt<<endl;
@@ -129,8 +124,8 @@ void Wlnu12LoRecoilCorr::Loop()
   // Notice: Use one of Write_Histo or myFile->Write
   // Write_Histo: to Save specific histograms
   // myFile->Write: to Save all Histograms
-  //Write_Histo();
-  myFile->Write();
+  Write_Histo();
+  //myFile->Write();
   myFile->Close();
   Fout.close();
   gBenchmark->Show("Wlnu12LoRecoilCorr");
@@ -148,7 +143,8 @@ int Wlnu12LoRecoilCorr::InitVar()
   cout<<"Initialize variable at Wlnu12LoRecoilCorr class ==========="<<endl;
   evtCnt = 0;
   mNWevt = 0;
-  TString FoutName = mResultDir+"/"+OutNameBase+".txt";
+
+  TString FoutName = mResultDir+"/"+OutNameBase+"_"+Mode+".txt";
   Fout.open(FoutName);
   for(int i(0);i<NwPtBin;i++)
   {
@@ -156,7 +152,7 @@ int Wlnu12LoRecoilCorr::InitVar()
   }
   // Recoil CorrWptection initializaWpttion
   // Recoil CorrWptection Parameter WptFiles
-  if( (  Mode == "AllCorrectionsMC"
+  if( (  Mode == "SmeaRecEffCorr"
       || Mode == "RecoilCorrMC")
       || Mode =="DumpUnfInfo" )
   {
@@ -166,7 +162,7 @@ int Wlnu12LoRecoilCorr::InitVar()
       Rcl.ZMCfilename="../Recoil/ZmmMC/fits.root";
       Rcl.Wpfilename="../Recoil/WmpMC/fits.root";
       Rcl.Wmfilename="../Recoil/WmmMC/fits.root";
-    }else if((AnaChannel == "Electron2012LoPU" ) || AnaChannel == "ElectronHighPU" )
+    }else if((AnaChannel == "Electron2012LoPU") || AnaChannel == "ElectronHighPU")
     {
       Rcl.ZRDfilename="../Recoil/ZeeData/fits.root";
       Rcl.ZMCfilename="../Recoil/ZeeMC/fits.root";
@@ -191,47 +187,66 @@ int Wlnu12LoRecoilCorr::InitVar4Evt()
 }
 int Wlnu12LoRecoilCorr::InitHistogram()
 {
-  myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
-  h1_W_pt	= new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
-  
+  myFile = new TFile(mResultDir+"/"+OutNameBase+"_"+Mode+".root","RECREATE");
   for(int i(0);i<U1Bin;i++)
   {
-  sprintf(histName,"h1_u1W_%d",i);
-  //mean_ = 0.6-0.85*binCent;
-  h1_u1W[i]= new TH1D(histName,"h1_u1W",150,-150-RecoilBins[i],150-RecoilBins[i]);
-  //h1_u1W[i]= new TH1D(histName,"h1_u1W",50,mean_-80,mean_+50);
-  sprintf(histName,"h1_u2W_%d",i);
-  h1_u2W[i] = new TH1D(histName,"h1_u2W",150,-150,150);
-  sprintf(histName,"h1_u3W_%d",i);
-  h1_u3W[i] = new TH1D(histName,"h1_u3W",100,-100,100);
+    sprintf(histName,"h1_u1W_%d",i);
+    h1_u1W[i]= new TH1D(histName,"h1_u1W",150,-150-RecoilBins[i],150-RecoilBins[i]);
+    sprintf(histName,"h1_u2W_%d",i);
+    h1_u2W[i] = new TH1D(histName,"h1_u2W",150,-150,150);
+    sprintf(histName,"h1_u3W_%d",i);
+    h1_u3W[i] = new TH1D(histName,"h1_u3W",100,-100,100);
+    
+    sprintf(histName,"h1_u1Z_%d",i);
+    h1_u1Z[i]= new TH1D(histName,"h1_u1Z",150,-150-RecoilBins[i],150-RecoilBins[i]);
+    sprintf(histName,"h1_u2Z_%d",i);
+    h1_u2Z[i] = new TH1D(histName,"h1_u2Z",150,-150,150);
+    sprintf(histName,"h1_u3Z_%d",i);
+    h1_u3Z[i] = new TH1D(histName,"h1_u3Z",100,-100,100);
   }
+  h2_u1Zpt = new TH2D("h2_u1Zpt","u1 vs Zpt",300,0,300,100,-150,50);
+  h2_u2Zpt = new TH2D("h2_u2Zpt","u2 vs Zpt",300,0,300,80,-40,40);
+  h2_u3Zpt = new TH2D("h2_u3Zpt","u3 vs Zpt",300,0,300,80,-40,40);
   return 0;
 }
 int Wlnu12LoRecoilCorr::Fill_Histo()
 {
-  h1_W_pt->Fill(W.pt, mTTW);
-  if( Mode == "RecoilEvaMC")
-   for( int ipt(0);ipt<U1Bin;ipt++)
-   {
-     if(genInfo.PostW_pt >=RecoilBins[ipt] && genInfo.PostW_pt<RecoilBins[ipt+1])     {
-       h1_u1W[ipt]->Fill(Rcl.u1W);
-       h1_u2W[ipt]->Fill(Rcl.u2W);
-       h1_u3W[ipt]->Fill(Rcl.u3W);
-     }
-   }  
-
+  for( int ipt(0);ipt<U1Bin;ipt++)
+  {
+    if(W.Post_pt >= RecoilBins[ipt] && W.Post_pt < RecoilBins[ipt+1])
+    {
+      h1_u1W[ipt]->Fill(Rcl.u1W);
+      h1_u2W[ipt]->Fill(Rcl.u2W);
+      h1_u3W[ipt]->Fill(Rcl.u3W);
+    }
+    if(Z.ptRecoil >= RecoilBins[ipt] && Z.ptRecoil < RecoilBins[ipt+1])
+    {
+      h1_u1Z[ipt]->Fill(Rcl.u1Z);
+      h1_u2Z[ipt]->Fill(Rcl.u2Z);
+      h1_u3Z[ipt]->Fill(Rcl.u3Z);
+    }
+  }
+  if( Z.mass > ReCoil_MassLow && Z.mass < ReCoil_MassHigh)
+  {
+    h2_u1Zpt->Fill(Z.ptRecoil,Rcl.u1Z);
+    h2_u2Zpt->Fill(Z.ptRecoil,Rcl.u2Z);
+    h2_u3Zpt->Fill(Z.ptRecoil,Rcl.u3Z);
+  }
   return 0;
 }
 int Wlnu12LoRecoilCorr::Write_Histo()
 {
-  h1_W_pt->Write();
-
-  if(Mode == "RecoilEvaRD" || Mode == "RecoilEvaMC")
-  for( int i(0);i<U1Bin;i++)
+  for(int i(0);i<U1Bin;i++)
   {
     h1_u1W[i]->Write();
     h1_u2W[i]->Write();
     h1_u3W[i]->Write();
+    h1_u1Z[i]->Write();
+    h1_u2Z[i]->Write();
+    h1_u3Z[i]->Write();
   }
+  h2_u1Zpt->Write();
+  h2_u2Zpt->Write();
+  h2_u3Zpt->Write();
   return 0;
 }

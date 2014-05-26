@@ -1223,6 +1223,7 @@ void fitWMuMetModRayleighSimultFloat(const TString  outputDir,   // output direc
       aqcdPsigma1[ipt]->setVal(8.04422);
       aqcdMsigma1[ipt]->setVal(5.84902);
     }else if (ipt == 4){
+      /*
       nSig[ipt]  -> setVal(13360.54);
       nSigp[ipt] -> setVal(7845.95);
       nSigm[ipt] -> setVal(5514.59);
@@ -1271,6 +1272,7 @@ void fitWMuMetModRayleighSimultFloat(const TString  outputDir,   // output direc
       adFrac2[ipt] ->setVal(0.481003);
       adFrac2P[ipt]->setVal(0.488801);
       adFrac2M[ipt]->setVal(0.49998);
+      */
     }else if (ipt == 5){
       nSig[ipt]  -> setVal(7778);
       nSigp[ipt] -> setVal(4561.43);
@@ -1726,33 +1728,33 @@ void fitWMuMetModRayleighSimultFloat(const TString  outputDir,   // output direc
           ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
     }else if (ipt > 3 && ipt < 6){
 
-      //sprintf(histName,"qcd2_%d",ipt);
-      //qcd2[ipt]  = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"qcd2p_%d",ipt);
-      //qcd2p[ipt] = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"qcd2m_%d",ipt);
-      //qcd2m[ipt] = new CPepeDouble(histName,pfmet);
-      
       sprintf(histName,"qcd2_%d",ipt);
-      qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt], dFrac2[ipt]);
+      qcd2[ipt]  = new CPepeDouble(histName,pfmet);
       sprintf(histName,"qcd2p_%d",ipt);
-      qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt],qcdPa2[ipt],dFrac2P[ipt]);
+      qcd2p[ipt] = new CPepeDouble(histName,pfmet);
       sprintf(histName,"qcd2m_%d",ipt);
-      qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt],qcdMa2[ipt],dFrac2M[ipt]);
+      qcd2m[ipt] = new CPepeDouble(histName,pfmet);
       
-      //sprintf(histName,"aqcd2_%d",ipt);
-      //aqcd2[ipt]  = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"aqcd2p_%d",ipt);
-      //aqcd2p[ipt] = new CPepeDouble(histName,pfmet);
-      //sprintf(histName,"aqcd2m_%d",ipt);
-      //aqcd2m[ipt] = new CPepeDouble(histName,pfmet);
+      //sprintf(histName,"qcd2_%d",ipt);
+      //qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt], dFrac2[ipt]);
+      //sprintf(histName,"qcd2p_%d",ipt);
+      //qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt],qcdPa2[ipt],dFrac2P[ipt]);
+      //sprintf(histName,"qcd2m_%d",ipt);
+      //qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt],qcdMa2[ipt],dFrac2M[ipt]);
       
       sprintf(histName,"aqcd2_%d",ipt);
-      aqcd2[ipt]  = new CPepeDouble(histName,pfmet,aqcdsigma1[ipt], aqcda1[ipt], adFrac1[ipt], aqcdsigma2[ipt], aqcda2[ipt], adFrac2[ipt]);
+      aqcd2[ipt]  = new CPepeDouble(histName,pfmet);
       sprintf(histName,"aqcd2p_%d",ipt);
-      aqcd2p[ipt] = new CPepeDouble(histName,pfmet,aqcdPsigma1[ipt],aqcdPa1[ipt],adFrac1P[ipt],aqcdPsigma2[ipt],aqcdPa2[ipt],adFrac2P[ipt]);
+      aqcd2p[ipt] = new CPepeDouble(histName,pfmet);
       sprintf(histName,"aqcd2m_%d",ipt);
-      aqcd2m[ipt] = new CPepeDouble(histName,pfmet,aqcdMsigma1[ipt],aqcdMa1[ipt],adFrac1M[ipt],aqcdMsigma2[ipt],aqcdMa2[ipt],adFrac2M[ipt]);
+      aqcd2m[ipt] = new CPepeDouble(histName,pfmet);
+      
+      //sprintf(histName,"aqcd2_%d",ipt);
+      //aqcd2[ipt]  = new CPepeDouble(histName,pfmet,aqcdsigma1[ipt], aqcda1[ipt], adFrac1[ipt], aqcdsigma2[ipt], aqcda2[ipt], adFrac2[ipt]);
+      //sprintf(histName,"aqcd2p_%d",ipt);
+      //aqcd2p[ipt] = new CPepeDouble(histName,pfmet,aqcdPsigma1[ipt],aqcdPa1[ipt],adFrac1P[ipt],aqcdPsigma2[ipt],aqcdPa2[ipt],adFrac2P[ipt]);
+      //sprintf(histName,"aqcd2m_%d",ipt);
+      //aqcd2m[ipt] = new CPepeDouble(histName,pfmet,aqcdMsigma1[ipt],aqcdMa1[ipt],adFrac1M[ipt],aqcdMsigma2[ipt],aqcdMa2[ipt],adFrac2M[ipt]);
       
       // Signal + Background PDFs
       sprintf(histName,"pdfMet_%d",ipt);

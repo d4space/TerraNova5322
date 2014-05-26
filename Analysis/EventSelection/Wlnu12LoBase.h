@@ -65,33 +65,37 @@ public :
    virtual void     Show(Long64_t entry = -1);
 protected:
   // Initialize
-  int			InitVar();
-  virtual Int_t		InitVar4Evt();
+  int		    InitVar();
+  virtual Int_t	    InitVar4Evt();
 
   // Selections
-  double		CalcEvtWeight();
-  virtual Int_t		WbestSelect();
-  virtual Int_t		FillWSide(int entry);
-  int			DumpWbestCand(int entry);
-  virtual Int_t		DumpMETs();
+  double	    CalcEvtWeight();
+  virtual Int_t	    WbestSelect();
+  virtual Int_t	    ZbestSelect();
+  virtual Int_t	    FillWSide(int entry);
+  int		    DumpWbestCand(int entry);
+  virtual Int_t	    DumpMETs();
   //Cuts
-  int			TriggerCut();
-  int			CheckChannel();
-  int			VertexCut();
-  virtual Int_t    TauCut(int entry);
-  virtual Int_t    MuonCut(int entry);
-  virtual Int_t    MuonCutSide(int entry);
-  virtual Int_t    AddMuonCut(int entry);
-  virtual Int_t    ElectronCut(int entry);
-  virtual Int_t    ElectronCutHighPU(int entry);
-  virtual Int_t    ElectronCutSide(int entry);
-  virtual Int_t    ElectronCutSideHighPU(int entry);
-  virtual Int_t    AddElectronCut(int entry);
-  virtual Int_t    AddElectronCutHighPU(int entry);
-  virtual Int_t    DoScaleCorr(int entry);
-  virtual Int_t    DoSmearCorr(int entry);
-  virtual Int_t    DoRecoilCorr();
-  virtual Double_t DoEffiCorr();
+  int		    TriggerCut();
+  int		    CheckChannel();
+  int		    VertexCut();
+  virtual Int_t     TauCut(int entry);
+  virtual Int_t     MuonCut(int entry);
+  virtual Int_t     MuonCutSide(int entry);
+  virtual Int_t     AddMuonCut(int entry);
+  virtual Int_t     ElectronCut(int entry);
+  virtual Int_t     ElectronCutHighPU(int entry);
+  virtual Int_t     ElectronCutSide(int entry);
+  virtual Int_t     ElectronCutSideHighPU(int entry);
+  virtual Int_t     AddElectronCut(int entry);
+  virtual Int_t     AddElectronCutHighPU(int entry);
+  virtual Int_t     MuonCutZ(int entry);
+  virtual Int_t     ElectronCutZ(int entry);
+  virtual Int_t     TauCutZ(int entry);
+  virtual Int_t     DoScaleCorr(int entry);
+  virtual Int_t     DoSmearCorr(int entry);
+  virtual Int_t     DoRecoilCorr();
+  virtual Double_t  DoEffiCorr();
 
   //------------------
   // Member Variables
@@ -175,6 +179,20 @@ protected:
     double Post_pt;
     TVector2 *RecoilT2;
   }W;
+  
+  //Z boson Variables
+  struct Zboson{
+    bool Pass;
+    double pt;
+    double ptRecoil;
+    double mass;
+    double Lep1Pt, Lep1Pz, Lep1Phi, Lep1En, Lep1etaSC;
+    double Lep2Pt, Lep2Pz, Lep2Phi, Lep2En, Lep2etaSC;
+    TVector2 *ZDiLep2D;
+    TVector2 *DiLep2D;
+    double DiLep_pt;
+    TVector2 *RecoilT2;
+    }Z;
   
   double diLeptVtxProb;
   //Lepton Variables
@@ -803,6 +821,102 @@ Int_t Wlnu12LoBase::AddElectronCutHighPU(int i)
   return 1;
 }
 
+Int_t Wlnu12LoBase::MuonCutZ(int i)
+{
+  if((*Z_Sign)[i] != 0) return -1;
+  if(!(*Z_Lept1_isGlobal)[i])return -1;
+  if(!(*Z_Lept2_isGlobal)[i])return -1;
+  if((*Z_Lept1_pt)[i] < 20) return -1;//trigger SingleMu15 but we use 25 for Wpt
+  if(fabs((*Z_Lept1_eta)[i])>2.1) return -1;
+  if(fabs((*Z_Lept2_eta)[i])>2.1) return -1;
+  if((*Z_Lept1_globalNormChi2)[i]<0 || (*Z_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if((*Z_Lept2_globalNormChi2)[i]<0 || (*Z_Lept2_globalNormChi2)[i] >= 10) return -1;
+  if((*Z_Lept1_muonHits)[i] <1) return -1;
+  if((*Z_Lept2_muonHits)[i] <1) return -1;
+  if((*Z_Lept1_matchStations)[i] <2) return -1;
+  if((*Z_Lept2_matchStations)[i] <2) return -1;
+  if((*Z_Lept1_trkLayers)[i] <6)return -1;
+  if((*Z_Lept2_trkLayers)[i] <6)return -1;
+  if((*Z_Lept1_pixelHits)[i] <1)return -1;
+  if((*Z_Lept2_pixelHits)[i] <1)return -1;
+  if(fabs((*Z_Lept1_dB)[i]) >0.02)return -1;
+  if(fabs((*Z_Lept2_dB)[i]) >0.02)return -1;
+  if(fabs((*Z_Lept1_dz)[i]) >0.5)return -1;
+  if(fabs((*Z_Lept2_dz)[i]) >0.5)return -1;
+  double betaCor04 = max(0.0,(*Z_Lept1_nhIso04)[i]+(*Z_Lept1_phIso04)[i]-0.5*(*Z_Lept1_pcIso04)[i]);
+  if(((*Z_Lept1_chIso04)[i]+betaCor04)/(*Z_Lept1_pt)[i] > 0.12) return -1; //Signal Band
+  betaCor04= max(0.0,(*Z_Lept2_nhIso04)[i]+(*Z_Lept2_phIso04)[i]-0.5*(*Z_Lept2_pcIso04)[i]);
+  if(((*Z_Lept2_chIso04)[i]+betaCor04)/(*Z_Lept2_pt)[i] > 0.12) return -1; //Signal Band
+  return 1;
+}
+
+Int_t Wlnu12LoBase::ElectronCutZ(int i)
+{
+  if((*Z_Sign)[i] != 0) return -1;
+  if((*Z_Lept1_pt)[i] < 25) return -1;
+  if(fabs((*Z_Lept1_etaSC)[i])>2.5) return -1;
+  if(fabs((*Z_Lept2_etaSC)[i])>2.5) return -1;
+  
+  if(fabs((*Z_Lept1_etaSC)[i])>1.4442 && fabs((*Z_Lept1_etaSC)[i])<1.566)return -1;
+  if(fabs((*Z_Lept2_etaSC)[i])>1.4442 && fabs((*Z_Lept2_etaSC)[i])<1.566)return -1;
+  
+  if(fabs((*Z_Lept1_etaSC)[i]) < 1.4442)
+  {
+    if((*Z_Lept1_sigmaIEtaIEta)[i] > 0.01) return -1;
+    if((*Z_Lept2_sigmaIEtaIEta)[i] > 0.01) return -1;
+    if(fabs((*Z_Lept1_dEtaIn)[i]) > 0.004) return -1;
+    if(fabs((*Z_Lept2_dEtaIn)[i]) > 0.004) return -1;
+    if(fabs((*Z_Lept1_dPhiIn)[i]) > 0.06) return -1;
+    if(fabs((*Z_Lept2_dPhiIn)[i]) > 0.06) return -1;
+    if((*Z_Lept1_HoverE)[i] > 0.12) return -1;
+    if((*Z_Lept2_HoverE)[i] > 0.12) return -1;
+    if(fabs((*Z_Lept1_dxy)[i]) > 0.02) return -1;
+    if(fabs((*Z_Lept2_dxy)[i]) > 0.02) return -1;
+    if(fabs((*Z_Lept1_dz)[i]) > 0.1) return -1;
+    if(fabs((*Z_Lept2_dz)[i]) > 0.1) return -1;
+    if(fabs((*Z_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
+    if(fabs((*Z_Lept2_InvEminusInvP)[i]) > 0.05) return -1;
+    if(fabs((*Z_Lept1_mHits)[i]) > 1) return -1;
+    if(fabs((*Z_Lept2_mHits)[i]) > 1) return -1;
+  }else{
+    if((*Z_Lept1_sigmaIEtaIEta)[i] > 0.03) return -1;
+    if((*Z_Lept2_sigmaIEtaIEta)[i] > 0.03) return -1;
+    if(fabs((*Z_Lept1_dEtaIn)[i]) > 0.007) return -1;
+    if(fabs((*Z_Lept2_dEtaIn)[i]) > 0.007) return -1;
+    if(fabs((*Z_Lept1_dPhiIn)[i]) > 0.03) return -1;
+    if(fabs((*Z_Lept2_dPhiIn)[i]) > 0.03) return -1;
+    if((*Z_Lept1_HoverE)[i] > 0.10) return -1;
+    if((*Z_Lept2_HoverE)[i] > 0.10) return -1;
+    if(fabs((*Z_Lept1_dxy)[i]) > 0.02) return -1;
+    if(fabs((*Z_Lept2_dxy)[i]) > 0.02) return -1;
+    if(fabs((*Z_Lept1_dz)[i]) > 0.1) return -1;
+    if(fabs((*Z_Lept2_dz)[i]) > 0.1) return -1;
+    if(fabs((*Z_Lept1_InvEminusInvP)[i]) > 0.05) return -1;
+    if(fabs((*Z_Lept2_InvEminusInvP)[i]) > 0.05) return -1;
+    if(fabs((*Z_Lept1_mHits)[i]) > 1) return -1;
+    if(fabs((*Z_Lept2_mHits)[i]) > 1) return -1;
+  }
+  if((*Z_Lept1_hasConversion)[i]) return -1;
+  if((*Z_Lept2_hasConversion)[i]) return -1;
+  if((*Z_Lept1_relIsoRho03)[i] > 0.15) return -1;
+  if((*Z_Lept2_relIsoRho03)[i] > 0.15) return -1;
+  return 1;
+}
+
+Int_t Wlnu12LoBase::TauCutZ(int i)
+{
+  if((*Z_Sign)[i] != 0) return -1;
+  //if((*Z_Lept1_MedComIsoDelBetCorr3Hits)[i] < 0.5)return -1;
+  //if((*Z_Lept2_MedComIsoDelBetCorr3Hits)[i] < 0.5)return -1;
+  //if((*Z_Lept1_decModFind)[i] < 0.5)return -1;
+  //if((*Z_Lept2_decModFind)[i] < 0.5)return -1;
+  if(fabs((*Z_Lept1_eta)[i]) > 2.3)return -1;
+  if(fabs((*Z_Lept2_eta)[i]) > 2.3)return -1;
+  if(fabs((*Z_Lept1_pt)[i]) < 20)return -1;
+  if(fabs((*Z_Lept2_pt)[i]) < 20)return -1;
+  return 1;
+}
+
 Int_t Wlnu12LoBase::DoRecoilCorr()
 {
   if(W.genIdx < 0) W.genIdx = 0;
@@ -876,6 +990,21 @@ Int_t Wlnu12LoBase::InitVar4Evt()
   W.lep_etaSC = 0;
   W.Pass=0;
     
+  Z.pt = 0;
+  Z.ptRecoil = 0;
+  Z.Pass = 0;
+  Z.mass = 0;
+  Z.Lep1Pt = 0;
+  Z.Lep1Pz = 0;
+  Z.Lep1En = 0;
+  Z.Lep2Pt = 0;
+  Z.Lep2Pz = 0;
+  Z.Lep2En = 0;
+  Z.Lep1Phi = 0;
+  Z.Lep2Phi = 0;
+  Z.Lep1etaSC = 0;
+  Z.Lep2etaSC = 0;
+  
   glbMuChi2=0;
   addLepN=0;corrMet=0;
   smearSF=0;

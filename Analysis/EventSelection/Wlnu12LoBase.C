@@ -39,6 +39,9 @@ int Wlnu12LoBase::InitVar()
 { 
   W.RecoilT2 = new TVector2();
   W.PostT2 = new TVector2();
+  Z.RecoilT2 = new TVector2();
+  Z.ZDiLep2D  = new TVector2();
+  Z.DiLep2D  = new TVector2();
   return 0;
 }
 int Wlnu12LoBase::CheckChannel()
@@ -189,6 +192,120 @@ int Wlnu12LoBase::WbestSelect()
     }//Cut and Bigger pt
   }
   W.lep_pt_corr = lep_Big;
+  return 0;
+}
+
+int Wlnu12LoBase::ZbestSelect()
+{
+  Z.Pass = false;
+  double diLeptVtxProb(0);
+  double tmpVar;
+  double ZLep2PtTmp;
+  
+  for(int iz(0); iz<Z_Mass->size();iz++)
+  {
+    if(AnaChannel == "TauHighPU")if(TauCutZ(iz) == -1) continue;
+    if(AnaChannel == "Muon2012LoPU")if(MuonCutZ(iz) == -1) continue;
+    if(AnaChannel == "Electron2012LoPU")if(ElectronCutZ(iz) == -1) continue;
+    if(Mode =="ScaleMakeRD")if((*Z_Lept2_pt)[iz] < 10)continue;
+    if(Mode =="ScaleMakeMC")if((*Z_Lept2_pt)[iz] < 10)continue;
+    if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))if((*Z_Lept2_pt)[iz] < 15)continue;
+    
+    Z.Pass=true;
+    tmpVar = (*Z_diLeptVtxProb)[iz];
+    if(fabs(Channel) != GenType::kTau) if(tmpVar > diLeptVtxProb)
+    {
+      diLeptVtxProb = tmpVar;
+      Z.mass    = (*Z_Mass)[iz];
+      Z.Lep1Pt  = (*Z_Lept1_pt)[iz];
+      Z.Lep1Pz  = (*Z_Lept1_pz)[iz];
+      Z.Lep1En  = (*Z_Lept1_en)[iz];
+      Z.Lep1Phi = (*Z_Lept1_phi)[iz];
+      Z.Lep2Pt  = (*Z_Lept2_pt)[iz];
+      Z.Lep2Pz  = (*Z_Lept2_pz)[iz];
+      Z.Lep2En  = (*Z_Lept2_en)[iz];
+      Z.Lep2Phi = (*Z_Lept2_phi)[iz];
+
+      Z.ZDiLep2D->Set(
+	  (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
+	  (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
+      Z.pt = Z.ZDiLep2D->Mod();
+
+      if(AnaChannel == "Electron2012LoPU")
+      {
+	Z.Lep1etaSC = (*Z_Lept1_etaSC)[iz];
+        Z.Lep2etaSC = (*Z_Lept2_etaSC)[iz];
+      }else{
+        Z.Lep1etaSC = (*Z_Lept1_eta)[iz];
+        Z.Lep2etaSC = (*Z_Lept2_eta)[iz];
+      }
+      
+      if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))
+      {
+	//Recoil = -Met - Z
+	Z.RecoilT2->Set(
+	    -(*Z_Neut_px)[iz]-(*Z_px)[iz],
+	    -(*Z_Neut_py)[iz]-(*Z_py)[iz]);
+	Z.DiLep2D->Set(
+	    (*Z_px)[iz],
+	    (*Z_py)[iz]);
+	Z.DiLep_pt = Z.DiLep2D->Mod();
+	Z.ptRecoil = (*Z_pt)[iz];
+	
+	//u1 = B.u, u2=B cross u
+	Rcl.u1Z = (*Z.RecoilT2)*(*Z.DiLep2D)/Z.DiLep_pt;
+	Rcl.u2Z = (Z.RecoilT2->Px()*Z.DiLep2D->Py()
+	    -Z.RecoilT2->Py()*Z.DiLep2D->Px())/Z.DiLep_pt;
+	Rcl.u3Z = (*Z.RecoilT2)*(*Z.DiLep2D)/Z.DiLep_pt+Z.DiLep_pt;
+      }
+    }//fi diLeptVtxProb
+    ZLep2PtTmp = (*Z_Lept2_pt)[iz];
+    if(fabs(Channel) == GenType::kTau) if(ZLep2PtTmp > Z.Lep2Pt)
+    {
+      Z.mass    = (*Z_Mass)[iz];
+      Z.Lep1Pt  = (*Z_Lept1_pt)[iz];
+      Z.Lep1Pz  = (*Z_Lept1_pz)[iz];
+      Z.Lep1En  = (*Z_Lept1_en)[iz];
+      Z.Lep1Phi = (*Z_Lept1_phi)[iz];
+      Z.Lep2Pt  = (*Z_Lept2_pt)[iz];
+      Z.Lep2Pz  = (*Z_Lept2_pz)[iz];
+      Z.Lep2En  = (*Z_Lept2_en)[iz];
+      Z.Lep2Phi = (*Z_Lept2_phi)[iz];
+      
+      Z.ZDiLep2D->Set(
+	  (*Z_Lept1_px)[iz]+(*Z_Lept2_px)[iz],
+	  (*Z_Lept1_py)[iz]+(*Z_Lept2_py)[iz]);
+      Z.pt = Z.ZDiLep2D->Mod();
+      
+      if(AnaChannel == "Electron2012LoPU" )
+      {
+        Z.Lep1etaSC = (*Z_Lept1_etaSC)[iz];
+        Z.Lep2etaSC = (*Z_Lept2_etaSC)[iz];
+      }else{
+        Z.Lep1etaSC = (*Z_Lept1_eta)[iz];
+        Z.Lep2etaSC = (*Z_Lept2_eta)[iz];
+      }
+      
+      if((Mode =="RecoilEvaRD")||(Mode == "RecoilEvaMC"))
+      {
+	//Recoil = -Met - Z
+	Z.RecoilT2->Set(
+	    -(*Z_Neut_px)[iz]-(*Z_px)[iz],
+	    -(*Z_Neut_py)[iz]-(*Z_py)[iz]);
+	Z.DiLep2D->Set(
+	    (*Z_px)[iz],
+	    (*Z_py)[iz]);
+	Z.DiLep_pt = Z.DiLep2D->Mod();
+	Z.ptRecoil = (*Z_pt)[iz];
+	
+	//u1 = B.u, u2=B cross u
+	Rcl.u1Z = (*Z.RecoilT2)*(*Z.DiLep2D)/Z.DiLep_pt;
+	Rcl.u2Z = (Z.RecoilT2->Px()*Z.DiLep2D->Py()
+	    -Z.RecoilT2->Py()*Z.DiLep2D->Px())/Z.DiLep_pt;
+	Rcl.u3Z = (*Z.RecoilT2)*(*Z.DiLep2D)/Z.DiLep_pt+Z.DiLep_pt;
+      }
+    }//fi diLeptVtxProb
+  }//Z
   return 0;
 }
 
