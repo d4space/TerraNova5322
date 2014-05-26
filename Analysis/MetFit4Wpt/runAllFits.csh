@@ -1,8 +1,12 @@
 #! /bin/tcsh -f
 echo "===================================== Running MET Fit ====================================="
-python runFits.py MuonRayleighGausNominal
+#python runFits.py MuonRayleighGausNominal
 #rm -f *.d *.so
 #python runFits.py ElectronRayleighGausNominal
+#rm -f *.d *.so
+python runFits.py MuonRayleighGausFloat
+#rm -f *.d *.so
+#python runFits.py ElectronRayleighGausFloat
 rm -f *.d *.so
 #echo "===================================== MET Fit finished ====================================="
 #echo "===================================== Running Systematic uncertainties ====================================="

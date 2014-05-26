@@ -18,6 +18,9 @@ print "Will run fit for ", scenario
 if "MuonRayleighGaus" in scenario and "Nominal" in scenario:
   print "Muon - Nominal: Simultaneously Fit with Modified Rayleigh function"
   cmd_string = "root -l -q fitWMuMetModRayleighSimult.C+\(\\\"MuonFitResultsModRayleighSimultNominal\\\",\\\"Nominal\\\",%f,0\)" %LUMI
+elif "MuonRayleighGaus" in scenario and "Float" in scenario:
+  print "Muon - Floating: Simultaneously Fit with Modified Rayleigh function"
+  cmd_string = "root -l -q fitWMuMetModRayleighSimultFloat.C+\(\\\"MuonFitResultsModRayleighSimultFloat\\\",\\\"Nominal\\\",%f,0\)" %LUMI
 elif "MuonRayleighGaus" in scenario and "Up" in scenario:
   print "Muon - Up: Simultaneously Fit with Rayleigh and Gaussian function"
   cmd_string = "root -l -q fitWMuMetRayleighGausSimult.C+\(\\\"MuonFitResultsRayleighGausSimultUp\\\",\\\"Up\\\",%f,0\)" %LUMI
@@ -27,6 +30,9 @@ elif "MuonRayleighGaus" in scenario and "Down" in scenario:
 elif "MuonRayleighGaus" in scenario and "BeforeRC" in scenario:
   print "Muon - Before Recoil Correction: Simultaneously Fit with Rayleigh and Gaussian function"
   cmd_string = "root -l -q fitWMuMetRayleighGausSimult.C+\(\\\"MuonFitResultsRayleighGausSimultBeforeRC\\\",\\\"BeforeRC\\\",%f,0\)" %LUMI
+elif "ElectronRayleighGaus" in scenario and "Float" in scenario:
+  print "Electron - Float: Simultaneously Fit with Modified Rayleigh function"
+  cmd_string = "root -l -q fitWEleMetModRayleighSimultFloat.C+\(\\\"ElectronFitResultsModRayleighSimultFloat\\\",\\\"Nominal\\\",%f,0\)" %LUMI
 elif "ElectronRayleighGaus" in scenario and "Nominal" in scenario:
   print "Electron - Nominal: Simultaneously Fit with Modified Rayleigh function"
   cmd_string = "root -l -q fitWEleMetModRayleighSimult.C+\(\\\"ElectronFitResultsModRayleighSimultNominal\\\",\\\"Nominal\\\",%f,0\)" %LUMI
