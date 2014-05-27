@@ -62,6 +62,7 @@
 #define ScMuCombiBins  15
 #define ScaleBins	6
 #define ScaleBinsHighPU	11
+#define ScElCombiBinsDiag 6
 //#define ScaleBins	51
 #define ScaleL	0.9
 #define ScaleH	1.05
