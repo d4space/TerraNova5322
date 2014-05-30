@@ -39,6 +39,7 @@ public :
    vector<double>  *vtx_z;
    vector<double>  *vtx_Rho;
    Double_t        weightFSR;
+   vector<double>  *weightPDF;
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_version;
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1prescale;
    Int_t           HLT_Ele22_CaloIdL_CaloIsoVL_L1fired;
@@ -360,6 +361,7 @@ public :
    TBranch        *b_vtx_z;   //!
    TBranch        *b_vtx_Rho;   //!
    TBranch        *b_weightFSR;   //!
+   TBranch        *b_weightPDF;   //!
    TBranch        *b_HLT_Ele22_CaloIdL_CaloIsoVL;   //!
    TBranch        *b_HLT_Ele27_WP80;   //!
    TBranch        *b_HLT_Mu15_eta2p1;   //!
@@ -1022,6 +1024,7 @@ void Wlnu12LoNT::Init(TTree *tree)
    GenZ_Lept2_charge = 0;
    GenZ_Lept2_eta = 0;
    GenZ_Lept2_phi = 0;
+   weightPDF = 0;
    // Set branch addresses and branch pointers
    if (!tree) return;
    fChain = tree;
@@ -1043,6 +1046,7 @@ void Wlnu12LoNT::Init(TTree *tree)
    fChain->SetBranchAddress("vtx_z", &vtx_z, &b_vtx_z);
    fChain->SetBranchAddress("vtx_Rho", &vtx_Rho, &b_vtx_Rho);
    fChain->SetBranchAddress("weightFSR", &weightFSR, &b_weightFSR);
+   fChain->SetBranchAddress("weightPDF", &weightPDF, &b_weightPDF);
    fChain->SetBranchAddress("HLT_Ele22_CaloIdL_CaloIsoVL", &HLT_Ele22_CaloIdL_CaloIsoVL_version, &b_HLT_Ele22_CaloIdL_CaloIsoVL);
    fChain->SetBranchAddress("HLT_Ele27_WP80", &HLT_Ele27_WP80_version, &b_HLT_Ele27_WP80);
    fChain->SetBranchAddress("HLT_Mu15_eta2p1", &HLT_Mu15_eta2p1_version, &b_HLT_Mu15_eta2p1);
