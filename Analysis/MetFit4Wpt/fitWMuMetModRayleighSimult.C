@@ -772,7 +772,7 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
   //for( int ipt(10);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(9);ipt<10;ipt++)
+  //for( int ipt(1);ipt<2;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1316,18 +1316,18 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       aqcdPsigma2[ipt]->setVal(66.0511);
       aqcdMsigma2[ipt]->setVal(62.4798);
     }else if (ipt == 9){
-      nSig[ipt]  -> setVal(2542.09);
+      nSig[ipt]  -> setVal(2542.06);
       nSigp[ipt] -> setVal(1538.08);
-      nSigm[ipt] -> setVal(1004.01);
-      nAntiSig[ipt]  -> setVal(2.71976);
+      nSigm[ipt] -> setVal(1011.34);
+      nAntiSig[ipt]  -> setVal(2.47263);
       nAntiSigp[ipt] -> setVal(1.70856e-09);
-      nAntiSigm[ipt] -> setVal(2.47262);
+      nAntiSigm[ipt] -> setVal(1.28748);
       nQCD[ipt]  -> setVal(375.961);
       nQCDp[ipt] -> setVal(89.4058);
-      nQCDm[ipt] -> setVal(286.5552);
+      nQCDm[ipt] -> setVal(278.668);
       nAntiQCD[ipt]  -> setVal(1084.39);
       nAntiQCDp[ipt] -> setVal(533.877);
-      nAntiQCDm[ipt] -> setVal(550.513);
+      nAntiQCDm[ipt] -> setVal(551.977);
       qcdmean[ipt] ->setVal(33.7008);
       qcdPmean[ipt]->setVal(33.3972);
       qcdMmean[ipt]->setVal(34.8164);
@@ -1564,13 +1564,13 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       
       sprintf(histName,"aqcd2_%d",ipt);
       aqcd2[ipt] = new CPepeDouble(histName,pfmet
-	  ,qcd2[ipt]->sigma1,qcd2[ipt]->a1,qcd2[ipt]->frac1,aqcdsigma2[ipt],qcd2[ipt]->a2,qcd2[ipt]->frac2);
+	  ,aqcdsigma1[ipt]->sigma1,qcd2[ipt]->a1,qcd2[ipt]->frac1,aqcdsigma2[ipt],qcd2[ipt]->a2,qcd2[ipt]->frac2);
       sprintf(histName,"aqcd2p_%d",ipt);
       aqcd2p[ipt] = new CPepeDouble(histName,pfmet
-	  ,qcd2p[ipt]->sigma1,qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
+	  ,aqcdPsigma1[ipt],qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
       sprintf(histName,"aqcd2m_%d",ipt);
       aqcd2m[ipt] = new CPepeDouble(histName,pfmet
-	  ,qcd2m[ipt]->sigma1,qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
+	  ,aqcdMsigma1[ipt],qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
       
       // Signal + Background PDFs
       sprintf(histName,"pdfMet_%d",ipt);
@@ -1707,7 +1707,6 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
 	aqcdPsigma2[ipt] ->setConstant(kTRUE);
 	aqcdMsigma2[ipt] ->setConstant(kTRUE);
       }
-      
       
       sprintf(histName,"qcd1_%d",ipt);
       qcd1[ipt]  = new CPepePlusMod(histName,pfmet,qcdmean[ipt],qcdsigma1[ipt], qcda1[ipt], Frac1[ipt],qcdsigma2[ipt], qcda2[ipt], Frac2[ipt]);

@@ -109,7 +109,7 @@ void Wlnu12LoUnfold::Loop()
       DumpUnfInfo(W.idxBest);
       evtSelected+=mTTW;
       mTTW=mTTW*DoEffiCorr();
-      if(WCHARGE == W.charge) FillUnfHisto();
+      if(TruthRecoPost)if(WCHARGE == W.charge) FillUnfHisto();
       Nselected4Bin();
     }
   }//Ntries

@@ -354,7 +354,7 @@ int fitRecoil(
   
   grPFu1sigma1 = new TGraphErrors(nbins,xval,pfu1Sigma1,xerr,pfu1Sigma1Err);  
   grPFu1sigma1->SetName("grPFu1sigma1");
-  fcnPFu1sigma1->SetParameters(0.0,0.02,5.5);
+  fcnPFu1sigma1->SetParameters(-0.00001,0.02,5.5);
   fitresPFu1sigma1 = grPFu1sigma1->Fit("fcnPFu1sigma1","QMRN0SE");
   sprintf(chi2ndf,"#chi^{2}/ndf = %.4f",(fcnPFu1sigma1->GetChisquare())/(fcnPFu1sigma1->GetNDF()));
   errBand->SetPoint(0,0.002*(xval[nbins-1]),fcnPFu1sigma1->Eval(0.002*(xval[nbins-1])));
@@ -385,9 +385,10 @@ int fitRecoil(
   if(pfu1model>=2) {
     grPFu1sigma2 = new TGraphErrors(nbins,xval,pfu1Sigma2,xerr,pfu1Sigma2Err);    
     grPFu1sigma2->SetName("grPFu1sigma2");
-    fcnPFu1sigma2->SetParameters(0.0,0.02,10);
+    fcnPFu1sigma2->SetParameters(-0.00015,0.02,10);
+    fcnPFu1sigma2->SetParLimits(0,-0.00020,-0.00012);
     //fcnPFu1sigma2->FixParameter(0,10);//the first parameter, use FixParameter with "b" option.
-    cout<<"Fitting u1sigma2 ============================"<<endl;
+    //cout<<"Fitting u1sigma2 ============================"<<endl;
     //Fitting Options http://root.cern.ch/root/html/TH1.html#TH1:Fit@1
     //W (set all weights to 1 for non empty bins, WW including empty bins, ignore error bars
     //I Use integral of function in bin
@@ -437,7 +438,8 @@ int fitRecoil(
 
     grPFu1sigma0 = new TGraphErrors(nbins,xval,pfu1Sigma0,xerr,pfu1Sigma0Err);    
     grPFu1sigma0->SetName("grPFu1sigma0");
-    fcnPFu1sigma0->SetParameters(0.0,0.02,7.5);
+    fcnPFu1sigma0->SetParameters(-0.00012,0.02,7.5);
+    fcnPFu1sigma0->SetParLimits(0,-0.00020,-0.00010);
     fitresPFu1sigma0 = grPFu1sigma0->Fit("fcnPFu1sigma0","QMRN0SE");
     sprintf(chi2ndf,"#chi^{2}/ndf = %.4f",(fcnPFu1sigma0->GetChisquare())/(fcnPFu1sigma0->GetNDF()));    
     errBand->SetPoint(0,0.002*(xval[nbins-1]),fcnPFu1sigma0->Eval(0.002*(xval[nbins-1])));
@@ -531,8 +533,16 @@ int fitRecoil(
   
   grPFu2sigma1 = new TGraphErrors(nbins,xval,pfu2Sigma1,xerr,pfu2Sigma1Err);
   grPFu2sigma1->SetName("grPFu2sigma1");
-  fcnPFu2sigma1->SetParameters(0.0,0.02,5.5);
+  fcnPFu2sigma1->SetParameters(-0.00001,0.02,5.5);
   fcnPFu2sigma1->SetParLimits(0,-0.0002,10);
+  if (outputDir == "WmmMC")
+    fcnPFu2sigma1->SetParLimits(0,-0.00018,-0.00012);
+  if (outputDir == "ZeeData")
+  {
+    fcnPFu2sigma1->SetParameters(-0.00018,0.04,4.5);
+    fcnPFu2sigma1->SetParLimits(0,-0.00030,-0.000017);
+    fcnPFu2sigma1->SetParLimits(2,4.3,4.7);
+  }
   fitresPFu2sigma1 = grPFu2sigma1->Fit("fcnPFu2sigma1","QMRN0SE");
   sprintf(chi2ndf,"#chi^{2}/ndf = %.4f",(fcnPFu2sigma1->GetChisquare())/(fcnPFu2sigma1->GetNDF()));  
   errBand->SetPoint(0,0.002*(xval[nbins-1]),fcnPFu2sigma1->Eval(0.002*(xval[nbins-1])));
@@ -564,8 +574,10 @@ int fitRecoil(
 	  grPFu2sigma2 = new TGraphErrors(nbins,xval,pfu2Sigma2,xerr,pfu2Sigma2Err);
     grPFu2sigma2->SetName("grPFu2sigma2");
     //fcnPFu2sigma2->FixParameter(2,0);
-    fcnPFu2sigma2->SetParameters(0.0,0.02,10);
-    fcnPFu2sigma2->SetParLimits(0,-0.0003,10);
+    fcnPFu2sigma2->SetParameters(-0.00015,0.02,10);
+    fcnPFu2sigma2->SetParLimits(0,-0.00018,-0.00012);
+    if ((outputDir == "WmmMC" || outputDir == "WmpMC") || outputDir == "ZmmMC")
+      fcnPFu2sigma2->SetParLimits(0,-0.00015,-0.00012);//W- mu
     fitresPFu2sigma2 = grPFu2sigma2->Fit("fcnPFu2sigma2","QMRN0SE");
     sprintf(chi2ndf,"#chi^{2}/ndf = %.4f",(fcnPFu2sigma2->GetChisquare())/(fcnPFu2sigma2->GetNDF()));        
     errBand->SetPoint(0,0.002*(xval[nbins-1]),fcnPFu2sigma2->Eval(0.002*(xval[nbins-1])));
@@ -596,8 +608,20 @@ int fitRecoil(
 
     grPFu2sigma0 = new TGraphErrors(nbins,xval,pfu2Sigma0,xerr,pfu2Sigma0Err);
     grPFu2sigma0->SetName("grPFu2sigma0");
-    fcnPFu2sigma0->SetParameters(0.0,0.02,7);
-    fcnPFu2sigma0->SetParLimits(0,-0.00015,10);
+    fcnPFu2sigma0->SetParameters(-0.00012,0.02,7.5);
+    fcnPFu2sigma0->SetParLimits(0,-0.000155,-0.00010);//Wmele
+    if ((outputDir == "WmmMC" || outputDir == "WmpMC") || outputDir == "ZmmMC")
+    {
+      fcnPFu2sigma0->SetParameters(-0.00014,0.03,7.6);
+      fcnPFu2sigma0->SetParLimits(0,-0.00016,-0.00012);
+      fcnPFu2sigma0->SetParLimits(1,0.02,0.04);
+      fcnPFu2sigma0->SetParLimits(2,7.5,7.75);
+    }
+    if(outputDir == "ZeeMC")
+    {
+      fcnPFu2sigma0->SetParameters(-0.00015,0.01,9);
+      fcnPFu2sigma0->SetParLimits(0,-0.00016,-0.00013);
+    }
     fitresPFu2sigma0 = grPFu2sigma0->Fit("fcnPFu2sigma0","QMRN0SE");
     sprintf(chi2ndf,"#chi^{2}/ndf = %.4f",(fcnPFu2sigma0->GetChisquare())/(fcnPFu2sigma0->GetNDF()));    
     errBand->SetPoint(0,0.002*(xval[nbins-1]),fcnPFu2sigma0->Eval(0.002*(xval[nbins-1])));

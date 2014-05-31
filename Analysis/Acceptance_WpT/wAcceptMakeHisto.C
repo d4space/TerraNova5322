@@ -37,18 +37,18 @@ TString AnaChannelMu  = "Muon2012LoPU";
   //double LumiWeight_Muon_TTJets_S8 = RealLumi*1*136.3/6.73614e6;
 
   //LumiWeight_Muon_WmToMuNu_S8/=LumiWeight_Muon_WpToMuNu_S8;
-  //LumiWeight_Muon_WpToMuNu_S8 = 1;
-  //LumiWeight_Muon_WmToMuNu_S8 = 1;
+  LumiWeight_Muon_WpToMuNu_S8 = 1;
+  LumiWeight_Muon_WmToMuNu_S8 = 1;
 
-  double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*4697.0/1.97346e6;
-  double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*6702.0/935446;
-  double LumiW_Muon_DYToMuMu_S8 = Lumi_LowPU*1*1871.0/1.9802e6;
-  double LumiW_Muon_WToTauNu_S8 = Lumi_LowPU*1*9170.0/2.13398e6;
-  double LumiW_Muon_DYToTauTau_S8 = Lumi_LowPU*1*1510.0/1.98778e6;
-  double LumiW_Muon_TTJets_S8 = Lumi_LowPU*1*136.3/6.73614e6;
-  double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
-  double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
-  double LumiW_Muon_RD_LowPU = 1;
+  //double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*4697.0/1.97346e6;
+  //double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*6702.0/935446;
+  //double LumiW_Muon_DYToMuMu_S8 = Lumi_LowPU*1*1871.0/1.9802e6;
+  //double LumiW_Muon_WToTauNu_S8 = Lumi_LowPU*1*9170.0/2.13398e6;
+  //double LumiW_Muon_DYToTauTau_S8 = Lumi_LowPU*1*1510.0/1.98778e6;
+  //double LumiW_Muon_TTJets_S8 = Lumi_LowPU*1*136.3/6.73614e6;
+  //double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
+  //double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
+  //double LumiW_Muon_RD_LowPU = 1;
   /***
   double LumiWeight_Muon_WpToMuNu_S8	=1;
   double LumiWeight_Muon_WmToMuNu_S8	=1;
