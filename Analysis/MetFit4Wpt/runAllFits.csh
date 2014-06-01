@@ -1,9 +1,9 @@
 #! /bin/tcsh -f
 echo "===================================== Running MET Fit ====================================="
 python runFits.py MuonRayleighGausNominal
-#rm -f *.d *.so
-#python runFits.py ElectronRayleighGausNominal
 rm -f *.d *.so
+#python runFits.py ElectronRayleighGausNominal
+#rm -f *.d *.so
 #python runFits.py MuonRayleighGausFloat
 #rm -f *.d *.so
 #python runFits.py ElectronRayleighGausFloat

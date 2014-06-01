@@ -772,7 +772,7 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
   //for( int ipt(10);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(1);ipt<2;ipt++)
+  //for( int ipt(4);ipt<6;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -1022,15 +1022,15 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
     //Initial Values
     if (ipt == 0)
     {
-      nSig[ipt]  -> setVal(94508.3);
-      nSigp[ipt] -> setVal(56279);
-      nSigm[ipt] -> setVal(38229.3);
-      nAntiSig[ipt]  -> setVal(1686.59);
-      nAntiSigp[ipt] -> setVal(909.167);
-      nAntiSigm[ipt] -> setVal(777.423);
-      nQCD[ipt]  -> setVal(24402.8);
-      nQCDp[ipt] -> setVal(12388.8);
-      nQCDm[ipt] -> setVal(12014);
+      nSig[ipt]  -> setVal(94509.3);
+      nSigp[ipt] -> setVal(56270.6);
+      nSigm[ipt] -> setVal(38225.5);
+      nAntiSig[ipt]  -> setVal(1681.3);
+      nAntiSigp[ipt] -> setVal(878.832);
+      nAntiSigm[ipt] -> setVal(771.212);
+      nQCD[ipt]  -> setVal(24401.6);
+      nQCDp[ipt] -> setVal(12389.8);
+      nQCDm[ipt] -> setVal(12012.9);
       nAntiQCD[ipt]  -> setVal(66936.2);
       nAntiQCDp[ipt] -> setVal(33810.7);
       nAntiQCDm[ipt] -> setVal(33125.5);
@@ -1122,79 +1122,82 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       aqcdPsigma1[ipt]->setVal(8.04422);
       aqcdMsigma1[ipt]->setVal(5.84902);
     }else if (ipt == 4){
-      nSig[ipt]  -> setVal(13368.8);
-      nSigp[ipt] -> setVal(7845.95);
-      nSigm[ipt] -> setVal(5514.59);
-      nAntiSig[ipt]  -> setVal(291.256);
-      nAntiSigp[ipt] -> setVal(144.974);
-      nAntiSigm[ipt] -> setVal(138.254);
-      nQCD[ipt]  -> setVal(4413.86);
-      nQCDp[ipt] -> setVal(2324.13);
-      nQCDm[ipt] -> setVal(2095.97);
-      nAntiQCD[ipt]  -> setVal(11914.7);
-      nAntiQCDp[ipt] -> setVal(6056.87);
-      nAntiQCDm[ipt] -> setVal(5866.22);
-      qcda1[ipt] ->setVal(0.177631);
-      qcdPa1[ipt]->setVal(0.153052);
-      qcdMa1[ipt]->setVal(0.188629);
-      qcda2[ipt] ->setVal(0.220304);
-      qcdPa2[ipt]->setVal(0.215376);
-      qcdMa2[ipt]->setVal(0.228352);
-      qcdsigma1[ipt] ->setVal(7.52198);
-      qcdPsigma1[ipt]->setVal(8.77087);
-      qcdMsigma1[ipt]->setVal(7.07713);
-      dFrac1[ipt] ->setVal(0.356491);
-      dFrac1P[ipt]->setVal(0.189024);
-      dFrac1M[ipt]->setVal(0.409939);
-      qcdsigma2[ipt] ->setVal(2.73073);
-      qcdPsigma2[ipt]->setVal(2.69496);
-      qcdMsigma2[ipt]->setVal(3.37224);
-      dFrac2[ipt] ->setVal(0.481003);
-      dFrac2P[ipt]->setVal(0.488801);
-      dFrac2M[ipt]->setVal(0.49998);
-      aqcdsigma1[ipt] ->setVal(7.52198);
-      aqcdPsigma1[ipt]->setVal(8.77087);
-      aqcdMsigma1[ipt]->setVal(7.07713);
-      aqcdsigma2[ipt] ->setVal(3.15664);
-      aqcdPsigma2[ipt]->setVal(4.07679);
-      aqcdMsigma2[ipt]->setVal(2.72544);
+      nSig[ipt]  -> setVal(13401.9);
+      nSigp[ipt] -> setVal(7854.16);
+      nSigm[ipt] -> setVal(5547.74);
+      nAntiSig[ipt]  -> setVal(288.229);
+      nAntiSigp[ipt] -> setVal(144.071);
+      nAntiSigm[ipt] -> setVal(144.158);
+      nQCD[ipt]  -> setVal(4380.11);
+      nQCDp[ipt] -> setVal(2316.34);
+      nQCDm[ipt] -> setVal(2063.77);
+      nAntiQCD[ipt]  -> setVal(11918.1);
+      nAntiQCDp[ipt] -> setVal(6057.51);
+      nAntiQCDm[ipt] -> setVal(5860.59);
+      qcda1[ipt] ->setVal(0.179677);
+      qcdPa1[ipt]->setVal(0.155018);
+      qcdMa1[ipt]->setVal(0.1782527);
+      qcda2[ipt] ->setVal(0.219867);
+      qcdPa2[ipt]->setVal(0.215438);
+      qcdMa2[ipt]->setVal(0.2197272);
+      qcdsigma1[ipt] ->setVal(7.30416);
+      qcdPsigma1[ipt]->setVal(8.61625);
+      qcdMsigma1[ipt]->setVal(7.472391);
+      dFrac1[ipt] ->setVal(0.37173);
+      dFrac1P[ipt]->setVal(0.195339);
+      dFrac1M[ipt]->setVal(0.360044);
+      qcdsigma2[ipt] ->setVal(2.56821);
+      qcdPsigma2[ipt]->setVal(2.63655);
+      qcdMsigma2[ipt]->setVal(2.50631);
+      dFrac2[ipt] ->setVal(0.491712);
+      dFrac2P[ipt]->setVal(0.49275);
+      dFrac2M[ipt]->setVal(0.491685);
+      aqcdsigma1[ipt] ->setVal(7.42832);
+      aqcdPsigma1[ipt]->setVal(8.68448);
+      aqcdMsigma1[ipt]->setVal(7.471615);
+      aqcdsigma2[ipt] ->setVal(3.09709);
+      aqcdPsigma2[ipt]->setVal(4.04311);
+      aqcdMsigma2[ipt]->setVal(3.487949);
     }else if (ipt == 5){
-      nSig[ipt]  -> setVal(7778);
-      nSigp[ipt] -> setVal(4561.43);
-      nSigm[ipt] -> setVal(3212.85);
-      nAntiSig[ipt]  -> setVal(235.488);
-      nAntiSigp[ipt] -> setVal(125.881);
-      nAntiSigm[ipt] -> setVal(101.272);
-      nQCD[ipt]  -> setVal(4874.33);
-      nQCDp[ipt] -> setVal(2510.86);
-      nQCDm[ipt] -> setVal(2365.73);
-      nAntiQCD[ipt]  -> setVal(12371.7);
-      nAntiQCDp[ipt] -> setVal(6271.88);
-      nAntiQCDm[ipt] -> setVal(6109.01);
-      qcda1[ipt] ->setVal(0.0718333);
-      qcdPa1[ipt]->setVal(0.105133);
-      qcdMa1[ipt]->setVal(0.041951);
-      qcda2[ipt] ->setVal(-0.420624);
-      qcdPa2[ipt]->setVal(-0.419279);
-      qcdMa2[ipt]->setVal(-0.420863);
-      qcdsigma1[ipt] ->setVal(11.4286);
-      qcdPsigma1[ipt]->setVal(10.7736);
-      qcdMsigma1[ipt]->setVal(11.9525);
-      dFrac1[ipt] ->setVal(0.284852);
-      dFrac1P[ipt]->setVal(0.272224);
-      dFrac1M[ipt]->setVal(0.292147);
-      qcdsigma2[ipt] ->setVal(13.3572);
-      qcdPsigma2[ipt]->setVal(13.4671);
-      qcdMsigma2[ipt]->setVal(13.2462);
-      dFrac2[ipt] ->setVal(0.404514);
-      dFrac2P[ipt]->setVal(0.424633);
-      dFrac2M[ipt]->setVal(0.411946);
-      aqcdsigma1[ipt] ->setVal(11.4286);
-      aqcdPsigma1[ipt]->setVal(10.7736);
-      aqcdMsigma1[ipt]->setVal(11.9525);
-      aqcdsigma2[ipt] ->setVal(13.0445);
-      aqcdPsigma2[ipt]->setVal(13.023);
-      aqcdMsigma2[ipt]->setVal(13.0541);
+      nSig[ipt]  -> setVal(7547.48);
+      nSigp[ipt] -> setVal(4478.89);
+      nSigm[ipt] -> setVal(3078.31);
+      nAntiSig[ipt]  -> setVal(157.501);
+      nAntiSigp[ipt] -> setVal(86.6065);
+      nAntiSigm[ipt] -> setVal(71.1108);
+      nQCD[ipt]  -> setVal(6172.9);
+      nQCDp[ipt] -> setVal(3113.98);
+      nQCDm[ipt] -> setVal(3049.01);
+      nAntiQCD[ipt]  -> setVal(16517.1);
+      nAntiQCDp[ipt] -> setVal(8406.11);
+      nAntiQCDm[ipt] -> setVal(8109.41);
+      qcdmean[ipt] ->setVal(9.11372);
+      qcdPmean[ipt]->setVal(9.08542);
+      qcdMmean[ipt]->setVal(9.17125);
+      qcda1[ipt] ->setVal(0.178394);
+      qcdPa1[ipt]->setVal(0.180591);
+      qcdMa1[ipt]->setVal(0.172555);
+      qcda2[ipt] ->setVal(-0.51328);
+      qcdPa2[ipt]->setVal(-0.528138);
+      qcdMa2[ipt]->setVal(-0.480608);
+      qcdsigma1[ipt] ->setVal(6.46026);
+      qcdPsigma1[ipt]->setVal(6.27839);
+      qcdMsigma1[ipt]->setVal(6.58736);
+      qcdsigma2[ipt] ->setVal(22.1879);
+      qcdPsigma2[ipt]->setVal(22.812);
+      qcdMsigma2[ipt]->setVal(21.1724);
+      Frac1[ipt] ->setVal(0.976721);
+      Frac1P[ipt]->setVal(0.998048);
+      Frac1M[ipt]->setVal(0.999248);
+      Frac2[ipt] ->setVal(0.027472);
+      Frac2P[ipt]->setVal(0.00245179);
+      Frac2M[ipt]->setVal(0.000829511);
+      aqcdsigma1[ipt] ->setVal(6.47281);
+      aqcdPsigma1[ipt]->setVal(6.59153);
+      aqcdMsigma1[ipt]->setVal(6.39263);
+      aqcdsigma2[ipt] ->setVal(22.2207);
+      aqcdPsigma2[ipt]->setVal(22.4556);
+      aqcdMsigma2[ipt]->setVal(21.5495);
     }else if (ipt == 6){
       nSig[ipt]  -> setVal(7547.48);
       nSigp[ipt] -> setVal(4482.35);
@@ -1316,18 +1319,18 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       aqcdPsigma2[ipt]->setVal(66.0511);
       aqcdMsigma2[ipt]->setVal(62.4798);
     }else if (ipt == 9){
-      nSig[ipt]  -> setVal(2542.06);
+      nSig[ipt]  -> setVal(2542.09);
       nSigp[ipt] -> setVal(1538.08);
-      nSigm[ipt] -> setVal(1011.34);
-      nAntiSig[ipt]  -> setVal(2.47263);
+      nSigm[ipt] -> setVal(1004.01);
+      nAntiSig[ipt]  -> setVal(2.71976);
       nAntiSigp[ipt] -> setVal(1.70856e-09);
-      nAntiSigm[ipt] -> setVal(1.28748);
+      nAntiSigm[ipt] -> setVal(2.47262);
       nQCD[ipt]  -> setVal(375.961);
       nQCDp[ipt] -> setVal(89.4058);
-      nQCDm[ipt] -> setVal(278.668);
+      nQCDm[ipt] -> setVal(286.5552);
       nAntiQCD[ipt]  -> setVal(1084.39);
       nAntiQCDp[ipt] -> setVal(533.877);
-      nAntiQCDm[ipt] -> setVal(551.977);
+      nAntiQCDm[ipt] -> setVal(550.513);
       qcdmean[ipt] ->setVal(33.7008);
       qcdPmean[ipt]->setVal(33.3972);
       qcdMmean[ipt]->setVal(34.8164);
@@ -1540,7 +1543,6 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
           ,RooArgList(*apdfWmm[ipt],*apdfEWKm[ipt],*(aqcdm[ipt]->model))
           ,RooArgList(*nAntiSigm[ipt],*nAntiEWKm[ipt],*nAntiQCDm[ipt]));
     }else if (ipt > 3 && ipt < 6){
-
       //sprintf(histName,"qcd2_%d",ipt);
       //qcd2[ipt]  = new CPepeDouble(histName,pfmet);
       //sprintf(histName,"qcd2p_%d",ipt);
@@ -1549,11 +1551,11 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       //qcd2m[ipt] = new CPepeDouble(histName,pfmet);
       
       sprintf(histName,"qcd2_%d",ipt);
-      qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt],   dFrac2[ipt]);
+      qcd2[ipt]  = new CPepeDouble(histName,pfmet,qcdsigma1[ipt], qcda1[ipt], dFrac1[ipt], qcdsigma2[ipt], qcda2[ipt], dFrac2[ipt]);
       sprintf(histName,"qcd2p_%d",ipt);
-      qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt], qcdPa2[ipt], dFrac2P[ipt]);
+      qcd2p[ipt] = new CPepeDouble(histName,pfmet,qcdPsigma1[ipt],qcdPa1[ipt],dFrac1P[ipt],qcdPsigma2[ipt],qcdPa2[ipt],dFrac2P[ipt]);
       sprintf(histName,"qcd2m_%d",ipt);
-      qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt], qcdMa2[ipt], dFrac2M[ipt]);
+      qcd2m[ipt] = new CPepeDouble(histName,pfmet,qcdMsigma1[ipt],qcdMa1[ipt],dFrac1M[ipt],qcdMsigma2[ipt],qcdMa2[ipt],dFrac2M[ipt]);
       
       //sprintf(histName,"aqcd2_%d",ipt);
       //aqcd2[ipt]  = new CPepeDouble(histName,pfmet);
@@ -1563,14 +1565,11 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       //aqcd2m[ipt] = new CPepeDouble(histName,pfmet);
       
       sprintf(histName,"aqcd2_%d",ipt);
-      aqcd2[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdsigma1[ipt]->sigma1,qcd2[ipt]->a1,qcd2[ipt]->frac1,aqcdsigma2[ipt],qcd2[ipt]->a2,qcd2[ipt]->frac2);
+      aqcd2[ipt]  = new CPepeDouble(histName,pfmet,aqcdsigma1[ipt], qcd2[ipt]->a1, qcd2[ipt]->frac1, aqcdsigma2[ipt], qcd2[ipt]->a2, qcd2[ipt]->frac2);
       sprintf(histName,"aqcd2p_%d",ipt);
-      aqcd2p[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdPsigma1[ipt],qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
+      aqcd2p[ipt] = new CPepeDouble(histName,pfmet,aqcdPsigma1[ipt],qcd2p[ipt]->a1,qcd2p[ipt]->frac1,aqcdPsigma2[ipt],qcd2p[ipt]->a2,qcd2p[ipt]->frac2);
       sprintf(histName,"aqcd2m_%d",ipt);
-      aqcd2m[ipt] = new CPepeDouble(histName,pfmet
-	  ,aqcdMsigma1[ipt],qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
+      aqcd2m[ipt] = new CPepeDouble(histName,pfmet,aqcdMsigma1[ipt],qcd2m[ipt]->a1,qcd2m[ipt]->frac1,aqcdMsigma2[ipt],qcd2m[ipt]->a2,qcd2m[ipt]->frac2);
       
       // Signal + Background PDFs
       sprintf(histName,"pdfMet_%d",ipt);
@@ -1716,14 +1715,11 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       qcd1m[ipt] = new CPepePlusMod(histName,pfmet,qcdMmean[ipt],qcdMsigma1[ipt], qcdMa1[ipt], Frac1M[ipt],qcdMsigma2[ipt], qcdMa2[ipt], Frac2M[ipt]);
       
       sprintf(histName,"aqcd1_%d",ipt);
-      aqcd1[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1[ipt]->m1,aqcdsigma1[ipt],qcd1[ipt]->a1,qcd1[ipt]->f1,aqcdsigma2[ipt],qcd1[ipt]->a2,qcd1[ipt]->f2);
+      aqcd1[ipt]  = new CPepePlusMod(histName,pfmet,qcd1[ipt]->m1, aqcdsigma1[ipt], qcd1[ipt]->a1, qcd1[ipt]->f1, aqcdsigma2[ipt], qcd1[ipt]->a2, qcd1[ipt]->f2);
       sprintf(histName,"aqcd1p_%d",ipt);
-      aqcd1p[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1p[ipt]->m1,aqcdPsigma1[ipt],qcd1p[ipt]->a1,qcd1p[ipt]->f1,aqcdPsigma2[ipt],qcd1p[ipt]->a2,qcd1p[ipt]->f2);
+      aqcd1p[ipt] = new CPepePlusMod(histName,pfmet,qcd1p[ipt]->m1,aqcdPsigma1[ipt],qcd1p[ipt]->a1,qcd1p[ipt]->f1,aqcdPsigma2[ipt],qcd1p[ipt]->a2,qcd1p[ipt]->f2);
       sprintf(histName,"aqcd1m_%d",ipt);
-      aqcd1m[ipt] = new CPepePlusMod(histName,pfmet
-	  ,qcd1m[ipt]->m1,aqcdMsigma1[ipt],qcd1m[ipt]->a1,qcd1m[ipt]->f1,aqcdMsigma2[ipt],qcd1m[ipt]->a2,qcd1m[ipt]->f2);
+      aqcd1m[ipt] = new CPepePlusMod(histName,pfmet,qcd1m[ipt]->m1,aqcdMsigma1[ipt],qcd1m[ipt]->a1,qcd1m[ipt]->f1,aqcdMsigma2[ipt],qcd1m[ipt]->a2,qcd1m[ipt]->f2);
       
       // Signal + Background PDFs
       if (ipt<9){

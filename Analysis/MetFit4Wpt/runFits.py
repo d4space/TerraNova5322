@@ -18,6 +18,7 @@ print "Will run fit for ", scenario
 if "MuonRayleighGaus" in scenario and "Nominal" in scenario:
   print "Muon - Nominal: Simultaneously Fit with Modified Rayleigh function"
   cmd_string = "root -l -q fitWMuMetModRayleighSimult.C+\(\\\"MuonFitResultsModRayleighSimultNominal\\\",\\\"Nominal\\\",%f,0\)" %LUMI
+  #cmd_string = "root -l -q fitWMuMetModRayleighSimult_V3.C+\(\\\"MuonFitResultsModRayleighSimultNominal\\\",\\\"Nominal\\\",%f,0\)" %LUMI
 elif "MuonRayleighGaus" in scenario and "Float" in scenario:
   print "Muon - Floating: Simultaneously Fit with Modified Rayleigh function"
   cmd_string = "root -l -q fitWMuMetModRayleighSimultFloat.C+\(\\\"MuonFitResultsModRayleighSimultFloat\\\",\\\"Nominal\\\",%f,0\)" %LUMI

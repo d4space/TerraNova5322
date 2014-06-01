@@ -159,16 +159,16 @@ int Wlnu12LoUnfold::InitVar()
   {
     if(AnaChannel == "Muon2012LoPU" )
     {
-      Rcl.ZRDfilename="../Recoil/ZmmData/fits.root";
-      Rcl.ZMCfilename="../Recoil/ZmmMC/fits.root";
-      Rcl.Wpfilename="../Recoil/WmpMC/fits.root";
-      Rcl.Wmfilename="../Recoil/WmmMC/fits.root";
+      Rcl.ZRDfilename="../Recoil/ZmmData/fits_V2.root";
+      Rcl.ZMCfilename="../Recoil/ZmmMC/fits_V2.root";
+      Rcl.Wpfilename="../Recoil/WmpMC/fits_V2.root";
+      Rcl.Wmfilename="../Recoil/WmmMC/fits_V2.root";
     }else if((AnaChannel == "Electron2012LoPU") || AnaChannel == "ElectronHighPU")
     {
-      Rcl.ZRDfilename="../Recoil/ZeeData/fits.root";
-      Rcl.ZMCfilename="../Recoil/ZeeMC/fits.root";
-      Rcl.Wpfilename="../Recoil/WepMC/fits.root";
-      Rcl.Wmfilename="../Recoil/WemMC/fits.root";
+      Rcl.ZRDfilename="../Recoil/ZeeData/fits_V2.root";
+      Rcl.ZMCfilename="../Recoil/ZeeMC/fits_V2.root";
+      Rcl.Wpfilename="../Recoil/WepMC/fits_V2.root";
+      Rcl.Wmfilename="../Recoil/WemMC/fits_V2.root";
     }
     // RecoilCorrection Object.
     RecoilCorr= new RecoilCorrector(

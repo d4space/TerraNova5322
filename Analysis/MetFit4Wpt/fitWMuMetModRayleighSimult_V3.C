@@ -1064,7 +1064,7 @@ void fitWMuMetModRayleighSimult_V3(const TString  outputDir,   // output directo
       qcdMmean[ipt]->setVal(13.0858);
       qcda1[ipt] ->setVal(0.077171);
       qcdPa1[ipt]->setVal(0.0753291);
-      qcdMa1[ipt]->setVal(0.0719983);
+      qcdMa1[ipt]->setVal(0.0719981);
       qcdsigma1[ipt] ->setVal(6.09383);
       qcdPsigma1[ipt]->setVal(5.02679);
       qcdMsigma1[ipt]->setVal(6.28123);
