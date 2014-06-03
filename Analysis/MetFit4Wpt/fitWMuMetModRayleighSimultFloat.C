@@ -780,7 +780,7 @@ void fitWMuMetModRayleighSimultFloat(const TString  outputDir,   // output direc
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
   //for(int ipt(10);ipt<NWptBinPlus;ipt++)
-  //for(int ipt(0);ipt<1;ipt++)
+  //for(int ipt(10);ipt<14;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2189,6 +2189,62 @@ aqcdMa2[ipt]->setVal(-0.281006);
         Frac2[ipt] ->setVal(0.16632);
         Frac2P[ipt]->setVal(0.16632);
         Frac2M[ipt]->setVal(0.16632);
+        aqcdsigma1[ipt] ->setVal(69.4258);
+        aqcdPsigma1[ipt]->setVal(62.7631);
+        aqcdMsigma1[ipt]->setVal(71.5588);
+        aqcdsigma2[ipt] ->setVal(74.9999);
+        aqcdPsigma2[ipt]->setVal(74.9978);
+        aqcdMsigma2[ipt]->setVal(75);
+	qcdmean[ipt]	->setConstant(kTRUE);
+	qcdPmean[ipt]	->setConstant(kTRUE);
+	qcdMmean[ipt]	->setConstant(kTRUE);
+	qcda1[ipt]	->setConstant(kTRUE);
+	qcdPa1[ipt]	->setConstant(kTRUE);
+	qcdMa1[ipt]	->setConstant(kTRUE);
+	qcda2[ipt]	->setConstant(kTRUE);
+	qcdPa2[ipt]	->setConstant(kTRUE);
+	qcdMa2[ipt]	->setConstant(kTRUE);
+	qcdsigma1[ipt]	->setConstant(kTRUE);
+	qcdPsigma1[ipt]	->setConstant(kTRUE);
+	qcdMsigma1[ipt]	->setConstant(kTRUE);
+	qcdsigma2[ipt]	->setConstant(kTRUE);
+	qcdPsigma2[ipt]	->setConstant(kTRUE);
+	qcdMsigma2[ipt]	->setConstant(kTRUE);
+	Frac1[ipt]	->setConstant(kTRUE);
+	Frac1P[ipt]	->setConstant(kTRUE);
+	Frac1M[ipt]	->setConstant(kTRUE);
+	Frac2[ipt]	->setConstant(kTRUE);
+	Frac2P[ipt]	->setConstant(kTRUE);
+	Frac2M[ipt]	->setConstant(kTRUE);
+	aqcdsigma1[ipt]	->setConstant(kTRUE);
+	aqcdPsigma1[ipt] ->setConstant(kTRUE);
+	aqcdMsigma1[ipt] ->setConstant(kTRUE);
+	aqcdsigma2[ipt]	->setConstant(kTRUE);
+	aqcdPsigma2[ipt] ->setConstant(kTRUE);
+	aqcdMsigma2[ipt] ->setConstant(kTRUE);
+      }
+ /*     if (ipt>9){
+	qcdmean[ipt] ->setVal(4.13158);
+        qcdPmean[ipt]->setVal(4.13158);
+        qcdMmean[ipt]->setVal(4.13158);
+        qcda1[ipt] ->setVal(0.00492737);
+        qcdPa1[ipt]->setVal(0.00492737);
+        qcdMa1[ipt]->setVal(0.00492737);
+        qcda2[ipt] ->setVal(-0.196913);
+        qcdPa2[ipt]->setVal(-0.196913);
+        qcdMa2[ipt]->setVal(-0.196913);
+        qcdsigma1[ipt] ->setVal(69.4258);
+        qcdPsigma1[ipt]->setVal(62.7631);
+        qcdMsigma1[ipt]->setVal(71.5588);
+        qcdsigma2[ipt] ->setVal(74.9999);
+        qcdPsigma2[ipt]->setVal(74.9978);
+        qcdMsigma2[ipt]->setVal(75);
+        Frac1[ipt] ->setVal(0.94232);
+        Frac1P[ipt]->setVal(0.94232);
+        Frac1M[ipt]->setVal(0.94232);
+        Frac2[ipt] ->setVal(0.16632);
+        Frac2P[ipt]->setVal(0.16632);
+        Frac2M[ipt]->setVal(0.16632);
         aqcda1[ipt] ->setVal(0.00492737);
         aqcdPa1[ipt]->setVal(0.00492737);
         aqcdMa1[ipt]->setVal(0.00492737);
@@ -2237,7 +2293,7 @@ aqcdMa2[ipt]->setVal(-0.281006);
 	//aqcdsigma2[ipt]	->setConstant(kTRUE);
 	//aqcdPsigma2[ipt]->setConstant(kTRUE);
 	//aqcdMsigma2[ipt]->setConstant(kTRUE);
-      }
+      }*/
       
       
       sprintf(histName,"qcd1_%d",ipt);
