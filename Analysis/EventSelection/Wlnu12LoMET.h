@@ -30,12 +30,21 @@ protected:
   TH1D*	h1_W_pt;
   TH1D*	h1_Wp_pt;
   TH1D*	h1_Wm_pt;
+
   TH1D*	h1_W_Neu_pt[NWptBinPlus];
-  TH1D*	h1_Wp_Neu_pt[NWptBinPlus];
-  TH1D*	h1_Wm_Neu_pt[NWptBinPlus];
+  TH1D*	h1_W_Mt[NWptBinPlus];
   TH1D*	h1_WSide_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WSide_Mt[NWptBinPlus];
+
+  TH1D*	h1_Wp_Neu_pt[NWptBinPlus];
+  TH1D*	h1_Wp_Mt[NWptBinPlus];
   TH1D*	h1_WpSide_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WpSide_Mt[NWptBinPlus];
+
+  TH1D*	h1_Wm_Neu_pt[NWptBinPlus];
+  TH1D*	h1_Wm_Mt[NWptBinPlus];
   TH1D*	h1_WmSide_Neu_pt[NWptBinPlus];
+  TH1D*	h1_WmSide_Mt[NWptBinPlus];
 
   // Member variables
   double mNselect4WptBin[NwPtBin];

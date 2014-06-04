@@ -113,6 +113,10 @@ void Wlnu12LoMET::Loop()
       for(int iw(0); iw<W.size; iw++)
       {
 	FillWSide(iw);
+        if(Mode == "SmeaRecEffCorr")
+        {
+          DoRecoilCorr();
+	}
 	if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
 	Fill_SideHisto();
       }
@@ -132,8 +136,8 @@ void Wlnu12LoMET::Loop()
   // Notice: Use one of Write_Histo or myFile->Write
   // Write_Histo: to Save specific histograms
   // myFile->Write: to Save all Histograms
-  Write_Histo();
-  //myFile->Write();
+  //Write_Histo();
+  myFile->Write();
   myFile->Close();
   Fout.close();
   gBenchmark->Show("Wlnu12LoMET");
@@ -213,42 +217,86 @@ int Wlnu12LoMET::InitHistogram()
     if( ipt < NBIN_PT_DIVIDER_1and2 ){
       sprintf(histName,"h1_W_Neu_pt_%d",ipt);
       h1_W_Neu_pt[ipt] = new TH1D(histName,"W_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_W_Mt_%d",ipt);
+      h1_W_Mt[ipt] = new TH1D(histName,"W_Mt",NBINS_1,0,METMAX_1);
       sprintf(histName,"h1_WSide_Neu_pt_%d",ipt);
       h1_WSide_Neu_pt[ipt] = new TH1D(histName,"WSide_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_WSide_Mt_%d",ipt);
+      h1_WSide_Mt[ipt] = new TH1D(histName,"WSide_Mt",NBINS_1,0,METMAX_1);
+
       sprintf(histName,"h1_Wp_Neu_pt_%d",ipt);
       h1_Wp_Neu_pt[ipt] = new TH1D(histName,"Wp_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_Wp_Mt_%d",ipt);
+      h1_Wp_Mt[ipt] = new TH1D(histName,"Wp_Mt",NBINS_1,0,METMAX_1);
       sprintf(histName,"h1_WpSide_Neu_pt_%d",ipt);
       h1_WpSide_Neu_pt[ipt] = new TH1D(histName,"WpSide_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_WpSide_Mt_%d",ipt);
+      h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_1,0,METMAX_1);
+
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
       h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_Wm_Mt_%d",ipt);
+      h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_1,0,METMAX_1);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
       h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_1,0,METMAX_1);
+      sprintf(histName,"h1_WmSide_Mt_%d",ipt);
+      h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_1,0,METMAX_1);
+
     } else if ( ipt < NBIN_PT_DIVIDER_2and3 ){
       sprintf(histName,"h1_W_Neu_pt_%d",ipt);
       h1_W_Neu_pt[ipt] = new TH1D(histName,"W_Neut_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_W_Mt_%d",ipt);
+      h1_W_Mt[ipt] = new TH1D(histName,"W_Mt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_WSide_Neu_pt_%d",ipt);
       h1_WSide_Neu_pt[ipt] = new TH1D(histName,"WSide_Neut_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_WSide_Mt_%d",ipt);
+      h1_WSide_Mt[ipt] = new TH1D(histName,"WSide_Mt",NBINS_2,0,METMAX_2);
+
       sprintf(histName,"h1_Wp_Neu_pt_%d",ipt);
       h1_Wp_Neu_pt[ipt] = new TH1D(histName,"Wp_Neut_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_Wp_Mt_%d",ipt);
+      h1_Wp_Mt[ipt] = new TH1D(histName,"Wp_Mt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_WpSide_Neu_pt_%d",ipt);
       h1_WpSide_Neu_pt[ipt] = new TH1D(histName,"WpSide_Neut_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_WpSide_Mt_%d",ipt);
+      h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_2,0,METMAX_2);
+
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
-      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_2,0,METMAX_2);
+      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neu_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_Wm_Mt_%d",ipt);
+      h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
-      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_2,0,METMAX_2);
+      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neu_pt",NBINS_2,0,METMAX_2);
+      sprintf(histName,"h1_WmSide_Mt_%d",ipt);
+      h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_2,0,METMAX_2);
+
     } else {
       sprintf(histName,"h1_W_Neu_pt_%d",ipt);
       h1_W_Neu_pt[ipt] = new TH1D(histName,"W_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_W_Mt_%d",ipt);
+      h1_W_Mt[ipt] = new TH1D(histName,"W_Mt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WSide_Neu_pt_%d",ipt);
       h1_WSide_Neu_pt[ipt] = new TH1D(histName,"WSide_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_WSide_Mt_%d",ipt);
+      h1_WSide_Mt[ipt] = new TH1D(histName,"WSide_Mt",NBINS_3,0,METMAX_3);
+
       sprintf(histName,"h1_Wp_Neu_pt_%d",ipt);
       h1_Wp_Neu_pt[ipt] = new TH1D(histName,"Wp_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_Wp_Mt_%d",ipt);
+      h1_Wp_Mt[ipt] = new TH1D(histName,"Wp_Mt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WpSide_Neu_pt_%d",ipt);
       h1_WpSide_Neu_pt[ipt] = new TH1D(histName,"WpSide_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_WpSide_Mt_%d",ipt);
+      h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_3,0,METMAX_3);
+
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
       h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_Wm_Mt_%d",ipt);
+      h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
       h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_3,0,METMAX_3);
+      sprintf(histName,"h1_WmSide_Mt_%d",ipt);
+      h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_3,0,METMAX_3);
     }
   }
   return 0;
@@ -260,26 +308,34 @@ int Wlnu12LoMET::Fill_Histo()
   {
     h1_Wp_pt->Fill(W.pt,mTTW);
     h1_W_Neu_pt[0] ->Fill(W.Met,mTTW);
+    h1_W_Mt[0] ->Fill(W.Mt,mTTW);
     h1_Wp_Neu_pt[0]->Fill(W.Met,mTTW);
+    h1_Wp_Mt[0]->Fill(W.Mt,mTTW);
     
     for(int iBin(0);iBin<NWptBinPlus-1;iBin++)
     {
       if(W.pt >= WptBins[iBin] && W.pt < WptBins[iBin+1])
       {
 	h1_W_Neu_pt[iBin+1] ->Fill(W.Met,mTTW);
+	h1_W_Mt[iBin+1] ->Fill(W.Mt,mTTW);
 	h1_Wp_Neu_pt[iBin+1]->Fill(W.Met,mTTW);
+        h1_Wp_Mt[iBin+1]->Fill(W.Mt,mTTW);
       }
     }
   }else if(W.charge<0){
     h1_Wm_pt->Fill(W.pt,mTTW);
     h1_W_Neu_pt[0] ->Fill(W.Met,mTTW);
+    h1_W_Mt[0] ->Fill(W.Mt,mTTW);
     h1_Wm_Neu_pt[0]->Fill(W.Met,mTTW);
+    h1_Wm_Mt[0]->Fill(W.Mt,mTTW);
     
     for(int iBin(0);iBin<NWptBinPlus-1;iBin++) {
       if( W.pt >= WptBins[iBin] && W.pt < WptBins[iBin+1] )
       {
 	h1_W_Neu_pt[iBin+1] ->Fill(W.Met,mTTW);
+	h1_W_Mt[iBin+1] ->Fill(W.Mt,mTTW);
 	h1_Wm_Neu_pt[iBin+1]->Fill(W.Met,mTTW);
+	h1_Wm_Mt[iBin+1]->Fill(W.Mt,mTTW);
       }
     }
   }
@@ -290,25 +346,33 @@ int Wlnu12LoMET::Fill_SideHisto()
 {
   if(W.charge>0)
   {
-    h1_WSide_Neu_pt[0] ->Fill(W.Met_side,mTTW);
-    h1_WpSide_Neu_pt[0]->Fill(W.Met_side,mTTW);
+    h1_WSide_Neu_pt[0] ->Fill(W.Met,mTTW);
+    h1_WSide_Mt[0] ->Fill(W.Mt,mTTW);
+    h1_WpSide_Neu_pt[0]->Fill(W.Met,mTTW);
+    h1_WpSide_Mt[0]->Fill(W.Mt,mTTW);
   
     for(int iBin(0);iBin<NWptBinPlus-1;iBin++){
-      if( W.pt_side >= WptBins[iBin] && W.pt_side < WptBins[iBin+1])
+      if( W.pt >= WptBins[iBin] && W.pt < WptBins[iBin+1])
       {
-        h1_WSide_Neu_pt[iBin+1] ->Fill(W.Met_side,mTTW);
-        h1_WpSide_Neu_pt[iBin+1]->Fill(W.Met_side,mTTW);
+        h1_WSide_Neu_pt[iBin+1] ->Fill(W.Met,mTTW);
+        h1_WSide_Mt[iBin+1] ->Fill(W.Mt,mTTW);
+        h1_WpSide_Neu_pt[iBin+1]->Fill(W.Met,mTTW);
+        h1_WpSide_Mt[iBin+1]->Fill(W.Mt,mTTW);
       }
     }
   }else if (W.charge<0){
-    h1_WSide_Neu_pt[0] ->Fill(W.Met_side,mTTW);
-    h1_WmSide_Neu_pt[0]->Fill(W.Met_side,mTTW);
+    h1_WSide_Neu_pt[0] ->Fill(W.Met,mTTW);
+    h1_WSide_Mt[0] ->Fill(W.Mt,mTTW);
+    h1_WmSide_Neu_pt[0]->Fill(W.Met,mTTW);
+    h1_WmSide_Mt[0]->Fill(W.Mt,mTTW);
     
     for(int iBin(0);iBin<NWptBinPlus-1;iBin++){
-      if( W.pt_side >= WptBins[iBin] && W.pt_side < WptBins[iBin+1])
+      if( W.pt >= WptBins[iBin] && W.pt < WptBins[iBin+1])
       {
-        h1_WSide_Neu_pt[iBin+1] ->Fill(W.Met_side,mTTW);
-        h1_WmSide_Neu_pt[iBin+1]->Fill(W.Met_side,mTTW);
+        h1_WSide_Neu_pt[iBin+1] ->Fill(W.Met,mTTW);
+        h1_WSide_Mt[iBin+1] ->Fill(W.Mt,mTTW);
+        h1_WmSide_Neu_pt[iBin+1]->Fill(W.Met,mTTW);
+        h1_WmSide_Mt[iBin+1]->Fill(W.Mt,mTTW);
       }
     }
   }
@@ -325,6 +389,7 @@ int Wlnu12LoMET::Write_Histo()
     h1_W_Neu_pt[ipt]->Write();
     h1_WSide_Neu_pt[ipt]->Write();
     h1_Wp_Neu_pt[ipt]->Write();
+    h1_Wp_Mt[ipt]->Write();
     h1_WpSide_Neu_pt[ipt]->Write();
     h1_Wm_Neu_pt[ipt]->Write();
     h1_WmSide_Neu_pt[ipt]->Write();

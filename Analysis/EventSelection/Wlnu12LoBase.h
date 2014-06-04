@@ -95,6 +95,7 @@ protected:
   virtual Int_t     DoScaleCorr(int entry);
   virtual Int_t     DoSmearCorr(int entry);
   virtual Int_t     DoRecoilCorr();
+  virtual Double_t  CalcMt(double lep_pt, double lep_phi, double Met,double  Met_phi);
   virtual Double_t  DoEffiCorr();
 
   //------------------
@@ -150,11 +151,13 @@ protected:
     double pt;
     double Mt;
     double Met;
+    double Met_phi;
     double Nu_px;
     double Nu_py;
     double acop;
     double pt_side;
     double Met_side;
+    double Mt_side;
     int size;
     double charge;
 
@@ -916,7 +919,15 @@ Int_t Wlnu12LoBase::TauCutZ(int i)
   if(fabs((*Z_Lept2_pt)[i]) < 20)return -1;
   return 1;
 }
-
+Double_t Wlnu12LoBase::CalcMt(double lept, double leptPhi, double Met, double MetPhi)
+{
+  double ptSum = lept+Met;
+  double pxSum = lept*TMath::Cos(leptPhi) + Met*TMath::Cos(MetPhi);
+  double pySum = lept*TMath::Sin(leptPhi) + Met*TMath::Sin(MetPhi);
+  double mt2 = ptSum*ptSum - pxSum*pxSum - pySum*pySum;
+  double Mt = (mt2 > 0) ? TMath::Sqrt(mt2) : 0;
+  return Mt;
+}
 Int_t Wlnu12LoBase::DoRecoilCorr()
 {
   if(W.genIdx < 0) W.genIdx = 0;
@@ -942,6 +953,10 @@ Int_t Wlnu12LoBase::DoRecoilCorr()
       corrMet*sin(corrMetPhi)+W.lep_pt_corr*sin(W.lep_phi));
   W.pt = w_p_corr.Mod();
   W.Met = corrMet;
+  W.Met_phi = corrMetPhi;
+  W.Mt = CalcMt(
+      W.lep_pt_corr, W.lep_phi,
+      W.Met, W.Met_phi);
   //}else{
   //  corrMet = W.Met;
   //}
@@ -979,8 +994,10 @@ Int_t Wlnu12LoBase::InitVar4Evt()
   W.pt=0;
   W.Mt=0;
   W.Met=0;
+  W.Met_phi=0;
   W.pt_side=0;
   W.Met_side=0;
+  W.Mt_side=0;
   W.genIdx=-999;
   W.charge=0;
   W.lep_pt = 0;
