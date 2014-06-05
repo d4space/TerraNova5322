@@ -318,13 +318,13 @@ int Wlnu12LoBase::ZbestSelect()
 
 int Wlnu12LoBase::FillWSide(int j)
 {
-  W.Pass = false;
+  W.PassSide = false;
   if(((AnaChannel == "Muon2012LoPU") && MuonCutSide(j) >0)||
       ((AnaChannel == "Electron2012LoPU") && ElectronCutSide(j) > 0)||
       (AnaChannel =="ElectronHighPU" && ElectronCutSideHighPU(j) > 0)
       )
   {
-    W.Pass = true;
+    W.PassSide = true;
     W.Met     = (*W_Neut_pt)[j];
     W.Met_phi = (*W_Neut_phi)[j];
     W.charge  = (*W_Charge)[j];

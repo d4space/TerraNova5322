@@ -177,6 +177,7 @@ protected:
 
     int genIdx;
     bool Pass;
+    bool PassSide;
     int idxBest;
     TVector2 *PostT2;
     double Post_pt;
@@ -1006,6 +1007,7 @@ Int_t Wlnu12LoBase::InitVar4Evt()
   W.lep_eta = 0;
   W.lep_etaSC = 0;
   W.Pass=0;
+  W.PassSide=0;
     
   Z.pt = 0;
   Z.ptRecoil = 0;

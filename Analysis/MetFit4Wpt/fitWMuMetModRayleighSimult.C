@@ -1339,7 +1339,7 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
       qcdMa1[ipt]->setVal(-0.150311);
       qcda2[ipt] ->setVal(-0.638364);
       qcdPa2[ipt]->setVal(-0.630464);
-      qcdMa2[ipt]->setVal(-0.310285);
+      qcdMa2[ipt]->setVal(-0.310284);
       qcdsigma1[ipt] ->setVal(17.5237);
       qcdPsigma1[ipt]->setVal(17.8547);
       qcdMsigma1[ipt]->setVal(17.5184);

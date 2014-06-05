@@ -113,12 +113,12 @@ void Wlnu12LoMET::Loop()
       for(int iw(0); iw<W.size; iw++)
       {
 	FillWSide(iw);
-        if(W.Pass && Mode == "SmeaRecEffCorr")
+        if(W.PassSide && Mode == "SmeaRecEffCorr")
         {
           DoRecoilCorr();
 	}
 	if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
-	Fill_SideHisto();
+	if(W.PassSide)Fill_SideHisto();
       }
     }
   }//Ntries
