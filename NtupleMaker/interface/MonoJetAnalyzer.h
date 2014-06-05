@@ -813,7 +813,7 @@ void MonoJetAnalyzer::LoopJets(const edm::Event &iEvent, const edm::EventSetup& 
       MJet.eta->push_back(i_jet->eta());
     }
     MJet.nIdJets = nIdJets;
-    if(nIdJets >= 6) EvtPass = true;
+    if(nIdJets >= 1) EvtPass = true;
 }
 void MonoJetAnalyzer::endJob()
 {
