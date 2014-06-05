@@ -295,7 +295,8 @@ int theoryStudy(const TString BaseName)
 
   hPowheg->GetYaxis()->SetRangeUser(-5,1.14*resb30[0]);
   hPowheg->SetTitle("");
-  hPowheg->GetYaxis()->SetTitle("Xsec [pb (GeV/c)^{-1}]");
+  //hPowheg->GetYaxis()->SetTitle("Xsec [pb (GeV/c)^{-1}]");
+  hPowheg->GetYaxis()->SetTitle("Cross-section [pb (GeV/c)^{-1}]");
   hPowheg->GetYaxis()->SetTitleOffset(1.0);
   
   hPowheg->Draw("A2");
