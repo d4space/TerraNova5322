@@ -1964,6 +1964,19 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
         Frac2[ipt] ->setConstant(kTRUE);
         Frac2P[ipt]->setConstant(kTRUE);
         Frac2M[ipt]->setConstant(kTRUE);
+      }else if (ipt>8){
+	mtmean[ipt] ->setConstant(kTRUE);
+        mtPmean[ipt]->setConstant(kTRUE);
+        mtMmean[ipt]->setConstant(kTRUE);
+        mtsigma[ipt] ->setConstant(kTRUE);
+        mtPsigma[ipt]->setConstant(kTRUE);
+        mtMsigma[ipt]->setConstant(kTRUE);
+        mta1[ipt] ->setConstant(kTRUE);
+        mtPa1[ipt]->setConstant(kTRUE);
+        mtMa1[ipt]->setConstant(kTRUE);
+        amtsigma[ipt] ->setConstant(kTRUE);
+        amtPsigma[ipt]->setConstant(kTRUE);
+        amtMsigma[ipt]->setConstant(kTRUE);
       }
     }
     // Perform fits
