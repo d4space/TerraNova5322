@@ -104,21 +104,42 @@ void Wlnu12LoMET::Loop()
     //GoodW
     if(W.Pass && addLepN <2){
       DumpWbestCand(W.idxBest);
-      if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
-      evtSelected+=mTTW;
       if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
-      Fill_Histo();
-      Nselected4Bin();
+      if(Mode == "SmeaRecEffCorr")
+      {
+	mTTW = mTTW/50.;
+        for(int k(0);k<50;k++)
+        {
+          evtSelected+=mTTW;
+          Nselected4Bin();
+          if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
+          Fill_Histo();
+	  Nselected4Bin();
+        }
+      }else{
+        evtSelected+=mTTW;
+	Nselected4Bin();
+	Fill_Histo();
+      }
     }else if (!W.Pass){
       for(int iw(0); iw<W.size; iw++)
       {
 	FillWSide(iw);
-        if(W.PassSide && Mode == "SmeaRecEffCorr")
-        {
-          DoRecoilCorr();
-	}
 	if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
-	if(W.PassSide)Fill_SideHisto();
+	if(Mode == "SmeaRecEffCorr")
+	{
+	  mTTW = mTTW/50.;
+	  for(int k(0);k<50;k++)
+	  {
+	    if(W.PassSide && Mode == "SmeaRecEffCorr")
+	    {
+	      DoRecoilCorr();
+	      Fill_SideHisto();
+	    }
+	  }
+	}else{
+	  if(W.PassSide)Fill_SideHisto();
+	}
       }
     }
   }//Ntries
@@ -170,20 +191,28 @@ int Wlnu12LoMET::InitVar()
   {
     if(AnaChannel == "Muon2012LoPU" )
     {
-      Rcl.ZRDfilename="../Recoil/ZmmData/fits_V2.root";
-      Rcl.ZMCfilename="../Recoil/ZmmMC/fits_V2.root";
-      Rcl.Wpfilename="../Recoil/WmpMC/fits_V2.root";
-      Rcl.Wmfilename="../Recoil/WmmMC/fits_V2.root";
+      Rcl.ZRDfilename="../Recoil/ZmmData/fits_V3.root";
+      Rcl.ZMCfilename="../Recoil/ZmmMC/fits_V3.root";
+      Rcl.Wpfilename="../Recoil/WmpMC/fits_V3.root";
+      Rcl.Wmfilename="../Recoil/WmmMC/fits_V3.root";
+      //Rcl.ZRDfilename="../Recoil/ZmmData/fits_V2.root";
+      //Rcl.ZMCfilename="../Recoil/ZmmMC/fits_V2.root";
+      //Rcl.Wpfilename="../Recoil/WmpMC/fits_V2.root";
+      //Rcl.Wmfilename="../Recoil/WmmMC/fits_V2.root";
       //Rcl.ZRDfilename="../Recoil/ZmmData/fits.root";
       //Rcl.ZMCfilename="../Recoil/ZmmMC/fits.root";
       //Rcl.Wpfilename="../Recoil/WmpMC/fits.root";
       //Rcl.Wmfilename="../Recoil/WmmMC/fits.root";
     }else if((AnaChannel == "Electron2012LoPU") || AnaChannel == "ElectronHighPU")
     {
-      Rcl.ZRDfilename="../Recoil/ZeeData/fits_V2.root";
-      Rcl.ZMCfilename="../Recoil/ZeeMC/fits_V2.root";
-      Rcl.Wpfilename="../Recoil/WepMC/fits_V2.root";
-      Rcl.Wmfilename="../Recoil/WemMC/fits_V2.root";
+      Rcl.ZRDfilename="../Recoil/ZeeData/fits_V3.root";
+      Rcl.ZMCfilename="../Recoil/ZeeMC/fits_V3.root";
+      Rcl.Wpfilename="../Recoil/WepMC/fits_V3.root";
+      Rcl.Wmfilename="../Recoil/WemMC/fits_V3.root";
+      //Rcl.ZRDfilename="../Recoil/ZeeData/fits_V2.root";
+      //Rcl.ZMCfilename="../Recoil/ZeeMC/fits_V2.root";
+      //Rcl.Wpfilename="../Recoil/WepMC/fits_V2.root";
+      //Rcl.Wmfilename="../Recoil/WemMC/fits_V2.root";
       //Rcl.ZRDfilename="../Recoil/ZeeData/fits.root";
       //Rcl.ZMCfilename="../Recoil/ZeeMC/fits.root";
       //Rcl.Wpfilename="../Recoil/WepMC/fits.root";
@@ -270,7 +299,7 @@ int Wlnu12LoMET::InitHistogram()
       sprintf(histName,"h1_WmSide_Mt_%d",ipt);
       h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_2,0,METMAX_2);
 
-    } else {
+    } else if ( ipt < NBIN_PT_DIVIDER_3and4 ){
       sprintf(histName,"h1_W_Neu_pt_%d",ipt);
       h1_W_Neu_pt[ipt] = new TH1D(histName,"W_Neut_pt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_W_Mt_%d",ipt);
@@ -290,13 +319,41 @@ int Wlnu12LoMET::InitHistogram()
       h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_3,0,METMAX_3);
 
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
-      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_3,0,METMAX_3);
+      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neu_pt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_Wm_Mt_%d",ipt);
       h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
-      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_3,0,METMAX_3);
+      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neu_pt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WmSide_Mt_%d",ipt);
       h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_3,0,METMAX_3);
+
+    } else {
+      sprintf(histName,"h1_W_Neu_pt_%d",ipt);
+      h1_W_Neu_pt[ipt] = new TH1D(histName,"W_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_W_Mt_%d",ipt);
+      h1_W_Mt[ipt] = new TH1D(histName,"W_Mt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WSide_Neu_pt_%d",ipt);
+      h1_WSide_Neu_pt[ipt] = new TH1D(histName,"WSide_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WSide_Mt_%d",ipt);
+      h1_WSide_Mt[ipt] = new TH1D(histName,"WSide_Mt",NBINS_4,0,METMAX_4);
+
+      sprintf(histName,"h1_Wp_Neu_pt_%d",ipt);
+      h1_Wp_Neu_pt[ipt] = new TH1D(histName,"Wp_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_Wp_Mt_%d",ipt);
+      h1_Wp_Mt[ipt] = new TH1D(histName,"Wp_Mt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WpSide_Neu_pt_%d",ipt);
+      h1_WpSide_Neu_pt[ipt] = new TH1D(histName,"WpSide_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WpSide_Mt_%d",ipt);
+      h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_4,0,METMAX_4);
+
+      sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
+      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_Wm_Mt_%d",ipt);
+      h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
+      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_4,0,METMAX_4);
+      sprintf(histName,"h1_WmSide_Mt_%d",ipt);
+      h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_4,0,METMAX_4);
     }
   }
   return 0;

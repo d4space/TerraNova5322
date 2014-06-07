@@ -9,7 +9,8 @@
 //#define NWptBinPlus 18 //Pt bins + 1 to include total ; the total is 0th bin
 #define NBINS_1 60 
 #define NBINS_2 60
-#define NBINS_3 60 
+#define NBINS_3 30 
+#define NBINS_4 30 
 //#define NBINS_2 50 //For Muon channel use this
 //#define NBINS_3 30 //For Muon channel use this
 //#define NBINS_1 30
@@ -17,10 +18,12 @@
 //#define NBINS_3 15
 #define METMAX_1 100
 #define METMAX_2 200
-#define METMAX_3 450
+#define METMAX_3 250
+#define METMAX_4 450
 #define NBIN_PT_DIVIDER_1and2 9 //PtBin less than this W_pt range is [0,100]
 //#define NBIN_PT_DIVIDER_2and3 12 //PtBin less than this W_pt range is [0,200] otherwise [0,300]
 #define NBIN_PT_DIVIDER_2and3 10 //PtBin less than this W_pt range is [0,200] otherwise [0,300]
+#define NBIN_PT_DIVIDER_3and4 12 //PtBin less than this W_pt range is [0,200] otherwise [0,300]
 #define NOQCD_PT_UP 14 //PtBin less than this include QCD
 #define NOQCD_PT_DOWN 1 //PtBin greater or equal to this include QCD
 #define NBINS_LANDAU 2 //LANDAU QCD less than this bin

@@ -5,6 +5,7 @@
 #include "RooHistPdf.h"
 #include "TMath.h"
 #include "RooGaussian.h"
+#include "RooLandau.h"
 
 class CPepeModel0
 {
@@ -113,6 +114,20 @@ class CPepeModelMean
     RooGenericPdf *model;
 };
 
+class mtModelMean
+{
+  public:
+    mtModelMean():model(0){}
+    mtModelMean(const char *name, RooRealVar &x, RooRealVar *m1=0, RooRealVar *s1=0, RooRealVar *sigma1=0);
+    ~mtModelMean() {
+      delete mean;
+      delete sigma;
+      delete model;
+    }
+    RooRealVar *sigma, *mean, *a1;
+    RooGenericPdf *model;
+};
+
 class CPepeDoubleModRay
 {
   public:
@@ -164,6 +179,55 @@ public:
   RooRealVar *mean, *sigma;
   RooGenericPdf *model;
 };
+
+//--------------------------------------------------------------------------------------------------
+class cLandau
+{
+  public:
+    cLandau():model(0){}
+    cLandau(const char *name, RooRealVar &x, RooRealVar *mean=0, RooRealVar *sigma=0);
+    ~cLandau() {
+      delete m0;
+      delete s0;
+      delete model;
+    }
+    RooRealVar *s0, *m0;
+    RooGenericPdf *model;
+};
+
+//--------------------------------------------------------------------------------------------------
+cLandau::cLandau(const char *name, RooRealVar &x, RooRealVar *mean, RooRealVar *sigma)
+{
+  char meanName[50];
+  char sigmaName[50];
+  
+  if(mean){
+    sprintf(meanName,"%s",mean->GetName());
+    m0 = mean;
+  }else{
+    sprintf(meanName,"m0_%s",name);
+    m0 = new RooRealVar(meanName,meanName,3.,-50,50);
+  }
+
+  if(sigma){
+    sprintf(sigmaName,"%s",sigma->GetName());
+    s0 = sigma;
+  }else{
+    sprintf(sigmaName,"s0_%s",name);
+    //s0 = new RooRealVar(sigmaName,sigmaName,25,0,75);
+    s0 = new RooRealVar(sigmaName,sigmaName,15,0,75);
+  }
+  
+  char vname[50];
+  sprintf(vname,"cLandauPdf_%s",name);
+  char formula[200];
+  sprintf(formula, "TMath::Landau(%s,%s,%s)",
+      x.GetName(),
+      m0->GetName(),
+      s0->GetName());
+
+  model = new RooGenericPdf(vname,vname,formula,RooArgSet(x,*m0,*s0));
+}
 
 //--------------------------------------------------------------------------------------------------
 cGaussian::cGaussian(const char *name, RooRealVar &x, RooRealVar *tmp_mean, RooRealVar *tmp_sigma)
@@ -413,6 +477,48 @@ CPepeModelMean::CPepeModelMean(const char *name, RooRealVar &x, RooRealVar *m1, 
       
   char vname[50];
   sprintf(vname,"pepeMeanPdf_%s",name);
+  model = new RooGenericPdf(vname,vname,formula,RooArgSet(x,*mean,*sigma,*a1));
+}
+
+//--------------------------------------------------------------------------------------------------
+mtModelMean::mtModelMean(const char *name, RooRealVar &x, RooRealVar *m1, RooRealVar *s1, RooRealVar *sigma1)
+{
+  char sigmaName[50];
+  char meanName[50];
+  char a1Name[50];
+  
+  if(s1) {
+    sprintf(sigmaName,"%s",s1->GetName());
+    sigma = s1;
+  } else {
+    sprintf(sigmaName,"sigma_%s",name);
+    sigma = new RooRealVar(sigmaName,sigmaName,5,0,25);
+  }
+  if(m1) {
+    sprintf(meanName,"%s",m1->GetName());
+    mean = m1;
+  } else {
+    sprintf(meanName,"mean_%s",name);
+    mean = new RooRealVar(meanName,meanName,3,-50,50);
+  }
+  if(sigma1) {
+    sprintf(a1Name,"%s",sigma1->GetName());
+    a1 = sigma1;
+  } else {
+    sprintf(a1Name,"a1_%s",name);
+    a1 = new RooRealVar(a1Name,a1Name,0.01,-1,1);
+  }
+  char formula[500];
+  // f(x) = (x-mean)*exp[-(x-mean)^2 / (s + a*(x-mean))^2] = (x-mean)*exp[-(x-mean)*(x-mean)/(s*s + 2*a*(x-mean) + a*a*(x-mean)*(x-mean))]
+  sprintf(formula, "TMath::Max(0,(%s-%s)*exp(-(%s-%s)*(%s-%s)/(%s*%s + 2*%s*%s*(%s-%s) + %s*%s*(%s-%s)*(%s-%s))))",
+      x.GetName(),meanName,
+      x.GetName(),meanName,x.GetName(),meanName,
+      sigmaName,sigmaName,
+      sigmaName,a1Name,x.GetName(),meanName,
+      a1Name,a1Name,x.GetName(),meanName,x.GetName(),meanName);
+      
+  char vname[50];
+  sprintf(vname,"mtMeanPdf_%s",name);
   model = new RooGenericPdf(vname,vname,formula,RooArgSet(x,*mean,*sigma,*a1));
 }
 
