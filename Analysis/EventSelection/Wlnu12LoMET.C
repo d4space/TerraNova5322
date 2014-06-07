@@ -291,11 +291,11 @@ int Wlnu12LoMET::InitHistogram()
       h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_2,0,METMAX_2);
 
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
-      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neu_pt",NBINS_2,0,METMAX_2);
+      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_Wm_Mt_%d",ipt);
       h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
-      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neu_pt",NBINS_2,0,METMAX_2);
+      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_2,0,METMAX_2);
       sprintf(histName,"h1_WmSide_Mt_%d",ipt);
       h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_2,0,METMAX_2);
 
@@ -319,11 +319,11 @@ int Wlnu12LoMET::InitHistogram()
       h1_WpSide_Mt[ipt] = new TH1D(histName,"WpSide_Mt",NBINS_3,0,METMAX_3);
 
       sprintf(histName,"h1_Wm_Neu_pt_%d",ipt);
-      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neu_pt",NBINS_3,0,METMAX_3);
+      h1_Wm_Neu_pt[ipt] = new TH1D(histName,"Wm_Neut_pt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_Wm_Mt_%d",ipt);
       h1_Wm_Mt[ipt] = new TH1D(histName,"Wm_Mt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WmSide_Neu_pt_%d",ipt);
-      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neu_pt",NBINS_3,0,METMAX_3);
+      h1_WmSide_Neu_pt[ipt] = new TH1D(histName,"WmSide_Neut_pt",NBINS_3,0,METMAX_3);
       sprintf(histName,"h1_WmSide_Mt_%d",ipt);
       h1_WmSide_Mt[ipt] = new TH1D(histName,"WmSide_Mt",NBINS_3,0,METMAX_3);
 
@@ -444,12 +444,17 @@ int Wlnu12LoMET::Write_Histo()
   for( int ipt=0;ipt<NWptBinPlus;ipt++)
   {
     h1_W_Neu_pt[ipt]->Write();
+    h1_W_Mt[ipt]->Write();
     h1_WSide_Neu_pt[ipt]->Write();
+    h1_WSide_Mt[ipt]->Write();
     h1_Wp_Neu_pt[ipt]->Write();
     h1_Wp_Mt[ipt]->Write();
     h1_WpSide_Neu_pt[ipt]->Write();
-    h1_Wm_Neu_pt[ipt]->Write();
+    h1_WpSide_Mt[ipt]->Write();
+    h1_Wmp_Neu_pt[ipt]->Write();
+    h1_Wm_Mt[ipt]->Write();
     h1_WmSide_Neu_pt[ipt]->Write();
+    h1_WmSide_Mt[ipt]->Write();
   }
   return 0;
 }
