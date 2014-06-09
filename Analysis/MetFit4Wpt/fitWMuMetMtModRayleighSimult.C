@@ -211,6 +211,10 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
   TH1D *hAntiEWKMetm[NWptBinPlus];
   
   Double_t METMAX;
+  double W_TotalEvents,Wp_TotalEvents,Wm_TotalEvents;
+  W_TotalEvents  = 0;
+  Wp_TotalEvents = 0;
+  Wm_TotalEvents = 0;
   
   bool QCDFix(false);  // For Scale Correction Systematic Calculation
   //bool QCDFix(true); // For Other Corrections Systematic Calculation
@@ -2711,17 +2715,14 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
     flags = allyields.flags();
     allyields<<fixed<<setprecision(4);
     allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
-    allyields.flags(flags);
 
     flags = allyieldsp.flags();
     allyieldsp<<fixed<<setprecision(4);
     allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
-    allyieldsp.flags(flags);
 
     flags = allyieldsm.flags();
     allyieldsm<<fixed<<setprecision(4);
     allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
-    allyieldsm.flags(flags);
 
     chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
     chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
@@ -3093,6 +3094,10 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
     cout<<endl;
 
     if (ipt>0){
+      W_TotalEvents  += nSig[ipt]->getVal();
+      Wp_TotalEvents += nSigp[ipt]->getVal();
+      Wm_TotalEvents += nSigm[ipt]->getVal();
+
       hSigWpt -> SetBinContent(ipt, nSig[ipt]->getVal());
       hSigWpt -> SetBinError(ipt, nSig[ipt]->getPropagatedError(*fitRes[ipt]));
       hSigWPpt-> SetBinContent(ipt, nSigp[ipt]->getVal());
@@ -3213,6 +3218,14 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       hDYToTauTauM-> SetBinError(ipt,nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEventDYToTauTauM[ipt]/totalm);
     }
   }
+  allyields <<"Total Numb. of Events: "<<W_TotalEvents<<" +/- " <<sqrt(W_TotalEvents)<<endl;
+  allyieldsp<<"Total Numb. of Events: "<<Wp_TotalEvents<<" +/- "<<sqrt(Wp_TotalEvents)<<endl;
+  allyieldsm<<"Total Numb. of Events: "<<Wm_TotalEvents<<" +/- "<<sqrt(Wm_TotalEvents)<<endl;
+  
+  allyields.flags(flags);
+  allyieldsp.flags(flags);
+  allyieldsm.flags(flags);
+
   Wmfile.close();
   Wmpfile.close();
   Wmmfile.close();
