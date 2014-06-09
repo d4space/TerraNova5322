@@ -446,10 +446,15 @@ int Wlnu12LoMET::Write_Histo()
     h1_W_Neu_pt[ipt]->Write();
     h1_WSide_Neu_pt[ipt]->Write();
     h1_Wp_Neu_pt[ipt]->Write();
-    h1_Wp_Mt[ipt]->Write();
     h1_WpSide_Neu_pt[ipt]->Write();
     h1_Wm_Neu_pt[ipt]->Write();
     h1_WmSide_Neu_pt[ipt]->Write();
+    h1_W_Mt[ipt] ->Write();
+    h1_Wp_Mt[ipt]->Write();
+    h1_Wm_Mt[ipt]->Write();
+    h1_WSide_Mt[pt]->Write();
+    h1_WpSide_Mt[pt]->Write();
+    h1_WmSide_Mt[pt]->Write();
   }
   return 0;
 }
