@@ -452,9 +452,9 @@ int Wlnu12LoMET::Write_Histo()
     h1_W_Mt[ipt] ->Write();
     h1_Wp_Mt[ipt]->Write();
     h1_Wm_Mt[ipt]->Write();
-    h1_WSide_Mt[pt]->Write();
-    h1_WpSide_Mt[pt]->Write();
-    h1_WmSide_Mt[pt]->Write();
+    h1_WSide_Mt[ipt]->Write();
+    h1_WpSide_Mt[ipt]->Write();
+    h1_WmSide_Mt[ipt]->Write();
   }
   return 0;
 }
