@@ -1,3 +1,4 @@
+#define PUrangeBin 4
 #define NWptBinPlus 14
 #define NwPtBin 13
 //#define NWqaBinPlus 25
