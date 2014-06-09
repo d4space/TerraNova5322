@@ -754,7 +754,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   //Loop for each Wpt bins==============
   // 0 is the total
   for( int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for( int ipt(13);ipt<14;ipt++)
+  //for( int ipt(9);ipt<14;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -763,8 +763,8 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       METMAX = METMAX_2;
       NBINS   = NBINS_2;
     } else {
-      METMAX = METMAX_3;
-      NBINS  = NBINS_3;
+      METMAX = METMAX_4;
+      NBINS  = NBINS_2;
     }
     RooRealVar pfmet("pfmet","pfmet",0,METMAX);
     pfmet.setBins(NBINS);
@@ -778,7 +778,30 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     sprintf(histName,"nSigm_%d",ipt);
     nSigm[ipt] = new RooRealVar(histName,histName
 	,0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
+   
+    if (ipt==13)
+    {
+      sprintf(histName,"nSig_%d",ipt);
+      nSig[ipt] = new RooRealVar(histName,histName
+	  ,0.5*(hDataMet[ipt]->Integral()),0.05*hDataMet[ipt]->Integral(),0.9*hDataMet[ipt]->Integral());
+      sprintf(histName,"nSigp_%d",ipt);
+      nSigp[ipt] = new RooRealVar(histName,histName
+          ,0.5*(hDataMetp[ipt]->Integral()),0.05*hDataMetp[ipt]->Integral(),0.9*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nSigm_%d",ipt);
+      nSigm[ipt] = new RooRealVar(histName,histName
+  	  ,0.5*(hDataMetm[ipt]->Integral()),0.005*hDataMetm[ipt]->Integral(),0.95*hDataMetm[ipt]->Integral());
     
+      sprintf(histName,"nQCD_%d",ipt);
+      nQCD[ipt]  = new RooRealVar(histName,histName
+          ,0.3*(hDataMet[ipt]->Integral()),0.05*hDataMet[ipt]->Integral(),0.9*hDataMet[ipt]->Integral());
+      sprintf(histName,"nQCDp_%d",ipt);
+      nQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.3*(hDataMetp[ipt]->Integral()),0.05*hDataMetp[ipt]->Integral(),0.9*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nQCDm_%d",ipt);
+      nQCDm[ipt] = new RooRealVar(histName,histName
+	,0.3*(hDataMetm[ipt]->Integral()),0.005*hDataMetm[ipt]->Integral(),0.95*hDataMetm[ipt]->Integral());
+    
+    }
     if (ipt<10)
     {
       sprintf(histName,"nAntiSig_%d",ipt);
