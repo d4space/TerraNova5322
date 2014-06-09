@@ -31,7 +31,7 @@
 //#define TSVDSelfTestPost
 
 TH1D* makeDiffHist(TH1D* hData, TH1D* hPowheg, const TString name);
-  
+
 int recPostClosure
 (TString UnfoldFile,TString AcceptFile,TString BaseName)
 {
@@ -148,13 +148,16 @@ int recPostClosure
   CPlot *pltUnfIvs;
   CPlot *pltWpT;
   CPlot *pltSVD_Unf;
-  CPlot *pltSVD_UnfDiff;
   CPlot *pltSVD_cov;
   CPlot *pltSVD_d;
 
+  CPlot *pltSVD_UnfDiff;
+
+
   TCanvas *myCan = MakeCanvas("myCan","myCan",900,800);
 
- TCanvas *lC0 = new TCanvas("Can","Can",900,1000); lC0->cd(); lC0->SetLogy();
+ //TCanvas *lC0 = new TCanvas("Can","Can",900,1000); lC0->cd(); lC0->SetLogy();
+ TCanvas *lC0 = new TCanvas("Can","Can",900,800); lC0->cd(); lC0->SetLogy();
  lC0->Divide(1,2,0,0);
  lC0->cd(1)->SetPad(0,0.35,0.95,1.0);
  lC0->cd(1)->SetTopMargin(0.1);
@@ -171,6 +174,12 @@ int recPostClosure
  lC0->cd(2)->SetTickx(1);
  lC0->cd(2)->SetTicky(1);
  gStyle->SetLineWidth(2.);
+
+
+
+
+
+
 
   char legendName[30];
     
@@ -413,7 +422,8 @@ int recPostClosure
       SVD.data, SVD.bini, SVD.xini, SVD.Adet);
   SVD.statCov = tsvdUnf->GetBCov();
   tsvdUnf->SetNormalize(kFALSE);
-  SVD.unfRes = tsvdUnf->Unfold(6);
+  //SVD.unfRes = tsvdUnf->Unfold(6);
+  SVD.unfRes = tsvdUnf->Unfold(4);
   SVD.dDist = tsvdUnf->GetD();
   SVD.svDist = tsvdUnf->GetSV();
   SVD.uStatCov = tsvdUnf->GetUnfoldCovMatrix(SVD.statCov,100);
@@ -438,6 +448,8 @@ int recPostClosure
   drawDifference->SetMarkerSize(0.9);
   SVD.unfRes->GetXaxis()->SetLabelSize(0.0);
 
+
+
   //SVD.unfRes->GetYaxis()->SetMoreLogLabels();
   //SVD.unfRes->GetYaxis()->SetNoExponent();
   tmpTStr = "SVD_Unf_"+BaseName;
@@ -450,21 +462,26 @@ int recPostClosure
 //  pltSVD_Unf->AddHist1D(SVD.Gen,"hist",kGreen,1,0,0,0);
 //  pltSVD_Unf->AddHist1D(SVD.EffCorr,"elp",kGreen+2,0,0,26,2.0);
   pltSVD_Unf->SetLegend(0.68,0.57,0.93,0.8);
+  //pltSVD_Unf->SetLegend(0.55,0.55,0.9,0.8);
   pltSVD_Unf->GetLegend()->AddEntry(SVD.unfRes,"Unfolded","p");
-  pltSVD_Unf->GetLegend()->AddEntry(SVD.data,"Recon","p");
-  pltSVD_Unf->GetLegend()->AddEntry(SVD.True,"Powheg Pythia","l");
+  pltSVD_Unf->GetLegend()->AddEntry(SVD.data,"Rec","p");
+//  pltSVD_Unf->GetLegend()->AddEntry(SVD.True,"Truth","l");
+  pltSVD_Unf->GetLegend()->AddEntry(SVD.True,"PowhegPythia","l");
 //  pltSVD_Unf->GetLegend()->AddEntry(SVD.Gen,"Post","l");
 //  pltSVD_Unf->GetLegend()->AddEntry(SVD.EffCorr,"EffCorr","p");
+ // pltSVD_Unf->Draw(myCan,kTRUE,"png");
   pltSVD_Unf->Draw(lC0,kFALSE,"png",1);
 
-  tmpTStr = "Unf_to_FSR_test"+BaseName;
-  pltSVD_UnfDiff = new CPlot(tmpTStr,"","W p_{T} [GeV]","Unfolded/Powheg Pythia");
+  tmpTStr = "DetUnf_"+BaseName;
+  //pltSVD_UnfDiff = new CPlot(tmpTStr,"","W p_{T} [GeV]","Unfolded/Powheg Pythia");
+  pltSVD_UnfDiff = new CPlot(tmpTStr,"","W p_{T} [Bins]","Unfolded/Powheg Pythia");
   pltSVD_UnfDiff->setOutDir(resultDir);
   pltSVD_UnfDiff->AddHist1D(drawDifference,"EX0",kBlack);
-  //pltSVD_UnfDiff->SetYRange(0.4,1.6);
-  pltSVD_UnfDiff->SetYRange(0.9,1.1);
+  pltSVD_UnfDiff->SetYRange(0.4,1.6);
+  //pltSVD_UnfDiff->SetYRange(0.9,1.1);
   pltSVD_UnfDiff->AddLine(0,1,13, 1,kBlack,2);
   pltSVD_UnfDiff->Draw(lC0,kTRUE,"png",2);
+
 
   tmpTStr = "SVD_cov_"+BaseName;
   pltSVD_cov = new CPlot(tmpTStr,"TSVDUnfold Covariance matrix","","");
@@ -481,6 +498,7 @@ int recPostClosure
 
   return 0;
 }
+
 TH1D *makeDiffHist(TH1D* hData, TH1D* hPowheg, const TString name)
 {
   TH1D *hDiff = new TH1D(name,"",hData->GetNbinsX(),hData->GetXaxis()->GetXmin(),hData->GetXaxis()->GetXmax());
