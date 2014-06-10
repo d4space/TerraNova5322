@@ -264,13 +264,13 @@ int Wlnu12LoUnfold::FillUnfHisto()
   h1_Truth_Post->Fill(genInfo.PostW_pt,mTTW); //dUnf xini
   if( evtCnt % 2 == 0 )
   {
-    h1_Truth_Rec_Even->Fill(W.pt);
-    h1_Truth_Post_Even->Fill(genInfo.PostW_pt);
+    h1_Truth_Rec_Even->Fill(W.pt,mTTW);
+    h1_Truth_Post_Even->Fill(genInfo.PostW_pt,mTTW);
   }else{
-    h1_Truth_Rec_Odd->Fill(W.pt);
-    h1_Truth_Post_Odd->Fill(genInfo.PostW_pt);
+    h1_Truth_Rec_Odd->Fill(W.pt,mTTW);
+    h1_Truth_Post_Odd->Fill(genInfo.PostW_pt,mTTW);
   }
-  h2_Truth_Rec_AP_Post->Fill(W.pt,genInfo.PostW_pt);
+  h2_Truth_Rec_AP_Post->Fill(W.pt,genInfo.PostW_pt,mTTW);
   h2_Truth_Rec_AP_PostEffCorr->Fill(W.pt,genInfo.PostW_pt,mTTW); //dUnf Response Matrix
 
   //if (W.pt>genInfo.BornW_pt && W.pt>genInfo.PostW_pt)

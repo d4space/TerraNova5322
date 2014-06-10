@@ -29,6 +29,8 @@
  
 //#define TSVDSelfTestPost
 
+TH1D* makeDiffHist(TH1D* hData, TH1D* hPowheg, const TString name);
+
 int wPtUnfoldStudy
 (TString UnfoldFile,TString AcceptFile,TString DataFile,TString BaseName)
 {
@@ -394,7 +396,35 @@ int wPtUnfoldStudy
   CPlot *pltUnfBorn;
   CPlot *pltUnfBorn_cov;
   CPlot *pltUnfBorn_d;
+  
+
+  CPlot *pltDetUnfChi;
+  CPlot *pltDetUnfChiDiff;
+  CPlot *pltFSRUnfChi;
+  CPlot *pltFSRUnfChiDiff;
+	
   TCanvas *myCan = MakeCanvas("myCan","myCan",900,800);
+
+ TCanvas *lC0 = new TCanvas("Can","Can",900,1000); lC0->cd(); lC0->SetLogy();
+ lC0->Divide(1,2,0,0);
+ lC0->cd(1)->SetPad(0,0.35,0.95,1.0);
+ lC0->cd(1)->SetTopMargin(0.1);
+ lC0->cd(1)->SetBottomMargin(0.01);
+ lC0->cd(1)->SetLeftMargin(0.15);
+ lC0->cd(1)->SetRightMargin(0.07);
+ lC0->cd(1)->SetTickx(1);
+ lC0->cd(1)->SetTicky(1);
+ lC0->cd(2)->SetPad(0,0,0.95,0.345);
+ lC0->cd(2)->SetTopMargin(0.025);
+ lC0->cd(2)->SetBottomMargin(0.3);
+ lC0->cd(2)->SetLeftMargin(0.15);
+ lC0->cd(2)->SetRightMargin(0.07);
+ lC0->cd(2)->SetTickx(1);
+ lC0->cd(2)->SetTicky(1);
+ gStyle->SetLineWidth(2.);
+
+
+
 
 
   char legendName[30];
@@ -1556,8 +1586,43 @@ int wPtUnfoldStudy
 //  pltUnfPost->GetLegend()->AddEntry(SVD_Post.Gen,"Powheg Post","l");
 //  pltUnfPost->GetLegend()->AddEntry(SVD_Post.EffCorr,"EffCorr","p");
   pltUnfPost->Draw(myCan,kTRUE,"png");
-  //cout<<"LumiWeight_Muon_WpToMuNu_S8: "<<LumiWeight_Muon_WpToMuNu_S8<<endl;
   
+  
+
+  TH1D* drawDifferenceUnfPost;
+  drawDifferenceUnfPost = makeDiffHist(SVD_Post.unfRes,SVD_Post.True,"drawDifferenceUnfPost");
+  drawDifferenceUnfPost->SetMarkerStyle(kFullCircle);
+  drawDifferenceUnfPost->SetMarkerSize(0.9);
+  SVD_Post.unfRes->GetXaxis()->SetLabelSize(0.0);
+
+  tmpTStr = "Det_Unf_Chi"+BaseName;
+  pltDetUnfChi = new CPlot(tmpTStr,"Detector Unfolding with SVD","W pT [Bins]","Event");
+  pltDetUnfChi->setOutDir(resultDir);
+  pltDetUnfChi->AddHist1D(SVD_Post.unfRes,"elp",kBlue,1,0,20,2);
+  pltDetUnfChi->AddHist1D(SVD_Post.data,"elp",kRed,1,0,24,2);
+  pltDetUnfChi->AddHist1D(SVD_Post.True,"hist",kBlack,1,0,0,0);
+ // pltDetUnfChi->AddHist1D(SVD_Post.Gen,"hist",kGreen,1,0,0,0);
+ // pltDetUnfChi->AddHist1D(SVD_Post.EffCorr,"elp",kGreen+2,0,0,26,2.0);
+ // pltDetUnfChi->SetLegend(0.68,0.57,0.93,0.8);
+  pltDetUnfChi->SetLegend(0.55,0.55,0.9,0.8);
+  pltDetUnfChi->GetLegend()->AddEntry(SVD_Post.unfRes,"Unfolded","p");
+  pltDetUnfChi->GetLegend()->AddEntry(SVD_Post.data,"Recon","p");
+  pltDetUnfChi->GetLegend()->AddEntry(SVD_Post.True,"Powheg Pythia","l");
+ // pltDetUnfChi->GetLegend()->AddEntry(SVD_Post.Gen,"Powheg Post","l");
+ // pltDetUnfChi->GetLegend()->AddEntry(SVD_Post.EffCorr,"EffCorr","p");
+  pltDetUnfChi->Draw(lC0,kTRUE,"png",1);
+ 
+  tmpTStr = "Det_Unf_Chi_Diff_"+BaseName;
+  pltDetUnfChiDiff = new CPlot(tmpTStr,"","W p_{T} [Bins]","Unfolded/Powheg Pythia");
+  pltDetUnfChiDiff->setOutDir(resultDir);
+  pltDetUnfChiDiff->AddHist1D(drawDifferenceUnfPost,"EX0",kBlack);
+  pltDetUnfChiDiff->SetYRange(0.4,1.6);
+  //pltDetUnfChiDiff->SetYRange(0.9,1.1);
+  pltDetUnfChiDiff->AddLine(0,1,13, 1,kBlack,2);
+  pltDetUnfChiDiff->Draw(lC0,kTRUE,"png",2);
+ 
+
+
   //tmpTStr = "Post_cov_"+BaseName;
   //tmpTStr = "Post_uTotalCov_"+BaseName;
   tmpTStr = "uTotalAfterDetUnfCovMat__"+BaseName;
@@ -2062,6 +2127,47 @@ int wPtUnfoldStudy
   pltUnfBorn->GetLegend()->AddEntry(SVD_Born.EffCorr,"Unfolded","p");
   pltUnfBorn->Draw(myCan,kTRUE,"png");
 
+ 
+  TH1D* drawDifferenceFSRUnf;
+  drawDifferenceFSRUnf = makeDiffHist(SVD_Born.EffCorr,SVD_Born.Gen,"drawDifferenceFSRUnf");
+  drawDifferenceFSRUnf->SetMarkerStyle(kFullCircle);
+  drawDifferenceFSRUnf->SetMarkerSize(0.9);
+  SVD_Born.EffCorr->GetXaxis()->SetLabelSize(0.0); 
+
+  tmpTStr = "FSR_Unf_Chi"+BaseName;
+  pltFSRUnfChi = new CPlot(tmpTStr,"Post to Born Unfolding with SVD","W pT [Bins]","Event");
+  pltFSRUnfChi->setOutDir(resultDir);
+  pltFSRUnfChi->AddHist1D(SVD_Born.unfRes,"e",kBlue,1,0,20,2);
+  pltFSRUnfChi->AddHist1D(SVD_Born.data,"e",kRed,1,0,24,2);
+  pltFSRUnfChi->AddHist1D(SVD_Born.True,"hist",kBlack,1,0,0,0);
+  pltFSRUnfChi->AddHist1D(SVD_Born.Gen,"hist",kGreen,1,0,0,0);
+  pltFSRUnfChi->AddHist1D(SVD_Born.EffCorr,"elp",kGreen+2,0,0,26,2);
+  //pltFSRUnfChi->SetLegend(0.68,0.57,0.93,0.8);
+  //pltFSRUnfChi->SetLegend(0.48,0.77,0.87,0.9);
+  pltFSRUnfChi->SetLegend(0.55,0.55,0.93,0.90);
+  //pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.unfRes,"Unfolded","p");
+  pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.unfRes,"Unfolded to Both fiducial","p");
+  pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.data,"Post","p");
+  //pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.True,"Born Target","l");
+  pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.True,"Born in the Both fiducial","l");
+  //pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.Gen,"Born Gen","l");
+  //pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.Gen,"PowHeg CT10 Pythia Z2*","l");
+  //pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.EffCorr,"Unfolded","p");
+  pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.Gen,"Born fiducial","l");
+  pltFSRUnfChi->GetLegend()->AddEntry(SVD_Born.EffCorr,"EffCorr","p");
+  pltFSRUnfChi->Draw(lC0,kFALSE,"png",1);
+
+  tmpTStr = "FSR_Unf_Chi_Diff"+BaseName;
+  pltFSRUnfChiDiff = new CPlot(tmpTStr,"","W p_{T} [Bins]","EffCorr/Born fiducial");
+  pltFSRUnfChiDiff->setOutDir(resultDir);
+  pltFSRUnfChiDiff->AddHist1D(drawDifferenceFSRUnf,"EX0",kBlack);
+  pltFSRUnfChiDiff->SetYRange(0.4,1.6);
+  //pltFSRUnfChiDiff->SetYRange(0.9,1.1);
+  pltFSRUnfChiDiff->AddLine(0,1,13, 1,kBlack,2);
+  pltFSRUnfChiDiff->Draw(lC0,kTRUE,"png",2);
+
+
+
   tmpTStr = "Born_cov_"+BaseName;
   pltUnfBorn_cov = new CPlot(tmpTStr,"TSVDUnfold Covariance matrix","","");
   pltUnfBorn_cov->setOutDir(resultDir);
@@ -2256,3 +2362,23 @@ int wPtUnfoldStudy
   SVD_Born.EffCorr->Write();
   return 0;
 }
+
+TH1D *makeDiffHist(TH1D* hData, TH1D* hPowheg, const TString name)
+{
+  TH1D *hDiff = new TH1D(name,"",hData->GetNbinsX(),hData->GetXaxis()->GetXmin(),hData->GetXaxis()->GetXmax());
+  for(Int_t ibin=1; ibin<=hData->GetNbinsX(); ibin++) {
+    Double_t diff = (hData->GetBinContent(ibin)/hPowheg->GetBinContent(ibin));
+    Double_t err = hData->GetBinError(ibin)/hPowheg->GetBinContent(ibin);
+    hDiff->SetBinContent(ibin,diff);
+    hDiff->SetBinError(ibin,err);
+  }
+  hDiff->GetYaxis()->SetTitleOffset(0.8);
+  hDiff->GetYaxis()->SetTitleSize(0.07);
+  hDiff->GetYaxis()->SetLabelSize(0.08);
+  hDiff->GetYaxis()->CenterTitle();
+  hDiff->GetXaxis()->SetTitleOffset(1.0);
+  hDiff->GetXaxis()->SetTitleSize(0.08);
+  hDiff->GetXaxis()->SetLabelSize(0.08);
+  return hDiff;
+}
+
