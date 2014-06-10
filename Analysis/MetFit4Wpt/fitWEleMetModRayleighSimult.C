@@ -2148,7 +2148,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     dataMet[ipt]->plotOn(wmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMet[ipt]->GetBinWidth(1));
-    sprintf(histName,"WMuNu_%d",ipt);
+    sprintf(histName,"WElNu_%d",ipt);
     plotMet=new CPlot(histName,wmframe,"","",ylabel);
     plotMet->setOutDir(CPlot::sOutDir);
     plotMet->SetLegend(0.68,0.55,0.93,0.73);
@@ -2171,7 +2171,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WMuNu_%d_log",ipt);
+    sprintf(histName,"WElNu_%d_log",ipt);
     plotMet->SetName(histName);
     plotMet->SetLogy();
     plotMet->SetYRange(1e-3*(hDataMet[ipt]->GetMaximum()),10*(hDataMet[ipt]->GetMaximum()));
@@ -2230,7 +2230,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMet[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMet->GetBinWidth(1));
-    sprintf(histName,"WMuNu_cont_%d",ipt);
+    sprintf(histName,"WElNu_cont_%d",ipt);
     plotAntiMet=new CPlot (histName,awmframe,"","",ylabel);
     plotAntiMet->setOutDir(CPlot::sOutDir);
     plotAntiMet->SetLegend(0.68,0.55,0.93,0.73);
@@ -2256,7 +2256,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WMuNu_cont_%d_log",ipt);
+    sprintf(histName,"WElNu_cont_%d_log",ipt);
     plotAntiMet->SetName(histName);
     plotAntiMet->SetLogy();
     if (ipt<10)
@@ -2318,7 +2318,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     dataMetp[ipt]->plotOn(wmpframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));  
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetp[ipt]->GetBinWidth(1));
-    sprintf(histName,"WpMuNu_%d",ipt);
+    sprintf(histName,"WpElNu_%d",ipt);
     plotMetp=new CPlot (histName,wmpframe,"","",ylabel);
     plotMetp->setOutDir(CPlot::sOutDir);
     plotMetp->SetLegend(0.68,0.55,0.93,0.73);
@@ -2341,7 +2341,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WpMuNu_%d_log",ipt);
+    sprintf(histName,"WpElNu_%d_log",ipt);
     plotMetp->SetName(histName);
     plotMetp->SetLogy();
     plotMetp->SetYRange(1e-3*(hDataMetp[ipt]->GetMaximum()),10*(hDataMetp[ipt]->GetMaximum()));
@@ -2401,7 +2401,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetp[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetp->GetBinWidth(1));
-    sprintf(histName,"WpMuNu_cont_%d",ipt);
+    sprintf(histName,"WpElNu_cont_%d",ipt);
     plotAntiMetp=new CPlot (histName,awmpframe,"","",ylabel);
     plotAntiMetp->setOutDir(CPlot::sOutDir);
     plotAntiMetp->SetLegend(0.68,0.55,0.93,0.73);
@@ -2427,7 +2427,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetpDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WpMuNu_cont_%d_log",ipt);
+    sprintf(histName,"WpElNu_cont_%d_log",ipt);
     plotAntiMetp->SetName(histName);
     plotAntiMetp->SetLogy();
     if (ipt<10)
@@ -2490,7 +2490,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     dataMetm[ipt]->plotOn(wmmframe,MarkerStyle(kFullCircle),MarkerSize(0.9),DrawOption("ZP"));
     
     sprintf(ylabel,"Events / %.1f GeV",hDataMetm[ipt]->GetBinWidth(1));
-    sprintf(histName,"WmMuNu_%d",ipt);
+    sprintf(histName,"WmElNu_%d",ipt);
     plotMetm=new CPlot(histName,wmmframe,"","",ylabel);
     plotMetm->setOutDir(CPlot::sOutDir);
     plotMetm->SetLegend(0.68,0.55,0.93,0.73);
@@ -2513,7 +2513,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WmMuNu_%d_log",ipt);
+    sprintf(histName,"WmElNu_%d_log",ipt);
     plotMetm->SetName(histName);
     plotMetm->SetLogy();
     plotMetm->SetYRange(1e-3*(hDataMetm[ipt]->GetMaximum()),10*(hDataMetm[ipt]->GetMaximum()));
@@ -2574,7 +2574,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
       sprintf(ylabel,"Events / %.1f GeV",hAntiDataMetm[ipt]->GetBinWidth(1));
     else
       sprintf(ylabel,"Events / %.1f GeV",hHighWpTAnti_DataMetm->GetBinWidth(1));
-    sprintf(histName,"WmMuNu_cont_%d",ipt);
+    sprintf(histName,"WmElNu_cont_%d",ipt);
     plotAntiMetm=new CPlot(histName,awmmframe,"","",ylabel);
     plotAntiMetm->setOutDir(CPlot::sOutDir);
     plotAntiMetm->SetLegend(0.68,0.55,0.93,0.73);
@@ -2600,7 +2600,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
     
-    sprintf(histName,"WmMuNu_cont_%d_log",ipt);
+    sprintf(histName,"WmElNu_cont_%d_log",ipt);
     plotAntiMetm->SetName(histName);
     plotAntiMetm->SetLogy();
     if (ipt<10)
@@ -2848,24 +2848,24 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<".png\"><img src=\"WMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_"<<ipt <<"_log.png\"><img src=\"WMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<".png\"><img src=\"WMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_"<<ipt <<".png\"><img src=\"WElNu_"<<ipt <<".png\" width=\"200\" alt=\"WElNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_"<<ipt <<"_log.png\"><img src=\"WElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_cont_"<<ipt <<".png\"><img src=\"WElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WElNu_cont_"<<ipt <<"_log.png\"><img src=\"WElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>+</sup> </p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<".png\"><img src=\"WpMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_"<<ipt <<"_log.png\"><img src=\"WpMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<".png\"><img src=\"WpMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WpMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_"<<ipt <<".png\"><img src=\"WpElNu_"<<ipt <<".png\" width=\"200\" alt=\"WpElNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_"<<ipt <<"_log.png\"><img src=\"WpElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_cont_"<<ipt <<".png\"><img src=\"WpElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WpElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WpElNu_cont_"<<ipt <<"_log.png\"><img src=\"WpElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WpElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"<tr>"<<endl;
     metplotsfile<<"<td width=\"100\"><p align=\"center\" style=\"font-size:small\"> W <sup>-</sup></p></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<".png\"><img src=\"WmMuNu_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_"<<ipt <<"_log.png\"><img src=\"WmMuNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<".png\"><img src=\"WmMuNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
-    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmMuNu_cont_"<<ipt <<"_log.png\"><img src=\"WmMuNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmMuNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_"<<ipt <<".png\"><img src=\"WmElNu_"<<ipt <<".png\" width=\"200\" alt=\"WmElNu_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_"<<ipt <<"_log.png\"><img src=\"WmElNu_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmElNu_"<<ipt <<"_log.png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_cont_"<<ipt <<".png\"><img src=\"WmElNu_cont_"<<ipt <<".png\" width=\"200\" alt=\"WmElNu_cont_"<<ipt <<".png\"></a></td>"<<endl;
+    metplotsfile<<"<td width=\"200\"><a target=\"_blank\" href=\"WmElNu_cont_"<<ipt <<"_log.png\"><img src=\"WmElNu_cont_"<<ipt <<"_log.png\" width=\"200\" alt=\"WmElNu_cont_"<<ipt <<"_log.png\"></a></td>"<<endl;
     metplotsfile<<"</tr>"<<endl;
     metplotsfile<<"</table>"<<endl;
 
@@ -3053,7 +3053,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWptDiff->SetMarkerStyle(kFullCircle);
   hWptDiff->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_Muon");
+  sprintf(histName,"FitWDistribution_Ele");
   plotWpt=new CPlot(histName,"","","Events");
   plotWpt->setOutDir(CPlot::sOutDir);
   plotWpt->AddToStack(hDYToTauTau,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3078,7 +3078,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff->Draw(c,kTRUE,format,2);
 
-  //sprintf(histName,"FitWDistribution_MuonLog");
+  //sprintf(histName,"FitWDistribution_EleLog");
   //plotWpt->SetName(histName);
   //plotWpt->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
   //plotWpt->SetLogy();
@@ -3123,7 +3123,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWptDiffLog->SetMarkerStyle(kFullCircle);
   hWptDiffLog->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_MuonLog");
+  sprintf(histName,"FitWDistribution_EleLog");
   plotWptLog=new CPlot(histName,"","","Events");
   plotWptLog->setOutDir(CPlot::sOutDir);
   plotWptLog->AddToStack(hDYToTauTauLog,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3162,7 +3162,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWptDiff_p->SetMarkerStyle(kFullCircle);
   hWptDiff_p->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_MuonP");
+  sprintf(histName,"FitWDistribution_EleP");
   plotWpt_p=new CPlot(histName,"","","Events");
   plotWpt_p->setOutDir(CPlot::sOutDir);
   plotWpt_p->AddToStack(hDYToTauTauP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3187,7 +3187,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_p->Draw(c,kTRUE,format,2);
   
-  //sprintf(histName,"FitWDistribution_MuonPLog");
+  //sprintf(histName,"FitWDistribution_ElePLog");
   //plotWpt_p->SetName(histName);
   //plotWpt_p->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   //plotWpt_p->SetLogy();
@@ -3229,7 +3229,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWPptDiffLog->SetMarkerStyle(kFullCircle);
   hWPptDiffLog->SetMarkerSize(0.9);
   
-  sprintf(histName,"FitWDistribution_MuonPLog");
+  sprintf(histName,"FitWDistribution_ElePLog");
   plotWPptLog=new CPlot(histName,"","","Events");
   plotWPptLog->setOutDir(CPlot::sOutDir);
   plotWPptLog->AddToStack(hDYToTauTauLogP,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3268,7 +3268,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWptDiff_m->SetMarkerStyle(kFullCircle);
   hWptDiff_m->SetMarkerSize(0.9);
 
-  sprintf(histName,"FitWDistribution_MuonM");
+  sprintf(histName,"FitWDistribution_EleM");
   plotWpt_m=new CPlot(histName,"","","Events");
   plotWpt_m->setOutDir(CPlot::sOutDir);
   plotWpt_m->AddToStack(hDYToTauTauM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3293,7 +3293,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_m->Draw(c,kTRUE,format,2);
   
-  //sprintf(histName,"FitWDistribution_MuonMLog");
+  //sprintf(histName,"FitWDistribution_EleMLog");
   //plotWpt_m->SetName(histName);
   //plotWpt_m->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   //plotWpt_m->SetLogy();
@@ -3335,7 +3335,7 @@ void fitWEleMetModRayleighSimult(const TString  outputDir,   // output directory
   hWMptDiffLog->SetMarkerStyle(kFullCircle);
   hWMptDiffLog->SetMarkerSize(0.9);
   
-  sprintf(histName,"FitWDistribution_MuonMLog");
+  sprintf(histName,"FitWDistribution_EleMLog");
   plotWMptLog=new CPlot(histName,"","","Events");
   plotWMptLog->setOutDir(CPlot::sOutDir);
   plotWMptLog->AddToStack(hDYToTauTauLogM,"Z/#gamma^{*}#rightarrow#tau#tau",kSpring+5,kSpring+3);
@@ -3523,16 +3523,16 @@ void makeHTML(const TString outDir)
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_Muon.png\"><img src=\"FitWDistribution_Muon.png\" alt=\"FitWDistribution_Muon.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonP.png\"><img src=\"FitWDistribution_MuonP.png\" alt=\"FitWDistribution_MuonP.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonM.png\"><img src=\"FitWDistribution_MuonM.png\" alt=\"FitWDistribution_MuonM.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_Ele.png\"><img src=\"FitWDistribution_Ele.png\" alt=\"FitWDistribution_Ele.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleP.png\"><img src=\"FitWDistribution_EleP.png\" alt=\"FitWDistribution_EleP.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleM.png\"><img src=\"FitWDistribution_EleM.png\" alt=\"FitWDistribution_EleM.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "<tr>" << endl;
   htmlfile << "<td width=\"15%\"></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonLog.png\"><img src=\"FitWDistribution_MuonLog.png\" alt=\"FitWDistribution_MuonLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonPLog.png\"><img src=\"FitWDistribution_MuonPLog.png\" alt=\"FitWDistribution_MuonPLog.png\" width=\"100%\"></a></td>" << endl;
-  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_MuonMLog.png\"><img src=\"FitWDistribution_MuonMLog.png\" alt=\"FitWDistribution_MuonMLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleLog.png\"><img src=\"FitWDistribution_EleLog.png\" alt=\"FitWDistribution_EleLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_ElePLog.png\"><img src=\"FitWDistribution_ElePLog.png\" alt=\"FitWDistribution_ElePLog.png\" width=\"100%\"></a></td>" << endl;
+  htmlfile << "<td width=\"25%\"><a target=\"_blank\" href=\"FitWDistribution_EleMLog.png\"><img src=\"FitWDistribution_EleMLog.png\" alt=\"FitWDistribution_EleMLog.png\" width=\"100%\"></a></td>" << endl;
   htmlfile << "<td width=\"10%\"></td>" << endl;
   htmlfile << "</tr>" << endl;
   htmlfile << "</table>" << endl;

@@ -122,14 +122,14 @@ void fitWMuMetModRayleighSimult(const TString  outputDir,   // output directory
   vector <double> nEventWToTauNuM;
   
   int ewkNumber(0);
-  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
-  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToMuMu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/Muon_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
+  fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/Muon_DYToMuMu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/Muon_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/Muon_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/Muon_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../WPtMET/Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../WPtMET/Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../WPtMET/tmp/Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);

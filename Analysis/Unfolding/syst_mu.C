@@ -254,33 +254,33 @@
   cout<<mutotaleffm12<<endl;
   cout<<mutotaleffm13<<endl;
 
-  double mustatp1 = 0.9203 ; 
-  double mustatp2 = 0.9265 ;
-  double mustatp3 = 1.0332 ;
-  double mustatp4 = 1.1272 ;
-  double mustatp5 = 1.5065 ;
-  double mustatp6 = 1.4969 ;
-  double mustatp7 = 2.1154 ;
-  double mustatp8 = 2.0820 ;
-  double mustatp9 = 2.6120 ;
-  double mustatp10= 5.3964 ;
-  double mustatp11= 10.2077;
-  double mustatp12= 16.5991;
-  double mustatp13= 23.8577;
+  double mustatp1 = 0.9202 ; 
+  double mustatp2 = 0.9267 ;
+  double mustatp3 = 1.0331 ;
+  double mustatp4 = 1.1262 ;
+  double mustatp5 = 1.5045 ;
+  double mustatp6 = 1.4961 ;
+  double mustatp7 = 2.1085 ;
+  double mustatp8 = 2.0564 ;
+  double mustatp9 = 2.7194 ;
+  double mustatp10= 5.4584 ;
+  double mustatp11= 10.5096;
+  double mustatp12= 18.2816;
+  double mustatp13= 24.2144;
 
-  double mustatm1  = 1.1491 ;
+  double mustatm1  = 1.1495 ;
   double mustatm2  = 1.1196 ;
-  double mustatm3  = 1.2732 ;
-  double mustatm4  = 1.3517 ;
-  double mustatm5  = 1.7661 ;
-  double mustatm6  = 1.8087 ;
-  double mustatm7  = 2.4800 ;
-  double mustatm8  = 2.5075 ;
-  double mustatm9  = 3.0304 ;
-  double mustatm10 = 6.1051 ;
-  double mustatm11 = 12.2531;
-  double mustatm12 = 16.3928;
-  double mustatm13 = 32.4360;
+  double mustatm3  = 1.2729 ;
+  double mustatm4  = 1.3512 ;
+  double mustatm5  = 1.7651 ;
+  double mustatm6  = 1.8067 ;
+  double mustatm7  = 2.4696 ;
+  double mustatm8  = 2.4629 ;
+  double mustatm9  = 3.1121 ;
+  double mustatm10 = 6.2686 ;
+  double mustatm11 = 12.1287;
+  double mustatm12 = 16.3956;
+  double mustatm13 = 33.3982;
 
   double mumetp1  = 0.0593; 
   double mumetp2  = 0.0268;
@@ -677,7 +677,7 @@
   double totaluncerm12 = sqrt(mustatm12*mustatm12+systtotalm12*systtotalm12);
   double totaluncerm13 = sqrt(mustatm13*mustatm13+systtotalm13*systtotalm13);
   //*
-  cout<<"Wplus Syst uncer"<<endl;
+  cout<<"WpToMuNu Syst uncer"<<endl;
   cout<<systtotalp1 <<endl;
   cout<<systtotalp2 <<endl;
   cout<<systtotalp3 <<endl;
@@ -692,7 +692,7 @@
   cout<<systtotalp12<<endl;
   cout<<systtotalp13<<endl;
   
-  cout<<"Wmlus Syst uncer"<<endl;
+  cout<<"WmToMuNu Syst uncer"<<endl;
   cout<<systtotalm1 <<endl;
   cout<<systtotalm2 <<endl;
   cout<<systtotalm3 <<endl;
@@ -707,7 +707,7 @@
   cout<<systtotalm12<<endl;
   cout<<systtotalm13<<endl;
 
-  cout<<"Wplus total uncer"<<endl;
+  cout<<"WpToMuNu total uncer"<<endl;
   cout<<totaluncerp1 <<endl;
   cout<<totaluncerp2 <<endl;
   cout<<totaluncerp3 <<endl;
@@ -722,7 +722,7 @@
   cout<<totaluncerp12<<endl;
   cout<<totaluncerp13<<endl;
   
-  cout<<"Wmlus totalt uncer"<<endl;
+  cout<<"WmToMuNu totalt uncer"<<endl;
   cout<<totaluncerm1 <<endl;
   cout<<totaluncerm2 <<endl;
   cout<<totaluncerm3 <<endl;
