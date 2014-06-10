@@ -861,7 +861,7 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
   //Loop for each Wpt bins==============
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for(int ipt(8);ipt<9;ipt++)
+  //for(int ipt(13);ipt<14;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -973,6 +973,13 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       sprintf(histName,"nAntiQCDm_%d",ipt);
       nAntiQCDm[ipt] = new RooRealVar(histName,histName
 	  ,0.95*(hAntiDataMetm[ipt]->Integral()),0.85*hAntiDataMetm[ipt]->Integral(),0.98*hAntiDataMetm[ipt]->Integral());
+    }
+
+    if(ipt==13)
+    {
+      sprintf(histName,"nSigm_%d",ipt);
+      nSigm[ipt] = new RooRealVar(histName,histName
+	  ,0.63*(hDataMetm[ipt]->Integral()),0.4*hDataMetm[ipt]->Integral(),0.8*hDataMetm[ipt]->Integral());
     }
 
     sprintf(histName,"cewk_%d",ipt);
@@ -1125,43 +1132,43 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
     //Initial Values
     if (ipt == 0)
     {
-      nSig[ipt]  -> setVal(94496.1);
-      nSigp[ipt] -> setVal(56270.6);
-      nSigm[ipt] -> setVal(38225.5);
+      nSig[ipt]  -> setVal(94624.8770);
+      nSigp[ipt] -> setVal(56338.1514);
+      nSigm[ipt] -> setVal(38286.7256);
       nAntiSig[ipt]  -> setVal(1650.044);
       nAntiSigp[ipt] -> setVal(878.832);
       nAntiSigm[ipt] -> setVal(771.212);
-      nQCD[ipt]  -> setVal(24402.7);
-      nQCDp[ipt] -> setVal(12389.8);
-      nQCDm[ipt] -> setVal(12012.9);
-      nAntiQCD[ipt]  -> setVal(66936.2);
-      nAntiQCDp[ipt] -> setVal(33810.7);
-      nAntiQCDm[ipt] -> setVal(33125.5);
+      nQCD[ipt]  -> setVal(24276.3);
+      nQCDp[ipt] -> setVal(12316.2);
+      nQCDm[ipt] -> setVal(11960.1);
+      nAntiQCD[ipt]  -> setVal(66165.2);
+      nAntiQCDp[ipt] -> setVal(33417.1);
+      nAntiQCDm[ipt] -> setVal(32748.1);
       qcdmean[ipt] ->setVal(0.0451553);
       qcdPmean[ipt]->setVal(0.0474507);
-      qcdMmean[ipt]->setVal(0.0432976);
+      qcdMmean[ipt]->setVal(0.0441552);
       qcda1[ipt] ->setVal(0.150583);
       qcdPa1[ipt]->setVal(0.153104);
-      qcdMa1[ipt]->setVal(0.146481);
+      qcdMa1[ipt]->setVal(0.151087);
       qcdsigma1[ipt] ->setVal(10.9774);
       qcdPsigma1[ipt]->setVal(10.9892);
-      qcdMsigma1[ipt]->setVal(11.0481);
+      qcdMsigma1[ipt]->setVal(11.0631);
       aqcdsigma1[ipt] ->setVal(11.1359);
       aqcdPsigma1[ipt]->setVal(11.0598);
-      aqcdMsigma1[ipt]->setVal(11.3116);
+      aqcdMsigma1[ipt]->setVal(11.1798);
     }else if (ipt == 1){
-      nSig[ipt]  -> setVal(19386.4);
-      nSigp[ipt] -> setVal(11828.8);
-      nSigm[ipt] -> setVal(7557.6);
-      nAntiSig[ipt]  -> setVal(122.838);
-      nAntiSigp[ipt] -> setVal(74.0701);
-      nAntiSigm[ipt] -> setVal(48.7679);
-      nQCD[ipt]  -> setVal(405.756);
-      nQCDp[ipt] -> setVal(198.287);
-      nQCDm[ipt] -> setVal(207.469);
-      nAntiQCD[ipt]  -> setVal(1639.4);
-      nAntiQCDp[ipt] -> setVal(842.785);
-      nAntiQCDm[ipt] -> setVal(796.615);
+      nSig[ipt]  -> setVal(19379.3);
+      nSigp[ipt] -> setVal(11811.9);
+      nSigm[ipt] -> setVal(7567.4);
+      nAntiSig[ipt]  -> setVal(132.6809);
+      nAntiSigp[ipt] -> setVal(87.5464);
+      nAntiSigm[ipt] -> setVal(45.1345);
+      nQCD[ipt]  -> setVal(397.636);
+      nQCDp[ipt] -> setVal(209.826);
+      nQCDm[ipt] -> setVal(187.81);
+      nAntiQCD[ipt]  -> setVal(1628.773);
+      nAntiQCDp[ipt] -> setVal(828.444);
+      nAntiQCDm[ipt] -> setVal(800.329);
       qcdmean[ipt] ->setVal(13.0857);
       qcdPmean[ipt]->setVal(13.0492);
       qcdMmean[ipt]->setVal(13.0294);
@@ -1200,18 +1207,18 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       aqcdPsigma1[ipt]->setVal(6.00495);
       aqcdMsigma1[ipt]->setVal(6.27976);
     }else if (ipt == 3){
-      nSig[ipt]  -> setVal(15513.1);
-      nSigp[ipt] -> setVal(9366.99);
-      nSigm[ipt] -> setVal(6169.79);
-      nAntiSig[ipt]  -> setVal(339.169);
-      nAntiSigp[ipt] -> setVal(195.731);
-      nAntiSigm[ipt] -> setVal(130.877);
-      nQCD[ipt]  -> setVal(2158.76);
-      nQCDp[ipt] -> setVal(1004.6);
-      nQCDm[ipt] -> setVal(1129.74);
-      nAntiQCD[ipt]  -> setVal(6289.96);
-      nAntiQCDp[ipt] -> setVal(3138.1);
-      nAntiQCDm[ipt] -> setVal(3164.75);
+      nSig[ipt]  -> setVal(15512.3);
+      nSigp[ipt] -> setVal(9369.66);
+      nSigm[ipt] -> setVal(6171.27);
+      nAntiSig[ipt]  -> setVal(227.734);
+      nAntiSigp[ipt] -> setVal(136.044);
+      nAntiSigm[ipt] -> setVal(87.9412);
+      nQCD[ipt]  -> setVal(2162.12);
+      nQCDp[ipt] -> setVal(1003.71);
+      nQCDm[ipt] -> setVal(1128.77);
+      nAntiQCD[ipt]  -> setVal(6337.12);
+      nAntiQCDp[ipt] -> setVal(3165.03);
+      nAntiQCDm[ipt] -> setVal(3175.79);
       qcdmean[ipt] ->setVal(2.39849);
       qcdPmean[ipt]->setVal(2.38088);
       qcdMmean[ipt]->setVal(3.36884);
@@ -1225,42 +1232,42 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       aqcdPsigma1[ipt]->setVal(8.04422);
       aqcdMsigma1[ipt]->setVal(5.84902);
     }else if (ipt == 4){
-      nSig[ipt]  -> setVal(13380.5);
-      nSigp[ipt] -> setVal(7871.14);
-      nSigm[ipt] -> setVal(5509.36);
-      nAntiSig[ipt]  -> setVal(174.322);
-      nAntiSigp[ipt] -> setVal(89.043);
-      nAntiSigm[ipt] -> setVal(85.279);
-      nQCD[ipt]  -> setVal(4388.7);
-      nQCDp[ipt] -> setVal(2288.57);
-      nQCDm[ipt] -> setVal(2098.23);
-      nAntiQCD[ipt]  -> setVal(11893.2);
-      nAntiQCDp[ipt] -> setVal(6037.37);
-      nAntiQCDm[ipt] -> setVal(5855.83);
+      nSig[ipt]  -> setVal(13392.4);
+      nSigp[ipt] -> setVal(7883.63);
+      nSigm[ipt] -> setVal(5508.77);
+      nAntiSig[ipt]  -> setVal(173.273);
+      nAntiSigp[ipt] -> setVal(88.3787);
+      nAntiSigm[ipt] -> setVal(84.8943);
+      nQCD[ipt]  -> setVal(4387.95);
+      nQCDp[ipt] -> setVal(2282.58);
+      nQCDm[ipt] -> setVal(2105.37);
+      nAntiQCD[ipt]  -> setVal(11894.4);
+      nAntiQCDp[ipt] -> setVal(6038.19);
+      nAntiQCDm[ipt] -> setVal(5856.21);
       qcda1[ipt] ->setVal(0.188517);
       qcdPa1[ipt]->setVal(0.153052);
-      qcdMa1[ipt]->setVal(0.171153);
+      qcdMa1[ipt]->setVal(0.172667);
       qcda2[ipt] ->setVal(0.221376);
       qcdPa2[ipt]->setVal(0.215376);
-      qcdMa2[ipt]->setVal(0.217218);
+      qcdMa2[ipt]->setVal(0.217581);
       qcdsigma1[ipt] ->setVal(7.09608);
       qcdPsigma1[ipt]->setVal(8.77087);
-      qcdMsigma1[ipt]->setVal(7.93804);
+      qcdMsigma1[ipt]->setVal(7.79109);
       dFrac1[ipt] ->setVal(0.499997);
       dFrac1P[ipt]->setVal(0.189024);
-      dFrac1M[ipt]->setVal(0.225191);
+      dFrac1M[ipt]->setVal(0.169521);
       qcdsigma2[ipt] ->setVal(2.49669);
       qcdPsigma2[ipt]->setVal(2.69496);
-      qcdMsigma2[ipt]->setVal(2.42217);
+      qcdMsigma2[ipt]->setVal(2.35191);
       dFrac2[ipt] ->setVal(0.337458);
       dFrac2P[ipt]->setVal(0.488801);
-      dFrac2M[ipt]->setVal(0.488858);
+      dFrac2M[ipt]->setVal(0.492906);
       aqcdsigma1[ipt] ->setVal(7.26393);
       aqcdPsigma1[ipt]->setVal(8.77087);
-      aqcdMsigma1[ipt]->setVal(8.22996);
+      aqcdMsigma1[ipt]->setVal(8.14876);
       aqcdsigma2[ipt] ->setVal(3.10788);
       aqcdPsigma2[ipt]->setVal(4.07679);
-      aqcdsigma2[ipt] ->setVal(3.93535);
+      aqcdsigma2[ipt] ->setVal(3.89267);
     }else if (ipt == 5){
       nSig[ipt]  -> setVal(7638.65);
       nSigp[ipt] -> setVal(4405.97);
@@ -1299,16 +1306,16 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       aqcdPsigma2[ipt]->setVal(13.0202);
       aqcdMsigma2[ipt]->setVal(13.1731);
     }else if (ipt == 6){
-      nSig[ipt]  -> setVal(7547.48);
+      nSig[ipt]  -> setVal(7519.74);
       nSigp[ipt] -> setVal(4482.35);
       nSigm[ipt] -> setVal(3078.34);
-      nAntiSig[ipt]  -> setVal(157.501);
+      nAntiSig[ipt]  -> setVal(114.842);
       nAntiSigp[ipt] -> setVal(86.3985);
       nAntiSigm[ipt] -> setVal(71.1227);
-      nQCD[ipt]  -> setVal(6172.9);
+      nQCD[ipt]  -> setVal(6200.9);
       nQCDp[ipt] -> setVal(3109.75);
       nQCDm[ipt] -> setVal(3048.97);
-      nAntiQCD[ipt]  -> setVal(16517.1);
+      nAntiQCD[ipt]  -> setVal(16327.5);
       nAntiQCDp[ipt] -> setVal(8406.54);
       nAntiQCDm[ipt] -> setVal(8109.4);
       qcdmean[ipt] ->setVal(9.11372);
@@ -1340,16 +1347,16 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       aqcdMsigma2[ipt]->setVal(21.5377);
     }else if (ipt == 7){
       nSig[ipt]  -> setVal(3902.62);
-      nSigp[ipt] -> setVal(2261.34);
+      nSigp[ipt] -> setVal(2268.65);
       nSigm[ipt] -> setVal(1633.97);
       nAntiSig[ipt]  -> setVal(94.7871);
-      nAntiSigp[ipt] -> setVal(55.2484);
+      nAntiSigp[ipt] -> setVal(58.0014);
       nAntiSigm[ipt] -> setVal(36.7857);
       nQCD[ipt]  -> setVal(3161.57);
-      nQCDp[ipt] -> setVal(1607.1);
+      nQCDp[ipt] -> setVal(1599.47);
       nQCDm[ipt] -> setVal(1562.1);
       nAntiQCD[ipt]  -> setVal(8609.71);
-      nAntiQCDp[ipt] -> setVal(4290.51);
+      nAntiQCDp[ipt] -> setVal(4287.75);
       nAntiQCDm[ipt] -> setVal(4321.96);
       qcdmean[ipt] ->setVal(16.0993);
       qcdPmean[ipt]->setVal(15.679);
@@ -1395,7 +1402,7 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
       qcdPmean[ipt]->setVal(23.1915);
       qcdMmean[ipt]->setVal(23.9665);
       qcda1[ipt] ->setVal(0.0379206);
-      qcdPa1[ipt]->setVal(0.0440809);
+      qcdPa1[ipt]->setVal(0.0440807);
       qcdMa1[ipt]->setVal(0.0171145);
       qcda2[ipt] ->setVal(-0.99982);
       qcdPa2[ipt]->setVal(-0.980964);
@@ -2852,9 +2859,10 @@ void fitWMuMetMtModRayleighSimult(const TString  outputDir,   // output director
     qcdfile<<"cewk="<<cewk[ipt]->getVal()<<"\t cewkp="<<cewkp[ipt]->getVal()<<"\t cewkm="<<cewkm[ipt]->getVal()<<endl;
     qcdfile<<"Control region: Normalization factors"<<endl;
     qcdfile <<"AntiSig="<<nAntiSig[ipt]->getValV()<<"\t AntiSigP="<<nAntiSigp[ipt]->getValV()<<"\t AntiSigM="<<nAntiSigm[ipt]->getValV()<<"\t AntiQCD="<<nAntiQCD[ipt] ->getValV()<<"+/-"<<nAntiQCD[ipt] ->getError()<<"\t AntiQCDP="<<nAntiQCDp[ipt] ->getValV()<<"+/-"<<nAntiQCDp[ipt] ->getError()<<"\t AntiQCDM="<<nAntiQCDm[ipt] ->getValV()<<"+/-"<<nAntiQCD[ipt] ->getError()<<endl;
-    qcdfile<<"dewk="<<dewk[ipt]->getVal()
-     <<"\t dewkp="<<dewkp[ipt]->getVal()<<"\t dewkm="
-     <<dewkm[ipt]->getVal()<<endl;
+    qcdfile<<"dewk="<<dewk[ipt]->getVal()<<"\t dewkp="<<dewkp[ipt]->getVal()<<"\t dewkm="<<dewkm[ipt]->getVal()<<endl;
+    qcdfile<<"Percentages"<<endl;
+    qcdfile<<"Sig: "<<nSig[ipt]->getValV()/hDataMet[ipt]->Integral()<<" Sigp: "<<nSigp[ipt]->getValV()/hDataMetp[ipt]->Integral()<<" Sigm: "<<nSigm[ipt]->getValV()/hDataMetm[ipt]->Integral()<<endl;
+    qcdfile<<"QCD: "<<nQCD[ipt]->getValV()/hDataMet[ipt]->Integral()<<" QCDp: "<<nQCDp[ipt]->getValV()/hDataMetp[ipt]->Integral()<<" QCDm: "<<nQCDm[ipt]->getValV()/hDataMetm[ipt]->Integral()<<endl;
 
     if (ipt<4){
       qcdfile<<"Signal region: Mod. Rayleigh func. parameters"<<endl;
