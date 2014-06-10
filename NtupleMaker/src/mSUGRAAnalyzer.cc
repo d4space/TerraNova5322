@@ -1,8 +1,8 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
-#include "TerraNova/NtupleMaker/interface/SusyAnalyzer.h"
+#include "TerraNova/NtupleMaker/interface/mSUGRAAnalyzer.h"
 #include "DataFormats/PatCandidates/interface/Muon.h"
 #include "DataFormats/PatCandidates/interface/MET.h"
-void SusyAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
+void mSUGRAAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
   //EvtPass = false;
@@ -193,5 +193,5 @@ void SusyAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
   //if(EvtPass) tree->Fill();
   tree->Fill();
 }
-DEFINE_FWK_MODULE(SusyAnalyzer);
+DEFINE_FWK_MODULE(mSUGRAAnalyzer);
 

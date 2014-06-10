@@ -596,7 +596,7 @@ MonoJet = cms.EDAnalyzer('MonoJetAnalyzer',
     useL1Selector = cms.bool( False ), #for Electron WP80
     L1Select = cms.untracked.string('L1_SingleEG22')
 )
-Susy = cms.EDAnalyzer('SusyAnalyzer',
+mSUGRA = cms.EDAnalyzer('mSUGRAAnalyzer',
     TriggerResultsTag = cms.untracked.InputTag('TriggerResults','','HLT'),
     #HLTTriggers = cms.untracked.vstring('HLT_Mu15_eta2p1'), #To make the Ntuple tree happy
     HLTTriggers = cms.untracked.vstring('HLT_Ele22_CaloIdL_CaloIsoVL','HLT_Ele27_WP80','HLT_Mu15_eta2p1'),
@@ -921,13 +921,13 @@ MonoJetMCSequence = cms.Sequence(
 #   JetEnergyScale*
     MonoJet
 )
-SusyMCSequence = cms.Sequence(
+mSUGRAMCSequence = cms.Sequence(
 #    hltHighLevelSingleEleRD*
 #    electronTriggerFilterByRun*
     nEventsPatHLT*
     removeDuplicate*
 #   JetEnergyScale*
-    Susy
+    mSUGRA
 )
 MonoPhotonMCSequence = cms.Sequence(
 #    hltHighLevelSingleEleRD*

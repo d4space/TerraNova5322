@@ -8,7 +8,7 @@
 #define Triggers	(100)
 
 using namespace std;
-class Susy
+class mSUGRA
 {
 public:
 

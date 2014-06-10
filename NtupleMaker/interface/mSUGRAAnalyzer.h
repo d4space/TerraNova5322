@@ -1,4 +1,4 @@
-// $Id: SusyAnalyzer.h,v 1.17 2013/09/13 00:09:33 salee Exp $
+// $Id: mSUGRAAnalyzer.h,v 1.17 2013/09/13 00:09:33 salee Exp $
 //
 //
 
@@ -88,7 +88,7 @@
 #include "TerraNova/DataFormats/interface/METCandidate.h"
 #include "TerraNova/DataFormats/interface/Maos.h"
 
-//#include "TerraNova/NtupleMaker/interface/SusyBranchVars.h"
+//#include "TerraNova/NtupleMaker/interface/mSUGRABranchVars.h"
 #include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
 #include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
 
@@ -107,11 +107,11 @@ using namespace reco;
 using namespace isodeposit;
 
 //template<typename T1, typename T2>
-class SusyAnalyzer : public edm::EDAnalyzer{
+class mSUGRAAnalyzer : public edm::EDAnalyzer{
  public:
-  explicit SusyAnalyzer(const edm::ParameterSet& iConfig);
+  explicit mSUGRAAnalyzer(const edm::ParameterSet& iConfig);
   ElectronEffectiveArea::ElectronEffectiveAreaTarget EAtarget;
-  ~SusyAnalyzer()
+  ~mSUGRAAnalyzer()
   {
   }
 
@@ -236,7 +236,7 @@ private:
   TTree* tree;
   EventBranches	EventData;
   TrigBranches	HLTData;
-  //Susy	MJet;
+  //mSUGRA	MJet;
   METs		MEt;
 
   TH1F * tmp;
@@ -377,7 +377,7 @@ private:
 
 };
 
-SusyAnalyzer::SusyAnalyzer(const edm::ParameterSet& iConfig)
+mSUGRAAnalyzer::mSUGRAAnalyzer(const edm::ParameterSet& iConfig)
 {
     //now do what ever initialization is needed
     Channel = iConfig.getUntrackedParameter< std::string >("Channel");
@@ -416,7 +416,7 @@ SusyAnalyzer::SusyAnalyzer(const edm::ParameterSet& iConfig)
 
     mEAtargetToken = iConfig.getParameter< std::string >("EAtarget");//EleEANoCorr, EleEAData2011, EleEASummer11MC,EleEAFall11MC, EleEAData2012 
     //mEAtargetToken = consumes<std:string>(iConfig.getParameter<std:string>("EAtarget", "EleEAData2012"));
-    tree = fs->make<TTree>("tree", "Tree for Susy");
+    tree = fs->make<TTree>("tree", "Tree for mSUGRA");
 
     EventData.vtx_isFake = new std::vector<int>;
     EventData.vtx_ndof = new std::vector<int>;
@@ -458,7 +458,7 @@ SusyAnalyzer::SusyAnalyzer(const edm::ParameterSet& iConfig)
 //    genMEtCaloAndNonPrompt_met = new std::vector<math::XYZTLorentzVector>();
     jetspt30 = new std::vector<math::XYZTLorentzVector>();
 }
-void SusyAnalyzer::beginJob()
+void mSUGRAAnalyzer::beginJob()
 {
   std::vector< float > PuMC ;
   std::vector< float > PuReal;
@@ -490,7 +490,7 @@ void SusyAnalyzer::beginJob()
   cout<<"EAtarget is : "<<EAtarget<<endl;
 
 }
-void SusyAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
+void mSUGRAAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
 {
   //initialization
   FullHLTTriggerNames.clear();
@@ -537,7 +537,7 @@ void SusyAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup)
   }
 }
 
-void SusyAnalyzer::bookTree()
+void mSUGRAAnalyzer::bookTree()
 {
   EventData.Register(tree);
   for(unsigned int i(0); i<HLTTriggers.size(); i++)
@@ -548,7 +548,7 @@ void SusyAnalyzer::bookTree()
   MEt.Register(tree);
  // MJet.Register(tree);
 }
-bool SusyAnalyzer::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
+bool mSUGRAAnalyzer::L1TriggerSelection( const edm::Event& iEvent, const edm::EventSetup& iSetup )
 {
   // Get L1 Trigger menu
   ESHandle<L1GtTriggerMenu> menuRcd;
@@ -579,7 +579,7 @@ bool SusyAnalyzer::L1TriggerSelection( const edm::Event& iEvent, const edm::Even
   
   return algResult;
 }
-void SusyAnalyzer::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void mSUGRAAnalyzer::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
   //Trigger Information----
   Handle<TriggerResults> trgRsltsHandle;
@@ -660,7 +660,7 @@ void SusyAnalyzer::GetHLTResults(const edm::Event &iEvent, const edm::EventSetup
     //cout<<"HLTTRiggers is 0 or HLTVersions.size is not the same"<<endl;
   }
 }
-void SusyAnalyzer::clear()
+void mSUGRAAnalyzer::clear()
 {
   EventData.EVENT	= -999;
   EventData.RUN		= -999;
@@ -711,7 +711,7 @@ void SusyAnalyzer::clear()
 
     genttbarM = -999;
 }
-bool SusyAnalyzer::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
+bool mSUGRAAnalyzer::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::EventSetup & setup)
 {
   //cout<<"end lumi "<<endl;
     if(useEventCounter_){
@@ -727,7 +727,7 @@ bool SusyAnalyzer::endLuminosityBlock(edm::LuminosityBlock & lumi, const edm::Ev
     }
     return true;
 }
-bool SusyAnalyzer::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
+bool mSUGRAAnalyzer::checkOverlap(const double & eta, const double & phi, const double & dRval1,const double & reliso1, const double &dRval2, const double & reliso2)
 {
   bool overlap = false;
   if( reliso1 < relIso1_ ) {
@@ -744,7 +744,7 @@ bool SusyAnalyzer::checkOverlap(const double & eta, const double & phi, const do
 
 }
 
-bool SusyAnalyzer::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
+bool mSUGRAAnalyzer::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
       const reco::Candidate::LorentzVector& proObj,
       bool exact )
 {
@@ -764,7 +764,7 @@ bool SusyAnalyzer::MatchObjects( const reco::Candidate::LorentzVector& pasObj,
   else        return ( dRval < 0.025 && dPtRel < 0.025 );
 }
 /*
-void SusyAnalyzer::LoopJets(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+void mSUGRAAnalyzer::LoopJets(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
     EvtPass = false;
     bool goodVtx=false;
@@ -817,15 +817,15 @@ void SusyAnalyzer::LoopJets(const edm::Event &iEvent, const edm::EventSetup& iSe
     if(nIdJets >= 1) EvtPass = true;
 }
 */
-void SusyAnalyzer::endJob()
+void mSUGRAAnalyzer::endJob()
 {
 }
-void SusyAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
+void mSUGRAAnalyzer::endRun(edm::Run const&, edm::EventSetup const&)
 {
 }
-void SusyAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+void mSUGRAAnalyzer::beginLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
-void SusyAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
+void mSUGRAAnalyzer::endLuminosityBlock(edm::LuminosityBlock const&, edm::EventSetup const&)
 {
 }
