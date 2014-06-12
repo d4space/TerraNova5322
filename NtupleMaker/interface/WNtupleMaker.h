@@ -35,6 +35,7 @@
 #include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/METReco/interface/CaloMETCollection.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
+#include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 
 #include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
 #include "DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h"
@@ -128,6 +129,7 @@ private:
 
 // Variables ==================================================
   bool EvtPass;
+  bool JetPass;
   bool isRD;
 
   struct GenInfo{
@@ -165,6 +167,8 @@ private:
   edm::InputTag genMEtCaloLabel_;
   edm::InputTag genMEtCaloAndNonPromptLabel_;
   edm::InputTag jetLabel_;
+  edm::InputTag PUJetIdDisc;
+  edm::InputTag PUJetId;
   edm::InputTag genParticlesLabel_;
   edm::InputTag vertexLabel_;
   edm::InputTag TriggerResultsTag;
@@ -189,8 +193,12 @@ private:
   edm::Handle<reco::GenMETCollection> genMEtCalo_hand;
   edm::Handle<reco::GenMETCollection> genMEtCaloAndNonPrompt_hand;
   edm::Handle<reco::VertexCollection> recVtxs_;
+  edm::Handle<edm::View<reco::Jet> > JetS;
+  edm::Handle<edm::ValueMap<float> > PUJetIdMVA;
+  edm::Handle<edm::ValueMap<int> >   PUJetIdFlag;
 
   //iterator------------------------------
+  edm::View<reco::Jet>::const_iterator i_jet;
   pat::METCollection::const_iterator pfMEt_It;
   reco::PFMETCollection::const_iterator NoPuMEt_It;
   reco::PFMETCollection::const_iterator MVaMEt_It;
@@ -225,6 +233,7 @@ private:
   std::vector<int> nbjetsCache_;
   //std::string bTagAlgo_;
   //double minBTagValue_;
+  int nIdJets; // number of good jets
 
   edm::Service<TFileService> fs;
   TTree* tree;
@@ -392,6 +401,8 @@ private:
   void LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSetup);
   void LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup);
   void LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup);
+  
+  void LoopJets    (const edm::Event &iEvent, const edm::EventSetup& iSetup);
 
 };
 
@@ -408,6 +419,8 @@ WNtupleMaker::WNtupleMaker(const edm::ParameterSet& iConfig)
     genMEtCaloLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloLabel");
     genMEtCaloAndNonPromptLabel_ = iConfig.getParameter<edm::InputTag>("genMEtCaloAndNonPromptLabel");    
     jetLabel_ = iConfig.getParameter<edm::InputTag>("jetLabel");
+    PUJetIdDisc = iConfig.getParameter<edm::InputTag>("PUJetDiscriminant");
+    PUJetId = iConfig.getParameter<edm::InputTag>("PUJetId");
     genParticlesLabel_= iConfig.getParameter<edm::InputTag>("genParticlesLabel");
     vertexLabel_ =  iConfig.getUntrackedParameter<edm::InputTag>("vertexLabel");
     metStudy_ = iConfig.getUntrackedParameter<bool>("metStudy",false);
@@ -3236,6 +3249,53 @@ void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
       }//ele2_hand
       //break;
     }//ele1_hand
+}
+void WNtupleMaker::LoopJets(const edm::Event &iEvent, const edm::EventSetup& iSetup)
+{
+    JetPass = false;
+    // Jet study =====================
+    nIdJets = 0;
+   
+    for(i_jet = JetS->begin(); i_jet != JetS->end(); ++i_jet)
+    {
+      double chf = 0.0;
+      double nhf = 0.0;
+      double pef = 0.0;
+      double eef = 0.0;
+      double mef = 0;
+
+      edm::Ptr<reco::Jet> ptrToJet = JetS->ptrAt( i_jet - JetS->begin() );
+      if( ptrToJet.isNonnull() && ptrToJet.isAvailable() )
+      {
+	reco::PFJet const * pfJet = dynamic_cast<reco::PFJet const *>(ptrToJet.get() );
+	if( pfJet != 0){
+	  chf = pfJet->chargedHadronEnergyFraction();
+	  nhf = pfJet->neutralHadronEnergyFraction();
+	  pef = pfJet->photonEnergyFraction();
+	  eef = pfJet->electronEnergy() / pfJet->energy();
+	  mef = pfJet->muonEnergyFraction();
+	}
+      }
+      bool passPU = true;
+      float JetMva = 0;
+      int JetIdFlag = 0;
+     
+      if( PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0 )
+      {
+	JetMva    = (*PUJetIdMVA) [ptrToJet];
+	JetIdFlag = (*PUJetIdFlag)[ptrToJet];
+	if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
+	//cout<<"passPU: "<<passPU<<endl;
+      }
+      if(!passPU) continue;
+      //cout<<"Jet pt: "<<i_jet->pt()<<endl;
+      ///// Count the jets in the event /////////////
+
+      nIdJets ++;
+    }
+    Ws.nIdJets = nIdJets;
+    
+    JetPass = true;
 }
 void WNtupleMaker::endJob()
 {

@@ -8,7 +8,6 @@
 void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
   //cout<<"Channel: "<<Channel<<"#########################################"<<endl;
-
   EvtPass = false;
 
   clear();
@@ -143,8 +142,13 @@ void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
     typedef reco::PFCandidateCollection::const_iterator CI;
     iEvent.getByLabel("particleFlow",pfCandidates_);
 
-    edm::Handle<pat::JetCollection> Jets;
-    iEvent.getByLabel(jetLabel_, Jets);
+    //edm::Handle<pat::JetCollection> Jets;
+    iEvent.getByLabel(jetLabel_, JetS);
+    if(PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0)
+    {
+      iEvent.getByLabel(PUJetIdDisc, PUJetIdMVA);
+      iEvent.getByLabel(PUJetId, PUJetIdFlag);
+    }
 
     edm::Handle<reco::GenParticleCollection> genParticles_;
     iEvent.getByLabel(genParticlesLabel_,genParticles_);
@@ -239,10 +243,12 @@ void WNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup& iSet
       EventData.Channel = GenType::kTau;
       LoopTau(iEvent, iSetup);
     }else{cout<<"What kind of a channel hur? "<<Channel<<endl;exit(-1);}
+    
+    LoopJets(iEvent, iSetup);//for nIdJet
 
     //ESHandle<SetupData> pSetup;
     //iSetup.get<SetupRecord>().get(pSetup);
-    if(EvtPass) tree->Fill();
+    if((EvtPass) && (JetPass)) tree->Fill();
 }
 DEFINE_FWK_MODULE(WNtupleMaker);
 
