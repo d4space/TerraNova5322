@@ -318,7 +318,7 @@ int Wlnu12LoScaleSmearCorr::Write_ZHisto()
       }
     }
     
-    if(AnaChannel == "MuonLowPU")
+    if(AnaChannel == "Muon2012LoPU")
     {
       for(int i(0);i<ScMuCombiBins;i++)
       {
@@ -464,6 +464,16 @@ Double_t Wlnu12LoScaleSmearCorr::GetScaleCorr(double LepEta)
     if(fabs(LepEta) >= 1.566 && fabs(LepEta) < 2.0) 	 {return  1.0067;}
     if(fabs(LepEta) >= 2.0   && fabs(LepEta) < 2.5)	 {return  0.992737;}
   }
+
+  if(AnaChannel == "Muon2012LoPU")
+  {
+    if(fabs(LepEta) >= 0.0 && fabs(LepEta) < 0.4) {return 1.0025;}
+    if(fabs(LepEta) >= 0.4 && fabs(LepEta) < 0.8) {return 1.0022;}
+    if(fabs(LepEta) >= 0.8 && fabs(LepEta) < 1.2) {return 0.9995;}
+    if(fabs(LepEta) >= 1.2 && fabs(LepEta) < 1.6) {return 1.0018;}
+    if(fabs(LepEta) >= 1.6 && fabs(LepEta) < 2.1) {return 1.0007;}
+  }
+
 }
 
 Double_t Wlnu12LoScaleSmearCorr::GetSmearCorr(double LepEta)
@@ -489,4 +499,17 @@ Double_t Wlnu12LoScaleSmearCorr::GetSmearCorr(double LepEta)
     //if(fabs(LepEta) >= 1.566 && fabs(LepEta) < 2.0)  	 {return  0.496947;}
     //if(fabs(LepEta) >= 2.0   && fabs(LepEta) < 2.5)  	 {return  1.88972;}
   }
+
+  if(AnaChannel == "Muon2012LoPU")
+  {
+    if(fabs(LepEta) >= 0.0 && fabs(LepEta) < 0.4) {return  0.01; } 
+    if(fabs(LepEta) >= 0.4 && fabs(LepEta) < 0.8) {return  0.381253;}
+    if(fabs(LepEta) >= 0.8 && fabs(LepEta) < 1.2) {return  0.743902;}
+    if(fabs(LepEta) >= 1.2 && fabs(LepEta) < 1.6) {return  0.637325;}
+    if(fabs(LepEta) >= 1.6 && fabs(LepEta) < 2.1) {return  0.611946;}
+
+  }
 }
+
+
+
