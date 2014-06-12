@@ -11,7 +11,7 @@ using namespace std;
 class Wboson
 {
 public:
-
+  int nIdJets;
   vector<int>*		Lept1_ptcID;
   vector<bool>*		Lept1_isGlobal;
   vector<bool>*		Lept1_isTrker;
@@ -90,7 +90,8 @@ public:
   vector<double>*	W_Charge;
 
   void Register(TTree *tree)
-  {
+  { 
+    tree->Branch("nIdJets"              ,&nIdJets       ,"nIdJets/i");
     tree->Branch("W_Lept1_ptcID"	,&Lept1_ptcID);
     tree->Branch("W_Lept1_chIso03"	,&Lept1_chIso03);
     tree->Branch("W_Lept1_chIso04"	,&Lept1_chIso04);
