@@ -93,6 +93,7 @@ void WlnuMET::Loop()
     
     //cout<<"Muon size: "<<wMuons.pt->size()<<endl;
     //cout<<"W    size: "<<W_pt->size()<<endl;
+      Fill_METs();
 
    
     // Select the Best W boson
@@ -108,7 +109,7 @@ void WlnuMET::Loop()
       //DumpWbestCand(W.idxBest);
 
       // Efficiency Correction
-      Fill_METs();
+      //Fill_METs();
     
     //cout<<"mTTW: "<<mTTW<<endl;
     evtSelected+=mTTW;
@@ -240,6 +241,8 @@ int WlnuMET::WbestSelect()
     }//Cut and Bigger pt
 
   }
+  if(nIdJets >= 0)W.Pass = true;
+
   return 0;
 }
 /*
@@ -306,6 +309,10 @@ Int_t WlnuMET::FillUnfoldInfo()
 int WlnuMET::InitHistogram()
 {
   myFile=new TFile(mResultDir+"/"+OutNameBase+".root","RECREATE");
+  h1_nIdJets    = new TH1D("h1_nIdJets","number of pileupJets",10,0.,10);
+  h2_pfMET_pxpy  = new TH2D("h2_pfMET_pxpy","pfMET pxpy",100,-200,200,100,-200,200);
+  h2_MVaMET_pxpy  = new TH2D("h2_MVaMET_pxpy","MVaMET pxpy",100,-200,200,100,-200,200);
+  h2_NoPuMET_pxpy  = new TH2D("h2_NoPuMET_pxpy","NoPuMET pxpy",100,-200,200,100,-200,200);
   for(int i(0);i<PUrangeBin;i++)
   {
   sprintf(histName,"h1_PF_Met_%d",i);
@@ -328,10 +335,15 @@ int WlnuMET::InitHistogram()
 }
 int WlnuMET::WlnuMET::Fill_METs()
 {
+  h1_nIdJets->Fill(nIdJets);
   h1_PF_Met[0]->Fill(pfMEtTL.Pt());
   h1_MVA_Met[0]->Fill(MVaMEtTL.Pt());
   h1_NoPU_Met[0]->Fill(NoPuMEtTL.Pt());
   h1_genMEtTrue[0]->Fill(genMEtTrueTL.Pt());
+
+  h2_pfMET_pxpy ->Fill(pfMEt_x, pfMEt_y);
+  h2_MVaMET_pxpy ->Fill(MVaMEt_x, MVaMEt_y);
+  h2_NoPuMET_pxpy ->Fill(NoPuMEt_x, NoPuMEt_y);
 
   h2_pfMET[0]  ->Fill(genMEtTrueTL.Pt(), pfMEtTL.Pt()-genMEtTrueTL.Pt());
   h2_MVaMET[0] ->Fill(genMEtTrueTL.Pt(), MVaMEtTL.Pt()-genMEtTrueTL.Pt());
@@ -369,6 +381,14 @@ int WlnuMET::WlnuMET::Fill_METs()
 }
 int WlnuMET::Fill_METprofiles()
 {
+  TH1D* projX_pfMET = h2_pfMET_pxpy ->ProjectionX();
+  TH1D* projX_MVaMET = h2_MVaMET_pxpy ->ProjectionX();
+  TH1D* projX_NoPuMET = h2_NoPuMET_pxpy ->ProjectionX();
+
+  TH1D* projY_pfMET = h2_pfMET_pxpy ->ProjectionY();
+  TH1D* projY_MVaMET = h2_MVaMET_pxpy ->ProjectionY();
+  TH1D* projY_NoPuMET = h2_NoPuMET_pxpy ->ProjectionY();
+
   h2_pfMET[0]->ProfileX("pfMET_0",1,-1,"");
   h2_MVaMET[0]->ProfileX("MVaMET_0",1,-1,"");
   h2_NoPuMET[0]->ProfileX("NoPuMET_0",1,-1,"");

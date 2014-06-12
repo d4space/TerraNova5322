@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////
 // This class has been automatically generated on
-// Sun Apr  6 17:43:57 2014 by ROOT version 5.34/14
-// from TChain WMuNeu/tree/
+// Thu Jun 12 22:33:18 2014 by ROOT version 5.32/00
+// from TChain WEleNeu/tree/
 //////////////////////////////////////////////////////////
 
 #ifndef WlnuNT_h
@@ -54,6 +54,7 @@ public :
    Int_t           HLT_Mu15_eta2p1_L1fired;
    Int_t           HLT_Mu15_eta2p1_HLTprescale;
    Int_t           HLT_Mu15_eta2p1_fired;
+   vector<int>     *Z_Channel;
    vector<double>  *Z_Lept1_chIso03;
    vector<double>  *Z_Lept1_chIso04;
    vector<double>  *Z_Lept1_nhIso03;
@@ -183,6 +184,8 @@ public :
    vector<double>  *Z_Neut_px;
    vector<double>  *Z_Neut_py;
    vector<double>  *Z_Sign;
+   UInt_t          nIdJets;
+   vector<int>     *W_Lept1_ptcID;
    vector<double>  *W_Lept1_chIso03;
    vector<double>  *W_Lept1_chIso04;
    vector<double>  *W_Lept1_nhIso03;
@@ -310,6 +313,7 @@ public :
    vector<double>  *GenW_PostLept2_eta;
    vector<double>  *GenW_PostLept2_phi;
    Double_t        GenW_Neut_pt;
+   vector<int>     *GenZ_Channel;
    vector<int>     *GenZ_nLepts;
    vector<int>     *GenZ_id;
    vector<int>     *GenZ_status;
@@ -411,6 +415,7 @@ public :
    TBranch        *b_HLT_Ele22_CaloIdL_CaloIsoVL;   //!
    TBranch        *b_HLT_Ele27_WP80;   //!
    TBranch        *b_HLT_Mu15_eta2p1;   //!
+   TBranch        *b_Z_Channel;   //!
    TBranch        *b_Z_Lept1_chIso03;   //!
    TBranch        *b_Z_Lept1_chIso04;   //!
    TBranch        *b_Z_Lept1_nhIso03;   //!
@@ -540,6 +545,8 @@ public :
    TBranch        *b_Z_Neut_px;   //!
    TBranch        *b_Z_Neut_py;   //!
    TBranch        *b_Z_Sign;   //!
+   TBranch        *b_nIdJets;   //!
+   TBranch        *b_W_Lept1_ptcID;   //!
    TBranch        *b_W_Lept1_chIso03;   //!
    TBranch        *b_W_Lept1_chIso04;   //!
    TBranch        *b_W_Lept1_nhIso03;   //!
@@ -667,6 +674,7 @@ public :
    TBranch        *b_GenW_PostLept2_eta;   //!
    TBranch        *b_GenW_PostLept2_phi;   //!
    TBranch        *b_GenW_Neut_pt;   //!
+   TBranch        *b_GenZ_Channel;   //!
    TBranch        *b_GenZ_nLepts;   //!
    TBranch        *b_GenZ_id;   //!
    TBranch        *b_GenZ_status;   //!
@@ -776,14 +784,14 @@ WlnuNT::WlnuNT(TTree *tree) : fChain(0)
       if (!f || !f->IsOpen()) {
          f = new TFile("Memory Directory");
       }
-      f->GetObject("WMuNeu/tree",tree);
+      f->GetObject("WEleNeu/tree",tree);
 
 #else // SINGLE_TREE
 
       // The following code should be used if you want this class to access a chain
       // of trees.
-      TChain * chain = new TChain("WMuNeu/tree","");
-      chain->Add("/terranova_1/TestNtuple/TerraTuple.root/WMuNeu/tree");
+      TChain * chain = new TChain("WEleNeu/tree","");
+      chain->Add("/d1/scratch/jungmin/test/CMSSW_5_3_14_patch1/src/TerraNova/NtupleMaker/AodToNtuple/S10/WJetsToLNu/Electron/TerraTuple.root/WEleNeu/tree");
       tree = chain;
 #endif // SINGLE_TREE
 
@@ -831,6 +839,7 @@ void WlnuNT::Init(TTree *tree)
    vtx_ndof = 0;
    vtx_z = 0;
    vtx_Rho = 0;
+   Z_Channel = 0;
    Z_Lept1_chIso03 = 0;
    Z_Lept1_chIso04 = 0;
    Z_Lept1_nhIso03 = 0;
@@ -960,6 +969,7 @@ void WlnuNT::Init(TTree *tree)
    Z_Neut_px = 0;
    Z_Neut_py = 0;
    Z_Sign = 0;
+   W_Lept1_ptcID = 0;
    W_Lept1_chIso03 = 0;
    W_Lept1_chIso04 = 0;
    W_Lept1_nhIso03 = 0;
@@ -1086,6 +1096,7 @@ void WlnuNT::Init(TTree *tree)
    GenW_PostLept2_charge = 0;
    GenW_PostLept2_eta = 0;
    GenW_PostLept2_phi = 0;
+   GenZ_Channel = 0;
    GenZ_nLepts = 0;
    GenZ_id = 0;
    GenZ_status = 0;
@@ -1142,6 +1153,7 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("HLT_Ele22_CaloIdL_CaloIsoVL", &HLT_Ele22_CaloIdL_CaloIsoVL_version, &b_HLT_Ele22_CaloIdL_CaloIsoVL);
    fChain->SetBranchAddress("HLT_Ele27_WP80", &HLT_Ele27_WP80_version, &b_HLT_Ele27_WP80);
    fChain->SetBranchAddress("HLT_Mu15_eta2p1", &HLT_Mu15_eta2p1_version, &b_HLT_Mu15_eta2p1);
+   fChain->SetBranchAddress("Z_Channel", &Z_Channel, &b_Z_Channel);
    fChain->SetBranchAddress("Z_Lept1_chIso03", &Z_Lept1_chIso03, &b_Z_Lept1_chIso03);
    fChain->SetBranchAddress("Z_Lept1_chIso04", &Z_Lept1_chIso04, &b_Z_Lept1_chIso04);
    fChain->SetBranchAddress("Z_Lept1_nhIso03", &Z_Lept1_nhIso03, &b_Z_Lept1_nhIso03);
@@ -1271,6 +1283,8 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("Z_Neut_px", &Z_Neut_px, &b_Z_Neut_px);
    fChain->SetBranchAddress("Z_Neut_py", &Z_Neut_py, &b_Z_Neut_py);
    fChain->SetBranchAddress("Z_Sign", &Z_Sign, &b_Z_Sign);
+   fChain->SetBranchAddress("nIdJets", &nIdJets, &b_nIdJets);
+   fChain->SetBranchAddress("W_Lept1_ptcID", &W_Lept1_ptcID, &b_W_Lept1_ptcID);
    fChain->SetBranchAddress("W_Lept1_chIso03", &W_Lept1_chIso03, &b_W_Lept1_chIso03);
    fChain->SetBranchAddress("W_Lept1_chIso04", &W_Lept1_chIso04, &b_W_Lept1_chIso04);
    fChain->SetBranchAddress("W_Lept1_nhIso03", &W_Lept1_nhIso03, &b_W_Lept1_nhIso03);
@@ -1398,6 +1412,7 @@ void WlnuNT::Init(TTree *tree)
    fChain->SetBranchAddress("GenW_PostLept2_eta", &GenW_PostLept2_eta, &b_GenW_PostLept2_eta);
    fChain->SetBranchAddress("GenW_PostLept2_phi", &GenW_PostLept2_phi, &b_GenW_PostLept2_phi);
    fChain->SetBranchAddress("GenW_Neut_pt", &GenW_Neut_pt, &b_GenW_Neut_pt);
+   fChain->SetBranchAddress("GenZ_Channel", &GenZ_Channel, &b_GenZ_Channel);
    fChain->SetBranchAddress("GenZ_nLepts", &GenZ_nLepts, &b_GenZ_nLepts);
    fChain->SetBranchAddress("GenZ_id", &GenZ_id, &b_GenZ_id);
    fChain->SetBranchAddress("GenZ_status", &GenZ_status, &b_GenZ_status);
