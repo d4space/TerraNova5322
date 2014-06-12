@@ -177,11 +177,11 @@ int mSUGRAMET::InitHistogram()
   h1_genMEtTrue[i] = new TH1D(histName,"genMEtTrue",100,0.,1300);
 
   sprintf(histName,"h2_pfMET_%d",i);
-  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",100,0.,1500,1400,-700,700);
+  h2_pfMET[i]   = new TH2D(histName,"pf - genMETTrue",20,0.,1500,1400,-700,700);
   sprintf(histName,"h2_MVaMET_%d",i);
-  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",100,0.,1500,1400,-700,700);
+  h2_MVaMET[i]  = new TH2D(histName,"MVA - genMETTrue",20,0.,1500,1400,-700,700);
   sprintf(histName,"h2_NoPuMET_%d",i);
-  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",100,0.,1500,1400,-700,700);
+  h2_NoPuMET[i] = new TH2D(histName,"NoPU - genMETTrue",20,0.,1500,1400,-700,700);
   }
   return 0;
 }
