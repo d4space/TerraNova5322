@@ -30,12 +30,20 @@ void WPtMEtMakeHisto()
 //====================
 // For Muon analysis: use the lines FROM HERE
   //Luminosity weight
-  double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*4697.0/1.97346e6;
-  double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*6702.0/935446;
-  double LumiW_Muon_DYToMuMu_S8 = Lumi_LowPU*1*1871.0/1.9802e6;
-  double LumiW_Muon_WToTauNu_S8 = Lumi_LowPU*1*9170.0/2.13398e6;
-  double LumiW_Muon_DYToTauTau_S8 = Lumi_LowPU*1*1510.0/1.98778e6;
-  double LumiW_Muon_TTJets_S8 = Lumi_LowPU*1*136.3/6.73614e6;
+  //NLO
+  //double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*4697.0/1.97346e6;
+  //double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*6702.0/935446;
+  //double LumiW_Muon_DYToMuMu_S8 = Lumi_LowPU*1*1871.0/1.9802e6;
+  //double LumiW_Muon_WToTauNu_S8 = Lumi_LowPU*1*9170.0/2.13398e6;
+  //double LumiW_Muon_DYToTauTau_S8 = Lumi_LowPU*1*1510.0/1.98778e6;
+  //double LumiW_Muon_TTJets_S8 = Lumi_LowPU*1*136.3/6.73614e6;
+  //NNLO
+  double LumiWeight_Muon_WmToMuNu_S8 = Lumi_LowPU*1*5181.0/1.97346e6;
+  double LumiWeight_Muon_WpToMuNu_S8 = Lumi_LowPU*1*7322.0/935446;
+  double LumiW_Muon_DYToMuMu_S8 = Lumi_LowPU*1*1916.0/1.9802e6;
+  double LumiW_Muon_WToTauNu_S8 = Lumi_LowPU*1*12086/2.13398e6;
+  double LumiW_Muon_DYToTauTau_S8 = Lumi_LowPU*1*1916/1.98778e6;
+  double LumiW_Muon_TTJets_S8 = Lumi_LowPU*1*225.225/6.73614e6;
   double LumiW_WpToMuNu = LumiWeight_Muon_WpToMuNu_S8;
   double LumiW_WmToMuNu = LumiWeight_Muon_WmToMuNu_S8;
   double LumiW_Muon_RD_LowPU = 1;
@@ -48,6 +56,7 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wmunu12LoRD(
       TC_Muon_RD_LowPU,LumiW_Muon_RD_LowPU, Muon_RD_LowPU_BaseName,ModeRD,AnaChannelMu,0,RunOnRD,0x1235);
   Wmunu12LoRD.Loop();
+
 //WpToMuNu========================================
   cout<<"WpToMuNu_S8===================="<<endl;
   TChain *TC_WpToMuNu_S8    = new TChain("WMuNeu/tree","");
@@ -107,12 +116,21 @@ void WPtMEtMakeHisto()
 //====================
 // For Electron analysis: use the lines FROM HERE
   //Luminosity weight
-  double LumiWeight_Ele_WpToEleNu_S8= Lumi_LowPU*1*6702.0/2401905;
-  double LumiWeight_Ele_WmToEleNu_S8= Lumi_LowPU*1*4697.0/2127666;
-  double LumiW_Ele_DYToEE_S8= Lumi_LowPU*1*1871.0/3297045;
-  double LumiW_Ele_DYToTauTau_S8= Lumi_LowPU*1*1510.0/1987776;
-  double LumiW_Ele_WToTauNu_S8= Lumi_LowPU*1*9170.0/2133983;
-  double LumiW_Ele_TTJets_S8= Lumi_LowPU*1*136.3/6736135;
+  //NLO
+  //double LumiWeight_Ele_WpToEleNu_S8= Lumi_LowPU*1*6702.0/2401905;
+  //double LumiWeight_Ele_WmToEleNu_S8= Lumi_LowPU*1*4697.0/2127666;
+  //double LumiW_Ele_DYToEE_S8= Lumi_LowPU*1*1871.0/3297045;
+  //double LumiW_Ele_DYToTauTau_S8= Lumi_LowPU*1*1510.0/1987776;
+  //double LumiW_Ele_WToTauNu_S8= Lumi_LowPU*1*9170.0/2133983;
+  //double LumiW_Ele_TTJets_S8= Lumi_LowPU*1*136.3/6736135;
+  //NNLO
+  double LumiWeight_Ele_WpToEleNu_S8= Lumi_LowPU*1*7322.0/2401905;
+  double LumiWeight_Ele_WmToEleNu_S8= Lumi_LowPU*1*5181.0/2127666;
+  double LumiW_Ele_DYToEE_S8= Lumi_LowPU*1*1916/3297045;
+  double LumiW_Ele_DYToTauTau_S8= Lumi_LowPU*1*1916/1987776;
+  double LumiW_Ele_WToTauNu_S8= Lumi_LowPU*1*12086/2133983;
+  double LumiW_Ele_TTJets_S8= Lumi_LowPU*1*225.225/6736135;
+  
   double LumiW_WpToEleNu = LumiWeight_Ele_WpToEleNu_S8;
   double LumiW_WmToEleNu = LumiWeight_Ele_WmToEleNu_S8;
   double LumiW_Ele_RD_LowPU = 1;
@@ -134,6 +152,7 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wenu12LoWpEleNu(
       TC_WpToEleNu_S8,LumiW_WpToEleNu, WpToEleNu_BaseName,ModeMC,AnaChannelEle,1,RunOnMC,0x1235);
   Wenu12LoWpEleNu.Loop();
+
 //WmToEleNu========================================
   cout<<"WmToEleNu_S8===================="<<endl;
   TChain *TC_WmToEleNu_S8    = new TChain("WEleNeu/tree","");
@@ -178,4 +197,5 @@ void WPtMEtMakeHisto()
   Wlnu12LoMET Wenu12LoTTJets(
       TC_Ele_TTJets_S8,LumiW_Ele_TTJets_S8, Ele_TTJets_BaseName,ModeEWK,AnaChannelEle,0,RunOnMC,0x1235);
   Wenu12LoTTJets.Loop();
+
 }

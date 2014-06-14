@@ -610,7 +610,8 @@ Int_t Wlnu12LoBase::MuonCutSide(int i)
 Int_t Wlnu12LoBase::AddMuonCut(int i)
 {
   if(!(*W_Lept1_isTrker)[i] || !(*W_Lept1_isGlobal)[i]) return -1; //Signal Band only. For Side Band comment this line.
-  if(W.lep_pt_corr <= 10) return -1;
+  //if(W.lep_pt_corr <= 10) return -1;
+  if(W.lep_pt_corr <= 17) return -1;
   if(fabs((*W_Lept1_eta)[i])>=2.4) return -1;
   double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
   if(((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr > 0.20) return -1;
