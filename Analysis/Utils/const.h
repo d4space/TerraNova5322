@@ -77,16 +77,16 @@
 // N = L*Sigma*eff -> L = N/(Sigma*eff)
 
 //NNLO cross section
-//#define LumiWeight_Muon_WpToMuNu_S8   (18.977*1*7322.0/935446) // RDLumi/MC Lum
-//#define LumiWeight_Muon_WmToMuNu_S8   (18.977*1*5181.0/1.97346e6)
-//#define LumiWeight_Ele_WpToEleNu_S8   (18.977*1*7322.0/2401905)
-//#define LumiWeight_Ele_WmToEleNu_S8   (18.977*1*5181.0/2127666)
+#define LumiWeight_Muon_WpToMuNu_S8   (18.429*1*7322.0/935446) // RDLumi/MC Lum
+#define LumiWeight_Muon_WmToMuNu_S8   (18.429*1*5181.0/1.97346e6)
+#define LumiWeight_Ele_WpToEleNu_S8   (18.429*1*7322.0/2401905)
+#define LumiWeight_Ele_WmToEleNu_S8   (18.429*1*5181.0/2127666)
 
 //NLO cross section
-#define LumiWeight_Muon_WpToMuNu_S8   (18.429*1*6702.0/935446) // RDLumi/MC Lum
-#define LumiWeight_Muon_WmToMuNu_S8   (18.429*1*4697.0/1.97346e6)
-#define LumiWeight_Ele_WpToEleNu_S8   (18.429*1*6702.0/2401905)
-#define LumiWeight_Ele_WmToEleNu_S8   (18.429*1*4697.0/2127666)
+//#define LumiWeight_Muon_WpToMuNu_S8   (18.429*1*6702.0/935446) // RDLumi/MC Lum
+//#define LumiWeight_Muon_WmToMuNu_S8   (18.429*1*4697.0/1.97346e6)
+//#define LumiWeight_Ele_WpToEleNu_S8   (18.429*1*6702.0/2401905)
+//#define LumiWeight_Ele_WmToEleNu_S8   (18.429*1*4697.0/2127666)
 
 
 namespace GenType
