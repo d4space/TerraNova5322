@@ -122,14 +122,14 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   vector <double> nEventWToTauNuM;
   
   int ewkNumber(0);
-  fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/Muon_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
-  fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/Muon_DYToMuMu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/Muon_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/Muon_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
-  fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/Muon_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_RD_LowPU_ScaleCorr.root"); typev.push_back(eData);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToMuMu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_DYToTauTau_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_TTJets_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
+  fnamev.push_back("../WPtMET/Muon2012LoPU/Muon_WToTauNu_S8_SmeaEffCorr.root"); typev.push_back(eEWK);
   if (filetype == "Nominal"){
-    fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
-    fnamev.push_back("../WPtMET/NNLO/Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
+    fnamev.push_back("../WPtMET/Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWpMuNu);
+    fnamev.push_back("../WPtMET/Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root"); typev.push_back(eWmMuNu);
   }else if (filetype == "Up"){
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WpToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWpMuNu);
     fnamev.push_back("../EventSelection/MuonLowPU/Muon_WmToMuNu_S8_Up_RecoilCorrMC.root"); typev.push_back(eWmMuNu);
@@ -220,13 +220,6 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   Wp_Err = 0;
   Wm_Err = 0;
   
-  double sigNorm[14]  = {0.73,0.91,0.88,0.82,0.70,0.56,0.50,0.49,0.60,0.69,0.69,0.60,0.52,0.51};
-  double sigNormP[14] = {0.76,0.92,0.89,0.85,0.72,0.58,0.54,0.52,0.64,0.69,0.70,0.61,0.53,0.55};
-  double sigNormM[14] = {0.69,0.89,0.86,0.78,0.66,0.53,0.45,0.45,0.55,0.66,0.67,0.59,0.51,0.50};
-  double qcdNorm[14]  = {0.19,0.02,0.06,0.12,0.24,0.37,0.42,0.40,0.26,0.15,0.12,0.18,0.23,0.24};
-  double qcdNormP[14] = {0.17,0.02,0.05,0.09,0.22,0.36,0.38,0.38,0.22,0.16,0.13,0.16,0.21,0.22};
-  double qcdNormM[14] = {0.22,0.02,0.06,0.15,0.27,0.40,0.46,0.44,0.30,0.17,0.14,0.20,0.24,0.25};
-
   bool QCDFix(false);  // For Scale Correction Systematic Calculation
   //bool QCDFix(true); // For Other Corrections Systematic Calculation
   
@@ -899,36 +892,6 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
     sprintf(histName,"nSigm_%d",ipt);
     nSigm[ipt] = new RooRealVar(histName,histName
         ,0.7*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    
-    //sprintf(histName,"nQCD_%d",ipt);
-    //nQCD[ipt]  = new RooRealVar(histName,histName
-    //    ,0.3*(hDataMet[ipt]->Integral()),0,hDataMet[ipt]->Integral());
-    //sprintf(histName,"nQCDp_%d",ipt);
-    //nQCDp[ipt] = new RooRealVar(histName,histName
-    //    ,0.3*(hDataMetp[ipt]->Integral()),0,hDataMetp[ipt]->Integral());
-    //sprintf(histName,"nQCDm_%d",ipt);
-    //nQCDm[ipt] = new RooRealVar(histName,histName
-    //    ,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
-    
-    //sprintf(histName,"nSig_%d",ipt);
-    //nSig[ipt] = new RooRealVar(histName,histName
-    //    ,sigNorm[ipt]*(hDataMet[ipt]->Integral()),0.1*hDataMet[ipt]->Integral(),0.95*hDataMet[ipt]->Integral());
-    //sprintf(histName,"nSigp_%d",ipt);
-    //nSigp[ipt] = new RooRealVar(histName,histName
-    //    ,sigNormP[ipt]*(hDataMetp[ipt]->Integral()),0.1*hDataMetp[ipt]->Integral(),0.95*hDataMetp[ipt]->Integral());
-    //sprintf(histName,"nSigm_%d",ipt);
-    //nSigm[ipt] = new RooRealVar(histName,histName
-    //    ,sigNormM[ipt]*(hDataMetm[ipt]->Integral()),0.1*hDataMetm[ipt]->Integral(),0.95*hDataMetm[ipt]->Integral());
-    //
-    //sprintf(histName,"nQCD_%d",ipt);
-    //nQCD[ipt]  = new RooRealVar(histName,histName
-    //    ,qcdNorm[ipt]*(hDataMet[ipt]->Integral()),0.01*hDataMet[ipt]->Integral(),0.8*hDataMet[ipt]->Integral());
-    //sprintf(histName,"nQCDp_%d",ipt);
-    //nQCDp[ipt] = new RooRealVar(histName,histName
-    //    ,qcdNormP[ipt]*(hDataMetp[ipt]->Integral()),0.01*hDataMetp[ipt]->Integral(),0.8*hDataMetp[ipt]->Integral());
-    //sprintf(histName,"nQCDm_%d",ipt);
-    //nQCDm[ipt] = new RooRealVar(histName,histName
-    //    ,qcdNormM[ipt]*(hDataMetm[ipt]->Integral()),0.01*hDataMetm[ipt]->Integral(),0.8*hDataMetm[ipt]->Integral());
     
     sprintf(histName,"nAntiSig_%d",ipt);
     nAntiSig[ipt] = new RooRealVar(histName,histName
@@ -3301,13 +3264,6 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   allyieldsp <<"Tot. Signal: "<<Wp_TotalEvents<<"+/-"<<Wp_Err/13<<" +/- " <<sqrt(Wp_TotalEvents)<<" (stat.)"<<endl;
   allyieldsm <<"Tot. Signal: "<<Wm_TotalEvents<<"+/-"<<Wm_Err/13<<" +/- " <<sqrt(Wm_TotalEvents)<<" (stat.)"<<endl;
   
-  qcdfile<<fixed<<setprecision(2);
-  qcdfile<<"double sigNorm[14]  = ["<<nSig[0]->getValV()/hDataMet[0]->Integral()<<","<<nSig[1]->getValV()/hDataMet[1]->Integral()<<","<<nSig[2]->getValV()/hDataMet[2]->Integral()<<","<<nSig[3]->getValV()/hDataMet[3]->Integral()<<","<<nSig[4]->getValV()/hDataMet[4]->Integral()<<","<<nSig[5]->getValV()/hDataMet[5]->Integral()<<","<<nSig[6]->getValV()/hDataMet[6]->Integral()<<","<<nSig[7]->getValV()/hDataMet[7]->Integral()<<","<<nSig[8]->getValV()/hDataMet[8]->Integral()<<","<<nSig[9]->getValV()/hDataMet[9]->Integral()<<","<<nSig[10]->getValV()/hDataMet[10]->Integral()<<","<<nSig[11]->getValV()/hDataMet[11]->Integral()<<","<<nSig[12]->getValV()/hDataMet[12]->Integral()<<","<<nSig[13]->getValV()/hDataMet[13]->Integral()<<"];"<<endl;
-  qcdfile<<"double sigNormP[14] = ["<<nSigp[0]->getValV()/hDataMetp[0]->Integral()<<","<<nSigp[1]->getValV()/hDataMetp[1]->Integral()<<","<<nSigp[2]->getValV()/hDataMetp[2]->Integral()<<","<<nSigp[3]->getValV()/hDataMetp[3]->Integral()<<","<<nSigp[4]->getValV()/hDataMetp[4]->Integral()<<","<<nSigp[5]->getValV()/hDataMetp[5]->Integral()<<","<<nSigp[6]->getValV()/hDataMetp[6]->Integral()<<","<<nSigp[7]->getValV()/hDataMetp[7]->Integral()<<","<<nSigp[8]->getValV()/hDataMetp[8]->Integral()<<","<<nSigp[9]->getValV()/hDataMetp[9]->Integral()<<","<<nSigp[10]->getValV()/hDataMetp[10]->Integral()<<","<<nSigp[11]->getValV()/hDataMetp[11]->Integral()<<","<<nSigp[12]->getValV()/hDataMetp[12]->Integral()<<","<<nSigp[13]->getValV()/hDataMetp[13]->Integral()<<"];"<<endl;
-  qcdfile<<"double sigNormM[14] = ["<<nSigm[0]->getValV()/hDataMetm[0]->Integral()<<","<<nSigm[1]->getValV()/hDataMetm[1]->Integral()<<","<<nSigm[2]->getValV()/hDataMetm[2]->Integral()<<","<<nSigm[3]->getValV()/hDataMetm[3]->Integral()<<","<<nSigm[4]->getValV()/hDataMetm[4]->Integral()<<","<<nSigm[5]->getValV()/hDataMetm[5]->Integral()<<","<<nSigm[6]->getValV()/hDataMetm[6]->Integral()<<","<<nSigm[7]->getValV()/hDataMetm[7]->Integral()<<","<<nSigm[8]->getValV()/hDataMetm[8]->Integral()<<","<<nSigm[9]->getValV()/hDataMetm[9]->Integral()<<","<<nSigm[10]->getValV()/hDataMetm[10]->Integral()<<","<<nSigm[11]->getValV()/hDataMetm[11]->Integral()<<","<<nSigm[12]->getValV()/hDataMetm[12]->Integral()<<","<<nSigm[13]->getValV()/hDataMetm[13]->Integral()<<"];"<<endl;
-  qcdfile<<"double qcdNorm[14]  = ["<<nQCD[0]->getValV()/hDataMet[0]->Integral()<<","<<nQCD[1]->getValV()/hDataMet[1]->Integral()<<","<<nQCD[2]->getValV()/hDataMet[2]->Integral()<<","<<nQCD[3]->getValV()/hDataMet[3]->Integral()<<","<<nQCD[4]->getValV()/hDataMet[4]->Integral()<<","<<nQCD[5]->getValV()/hDataMet[5]->Integral()<<","<<nQCD[6]->getValV()/hDataMet[6]->Integral()<<","<<nQCD[7]->getValV()/hDataMet[7]->Integral()<<","<<nQCD[8]->getValV()/hDataMet[8]->Integral()<<","<<nQCD[9]->getValV()/hDataMet[9]->Integral()<<","<<nQCD[10]->getValV()/hDataMet[10]->Integral()<<","<<nQCD[11]->getValV()/hDataMet[11]->Integral()<<","<<nQCD[12]->getValV()/hDataMet[12]->Integral()<<","<<nQCD[13]->getValV()/hDataMet[13]->Integral()<<"];"<<endl;
-  qcdfile<<"double qcdNormP[14] = ["<<nQCDp[0]->getValV()/hDataMetp[0]->Integral()<<","<<nQCDp[1]->getValV()/hDataMetp[1]->Integral()<<","<<nQCDp[2]->getValV()/hDataMetp[2]->Integral()<<","<<nQCDp[3]->getValV()/hDataMetp[3]->Integral()<<","<<nQCDp[4]->getValV()/hDataMetp[4]->Integral()<<","<<nQCDp[5]->getValV()/hDataMetp[5]->Integral()<<","<<nQCDp[6]->getValV()/hDataMetp[6]->Integral()<<","<<nQCDp[7]->getValV()/hDataMetp[7]->Integral()<<","<<nQCDp[8]->getValV()/hDataMetp[8]->Integral()<<","<<nQCDp[9]->getValV()/hDataMetp[9]->Integral()<<","<<nQCDp[10]->getValV()/hDataMetp[10]->Integral()<<","<<nQCDp[11]->getValV()/hDataMetp[11]->Integral()<<","<<nQCDp[12]->getValV()/hDataMetp[12]->Integral()<<","<<nQCDp[13]->getValV()/hDataMetp[13]->Integral()<<"];"<<endl;
-  qcdfile<<"double qcdNormM[14] = ["<<nQCDm[0]->getValV()/hDataMetm[0]->Integral()<<","<<nQCDm[1]->getValV()/hDataMetm[1]->Integral()<<","<<nQCDm[2]->getValV()/hDataMetm[2]->Integral()<<","<<nQCDm[3]->getValV()/hDataMetm[3]->Integral()<<","<<nQCDm[4]->getValV()/hDataMetm[4]->Integral()<<","<<nQCDm[5]->getValV()/hDataMetm[5]->Integral()<<","<<nQCDm[6]->getValV()/hDataMetm[6]->Integral()<<","<<nQCDm[7]->getValV()/hDataMetm[7]->Integral()<<","<<nQCDm[8]->getValV()/hDataMetm[8]->Integral()<<","<<nQCDm[9]->getValV()/hDataMetm[9]->Integral()<<","<<nQCDm[10]->getValV()/hDataMetm[10]->Integral()<<","<<nQCDm[11]->getValV()/hDataMetm[11]->Integral()<<","<<nQCDm[12]->getValV()/hDataMetm[12]->Integral()<<","<<nQCDm[13]->getValV()/hDataMetm[13]->Integral()<<"];"<<endl;
   qcdfile<<endl;
   qcdfile.flags(flags);
   allyields.flags(flags);
