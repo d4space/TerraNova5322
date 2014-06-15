@@ -780,7 +780,7 @@ void fitWEleMetModRayleighSimult_nEWKfixed(const TString  outputDir,   // output
   //Loop for each Wpt bins==============
   // 0 is the total
   //for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  for(int ipt(6);ipt<7;ipt++)
+  for(int ipt(7);ipt<8;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
