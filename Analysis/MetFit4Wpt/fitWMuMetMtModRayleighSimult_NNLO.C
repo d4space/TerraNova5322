@@ -775,6 +775,7 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   ios_base::fmtflags flags;
   Double_t chi2prob, chi2ndf;
   Double_t ksprob, ksprobpe;
+  Double_t chi2, ndf;
 
   Double_t RaySigma, RaySigma_p, RaySigma_m;
   Int_t NBINS;
@@ -782,20 +783,20 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   sprintf(allyieldsfname,"%s/AllYields.txt",CPlot::sOutDir.Data());
   allyields.open(allyieldsfname);
   assert(allyields.is_open());
-//  allyields << " ********************** Inclusive W Yields ********************** " << endl;
-//  allyields << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyields<<"********************** Inclusive W Yields **********************"<<endl;
+  allyields<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
   sprintf(allyieldsfnamep,"%s/AllYields_P.txt",CPlot::sOutDir.Data());
   allyieldsp.open(allyieldsfnamep);
   assert(allyieldsp.is_open());
-//  allyieldsp << " ********************** W^{+} Yields ********************** " << endl;
-//  allyieldsp << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyieldsp<<"********************** W^{+} Yields **********************"<<endl;
+  allyieldsp<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
   sprintf(allyieldsfnamem,"%s/AllYields_M.txt",CPlot::sOutDir.Data());
   allyieldsm.open(allyieldsfnamem);
   assert(allyieldsm.is_open());
-//  allyieldsm << " ********************** W^{-} Yields ********************** " << endl;
-//  allyieldsm << "Bin #" << "\t" << " Signal " << "\t" << " Error " << endl;
+  allyieldsm<<"********************** W^{-} Yields **********************"<<endl;
+  allyieldsm<<"Bin\t RD(cnt)\t\t RD(fit)\t\t Sig(cnt)\t\t Sig(fit)\t\t EWK(cnt)\t\t EWK(fit)\t\t QCD(fit)"<<endl;
 
 //Create MET Fit Plots --> HTML file
   ofstream metplotsfile;
@@ -862,10 +863,31 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   InValfile.open(InValfname);
   assert(InValfile.is_open());
   
+  ofstream fitfile;
+  char fitfname[100];    
+  sprintf(fitfname,"%s/fitPars.txt",CPlot::sOutDir.Data());
+  fitfile.open(fitfname);
+  assert(fitfile.is_open());
+  fitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
+  ofstream pfitfile;
+  char pfitfname[100];    
+  sprintf(pfitfname,"%s/pfitPars.txt",CPlot::sOutDir.Data());
+  pfitfile.open(pfitfname);
+  assert(pfitfile.is_open());
+  pfitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
+  ofstream mfitfile;
+  char mfitfname[100];    
+  sprintf(mfitfname,"%s/mfitPars.txt",CPlot::sOutDir.Data());
+  mfitfile.open(mfitfname);
+  assert(mfitfile.is_open());
+  mfitfile<<"Bin\t chi2\t NDF\t chi2/NDF\t sigma0\t sigma1(sharing)"<<endl;
+
   //Loop for each Wpt bins==============
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for(int ipt(8);ipt<9;ipt++)
+  //for(int ipt(11);ipt<12;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -938,7 +960,47 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
     nQCDm[ipt] = new RooRealVar(histName,histName
         ,0.3*(hDataMetm[ipt]->Integral()),0,hDataMetm[ipt]->Integral());
    
-    if(ipt>9){
+    if(ipt>10){
+      sprintf(histName,"nSig_%d",ipt);
+      nSig[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMet[ipt]->Integral()),0.3*hDataMet[ipt]->Integral(),0.95*hDataMet[ipt]->Integral());
+      sprintf(histName,"nSigp_%d",ipt);
+      nSigp[ipt] = new RooRealVar(histName,histName
+          ,0.7*(hDataMetp[ipt]->Integral()),0.3*hDataMetp[ipt]->Integral(),0.95*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nSigm_%d",ipt);
+      nSigm[ipt] = new RooRealVar(histName,histName
+          ,0.64*(hDataMetm[ipt]->Integral()),0.6*hDataMetm[ipt]->Integral(),0.7*hDataMetm[ipt]->Integral());
+      sprintf(histName,"nQCD_%d",ipt);
+      nQCD[ipt]  = new RooRealVar(histName,histName
+          ,0.2*(hDataMet[ipt]->Integral()),0.1*hDataMet[ipt]->Integral(),0.3*hDataMet[ipt]->Integral());
+      sprintf(histName,"nQCDp_%d",ipt);
+      nQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.2*(hDataMetp[ipt]->Integral()),0.1*hDataMetp[ipt]->Integral(),0.3*hDataMetp[ipt]->Integral());
+      sprintf(histName,"nQCDm_%d",ipt);
+      nQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.09*(hDataMetm[ipt]->Integral()),0.07*hDataMetm[ipt]->Integral(),0.11*hDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiSig_%d",ipt);
+      nAntiSig[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMet[ipt]->Integral(),0,0.1*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiSigp_%d",ipt);
+      nAntiSigp[ipt] = new RooRealVar(histName,histName
+          ,0.03*hAntiDataMetp[ipt]->Integral(),0,0.1*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiSigm_%d",ipt);
+      nAntiSigm[ipt] = new RooRealVar(histName,histName
+          ,0.02*hAntiDataMetm[ipt]->Integral(),0.01*hAntiDataMetm[ipt]->Integral(),0.03*hAntiDataMetm[ipt]->Integral());
+      
+      sprintf(histName,"nAntiQCD_%d",ipt);
+      nAntiQCD[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMet[ipt]->Integral()),0.7*hAntiDataMet[ipt]->Integral(),0.99*hAntiDataMet[ipt]->Integral());
+      sprintf(histName,"nAntiQCDp_%d",ipt);
+      nAntiQCDp[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetp[ipt]->Integral()),0.7*hAntiDataMetp[ipt]->Integral(),0.99*hAntiDataMetp[ipt]->Integral());
+      sprintf(histName,"nAntiQCDm_%d",ipt);
+      nAntiQCDm[ipt] = new RooRealVar(histName,histName
+          ,0.9*(hAntiDataMetm[ipt]->Integral()),0.8*hAntiDataMetm[ipt]->Integral(),0.99*hAntiDataMetm[ipt]->Integral());
+    }
+    if(ipt==10){
       sprintf(histName,"nSig_%d",ipt);
       nSig[ipt] = new RooRealVar(histName,histName
           ,0.7*(hDataMet[ipt]->Integral()),0.3*hDataMet[ipt]->Integral(),0.95*hDataMet[ipt]->Integral());
@@ -970,13 +1032,13 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
       
       sprintf(histName,"nAntiQCD_%d",ipt);
       nAntiQCD[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hAntiDataMet[ipt]->Integral()),0.7*hAntiDataMet[ipt]->Integral(),hAntiDataMet[ipt]->Integral());
+          ,0.9*(hAntiDataMet[ipt]->Integral()),0.7*hAntiDataMet[ipt]->Integral(),0.99*hAntiDataMet[ipt]->Integral());
       sprintf(histName,"nAntiQCDp_%d",ipt);
       nAntiQCDp[ipt] = new RooRealVar(histName,histName
-          ,0.9*(hAntiDataMetp[ipt]->Integral()),0.7*hAntiDataMetp[ipt]->Integral(),hAntiDataMetp[ipt]->Integral());
+          ,0.9*(hAntiDataMetp[ipt]->Integral()),0.7*hAntiDataMetp[ipt]->Integral(),0.99*hAntiDataMetp[ipt]->Integral());
       sprintf(histName,"nAntiQCDm_%d",ipt);
       nAntiQCDm[ipt] = new RooRealVar(histName,histName
-          ,0.95*(hAntiDataMetm[ipt]->Integral()),0.85*hAntiDataMetm[ipt]->Integral(),0.98*hAntiDataMetm[ipt]->Integral());
+          ,0.9*(hAntiDataMetm[ipt]->Integral()),0.7*hAntiDataMetm[ipt]->Integral(),0.99*hAntiDataMetm[ipt]->Integral());
     }
 
     sprintf(histName,"cewk_%d",ipt);
@@ -1484,37 +1546,62 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       amtsigma[ipt] ->setVal(9.34428);
       amtPsigma[ipt]->setVal(9.2221);
       amtMsigma[ipt]->setVal(8.88873);
-    }else if (ipt>9){
-      //mtmean[ipt] ->setVal(-2.55257);
-      //mtPmean[ipt] ->setVal(-2.55257);
-      //mtMmean[ipt] ->setVal(-2.55257);
-      //mtsigma[ipt] ->setVal(24.9977);
-      //mtPsigma[ipt] ->setVal(24.9977);
-      //mtMsigma[ipt] ->setVal(24.9977);
-      //mta1[ipt] ->setVal(0.18261);
-      //mtPa1[ipt] ->setVal(0.18261);
-      //mtMa1[ipt] ->setVal(0.18261);
-      mtmean[ipt] ->setVal(0.732591);
+    }else if (ipt == 10){
+      nSig[ipt]  -> setVal(556.096);
+      nSigp[ipt] -> setVal(331.1);
+      nSigm[ipt] -> setVal(240.92);
+      nAntiSig[ipt]  -> setVal(2.29291);
+      //nAntiSigp[ipt] -> setVal(2.38776);
+      nAntiSigm[ipt] -> setVal(0.454716);
+      nQCD[ipt]  -> setVal(85.0001);
+      nQCDp[ipt] -> setVal(94.6);
+      nQCDm[ipt] -> setVal(34.1392);
+      nAntiQCD[ipt]  -> setVal(66.4221);
+      //nAntiQCDp[ipt] -> setVal(38.6319);
+      nAntiQCDm[ipt] -> setVal(26.9169);
+      mtmean[ipt] ->setVal(0.796914);
       mtPmean[ipt]->setVal(0.733878);
-      mtMmean[ipt] ->setVal(0.732591);
-      mtsigma[ipt] ->setVal(14.6655);
+      mtMmean[ipt]->setVal(0.832343);
+      mtsigma[ipt] ->setVal(15.51);
       mtPsigma[ipt]->setVal(19.4904);
-      mtMsigma[ipt]->setVal(14.6531);
-      mta1[ipt] ->setVal(0.266369);
+      mtMsigma[ipt]->setVal(20.0487);
+      mta1[ipt] ->setVal(0.270705);
       mtPa1[ipt]->setVal(0.252494);
-      mtMa1[ipt] ->setVal(0.266369);
-      amtsigma[ipt] ->setVal(6.11411);
+      mtMa1[ipt]->setVal(0.25254);
+      amtsigma[ipt] ->setVal(5.94135);
       amtPsigma[ipt]->setVal(6.75855);
-      amtMsigma[ipt]->setVal(5.32022);
+      amtMsigma[ipt]->setVal(6.58761);
+      //mtmean[ipt] ->setConstant(kTRUE);
+      //mtPmean[ipt]->setConstant(kTRUE);
+      //mtMmean[ipt]->setConstant(kTRUE);
+      //mta1[ipt] ->setConstant(kTRUE);
+      //mtPa1[ipt]->setConstant(kTRUE);
+      mtMa1[ipt]->setConstant(kTRUE);
+      //mtsigma[ipt]->setConstant(kTRUE);
+      //mtPsigma[ipt]->setConstant(kTRUE);
+      mtMsigma[ipt]->setConstant(kTRUE);
+    }else if(ipt>10){
+      mtmean[ipt] ->setVal(0.796909);
+      mtPmean[ipt]->setVal(0.796263);
+      mtMmean[ipt]->setVal(0.189992);
+      mtsigma[ipt] ->setVal(5.94119);
+      mtPsigma[ipt]->setVal(6.63024);
+      mtMsigma[ipt]->setVal(6.97583);
+      mta1[ipt] ->setVal(0.270707);
+      mtPa1[ipt]->setVal(0.25212);
+      mtMa1[ipt]->setVal(0.25254);
+      amtsigma[ipt] ->setVal(5.94119);
+      amtPsigma[ipt]->setVal(6.63024);
+      amtMsigma[ipt]->setVal(6.97583);
       mtmean[ipt] ->setConstant(kTRUE);
       mtPmean[ipt]->setConstant(kTRUE);
       mtMmean[ipt]->setConstant(kTRUE);
-      mta1[ipt] ->setConstant(kTRUE);
-      mtPa1[ipt]->setConstant(kTRUE);
-      mtMa1[ipt]->setConstant(kTRUE);
       mtsigma[ipt]->setConstant(kTRUE);
       mtPsigma[ipt]->setConstant(kTRUE);
       mtMsigma[ipt]->setConstant(kTRUE);
+      mta1[ipt] ->setConstant(kTRUE);
+      mtPa1[ipt]->setConstant(kTRUE);
+      mtMa1[ipt]->setConstant(kTRUE);
     }
     //   Construct PDFs for fitting
     //
@@ -2253,9 +2340,13 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotMet->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMet->SetYRange(0.1,1.1*(hDataMet[ipt]->GetMaximum()));
+    if(ipt>10)
+      plotMet->SetYRange(0.1,1.3*(hDataMet[ipt]->GetMaximum()));
     plotMet->Draw(c,kFALSE,format,1);
 
     plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotMetDiff->setOutDir(CPlot::sOutDir);
     plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
     plotMetDiff->SetYRange(-8,8);
@@ -2345,9 +2436,15 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotAntiMet->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMet->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotAntiMet->SetYRange(0.1,1.1*(hAntiDataMet[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMet->SetYRange(0.1,1.5*(hAntiDataMet[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMet->SetYRange(0.1,2.0*(hAntiDataMet[ipt]->GetMaximum()));
     plotAntiMet->Draw(c,kFALSE,format,1);
     
     plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotAntiMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetDiff->setOutDir(CPlot::sOutDir);
     plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
     plotAntiMetDiff->SetYRange(-8,8);
@@ -2440,9 +2537,13 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMetp->SetYRange(0.1,1.1*(hDataMetp[ipt]->GetMaximum()));
+    if(ipt>10)
+      plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
     plotMetp->Draw(c,kFALSE,format,1);
 
     plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","#chi");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
     plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
     plotMetpDiff->SetYRange(-8,8);
@@ -2533,9 +2634,15 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotAntiMetp->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMetp->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotAntiMetp->SetYRange(0.1,1.1*(hAntiDataMetp[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMetp->SetYRange(0.1,1.5*(hAntiDataMetp[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMetp->SetYRange(0.1,2.0*(hAntiDataMetp[ipt]->GetMaximum()));
     plotAntiMetp->Draw(c,kFALSE,format,1);
     
     plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
     plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
     plotAntiMetpDiff->SetYRange(-8,8);
@@ -2629,9 +2736,13 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotMetm->SetYRange(0.1,1.1*(hDataMetm[ipt]->GetMaximum()));
+    if(ipt>10)
+      plotMetm->SetYRange(0.1,1.3*(hDataMetm[ipt]->GetMaximum()));
     plotMetm->Draw(c,kFALSE,format,1);
 
     plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
     plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
     plotMetmDiff->SetYRange(-8,8);
@@ -2723,9 +2834,15 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     plotAntiMetm->AddTextBox(binlabel,0.55,0.75,0.90,0.80,0);
     plotAntiMetm->AddTextBox("CMS Preliminary",0.63,0.92,0.95,0.99,0);
     plotAntiMetm->SetYRange(0.1,1.1*(hAntiDataMetm[ipt]->GetMaximum()));
+    if(ipt==10)
+      plotAntiMetm->SetYRange(0.1,1.5*(hAntiDataMetm[ipt]->GetMaximum()));
+    if(ipt==11)
+      plotAntiMetm->SetYRange(0.1,2.0*(hAntiDataMetm[ipt]->GetMaximum()));
     plotAntiMetm->Draw(c,kFALSE,format,1);
     
     plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    if(ipt>8)
+      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
     plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
     plotAntiMetmDiff->SetYRange(-8,8);
@@ -2754,20 +2871,38 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     
     flags = allyields.flags();
     allyields<<fixed<<setprecision(2);
-    allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<" EWK(Fit&Counting): "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<" +/- "<<sqrt(hEWKMet[ipt]->Integral())<<endl;
+    //allyields<<"Bin\t"<<ipt<<"\t Signal\t"<<nSig[ipt]->getVal()<<"\t Error\t"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<" EWK(Fit&Cnt): "<<nEWK[ipt]->getVal()<<" +/- "<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<" +/- "<<sqrt(hEWKMet[ipt]->Integral())<<endl;
+    allyields<<ipt<<"\t"<<hDataMet[ipt]->Integral()<<"+/-"<<sqrt(hDataMet[ipt]->Integral())<<"\t"<<nSig[ipt]->getVal()+nEWK[ipt]->getVal()+nQCD[ipt]->getVal()<<"+/-"<<sqrt(nSig[ipt]->getPropagatedError(*fitRes[ipt])*nSig[ipt]->getPropagatedError(*fitRes[ipt])+nQCD[ipt]->getPropagatedError(*fitRes[ipt])*nQCD[ipt]->getPropagatedError(*fitRes[ipt])+nEWK[ipt]->getPropagatedError(*fitRes[ipt])*nEWK[ipt]->getPropagatedError(*fitRes[ipt]))<<"\t"<<hWmunuMet[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMet[ipt]->Integral())<<"\t"<<nSig[ipt]->getVal()<<"+/-"<<nSig[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<hEWKMet[ipt]->Integral()<<"+/-"<<sqrt(hEWKMet[ipt]->Integral())<<"\t"<<nEWK[ipt]->getVal()<<"+/-"<<nEWK[ipt]->getPropagatedError(*fitRes[ipt])<<"\t"<<nQCD[ipt]->getVal()<<"+/-"<<nQCD[ipt]->getPropagatedError(*fitRes[ipt])<<endl;
 
     flags = allyieldsp.flags();
     allyieldsp<<fixed<<setprecision(2);
-    allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<" EWK(Fit&Counting): "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetp[ipt]->Integral())<<endl;
+    //allyieldsp<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigp[ipt]->getVal()<<"\t Error\t"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<" EWK(Fit&Cnt): "<<nEWKp[ipt]->getVal()<<" +/- "<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetp[ipt]->Integral())<<endl;
+    allyieldsp<<ipt<<"\t"<<hDataMetp[ipt]->Integral()<<"+/-"<<sqrt(hDataMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()+nEWKp[ipt]->getVal()+nQCDp[ipt]->getVal()<<"+/-"<<sqrt(nSigp[ipt]->getPropagatedError(*fitResp[ipt])*nSigp[ipt]->getPropagatedError(*fitResp[ipt])+nQCDp[ipt]->getPropagatedError(*fitResp[ipt])*nQCDp[ipt]->getPropagatedError(*fitResp[ipt])+nEWKp[ipt]->getPropagatedError(*fitResp[ipt])*nEWKp[ipt]->getPropagatedError(*fitResp[ipt]))<<"\t"<<hWmunuMetp[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetp[ipt]->Integral())<<"\t"<<nSigp[ipt]->getVal()<<"+/-"<<nSigp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<hEWKMetp[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetp[ipt]->Integral())<<"\t"<<nEWKp[ipt]->getVal()<<"+/-"<<nEWKp[ipt]->getPropagatedError(*fitResp[ipt])<<"\t"<<nQCDp[ipt]->getVal()<<"+/-"<<nQCDp[ipt]->getPropagatedError(*fitResp[ipt])<<endl;
 
     flags = allyieldsm.flags();
     allyieldsm<<fixed<<setprecision(2);
-    allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<" EWK(Fit&Counting): "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetm[ipt]->Integral())<<endl;
+    //allyieldsm<<"Bin\t"<<ipt<<"\t Signal\t"<<nSigm[ipt]->getVal()<<"\t Error\t"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<" EWK(Fit&Cnt): "<<nEWKm[ipt]->getVal()<<" +/- "<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<" +/- "<<sqrt(hEWKMetm[ipt]->Integral())<<endl;
+    allyieldsm<<ipt<<"\t"<<hDataMetm[ipt]->Integral()<<"+/-"<<sqrt(hDataMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()+nEWKm[ipt]->getVal()+nQCDm[ipt]->getVal()<<"+/-"<<sqrt(nSigm[ipt]->getPropagatedError(*fitResm[ipt])*nSigm[ipt]->getPropagatedError(*fitResm[ipt])+nQCDm[ipt]->getPropagatedError(*fitResm[ipt])*nQCDm[ipt]->getPropagatedError(*fitResm[ipt])+nEWKm[ipt]->getPropagatedError(*fitResm[ipt])*nEWKm[ipt]->getPropagatedError(*fitResm[ipt]))<<"\t"<<hWmunuMetm[ipt]->Integral()<<"+/-"<<sqrt(hWmunuMetm[ipt]->Integral())<<"\t"<<nSigm[ipt]->getVal()<<"+/-"<<nSigm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<hEWKMetm[ipt]->Integral()<<"+/-"<<sqrt(hEWKMetm[ipt]->Integral())<<"\t"<<nEWKm[ipt]->getVal()<<"+/-"<<nEWKm[ipt]->getPropagatedError(*fitResm[ipt])<<"\t"<<nQCDm[ipt]->getVal()<<"+/-"<<nQCDm[ipt]->getPropagatedError(*fitResm[ipt])<<endl;
 
     chi2prob = hDataMet[ipt]->Chi2Test(hPdfMet,"PUW");
     chi2ndf  = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2/NDFUW");
     ksprob   = hDataMet[ipt]->KolmogorovTest(hPdfMet);
     ksprobpe = hDataMet[ipt]->KolmogorovTest(hPdfMet,"DX");
+
+    chi2 = hDataMet[ipt]->Chi2Test(hPdfMet,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = fitfile.flags();
+    fitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcd[ipt]->sigma->getValV()<<"+/-"<<qcd[ipt]->sigma->getError()<<"\t"<<qcd[ipt]->a1->getValV()<<"+/-"<<qcd[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2[ipt]->sigma1->getValV()*qcd2[ipt]->sigma1->getValV()+qcd2[ipt]->sigma2->getValV()*qcd2[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2[ipt]->sigma1->getError()*qcd2[ipt]->sigma1->getError()+qcd2[ipt]->sigma2->getError()*qcd2[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2[ipt]->a1->getValV()*qcd2[ipt]->a1->getValV()+qcd2[ipt]->a2->getValV()*qcd2[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2[ipt]->a1->getError()*qcd2[ipt]->a1->getError()+qcd2[ipt]->a2->getError()*qcd2[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1[ipt]->s1->getValV()*qcd1[ipt]->s1->getValV()+qcd1[ipt]->s2->getValV()*qcd1[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1[ipt]->s1->getError()*qcd1[ipt]->s1->getError()+qcd1[ipt]->s2->getError()*qcd1[ipt]->s2->getError())<<"\t"<<sqrt(qcd1[ipt]->a1->getValV()*qcd1[ipt]->a1->getValV()+qcd1[ipt]->a2->getValV()*qcd1[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1[ipt]->a1->getError()*qcd1[ipt]->a1->getError()+qcd1[ipt]->a2->getError()*qcd1[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      fitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mt[ipt]->sigma->getValV()<<"+/-"<<mt[ipt]->sigma->getError()<<"\t"<<mt[ipt]->a1->getValV()<<"+/-"<<mt[ipt]->a1->getError()<<endl;
 
     flags = Wmfile.flags();
     if (ipt==0)
@@ -2795,6 +2930,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     ksprob   = hDataMetp[ipt]->KolmogorovTest(hPdfMetp);
     ksprobpe = hDataMetp[ipt]->KolmogorovTest(hPdfMetp,"DX");  
     
+    chi2 = hDataMetp[ipt]->Chi2Test(hPdfMetp,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = pfitfile.flags();
+    pfitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcdp[ipt]->sigma->getValV()<<"+/-"<<qcdp[ipt]->sigma->getError()<<"\t"<<qcdp[ipt]->a1->getValV()<<"+/-"<<qcdp[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2p[ipt]->sigma1->getValV()*qcd2p[ipt]->sigma1->getValV()+qcd2p[ipt]->sigma2->getValV()*qcd2p[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2p[ipt]->sigma1->getError()*qcd2p[ipt]->sigma1->getError()+qcd2p[ipt]->sigma2->getError()*qcd2p[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2p[ipt]->a1->getValV()*qcd2p[ipt]->a1->getValV()+qcd2p[ipt]->a2->getValV()*qcd2p[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2p[ipt]->a1->getError()*qcd2p[ipt]->a1->getError()+qcd2p[ipt]->a2->getError()*qcd2p[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1p[ipt]->s1->getValV()*qcd1p[ipt]->s1->getValV()+qcd1p[ipt]->s2->getValV()*qcd1p[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1p[ipt]->s1->getError()*qcd1p[ipt]->s1->getError()+qcd1p[ipt]->s2->getError()*qcd1p[ipt]->s2->getError())<<"\t"<<sqrt(qcd1p[ipt]->a1->getValV()*qcd1p[ipt]->a1->getValV()+qcd1p[ipt]->a2->getValV()*qcd1p[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1p[ipt]->a1->getError()*qcd1p[ipt]->a1->getError()+qcd1p[ipt]->a2->getError()*qcd1p[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      pfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mtp[ipt]->sigma->getValV()<<"+/-"<<mtp[ipt]->sigma->getError()<<"\t"<<mtp[ipt]->a1->getValV()<<"+/-"<<mtp[ipt]->a1->getError()<<endl;
+
     flags = Wmpfile.flags();
     if (ipt==0)
       Wmpfile<<"================================= [0, 600] Bin - "<<ipt<<" =================================="<<endl;
@@ -2820,6 +2970,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
     chi2ndf  = hDataMetm[ipt]->Chi2Test(hPdfMetm,"CHI2/NDFUW");
     ksprob   = hDataMetm[ipt]->KolmogorovTest(hPdfMetm);
     ksprobpe = hDataMetm[ipt]->KolmogorovTest(hPdfMetm,"DX");  
+
+    chi2 = hDataMetm[ipt]->Chi2Test(hPdfMetm,"CHI2");
+    //ndf = wmframe->GetNbinsX()-1.0;
+    ndf = NBINS-1;
+    
+    flags = mfitfile.flags();
+    mfitfile<<fixed<<setprecision(4);
+    if(ipt<4)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<qcdm[ipt]->sigma->getValV()<<"+/-"<<qcdm[ipt]->sigma->getError()<<"\t"<<qcdm[ipt]->a1->getValV()<<"+/-"<<qcdm[ipt]->a1->getError()<<endl;
+    if(ipt>3 && ipt<6)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd2m[ipt]->sigma1->getValV()*qcd2m[ipt]->sigma1->getValV()+qcd2m[ipt]->sigma2->getValV()*qcd2m[ipt]->sigma2->getValV())<<"+/-"<<sqrt(qcd2m[ipt]->sigma1->getError()*qcd2m[ipt]->sigma1->getError()+qcd2m[ipt]->sigma2->getError()*qcd2m[ipt]->sigma2->getError())<<"\t"<<sqrt(qcd2m[ipt]->a1->getValV()*qcd2m[ipt]->a1->getValV()+qcd2m[ipt]->a2->getValV()*qcd2m[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd2m[ipt]->a1->getError()*qcd2m[ipt]->a1->getError()+qcd2m[ipt]->a2->getError()*qcd2m[ipt]->a2->getError())<<endl;
+    if(ipt>5 && ipt<9)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<sqrt(qcd1m[ipt]->s1->getValV()*qcd1m[ipt]->s1->getValV()+qcd1m[ipt]->s2->getValV()*qcd1m[ipt]->s2->getValV())<<"+/-"<<sqrt(qcd1m[ipt]->s1->getError()*qcd1m[ipt]->s1->getError()+qcd1m[ipt]->s2->getError()*qcd1m[ipt]->s2->getError())<<"\t"<<sqrt(qcd1m[ipt]->a1->getValV()*qcd1m[ipt]->a1->getValV()+qcd1m[ipt]->a2->getValV()*qcd1m[ipt]->a2->getValV())<<"+/-"<<sqrt(qcd1m[ipt]->a1->getError()*qcd1m[ipt]->a1->getError()+qcd1m[ipt]->a2->getError()*qcd1m[ipt]->a2->getError())<<endl;
+    if(ipt>8)
+      mfitfile<<ipt<<"\t"<<chi2<<"\t"<<ndf<<"\t"<<chi2ndf<<"\t"<<mtm[ipt]->sigma->getValV()<<"+/-"<<mtm[ipt]->sigma->getError()<<"\t"<<mtm[ipt]->a1->getValV()<<"+/-"<<mtm[ipt]->a1->getError()<<endl;
 
     flags = Wmmfile.flags();
     if (ipt==0)
@@ -3049,6 +3214,15 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       InValfile<<"amta1[ipt] ->setVal("<<amt[ipt] ->a1->getValV()<<");"<<endl;
       InValfile<<"amtPa1[ipt]->setVal("<<amtp[ipt]->a1->getValV()<<");"<<endl;
       InValfile<<"amtMa1[ipt]->setVal("<<amtm[ipt]->a1->getValV()<<");"<<endl;
+      InValfile<<"amtmean[ipt] ->setVal("<<amt[ipt] ->mean->getValV()<<"+/-"<<amt[ipt] ->mean->getError()<<");"<<endl;
+      InValfile<<"amtPmean[ipt]->setVal("<<amtp[ipt]->mean->getValV()<<"+/-"<<amtp[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"amtMmean[ipt]->setVal("<<amtm[ipt]->mean->getValV()<<"+/-"<<amtm[ipt]->mean->getError()<<");"<<endl;
+      InValfile<<"amtsigma[ipt] ->setVal("<<amt[ipt] ->sigma->getValV()<<"+/-"<<amt[ipt] ->sigma->getError()<<");"<<endl;
+      InValfile<<"amtPsigma[ipt]->setVal("<<amtp[ipt]->sigma->getValV()<<"+/-"<<amtp[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"amtMsigma[ipt]->setVal("<<amtm[ipt]->sigma->getValV()<<"+/-"<<amtm[ipt]->sigma->getError()<<");"<<endl;
+      InValfile<<"amta1[ipt] ->setVal("<<amt[ipt] ->a1->getValV()<<"+/-"<<amt[ipt] ->a1->getError()<<");"<<endl;
+      InValfile<<"amtPa1[ipt]->setVal("<<amtp[ipt]->a1->getValV()<<"+/-"<<amtp[ipt]->a1->getError()<<");"<<endl;
+      InValfile<<"amtMa1[ipt]->setVal("<<amtm[ipt]->a1->getValV()<<"+/-"<<amtm[ipt]->a1->getError()<<");"<<endl;
     }
     InValfile<<endl;
     InValfile.flags(flags);
@@ -3269,6 +3443,10 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   allyields.flags(flags);
   allyieldsp.flags(flags);
   allyieldsm.flags(flags);
+
+  fitfile.close();
+  pfitfile.close();
+  mfitfile.close();
 
   Wmfile.close();
   Wmpfile.close();
