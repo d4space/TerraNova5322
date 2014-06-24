@@ -13,18 +13,21 @@ double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double ax[13]  = {4.25,10,15,20.75,27,35,45,60,90,130,170,220,425};
 double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
-void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGraphErrors* iH4,TGraphAsymmErrors* iH5){
+void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGraphErrors* iH4,TGraphAsymmErrors* iH5,TH1* StatErrBand){
   std::string lName = std::string(iH0->GetName());
   TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);// lHDiff->Sumw2();
   TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
   int i1 = 0;
   lXHDiff1->SetLineWidth(2); lXHDiff1->SetLineColor(kBlack); //lXHDiff1->SetLineStyle(2);
   
+  StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
+  StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
+
   //lHDiff->GetYaxis()->SetRangeUser(0.2,1.8);
   lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
-  if (clr == 2)
+  if (chnl == 2)
     lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
-  if (clr == 3)
+  if (chnl == 3)
     lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
   lHDiff->GetYaxis()->SetTitleOffset(0.2);
   lHDiff->GetYaxis()->SetTitleSize(0.16);
@@ -34,7 +37,7 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGrap
   lHDiff->GetXaxis()->SetTitleSize(0.16);
   lHDiff->GetXaxis()->SetLabelSize(0.16);
   lHDiff->GetYaxis()->SetNdivisions(405);
-  if (clr == 3)
+  if (chnl == 3)
     lHDiff->GetXaxis()->SetTitle(" W p_{T} ");
   lHDiff->GetYaxis()->SetTitle("Theory/Data");
   //lHDiff->GetYaxis()->SetTitle("Data/ResBos");
@@ -55,19 +58,19 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGrap
   ErrBand->SetFillStyle(3354);
   ErrBand->SetLineWidth(1);
   
-  if (clr == 1)
+  if (chnl == 1)
   {
     lHDiff->SetMarkerStyle(kOpenCircle);
     lHDiff->SetMarkerColor(kBlue);
     lHDiff->SetLineColor(kBlue);
   }
-  if (clr == 2)
+  if (chnl == 2)
   {
     lHDiff->SetMarkerStyle(kOpenTriangleUp);
     lHDiff->SetMarkerColor(kRed);
     lHDiff->SetLineColor(kRed);
   }
-  if (clr == 3)
+  if (chnl == 3)
   {
     lHDiff->SetMarkerStyle(kOpenSquare);
     lHDiff->SetMarkerColor(kGreen+3);
@@ -80,15 +83,16 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int clr,TGrap
   
   lHDiff->SetTitle("");
   lHDiff->Draw("E");
-  if (clr == 2 || clr == 3)
-    iH3->Draw("2");
-  if (clr == 1)
-    iH5->Draw("2");
-  if (clr == 2 || clr == 3)
-    iH4->Draw("2");
+  if (chnl == 1)
+    iH5->Draw("2same");
+  if (chnl == 2 || chnl == 3)
+    iH4->Draw("2same");
+  if (chnl == 2 || chnl == 3)
+    iH3->Draw("2same");
   lXHDiff1->Draw("histsame");
-  ErrBand->Draw("2");
+  ErrBand->Draw("2same");
   lHDiff->Draw("Esame");
+  StatErrBand->Draw("E1same");
 }
 
 int theoryStudy(const TString BaseName)
@@ -123,6 +127,7 @@ int theoryStudy(const TString BaseName)
   TH1D *hPowhegErrBandPDF = new TH1D("hPowhegErrBandPDF","hPowhegErrBandPDF",13,WptLogBins);hPowhegErrBandPDF->Sumw2();
   TH1D *hFewzErrBand = new TH1D("hFewzErrBand","hFewzErrBand",13,WptLogBins);hFewzErrBand->Sumw2();
   TH1D *hFewzTheoryErrBand = new TH1D("hFewzTheoryErrBand","hFewzTheoryErrBand",13,WptLogBins);hFewzTheoryErrBand->Sumw2();
+  TH1D *hStatErr = new TH1D("hStatErr","hStatErr",13,WptLogBins);hStatErr->Sumw2();
   
   TH1D* lResbos[7];
   TH1D* lResbos30;
@@ -131,6 +136,7 @@ int theoryStudy(const TString BaseName)
   TH1D* lFEWZ;
   TH1D* lPowheg;
   TH1D* lData;
+  TH1D* hRD;
   
   for( int i(0);i<7;i++)
   {
@@ -148,10 +154,24 @@ int theoryStudy(const TString BaseName)
   lPowheg = (TH1D*)f_Data->Get("SVD_BornGen")->Clone();
   orgPowheg = (TH1D*)f_Data->Get("SVD_BornGen")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
+  hRD     = (TH1D*)f_Data->Get("data_Rec")->Clone();
+  
+  for( int ipt(1);ipt<nBins;ipt++)
+  {
+    double tmp = sqrt(hRD->GetBinContent(ipt));
+    hRD->SetBinError(ipt,tmp);
+    cout<<ipt<<"\t"<<hRD->GetBinContent(ipt)<<"\t"<<hRD->GetBinError(ipt)<<endl;
+  }
 
   lPowheg->Scale(1./18.429);
   lData->Scale(1./18.429);
+  hRD->Scale(1./18.429);
   
+  for( int ipt(1);ipt<nBins;ipt++)
+  {
+    cout<<ipt<<"\t"<<hRD->GetBinError(ipt)<<"\t"<<lData->GetBinError(ipt)<<endl;
+  }
+
   cout << "Resbos Total Xsec: " << lResbos30->Integral() << endl;
   cout << "Data Total Xsec: " << lData->Integral() << endl;
 
@@ -201,14 +221,19 @@ int theoryStudy(const TString BaseName)
     hDataLog->SetBinError(ipt,lData->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hDataErrBand->SetBinContent(ipt,1.);
     hDataErrBand->SetBinError(ipt,lData->GetBinError(ipt)/lData->GetBinContent(ipt));
+    hStatErr->SetBinContent(ipt,1.);
+    hStatErr->SetBinError(ipt,hRD->GetBinError(ipt)/lData->GetBinContent(ipt));
+    
     hPowhegErrBand->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
     hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
-    hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    //hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hPowhegErrBandPDF->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)+lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzErrBand->SetBinError(ipt,0.01);
     hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
-    hFewzTheoryErrBand->SetBinError(ipt,hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    //hFewzTheoryErrBand->SetBinError(ipt,hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzTheoryErrBand->SetBinError(ipt,0.01+hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
     
     resbVal[ipt-1]=hResbosLog30->GetBinContent(ipt)/hDataLog->GetBinContent(ipt);
     errResbosDataLo[ipt-1]=errMin[ipt-1]/hDataLog->GetBinContent(ipt);
@@ -219,6 +244,7 @@ int theoryStudy(const TString BaseName)
   }
 
   hDataLog->SetMarkerStyle(kFullCircle); hDataLog->SetMarkerColor(kBlack); hDataLog->SetMarkerSize(1);
+  hStatErr->SetMarkerStyle(kFullCircle); hStatErr->SetMarkerColor(kBlack); hStatErr->SetMarkerSize(0.6);
 
   TGraphErrors *hData = new TGraphErrors(hDataLog);
   TGraphErrors *hPowheg = new TGraphErrors(hPowhegLog);
@@ -230,10 +256,15 @@ int theoryStudy(const TString BaseName)
   TGraphErrors* fRatio = new TGraphErrors(hFewzErrBand);
   TGraphErrors* fTheoryRatio = new TGraphErrors(hFewzTheoryErrBand);
   
+  TGraphErrors* dataErrBand = new TGraphErrors(hDataErrBand);
+  dataErrBand->SetFillColor(kBlack);
+  dataErrBand->SetFillStyle(3354);
+  
   ResbosErrBand->SetFillColor(kBlue-7);
   ResbosErrBand->SetFillStyle(3001);
   
-  pRatio->SetFillColor(kRed-7);
+  //pRatio->SetFillColor(kRed-7);
+  pRatio->SetFillColor(kRed-10);
   pRatio->SetFillStyle(3001);
   
   pRatioPDF->SetFillColor(kRed+2);
@@ -242,7 +273,8 @@ int theoryStudy(const TString BaseName)
   fRatio->SetFillColor(kGreen);
   fRatio->SetFillStyle(3001);
   
-  fTheoryRatio->SetFillColor(kGreen-9);
+  //fTheoryRatio->SetFillColor(kGreen-9);
+  fTheoryRatio->SetFillColor(kGreen+2);
   fTheoryRatio->SetFillStyle(3001);
 
   hFewz->SetFillColor(kGreen);
@@ -319,11 +351,14 @@ int theoryStudy(const TString BaseName)
   tb1->SetFillStyle(0);
   tb1->SetTextSize(0.18);
   tb1->AddText("ResBos");
-  TLegend *rL1 =new TLegend(0.2,0.05,0.44,0.17); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  TLegend *rL1 =new TLegend(0.2,0.05,0.86,0.15); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  rL1-> SetNColumns(3);
   rL1->AddEntry(ResbosErrBand,"Theoretical unc. (gen)","F");
+  rL1->AddEntry(hStatErr,"Statistic error (data)","PLE1");
+  rL1->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL1->SetTextSize(0.12);
 
-  drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand);
+  drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand,hStatErr);
   rL1->Draw();
   tb1->Draw();
 
@@ -341,13 +376,15 @@ int theoryStudy(const TString BaseName)
   tb2->SetFillStyle(0);
   tb2->SetTextSize(0.18);
   tb2->AddText("Powheg");
-  TLegend *rL2 =new TLegend(0.2,0.05,0.6,0.17); rL2->SetFillColor(0); rL2->SetBorderSize(0);
+  TLegend *rL2 =new TLegend(0.2,0.05,0.68,0.30); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
   rL2->AddEntry(pRatioPDF,"Theory unc. (gen)","F");
+  rL2->AddEntry(hStatErr,"Statistic error (data)","PLE1");
   rL2->AddEntry(pRatio,"Statistical unc. (gen)","F");
+  rL2->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL2->SetTextSize(0.12);
 
-  drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand);
+  drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand,hStatErr);
   rL2->Draw();
   tb2->Draw();
 
@@ -365,13 +402,15 @@ int theoryStudy(const TString BaseName)
   tb3->SetFillStyle(0);
   tb3->SetTextSize(0.18);
   tb3->AddText("Fewz");
-  TLegend *rL3 =new TLegend(0.2,0.1,0.6,0.22); rL3->SetFillColor(0); rL3->SetBorderSize(0);
+  TLegend *rL3 =new TLegend(0.2,0.1,0.68,0.30); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
   rL3->AddEntry(fTheoryRatio,"Theory unc. (gen)","F");
+  rL3->AddEntry(hStatErr,"Statistic error (data)","PLE1");
   rL3->AddEntry(fRatio,"Statistical unc. (gen)","F");
+  rL3->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL3->SetTextSize(0.12);
 
-  drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand);
+  drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr);
   rL3->Draw();
   tb3->Draw();
   lC0->SaveAs(BaseName+"_Result_diffXsec.png");
