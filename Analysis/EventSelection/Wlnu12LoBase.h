@@ -71,6 +71,7 @@ protected:
   // Selections
   double	    CalcEvtWeight();
   virtual Int_t	    WbestSelect();
+  virtual Int_t	    WbestFiducialCut();
   virtual Int_t	    ZbestSelect();
   virtual Int_t	    FillWSide(int entry);
   int		    DumpWbestCand(int entry);
@@ -81,6 +82,7 @@ protected:
   int		    VertexCut();
   virtual Int_t     TauCut(int entry);
   virtual Int_t     MuonCut(int entry);
+  virtual Int_t     MuonFidCut(int entry);
   virtual Int_t     MuonCutSide(int entry);
   virtual Int_t     AddMuonCut(int entry);
   virtual Int_t     ElectronCut(int entry);
@@ -586,6 +588,12 @@ Int_t Wlnu12LoBase::MuonCut(int i)
   //if( ( (*W_Lept1_nhIso04)[i]+(*W_Lept1_chIso04)[i]+(*W_Lept1_phIso04)[i])/(*W_Lept1_pt)[i] > 0.12) return -1;
   double betaCor04= max(0.0,(*W_Lept1_nhIso04)[i]+(*W_Lept1_phIso04)[i]-0.5*(*W_Lept1_pcIso04)[i]);
   if( ((*W_Lept1_chIso04)[i]+betaCor04)/W.lep_pt_corr > 0.12) return -1;
+  return 1;
+}
+Int_t Wlnu12LoBase::MuonFidCut(int i)
+{
+  if(W.lep_pt_corr < 20) return -1;
+  if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
   return 1;
 }
 

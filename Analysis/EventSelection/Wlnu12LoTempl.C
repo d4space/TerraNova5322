@@ -104,9 +104,9 @@ void Wlnu12LoTempl::Loop()
     //GoodW
     if(W.Pass && addLepN <2){
       DumpWbestCand(W.idxBest);
+      if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
       if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
       evtSelected+=mTTW;
-      if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
       Fill_Histo();
       Nselected4Bin();
     }
