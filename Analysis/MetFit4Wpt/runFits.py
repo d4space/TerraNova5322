@@ -4,7 +4,8 @@ import subprocess
 import sys
 HFLUMI =0.018729
 PIXLUMI=0.018479
-WPTLUMI=0.018977
+#WPTLUMI=0.018977
+WPTLUMI=0.018429
 LUMI=WPTLUMI
 
 if (len(sys.argv) !=2):
