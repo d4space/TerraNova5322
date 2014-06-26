@@ -74,7 +74,7 @@ int wPtUnfoldStudy
   TFile *f_RecoEffiCovMat;
   TFile *f_RecoSmearCovMat;
   TFile *f_RecoRecoilCovMat;
-  TFile *f_RecoQCDRatioCovMat;
+  //TFile *f_RecoQCDRatioCovMat;
   
   TFile *f_RecoAcceptCovMat;
   TFile *f_RecoAcceptFSRCovMat;
@@ -100,14 +100,14 @@ int wPtUnfoldStudy
     f_RecoRecoilCovMat    = new TFile("RecoCovMatrix/Result_WpToMuNu_RecoRecoilCovMat.root");
     f_RecoAcceptCovMat    = new TFile("RecoCovMatrix/Muon_WpToMuNu_S8_Acceptance.root");
     f_RecoAcceptFSRCovMat = new TFile("RecoCovMatrix/Muon_WpToMuNu_S8_AcceptanceFSR.root");
-    f_RecoQCDRatioCovMat  = new TFile("RecoCovMatrix/Result_WpToMuNu_RecoQCDRatioCovMat.root");
+    //f_RecoQCDRatioCovMat  = new TFile("RecoCovMatrix/Result_WpToMuNu_RecoQCDRatioCovMat.root");
   }else if(BaseName == "WmToMuNu"){
     f_RecoEffiCovMat      = new TFile("RecoCovMatrix/Result_WmToMuNu_RecoEffiCovMat.root");
     f_RecoSmearCovMat     = new TFile("RecoCovMatrix/Result_WmToMuNu_RecoSmearCovMat.root");
     f_RecoRecoilCovMat    = new TFile("RecoCovMatrix/Result_WmToMuNu_RecoRecoilCovMat.root");
     f_RecoAcceptCovMat    = new TFile("RecoCovMatrix/Muon_WmToMuNu_S8_Acceptance.root");
     f_RecoAcceptFSRCovMat = new TFile("RecoCovMatrix/Muon_WmToMuNu_S8_AcceptanceFSR.root");
-    f_RecoQCDRatioCovMat  = new TFile("RecoCovMatrix/Result_WmToMuNu_RecoQCDRatioCovMat.root");
+    //f_RecoQCDRatioCovMat  = new TFile("RecoCovMatrix/Result_WmToMuNu_RecoQCDRatioCovMat.root");
   }
   
   TFile *f_RecoLumiUpCovMat;
@@ -162,7 +162,7 @@ int wPtUnfoldStudy
     TH2D *RecoRecoilCovMat;
     TH2D *RecoLumiCovMat;
     TH2D *RecoStatisticCovMat;
-    TH2D *RecoQCDRatioCovMat;
+    //TH2D *RecoQCDRatioCovMat;
     TH2D *TotalRecoCovMat;
 
     TH2D *InputCovMat; //Input Covariance Matrix for FSR Unfolding
@@ -174,7 +174,7 @@ int wPtUnfoldStudy
     TH2D *uRecoRecoilCovMat;
     TH2D *uRecoLumiCovMat;
     TH2D *uRecoStatisticCovMat;
-    TH2D *uRecoQCDRatioCovMat;
+    //TH2D *uRecoQCDRatioCovMat;
     TH2D *uRecoRespCovMat;
 
     TH2D *uTotalRecoCovMat;
@@ -190,7 +190,7 @@ int wPtUnfoldStudy
     TH2D *Eff_uMCEventEffFSRCovMat;
     TH2D *Eff_uRecoStatisticCovMat;
     TH2D *Eff_DetectUnfStatisticCovMat;
-    TH2D *Eff_uRecoQCDRatioCovMat;
+    //TH2D *Eff_uRecoQCDRatioCovMat;
     TH2D *Eff_uRecoRespCovMat;
 
     TH2D *Eff_uTauCov;
@@ -304,14 +304,14 @@ int wPtUnfoldStudy
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.RecoLumiCovMat = new TH2D("SVD_Post.RecoLumiCovMat","Reco Stage Lumi Covariace matrix"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  TH2D* h2_RecoQCDRatioCovMat = new TH2D("h2_RecoQCDRatioCovMat","Reco Stage QCD ratio Covariace matrix"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.RecoQCDRatioCovMat = new TH2D("SVD_Post.RecoQCDRatioCovMat","Reco QCD ratio Covariace matrix "
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.uRecoQCDRatioCovMat = new TH2D("SVD_Post.uRecoQCDRatioCovMat","Reco QCD ratio Covariace matrix "
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
-  SVD_Post.Eff_uRecoQCDRatioCovMat = new TH2D("SVD_Post.Eff_uRecoQCDRatioCovMat","Eff applied QCD ratio Covariace matrix Detector unfolding"
-      ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
+  //TH2D* h2_RecoQCDRatioCovMat = new TH2D("h2_RecoQCDRatioCovMat","Reco Stage QCD ratio Covariace matrix"
+  //    ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
+  //SVD_Post.RecoQCDRatioCovMat = new TH2D("SVD_Post.RecoQCDRatioCovMat","Reco QCD ratio Covariace matrix "
+  //    ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
+  //SVD_Post.uRecoQCDRatioCovMat = new TH2D("SVD_Post.uRecoQCDRatioCovMat","Reco QCD ratio Covariace matrix "
+  //    ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
+  //SVD_Post.Eff_uRecoQCDRatioCovMat = new TH2D("SVD_Post.Eff_uRecoQCDRatioCovMat","Eff applied QCD ratio Covariace matrix Detector unfolding"
+  //    ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.Eff_uRecoRespCovMat = new TH2D("SVD_Post.Eff_uRecoRespCovMat","Eff apllied Response Covariace matrix after Detector unfolding"
       ,NWptBinPlus-1,0,NWptBinPlus-1,NWptBinPlus-1,0,NWptBinPlus-1);
   SVD_Post.MCEventEffFSRCovMat = new TH2D("SVD_Post.MCEventEffFSRCovMat","FSR CovMat from MC Eff h1_Post_BothOvTruth_weightFSR"
@@ -375,7 +375,7 @@ int wPtUnfoldStudy
   CPlot *pltRecoRecoilCov;
   CPlot *pltRecoScaleCov;
   CPlot *pltRecoSmearCov;
-  CPlot *pltRecoQCDRatioCov;
+  //CPlot *pltRecoQCDRatioCov;
   CPlot *pltRecoFSRCov;
   CPlot *pltEffFSRCov;
   
@@ -387,7 +387,7 @@ int wPtUnfoldStudy
   CPlot *pltReconRecoil_cov;
   CPlot *pltReconLumi_cov;
   CPlot *pltReconFSR_cov;
-  CPlot *pltReconQCDRatio_cov;
+  //CPlot *pltReconQCDRatio_cov;
  
   CPlot *pltRecon_corr;
   CPlot *plt_DUnf_RespCov;
@@ -689,8 +689,8 @@ int wPtUnfoldStudy
   SVD_Post.RecoSmearCovMat =(TH2D*)f_RecoSmearCovMat->Get("h2_RecoSmearCovMat")->Clone();
   SVD_Post.RecoRecoilCovMat =(TH2D*)f_RecoRecoilCovMat->Get("h2_RecoRecoilCovMat")->Clone();
   cout<<"hallo I am here"<<endl; 
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.RecoQCDRatioCovMat =(TH2D*)f_RecoQCDRatioCovMat->Get("h2_RecoQCDRatioCovMat")->Clone();
+  //if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+  //  SVD_Post.RecoQCDRatioCovMat =(TH2D*)f_RecoQCDRatioCovMat->Get("h2_RecoQCDRatioCovMat")->Clone();
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     SVD_Post.RecoScaleCovMat =(TH2D*)f_RecoScaleCovMat->Get("h2_RecoScaleCovMat")->Clone();
   
@@ -764,16 +764,7 @@ int wPtUnfoldStudy
   pltRecoSmearCov->AddHist2D(SVD_Post.RecoSmearCovMat,"COLTEXTZ",kWhite,kBlack);
   pltRecoSmearCov-> Draw(myCan,kTRUE,"png");
 
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    //QCD Signal Ratio Correction Covariance Matrix
-    tmpTStr = "RecoQCDRatioCovMat_"+BaseName;
-    pltRecoQCDRatioCov = new CPlot(tmpTStr,"Recon QCDSignalRatio Covariance Matrix","","");
-    pltRecoQCDRatioCov -> setOutDir(resultDir);
-    gPad->SetLogz(0);
-    SVD_Post.RecoQCDRatioCovMat -> SetMarkerSize(0.8);
-    pltRecoQCDRatioCov -> AddHist2D(SVD_Post.RecoQCDRatioCovMat,"COLTEXTZ",kWhite,kBlack);
-    pltRecoQCDRatioCov -> Draw(myCan,kTRUE,"png");
-  }else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" ){
+  if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" ){
     tmpTStr = "RecoScaleCovMat_"+BaseName;
     pltRecoScaleCov = new CPlot(tmpTStr,"Recon Scale Covariance Matrix","","");
     pltRecoScaleCov->setOutDir(resultDir);
@@ -807,15 +798,7 @@ int wPtUnfoldStudy
     Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoRecoilCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
   }
 
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    Fout << "QCDRatio Reco stage"<< endl;
-    Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-    Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-    for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-    {
-      Fout << i << "\t" << h1_Data_SigYild->GetBinContent(i) << "\t\t" << SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
-    }
-  }else if (BaseName == "WpToEleNu" || BaseName == "WmToEleNu" ){
+  if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" ){
     Fout << "Scale Reco stage Syst"<< endl;
     Fout << "Bin" << "\t" << "Wpt yield " << "\t" << "Cov_i_i" << "\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
     Fout << "=============================================================" << endl;
@@ -846,15 +829,15 @@ int wPtUnfoldStudy
   Fout << "Systematics "<< endl;
   
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" << "QCDvsSignalRaio Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" <<  "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "Scale Syst" <<endl;
   
-  Fout << "" << "\t\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << endl;
+  Fout << "" << "\t\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" <<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i))/h1_Data_SigYild->GetBinContent(i)*100 <<endl;
     }
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
@@ -868,7 +851,7 @@ int wPtUnfoldStudy
   Fout << "Total Systematics - Reconstruction stage"<< endl;
   //Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 + Scale^2 + Smear^2 +Recoil^2 +Lumi^2 +FSR^2) "<<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +QCDvsSignalRatio^2) "<<endl;
+    Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 ) "<<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 + Scale^2 + Smear^2 +Recoil^2) "<<endl;
   
@@ -876,7 +859,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      TotalStat[i]=100*TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i);
+      TotalStat[i]=100*TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.RecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Post.RecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)),2))/h1_Data_SigYild->GetBinContent(i);
       Fout<<TotalStat[i]<<endl;
     }
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -915,7 +898,6 @@ int wPtUnfoldStudy
   SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoEffiCovMat );
   SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoSmearCovMat );
   SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoRecoilCovMat );
-  //SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoQCDRatioCovMat);
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     SVD_Post.TotalRecoCovMat->Add(SVD_Post.RecoScaleCovMat );
 
@@ -989,8 +971,6 @@ int wPtUnfoldStudy
   SVD_Post.uRecoRecoilCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoRecoilCovMat, 1000);
   //SVD_Post.uRecoLumiCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoLumiCovMat, 100);
   SVD_Post.uRecoStatisticCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoStatisticCovMat, 1000);
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.uRecoQCDRatioCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.RecoQCDRatioCovMat, 1000);
   //SVD_Post.uRecoStatisticCovMat = tsvdData->GetUnfoldCovMatrix( SVD_Post.statCov, 100);
   
 //Total Cov Matrix = Stat + Syst + ResponseMatrix
@@ -999,8 +979,8 @@ int wPtUnfoldStudy
     SVD_Post.uTotalCovMat->Add(SVD_Post.uRecoScaleCovMat);
   SVD_Post.uTotalCovMat->Add(SVD_Post.uRecoSmearCovMat);
   SVD_Post.uTotalCovMat->Add(SVD_Post.uRecoRecoilCovMat);
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.uTotalCovMat->Add(SVD_Post.uRecoQCDRatioCovMat);
+  //if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+    //SVD_Post.uTotalCovMat->Add(SVD_Post.uRecoQCDRatioCovMat);
   
 //Total Cov Matrix = Stat + Syst + ResponseMatrix
   for( int i(1); i<= SVD_Post.data->GetNbinsX(); i++)
@@ -1029,8 +1009,8 @@ int wPtUnfoldStudy
     SVD_Post.uTotalSystCov->Add(SVD_Post.uRecoScaleCovMat);
   SVD_Post.uTotalSystCov->Add(SVD_Post.uRecoSmearCovMat);
   SVD_Post.uTotalSystCov->Add(SVD_Post.uRecoRecoilCovMat);
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.uTotalSystCov->Add(SVD_Post.uRecoQCDRatioCovMat);
+  //if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+  //  SVD_Post.uTotalSystCov->Add(SVD_Post.uRecoQCDRatioCovMat);
   
    //SVD_Post.uRecoStatisticCovMat->Write();
    //SVD_Post.uRecoEffiCovMat->Write();
@@ -1108,15 +1088,6 @@ int wPtUnfoldStudy
  //   Fout << i << "\t" <<SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoLumiCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoLumiCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoLumiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
  // }
   
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    Fout << "QCDRatio Detector Unfolding stage"<< endl;
-    Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-    Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-    for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-    {
-      Fout << i << "\t" << SVD_Post.unfRes->GetBinContent(i) << "\t\t" << SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << endl;
-    }
-  }
   Fout << "Statistic Detector Unfolding stage"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1138,7 +1109,7 @@ int wPtUnfoldStudy
   Fout << "Systematics"<< endl;
     //Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "Scale Syst" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Lumi Syst" << "\t\t" << endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "QCDvsSignalRatio Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" <<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t" << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" << "\t\t" << "Scale Syst" <<endl;
   
@@ -1146,7 +1117,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Post.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
@@ -1159,7 +1130,7 @@ int wPtUnfoldStudy
   Fout << ""<< endl;
   Fout << "Systematics Detector Unfolding stage"<< endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +QCDvsSignalRatio^2) "<<endl;
+    Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2) "<<endl;
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout <<  "\t\t"<< "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +Scale^2) "<<endl;
   
@@ -1167,7 +1138,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
     {
-      Fout << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i)),2)+TMath::Power( TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Post.uRecoEffiCovMat->GetBinContent(i,i)),2)+TMath::Power( TMath::Sqrt(SVD_Post.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Post.uRecoRecoilCovMat->GetBinContent(i,i)),2))/SVD_Post.unfRes->GetBinContent(i)*100 <<endl;
     }
   else if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
@@ -1216,15 +1187,6 @@ int wPtUnfoldStudy
  // pltReconLumi_cov->AddHist2D(SVD_Post.uRecoLumiCovMat,"COLZ",kWhite,kBlack);
  // pltReconLumi_cov->Draw(myCan,kTRUE,"png");
  
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    tmpTStr = "RecoQCDRatioCovMat_cov_AfterPost"+BaseName;
-    pltReconQCDRatio_cov = new CPlot(tmpTStr,"ReconQCDRatio Covariance matrix AfterPost","","");
-    pltReconQCDRatio_cov->setOutDir(resultDir);
-    gPad->SetLogz();
-    pltReconQCDRatio_cov->AddHist2D(SVD_Post.uRecoQCDRatioCovMat,"COLZ",kWhite,kBlack);
-    pltReconQCDRatio_cov->Draw(myCan,kTRUE,"png");
-  }
-
   SVD_Post.uAdetCov = tsvdData->GetAdetCovMatrix( 1000);
   SVD_Post.uTotalCovMat->Add(SVD_Post.uAdetCov);
 
@@ -1289,8 +1251,8 @@ int wPtUnfoldStudy
     SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoScaleCovMat );
   SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoSmearCovMat );
   SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoRecoilCovMat );
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoQCDRatioCovMat);
+  //if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
+  //  SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoQCDRatioCovMat);
  // SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uRecoLumiCovMat );
   SVD_Post.uTotalRecoCovMat->Add(SVD_Post.uTauCov );
   
@@ -1418,8 +1380,6 @@ int wPtUnfoldStudy
        SVD_Post.Eff_uRecoRecoilCovMat->SetBinContent(i,j, SVD_Post.uRecoRecoilCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        //SVD_Post.Eff_uRecoLumiCovMat->SetBinContent(i,j, SVD_Post.uRecoLumiCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        //SVD_Post.Eff_uMCEventEffFSRCovMat->SetBinContent(i,j, SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
-       if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-	 SVD_Post.Eff_uRecoQCDRatioCovMat->SetBinContent(i,j, SVD_Post.uRecoQCDRatioCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
        SVD_Post.Eff_uTauCov->SetBinContent(i,j, SVD_Post.uTauCov->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
      
        SVD_Post.Eff_uTotalRecoCovMatEff->SetBinContent(i,j, SVD_Post.uTotalRecoCovMat->GetBinContent(i,j)*h1_Post_BothOvTruth_eqBin->GetBinContent(i)*h1_Post_BothOvTruth_eqBin->GetBinContent(j));
@@ -1513,15 +1473,6 @@ int wPtUnfoldStudy
   //  Fout << i << "\t" <<SVD_Post.EffCorr->GetBinContent(i) << "\t\t" << SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.Eff_uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Post.EffCorr->GetBinContent(i)*100 << endl;
   //}
   
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    Fout << "QCDRatio Detector Unfolding MCEventEff apply stage"<< endl;
-    Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-    Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-    for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
-    {
-      Fout << i << "\t" << SVD_Post.EffCorr->GetBinContent(i) << "\t\t" << SVD_Post.Eff_uRecoQCDRatioCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Post.Eff_uRecoQCDRatioCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Post.Eff_uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Post.EffCorr->GetBinContent(i)*100 << endl;
-    }
-  } 
   Fout << "Statistic Detector Unfolding MCEventEff apply stage"<< endl;
   Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
   Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
@@ -1549,8 +1500,6 @@ int wPtUnfoldStudy
     SVD_Post.Eff_uRecoScaleCovMat->Write();
   SVD_Post.Eff_uRecoSmearCovMat->Write();
   SVD_Post.Eff_uRecoRecoilCovMat->Write();
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Post.Eff_uRecoQCDRatioCovMat->Write();
  //  SVD_Post.Eff_uRecoLumiCovMat->Write();
   //SVD_Post.Eff_uMCEventEffFSRCovMat->Write();
   
@@ -1785,8 +1734,6 @@ int wPtUnfoldStudy
   SVD_Born.uRecoSmearCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoSmearCovMat, 1000);
   SVD_Born.uRecoRecoilCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoRecoilCovMat, 1000);
  // SVD_Born.uRecoLumiCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoLumiCovMat, 100);
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Born.uRecoQCDRatioCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uRecoQCDRatioCovMat, 1000);
   //SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.Eff_uMCEventEffFSRCovMat, 100);
   //SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.AcceptFSRCovMat, 1000);
   SVD_Born.uMCEventEffFSRCovMat = svdBorn->GetUnfoldCovMatrix( SVD_Post.MCEventEffFSRCovMat, 1000);
@@ -1803,8 +1750,6 @@ int wPtUnfoldStudy
     SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoScaleCovMat );
   SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoSmearCovMat );
   SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoRecoilCovMat );
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoQCDRatioCovMat);
   SVD_Born.uTotalCovMat->Add(SVD_Born.uRecoRespCovMat);
   SVD_Born.uTotalCovMat->Add(SVD_Born.uMCEventEffFSRCovMat );
 
@@ -1888,25 +1833,13 @@ int wPtUnfoldStudy
     Fout << i << "\t" << SVD_Born.unfRes->GetBinContent(i) << "\t\t" << SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << endl;
   }
 
-
-  if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" ){
-    Fout << "QCDRatio after FSR unfolsing"<< endl;
-    Fout << "Bin" << "\t" << "Wpt yield " << "\t\t" << "Cov_i_i" << "\t\t" << "Err" << "\t" << "Err/Wpt(%)" << endl;
-    Fout << "" << "\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t" << "" << endl;
-    for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
-    {
-      Fout << i << "\t" << SVD_Born.unfRes->GetBinContent(i) << "\t\t" << SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i) << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)) << "\t\t" << TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << endl;
-    }
-  }
-  Fout << ""<< endl;
-  Fout << ""<< endl;
   Fout << ""<< endl;
   Fout << "Systematics"<< endl;
 //  Fout<<setw(20)<<setprecision(7)<<endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t"  << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "FSR Syst" << "\t\t" <<  "Scale Syst" <<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t"  << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "FSR Syst" << "\t\t" <<  "QCDvsSignal Ratio Syst" <<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Lept Recon Effi Syst " << "\t\t"  << "\t\t" << "Smear Syst" << "\t\t" << "Recoil syst" <<  "\t\t" <<  "FSR Syst" <<endl;
 
   Fout << "" << "\t\t" << " " << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << "\t\t" << "" << endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -1917,7 +1850,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t"<< TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << "\t\t"<< TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << endl;
     }
 
   Fout << ""<< endl;
@@ -1927,7 +1860,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2  +FSR^2+Scale^2) "<<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2  +FSR^2+QCDvsSignalRatio^2) "<<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2  +FSR^2) "<<endl;
 
   Fout << "" << "\t\t" << " " << "\t\t" << ""  << endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -1938,7 +1871,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.uRecoStatisticCovMat->GetBinContent(i,i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
 
   Fout << ""<< endl;
@@ -1948,7 +1881,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2+Scale^2) "<<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2+QCDvsSignalRatio^2) "<<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2) "<<endl;
 
   Fout << "" << "\t\t" << " " << "\t\t" << ""  << endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -1959,7 +1892,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(SVD_Born.unfRes->GetBinContent(i))/SVD_Born.unfRes->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   Fout << ""<< endl;
@@ -1969,7 +1902,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2+Scale^2) "<<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2+QCDvsSignalRatio^2) "<<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 +  Smear^2 +Recoil^2 +FSR^2) "<<endl;
 
   Fout << "" << "\t\t" << " " << "\t\t" << ""  << endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -1980,7 +1913,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2) )/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << TMath::Sqrt(h1_Data_SigYild->GetBinContent(i))/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   Fout << ""<< endl;
@@ -1990,7 +1923,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
     Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 + Smear^2 +Recoil^2 +FSR^2+Scale^2) "<<endl;
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
-    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 + Smear^2 +Recoil^2 +FSR^2+QCDvsSignalRatio^2) "<<endl;
+    Fout << "Bin" << "\t\t"<<"Statistic err"<<"\t\t" << "Sqrt(LeptRecEff^2 + Smear^2 +Recoil^2 +FSR^2) "<<endl;
 
   Fout << "" << "\t\t" << " " << "\t\t" << ""  << endl;
   if(BaseName == "WpToEleNu" || BaseName == "WmToEleNu" )
@@ -2001,7 +1934,7 @@ int wPtUnfoldStudy
   if(BaseName == "WpToMuNu" || BaseName == "WmToMuNu" )
     for( int i(1);i<=SVD_Born.unfRes->GetNbinsX(); i++)
     {
-      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2) +  TMath::Power( TMath::Sqrt(SVD_Born.uRecoQCDRatioCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
+      Fout << i << "\t\t" << h1_Data_SigYild->GetBinError(i)/h1_Data_SigYild->GetBinContent(i)*100 << "\t\t" << TMath::Sqrt( TMath::Power(TMath::Sqrt(SVD_Born.uRecoEffiCovMat->GetBinContent(i,i)),2)+ TMath::Power( TMath::Sqrt(SVD_Born.uRecoSmearCovMat->GetBinContent(i,i)),2) + TMath::Power(TMath::Sqrt(SVD_Born.uRecoRecoilCovMat->GetBinContent(i,i)),2)+  TMath::Power( TMath::Sqrt(SVD_Born.uMCEventEffFSRCovMat->GetBinContent(i,i)),2))/SVD_Born.unfRes->GetBinContent(i)*100 <<endl;
     }
   
   SVD_Born.uAdetCov = svdBorn->GetAdetCovMatrix( 1000);
@@ -2204,7 +2137,7 @@ int wPtUnfoldStudy
     {
       TotalError[i]=100*TMath::Sqrt(SVD_Post.RecoStatisticCovMat->GetBinContent(i,i)+SVD_Post.RecoEffiCovMat->GetBinContent(i,i)
 	  +SVD_Post.RecoSmearCovMat->GetBinContent(i,i)+SVD_Post.RecoRecoilCovMat->GetBinContent(i,i)
-	  +SVD_Post.RecoQCDRatioCovMat->GetBinContent(i,i)+SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i)
+	  +SVD_Post.MCEventEffFSRCovMat->GetBinContent(i,i)
 	  +SVD_Post.uAdetCov->GetBinContent(i,i)+SVD_Born.uAdetCov->GetBinContent(i,i)
 	  +TMath::Power(0.026*h1_Data_SigYild->GetBinContent(i),2))/h1_Data_SigYild->GetBinContent(i);
       Fout<<"TotalError = "<<TotalError[i]<<endl;
@@ -2234,9 +2167,9 @@ int wPtUnfoldStudy
     TotalUncertErr[8] = 6.79 ; 
     TotalUncertErr[9] = 6.62 ; 
     TotalUncertErr[10]= 6.58 ; 
-    TotalUncertErr[11]= 11.07; 
-    TotalUncertErr[12]= 19.45; 
-    TotalUncertErr[13]= 25.94; 
+    TotalUncertErr[11]= 10.48; 
+    TotalUncertErr[12]= 17.42; 
+    TotalUncertErr[13]= 23.03; 
     errPowheg[0] = 0; 
     errPowheg[1] = 4.268; 
     errPowheg[2] = 4.147; 
@@ -2262,10 +2195,10 @@ int wPtUnfoldStudy
     TotalUncertErr[7] = 5.02 ;
     TotalUncertErr[8] = 6.10 ;
     TotalUncertErr[9] = 5.68 ;
-    TotalUncertErr[10]= 7.31 ;
-    TotalUncertErr[11]= 12.68;
-    TotalUncertErr[12]= 17.38;
-    TotalUncertErr[13]= 34.05;
+    TotalUncertErr[10]= 7.35 ;
+    TotalUncertErr[11]= 12.46;
+    TotalUncertErr[12]= 17.33;
+    TotalUncertErr[13]= 33.19;
     errPowheg[0] = 0; 
     errPowheg[1] = 4.398; 
     errPowheg[2] = 4.382; 
@@ -2291,10 +2224,10 @@ int wPtUnfoldStudy
     TotalUncertErr[7] = 5.54 ; 
     TotalUncertErr[8] = 7.38 ; 
     TotalUncertErr[9] = 7.35 ; 
-    TotalUncertErr[10]= 8.38 ; 
+    TotalUncertErr[10]= 8.42 ; 
     TotalUncertErr[11]= 11.54; 
-    TotalUncertErr[12]= 15.61; 
-    TotalUncertErr[13]= 25.52;
+    TotalUncertErr[12]= 15.62; 
+    TotalUncertErr[13]= 25.53;
     errPowheg[0] = 0; 
     errPowheg[1] = 4.37 ; 
     errPowheg[2] = 4.314; 
@@ -2310,7 +2243,7 @@ int wPtUnfoldStudy
     errPowheg[12]= 4.235; 
     errPowheg[13]= 5.534; 
   }else if(BaseName == "WmToEleNu"){
-    TotalUncertErr[0] = 0; 
+    TotalUncertErr[0] = 0;
     TotalUncertErr[1] = 3.62 ; 
     TotalUncertErr[2] = 3.46 ; 
     TotalUncertErr[3] = 3.49 ; 
@@ -2323,7 +2256,7 @@ int wPtUnfoldStudy
     TotalUncertErr[10]= 9.14 ; 
     TotalUncertErr[11]= 13.54; 
     TotalUncertErr[12]= 19.29; 
-    TotalUncertErr[13]= 26.62;
+    TotalUncertErr[13]= 26.85;
     errPowheg[0] = 0; 
     errPowheg[1] = 4.285; 
     errPowheg[2] = 4.156; 

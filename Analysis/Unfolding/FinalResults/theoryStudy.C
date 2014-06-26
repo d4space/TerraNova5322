@@ -23,15 +23,15 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
   StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
 
-  //lHDiff->GetYaxis()->SetRangeUser(0.6,1.6);
-  //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Minus
-  lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Minus Muon
+  lHDiff->GetYaxis()->SetRangeUser(0.6,1.6);//Plus
+  //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Minus Ele
+  //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Minus Muon
   if (chnl == 2)
-    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
-    lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
+    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
+    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
   if (chnl == 3)
-    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
-    lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
+    lHDiff->GetYaxis()->SetRangeUser(0.5,1.4);
+    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
   lHDiff->GetYaxis()->SetTitleOffset(0.2);
   lHDiff->GetYaxis()->SetTitleSize(0.16);
   lHDiff->GetYaxis()->SetLabelSize(0.16);
@@ -422,9 +422,15 @@ int theoryStudy(const TString BaseName)
   rL3->Draw();
   tb3->Draw();
 
-  lC0->SaveAs(BaseName+"_Result_diffXsec.png");
+  if(BaseName=="WpToMuNu")
+    sprintf(tmpName,"WpmnPt_Result.png");
+  if(BaseName=="WmToMuNu")
+    sprintf(tmpName,"WmmnPt_Result.png");
+  if(BaseName=="WpToEleNu")
+    sprintf(tmpName,"WpenPt_Result.png");
+  if(BaseName=="WmToEleNu")
+    sprintf(tmpName,"WmenPt_Result.png");
+  lC0->SaveAs(tmpName);
 
-  TFile f_out("Resbos_"+BaseName+".root","recreate");
-  hResbos->Write();
   return 0;
 }

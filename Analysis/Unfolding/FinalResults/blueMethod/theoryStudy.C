@@ -413,6 +413,12 @@ int theoryStudy(const TString BaseName)
   drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr);
   rL3->Draw();
   tb3->Draw();
-  lC0->SaveAs(BaseName+"_Result_diffXsec.png");
+
+  if(BaseName=="WInclToMuNu")
+    sprintf(tmpName,"WinclmnPt_Result.png");
+  if(BaseName=="WInclToEleNu")
+    sprintf(tmpName,"WinclenPt_Result.png");
+  lC0->SaveAs(tmpName);
+
   return 0;
 }

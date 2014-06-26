@@ -424,6 +424,10 @@ int theoryCompChannel(const TString BaseName)
   tb->Draw("same");
   rL->Draw();
 
-  lC0->SaveAs(BaseName+"_Ratio.png");
+  if(BaseName=="Wplus")
+    sprintf(tmpName,"dataOvResWp.png");
+  if(BaseName=="Wminus")
+    sprintf(tmpName,"dataOvResWm.png");
+  lC0->SaveAs(tmpName);
   return 0;
 }

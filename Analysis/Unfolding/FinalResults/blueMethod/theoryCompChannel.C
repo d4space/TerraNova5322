@@ -336,6 +336,6 @@ int theoryCompChannel()
   tb->Draw("same");
   rL->Draw();
 
-  lC0->SaveAs("WIncl_Ratio.png");
+  lC0->SaveAs("dataOvResIncl.png");
   return 0;
 }
