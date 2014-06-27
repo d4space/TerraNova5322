@@ -200,17 +200,18 @@ int Wlnu12LoCtrPlt::InitHistogram()
   h1_W_pt  = new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wp_pt = new TH1D("h1_Wp_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wm_pt = new TH1D("h1_Wm_pt","Wpt",NWptBinPlus-1,WptBins);
-  for(int i(0); i< 6; i++)
+  //for(int i(0); i< 6; i++)
+  for(int i(0); i< 3; i++)
   {
     sprintf(histName, "h1_PlusLepPtFidCut_%d",i);
-    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
+    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
     sprintf(histName, "h1_MinuLepPtFidCut_%d",i);
-    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
+    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
 
     sprintf(histName, "h1_PlusLepPtAllCut_%d",i);
-    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
+    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
     sprintf(histName, "h1_MinuLepPtAllCut_%d",i);
-    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
+    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
   }
   
   return 0;
@@ -223,46 +224,66 @@ int Wlnu12LoCtrPlt::Fill_Histo()
 
   if(W.charge>0)
   {
-    if(W.pt >0 && W.pt <7.5)
+    //if(W.pt >0 && W.pt <7.5)
+    //{
+    //  h1_PlusLepPtAllCut[0]->Fill(W.lep_pt);
+    //}else if(W.pt >= 7.5 && W.pt <12.5)
+    //{
+    //  h1_PlusLepPtAllCut[1]->Fill(W.lep_pt);
+    //}else if(W.pt >= 12.5 && W.pt <17.5)
+    //{
+    //  h1_PlusLepPtAllCut[2]->Fill(W.lep_pt);
+    //}else if(W.pt >= 17.5 && W.pt <50)
+    //{
+    //  h1_PlusLepPtAllCut[3]->Fill(W.lep_pt);
+    //}else if(W.pt >= 50 && W.pt <110)
+    //{
+    //  h1_PlusLepPtAllCut[4]->Fill(W.lep_pt);
+    //}else if(W.pt >= 110 && W.pt <600)
+    //{
+    //  h1_PlusLepPtAllCut[5]->Fill(W.lep_pt);
+    //}
+    if(W.pt >0 && W.pt <12.5)
     {
       h1_PlusLepPtAllCut[0]->Fill(W.lep_pt);
-    }else if(W.pt >= 7.5 && W.pt <12.5)
+    }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_PlusLepPtAllCut[1]->Fill(W.lep_pt);
-    }else if(W.pt >= 12.5 && W.pt <17.5)
+    }else if(W.pt >= 50 && W.pt <600)
     {
       h1_PlusLepPtAllCut[2]->Fill(W.lep_pt);
-    }else if(W.pt >= 17.5 && W.pt <50)
-    {
-      h1_PlusLepPtAllCut[3]->Fill(W.lep_pt);
-    }else if(W.pt >= 50 && W.pt <110)
-    {
-      h1_PlusLepPtAllCut[4]->Fill(W.lep_pt);
-    }else if(W.pt >= 110 && W.pt <600)
-    {
-      h1_PlusLepPtAllCut[5]->Fill(W.lep_pt);
     }
   }
   if(W.charge <0)
   {
-    if(W.pt >0 && W.pt <7.5)
+    //if(W.pt >0 && W.pt <7.5)
+    //{
+    //  h1_MinuLepPtAllCut[0]->Fill(W.lep_pt);
+    //}else if(W.pt >= 7.5 && W.pt <12.5)
+    //{
+    //  h1_MinuLepPtAllCut[1]->Fill(W.lep_pt);
+    //}else if(W.pt >= 12.5 && W.pt <17.5)
+    //{
+    //  h1_MinuLepPtAllCut[2]->Fill(W.lep_pt);
+    //}else if(W.pt >= 17.5 && W.pt <50)
+    //{
+    //  h1_MinuLepPtAllCut[3]->Fill(W.lep_pt);
+    //}else if(W.pt >= 50 && W.pt <150)
+    //{
+    //  h1_MinuLepPtAllCut[4]->Fill(W.lep_pt);
+    //}else if(W.pt >= 150 && W.pt <600)
+    //{
+    //  h1_MinuLepPtAllCut[5]->Fill(W.lep_pt);
+    //}
+    if(W.pt >0 && W.pt <12.5)
     {
       h1_MinuLepPtAllCut[0]->Fill(W.lep_pt);
-    }else if(W.pt >= 7.5 && W.pt <12.5)
+    }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_MinuLepPtAllCut[1]->Fill(W.lep_pt);
-    }else if(W.pt >= 12.5 && W.pt <17.5)
+    }else if(W.pt >= 50 && W.pt <600)
     {
       h1_MinuLepPtAllCut[2]->Fill(W.lep_pt);
-    }else if(W.pt >= 17.5 && W.pt <50)
-    {
-      h1_MinuLepPtAllCut[3]->Fill(W.lep_pt);
-    }else if(W.pt >= 50 && W.pt <150)
-    {
-      h1_MinuLepPtAllCut[4]->Fill(W.lep_pt);
-    }else if(W.pt >= 150 && W.pt <600)
-    {
-      h1_MinuLepPtAllCut[5]->Fill(W.lep_pt);
     }
   }
   return 0;
@@ -271,46 +292,66 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
 {
   if(W.charge>0)
   {
-    if(W.pt >0 && W.pt <7.5)
+    //if(W.pt >0 && W.pt <7.5)
+    //{
+    //  h1_PlusLepPtFidCut[0]->Fill(W.lep_pt);
+    //}else if(W.pt >= 7.5 && W.pt <12.5)
+    //{
+    //  h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
+    //}else if(W.pt >= 12.5 && W.pt <17.5)
+    //{
+    //  h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
+    //}else if(W.pt >= 17.5 && W.pt <50)
+    //{
+    //  h1_PlusLepPtFidCut[3]->Fill(W.lep_pt);
+    //}else if(W.pt >= 50 && W.pt <110)
+    //{
+    //  h1_PlusLepPtFidCut[4]->Fill(W.lep_pt);
+    //}else if(W.pt >= 110 && W.pt <600)
+    //{
+    //  h1_PlusLepPtFidCut[5]->Fill(W.lep_pt);
+    //}
+    if(W.pt >0 && W.pt <12.5)
     {
       h1_PlusLepPtFidCut[0]->Fill(W.lep_pt);
-    }else if(W.pt >= 7.5 && W.pt <12.5)
+    }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
-    }else if(W.pt >= 12.5 && W.pt <17.5)
+    }else if(W.pt >= 50 && W.pt <600)
     {
       h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
-    }else if(W.pt >= 17.5 && W.pt <50)
-    {
-      h1_PlusLepPtFidCut[3]->Fill(W.lep_pt);
-    }else if(W.pt >= 50 && W.pt <110)
-    {
-      h1_PlusLepPtFidCut[4]->Fill(W.lep_pt);
-    }else if(W.pt >= 110 && W.pt <600)
-    {
-      h1_PlusLepPtFidCut[5]->Fill(W.lep_pt);
     }
   }
   if(W.charge <0)
   {
-    if(W.pt >0 && W.pt <7.5)
+    //if(W.pt >0 && W.pt <7.5)
+    //{
+    //  h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
+    //}else if(W.pt >= 7.5 && W.pt <12.5)
+    //{
+    //  h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
+    //}else if(W.pt >= 12.5 && W.pt <17.5)
+    //{
+    //  h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
+    //}else if(W.pt >= 17.5 && W.pt <50)
+    //{
+    //  h1_MinuLepPtFidCut[3]->Fill(W.lep_pt);
+    //}else if(W.pt >= 50 && W.pt <150)
+    //{
+    //  h1_MinuLepPtFidCut[4]->Fill(W.lep_pt);
+    //}else if(W.pt >= 150 && W.pt <600)
+    //{
+    //  h1_MinuLepPtFidCut[5]->Fill(W.lep_pt);
+    //}
+    if(W.pt >0 && W.pt <12.5)
     {
       h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
-    }else if(W.pt >= 7.5 && W.pt <12.5)
+    }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
-    }else if(W.pt >= 12.5 && W.pt <17.5)
+    }else if(W.pt >= 50 && W.pt <600)
     {
       h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
-    }else if(W.pt >= 17.5 && W.pt <50)
-    {
-      h1_MinuLepPtFidCut[3]->Fill(W.lep_pt);
-    }else if(W.pt >= 50 && W.pt <150)
-    {
-      h1_MinuLepPtFidCut[4]->Fill(W.lep_pt);
-    }else if(W.pt >= 150 && W.pt <600)
-    {
-      h1_MinuLepPtFidCut[5]->Fill(W.lep_pt);
     }
   }
   return 0;
@@ -321,7 +362,8 @@ int Wlnu12LoCtrPlt::Write_Histo()
   h1_W_pt->Write();
   h1_Wp_pt->Write();
   h1_Wm_pt->Write();
-  for(int i(0);i<6;i++)
+  //for(int i(0);i<6;i++)
+  for(int i(0);i<3;i++)
   {
     h1_PlusLepPtAllCut[i]->Write();
     h1_MinuLepPtAllCut[i]->Write();
