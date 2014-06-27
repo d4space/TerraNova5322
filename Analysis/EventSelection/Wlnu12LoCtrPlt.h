@@ -30,6 +30,8 @@ protected:
   TH1D*	h1_W_pt;
   TH1D*	h1_Wp_pt;
   TH1D*	h1_Wm_pt;
+  TH1D*	h1_PlusLepPtAllCut[6];
+  TH1D*	h1_MinuLepPtAllCut[6];
   TH1D*	h1_PlusLepPtFidCut[6];
   TH1D*	h1_MinuLepPtFidCut[6];
   // Member variables

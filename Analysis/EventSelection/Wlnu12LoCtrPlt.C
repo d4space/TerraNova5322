@@ -53,6 +53,7 @@ void Wlnu12LoCtrPlt::Loop()
   //============================================
   // Looping for each Event 
   //============================================
+  //for (int i(0); i<200;i++)
   for (int i(0); i<Ntries;i++)
   {
    // cout<<i<<" th Event"<<endl;
@@ -105,11 +106,13 @@ void Wlnu12LoCtrPlt::Loop()
 
     if( W.Pass)
     {
+      //Fill_Histo();
     }
 
     //Fill the W==================
     //GoodW
-    if(W.Pass && addLepN <2){
+    //if(W.Pass && addLepN <2){
+    if(W.Pass){
       DumpWbestCand(W.idxBest);
       if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
       if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
@@ -166,16 +169,16 @@ int Wlnu12LoCtrPlt::InitVar()
   {
     if(AnaChannel == "Muon2012LoPU" )
     {
-      Rcl.ZRDfilename="../Recoil/ZmmData/fits.root";
-      Rcl.ZMCfilename="../Recoil/ZmmMC/fits.root";
-      Rcl.Wpfilename="../Recoil/WmpMC/fits.root";
-      Rcl.Wmfilename="../Recoil/WmmMC/fits.root";
+      Rcl.ZRDfilename="../Recoil/ZmmData/fits_V2.root";
+      Rcl.ZMCfilename="../Recoil/ZmmMC/fits_V2.root";
+      Rcl.Wpfilename="../Recoil/WmpMC/fits_V2.root";
+      Rcl.Wmfilename="../Recoil/WmmMC/fits_V2.root";
     }else if((AnaChannel == "Electron2012LoPU") || AnaChannel == "ElectronHighPU")
     {
-      Rcl.ZRDfilename="../Recoil/ZeeData/fits.root";
-      Rcl.ZMCfilename="../Recoil/ZeeMC/fits.root";
-      Rcl.Wpfilename="../Recoil/WepMC/fits.root";
-      Rcl.Wmfilename="../Recoil/WemMC/fits.root";
+      Rcl.ZRDfilename="../Recoil/ZeeData/fits_V2.root";
+      Rcl.ZMCfilename="../Recoil/ZeeMC/fits_V2.root";
+      Rcl.Wpfilename="../Recoil/WepMC/fits_V2.root";
+      Rcl.Wmfilename="../Recoil/WemMC/fits_V2.root";
     }
     // RecoilCorrection Object.
     RecoilCorr= new RecoilCorrector(
@@ -221,7 +224,7 @@ int Wlnu12LoCtrPlt::Fill_Histo()
   if(W.charge>0)h1_Wp_pt->Fill(W.pt,mTTW);
   if(W.charge<0)h1_Wm_pt->Fill(W.pt,mTTW);
 
-  if(W.charge >0)
+  if(W.charge>0)
   {
     if(W.pt >0 && W.pt <7.5)
     {
@@ -269,7 +272,7 @@ int Wlnu12LoCtrPlt::Fill_Histo()
 }
 int Wlnu12LoCtrPlt::FillFiducialCutHisto()
 {
-  if(W.charge >0)
+  if(W.charge>0)
   {
     if(W.pt >0 && W.pt <7.5)
     {
@@ -321,5 +324,12 @@ int Wlnu12LoCtrPlt::Write_Histo()
   h1_W_pt->Write();
   h1_Wp_pt->Write();
   h1_Wm_pt->Write();
+  for(int i(0);i<6;i++)
+  {
+    h1_PlusLepPtAllCut[i]->Write();
+    h1_MinuLepPtAllCut[i]->Write();
+    h1_PlusLepPtFidCut[i]->Write();
+    h1_MinuLepPtFidCut[i]->Write();
+  }
   return 0;
 }
