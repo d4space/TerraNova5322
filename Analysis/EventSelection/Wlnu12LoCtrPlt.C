@@ -96,11 +96,9 @@ void Wlnu12LoCtrPlt::Loop()
     //cout<<"W    size: "<<W_pt->size()<<endl;
    
     // Select the Best W boson
-    WbestFiducialCut();
+    WreconEff();
     if(W.Pass)
     {
-      DumpWbestCand(W.idxBest);
-      FillFiducialCutHisto();
     }
     WbestSelect();
 
@@ -112,14 +110,13 @@ void Wlnu12LoCtrPlt::Loop()
     //Fill the W==================
     //GoodW
     //if(W.Pass && addLepN <2){
-    if(W.Pass){
-      DumpWbestCand(W.idxBest);
-      if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
-      if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
-      evtSelected+=mTTW;
-      Fill_Histo();
-      Nselected4Bin();
-    }
+    //  DumpWbestCand(W.idxBest);
+    //  if(Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr")mTTW=mTTW*DoEffiCorr();
+    //  if(Mode == "SmeaRecEffCorr")DoRecoilCorr();
+    //  evtSelected+=mTTW;
+    //  Fill_Histo();
+    //  Nselected4Bin();
+    //}
   }//Ntries
   cout<<"Passed W evts: "<<mNWevt<<endl;
   Fout<<"Passed W evts: "<<mNWevt<<endl;
@@ -206,14 +203,14 @@ int Wlnu12LoCtrPlt::InitHistogram()
   for(int i(0); i< 6; i++)
   {
     sprintf(histName, "h1_PlusLepPtFidCut_%d",i);
-    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",30,20,100);
+    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
     sprintf(histName, "h1_MinuLepPtFidCut_%d",i);
-    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",30,20,100);
+    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
 
     sprintf(histName, "h1_PlusLepPtAllCut_%d",i);
-    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",30,20,100);
+    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
     sprintf(histName, "h1_MinuLepPtAllCut_%d",i);
-    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",30,20,100);
+    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",10,20,100);
   }
   
   return 0;
@@ -331,5 +328,57 @@ int Wlnu12LoCtrPlt::Write_Histo()
     h1_PlusLepPtFidCut[i]->Write();
     h1_MinuLepPtFidCut[i]->Write();
   }
+  return 0;
+}
+int Wlnu12LoCtrPlt::WreconEff()
+{
+  double lep_Big(0);
+  W_Lept1_pt_Corr.clear();
+  for(int iw(0); iw<W.size; iw++)
+  {
+    if( (*W_Lept1_genDeltaR)[iw] > 0.025) continue;
+    //Cut to W.lep_pt_corr
+    W.lep_pt_corr = (*W_Lept1_pt)[iw];
+    if (Mode=="ScaleCorr")DoScaleCorr(iw);
+    if((Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr") || Mode == "Unfold")DoSmearCorr(iw);
+    W_Lept1_pt_Corr.push_back(W.lep_pt_corr);
+    //additional lepton count
+    if(AnaChannel == "Muon2012LoPU")	if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "Muon2012")	if(AddMuonCut(iw)>0) addLepN++;
+    if(AnaChannel == "Electron2012LoPU")if(AddElectronCut(iw)>0)addLepN++;
+    if(AnaChannel == "Electron2012")	if(AddElectronCutHighPU(iw)>0) addLepN++;
+    if(AnaChannel == "Tau2012")		if(TauCut(iw)>0) addLepN++;
+
+    if( ((AnaChannel == "Muon2012LoPU" ) && (MuonFidCut(iw) >0))||
+	((AnaChannel == "Muon2012") && (MuonCut(iw) >0))||
+	((AnaChannel == "Electron2012LoPU")&& (ElectronCut(iw) > 0))||
+	((AnaChannel =="Electron2012") &&(ElectronCutHighPU(iw) > 0)) ||
+	((AnaChannel =="Tau2012") && (TauCut(iw)) > 0)
+	  //Best Candidate selection
+    )
+    {
+      DumpWbestCand(iw);
+      FillFiducialCutHisto();
+      lep_Big = W.lep_pt_corr;
+      W.idxBest = iw;
+      W.Pass = true;
+    }
+    if( ((AnaChannel == "Muon2012LoPU" ) && (MuonCut(iw) >0))||
+	((AnaChannel == "Muon2012") && (MuonCut(iw) >0))||
+	((AnaChannel == "Electron2012LoPU")&& (ElectronCut(iw) > 0))||
+	((AnaChannel =="Electron2012") &&(ElectronCutHighPU(iw) > 0)) ||
+	((AnaChannel =="Tau2012") && (TauCut(iw)) > 0)
+	  //Best Candidate selection
+    )
+    {
+      DumpWbestCand(iw);
+      Fill_Histo();
+      lep_Big = W.lep_pt_corr;
+      W.idxBest = iw;
+      W.Pass = true;
+    }
+    return 1;
+  }
+  W.lep_pt_corr = lep_Big;
   return 0;
 }

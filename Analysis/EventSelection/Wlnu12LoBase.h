@@ -71,7 +71,6 @@ protected:
   // Selections
   double	    CalcEvtWeight();
   virtual Int_t	    WbestSelect();
-  virtual Int_t	    WbestFiducialCut();
   virtual Int_t	    ZbestSelect();
   virtual Int_t	    FillWSide(int entry);
   int		    DumpWbestCand(int entry);

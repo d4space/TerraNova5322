@@ -201,40 +201,6 @@ int Wlnu12LoBase::WbestSelect()
   W.lep_pt_corr = lep_Big;
   return 0;
 }
-int Wlnu12LoBase::WbestFiducialCut()
-{
-  double lep_Big(0);
-  W_Lept1_pt_Corr.clear();
-  for(int iw(0); iw<W.size; iw++)
-  {
-    //Cut to W.lep_pt_corr
-    W.lep_pt_corr = (*W_Lept1_pt)[iw];
-    if (Mode=="ScaleCorr")DoScaleCorr(iw);
-    if((Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr") || Mode == "Unfold")DoSmearCorr(iw);
-    W_Lept1_pt_Corr.push_back(W.lep_pt_corr);
-    //additional lepton count
-    if(AnaChannel == "Muon2012LoPU")	if(AddMuonCut(iw)>0) addLepN++;
-    if(AnaChannel == "Muon2012")	if(AddMuonCut(iw)>0) addLepN++;
-    if(AnaChannel == "Electron2012LoPU")if(AddElectronCut(iw)>0)addLepN++;
-    if(AnaChannel == "Electron2012")	if(AddElectronCutHighPU(iw)>0) addLepN++;
-    if(AnaChannel == "Tau2012")		if(TauCut(iw)>0) addLepN++;
-
-    if( ((AnaChannel == "Muon2012LoPU" ) && (MuonFidCut(iw) >0))||
-	((AnaChannel == "Muon2012") && (MuonCut(iw) >0))||
-	((AnaChannel == "Electron2012LoPU")&& (ElectronCut(iw) > 0))||
-	((AnaChannel =="Electron2012") &&(ElectronCutHighPU(iw) > 0)) ||
-	((AnaChannel =="Tau2012") && (TauCut(iw)) > 0)
-	  //Best Candidate selection
-    )if( lep_Big < W.lep_pt_corr)
-    {
-      lep_Big = W.lep_pt_corr;
-      W.idxBest = iw;
-      W.Pass = true;
-    }//Cut and Bigger pt
-  }
-  W.lep_pt_corr = lep_Big;
-  return 0;
-}
 
 int Wlnu12LoBase::ZbestSelect()
 {

@@ -57,9 +57,9 @@ int AllOvFidCut(TString BaseName)
 
   double WptBins[7]={0,7.5,12.5,17.5,50,110,600};
   
-  TH1D h1_AllCut[6];
-  TH1D h1_FidCut[6];
-  TH1D h1_Ratio[6];
+  TH1D* h1_AllCut[6];
+  TH1D* h1_FidCut[6];
+  TH1D* h1_Ratio[6];
 
   // Plot
   CPlot *pltRatio;
@@ -78,26 +78,26 @@ int AllOvFidCut(TString BaseName)
       sprintf(tmpNameOrg,"h1_MinuLepPtAllCut_%d",i);
     sprintf(tmpName,"h1_AllCut_%d",i);
     h1_AllCut[i] = (TH1D*)fName->Get(tmpNameOrg)->Clone(tmpName);
-    h1_AllCut[i]. Sumw2();
+    h1_AllCut[i]-> Sumw2();
 
     sprintf(tmpNameOrg,"h1_PlusLepPtFidCut_%d",i);
     if(BaseName=="WmToMuNu")
       sprintf(tmpNameOrg,"h1_MinuLepPtFidCut_%d",i);
     sprintf(tmpName,"h1_FidCut_%d",i);
     h1_FidCut[i] = (TH1D*)fName->Get(tmpNameOrg)->Clone(tmpName);
-    h1_FidCut[i]. Sumw2();
+    h1_FidCut[i]-> Sumw2();
     
     sprintf(tmpName,"h1_Ratio_%d",i);
     h1_Ratio[i] = (TH1D*)h1_AllCut[i]->Clone(tmpName);
-    h1_Ratio[i].Sumw2();
-    h1_Ratio[i].Divide(h1_FidCut[i]);
+    h1_Ratio[i]->Sumw2();
+    h1_Ratio[i]->Divide(h1_FidCut[i]);
     
     Fout<<""<<endl;
     Fout<<"Wpt Bin: "<<WptBins[i]<<" < WpT < "<<WptBins[i+1]<<endl;
     Fout<<"AllCut\t FidCut\t AllCut/FidCut"<<endl;
-    for(int ipt(1);ipt<=h1_AllCut[i].GetNbinsX(); ipt++)
+    for(int ipt(1);ipt<=h1_AllCut[i]->GetNbinsX(); ipt++)
     {
-      Fout<<h1_AllCut[i].GetBinContent(ipt)<<"\t"<<h1_FidCut[i].GetBinContent(ipt)<<"\t"<<h1_Ratio[i].GetBinContent(ipt)<<endl;
+      Fout<<h1_AllCut[i]->GetBinContent(ipt)<<"\t"<<h1_FidCut[i]->GetBinContent(ipt)<<"\t"<<h1_Ratio[i]->GetBinContent(ipt)<<endl;
     }
   }
   sprintf(tmpName,BaseName+"_Ratio");

@@ -18,6 +18,7 @@ public :
    ~Wlnu12LoCtrPlt();
    virtual void     Loop();
 protected:
+  Int_t	    WreconEff();
   void Nselected4Bin();
   int InitVar(); // Init for Class
   int InitVar4Evt(); // Init for every event
