@@ -200,6 +200,18 @@ int Wlnu12LoCtrPlt::InitHistogram()
   h1_W_pt  = new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wp_pt = new TH1D("h1_Wp_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wm_pt = new TH1D("h1_Wm_pt","Wpt",NWptBinPlus-1,WptBins);
+  h2_PlusLepPtEtaAllCut=new TH2D("h2_PlusLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,-2.1,2.1);
+  h2_MinuLepPtEtaAllCut=new TH2D("h2_MinuLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,-2.1,2.1);
+  h2_PlusLepPtEtaFidCut=new TH2D("h2_PlusLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,-2.1,2.1);
+  h2_MinuLepPtEtaFidCut=new TH2D("h2_MinuLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,-2.1,2.1);
+  h1_PlusLepPtAllCutFullRange = new TH1D("h1_PlusLepPtAllCutFullRange","LeptonPt",1,20,100);
+  h1_MinuLepPtAllCutFullRange = new TH1D("h1_MinuLepPtAllCutFullRange","LeptonPt",1,20,100);
+  h1_PlusLepPtFidCutFullRange = new TH1D("h1_PlusLepPtFidCutFullRange","LeptonPt",1,20,100);
+  h1_MinuLepPtFidCutFullRange = new TH1D("h1_MinuLepPtFidCutFullRange","LeptonPt",1,20,100);
+  h1_PlusLepEtaAllCutFullRange = new TH1D("h1_PlusLepEtaAllCutFullRange","LeptonPt",1,-2.1,2.1);
+  h1_MinuLepEtaAllCutFullRange = new TH1D("h1_MinuLepEtaAllCutFullRange","LeptonPt",1,-2.1,2.1);
+  h1_PlusLepEtaFidCutFullRange = new TH1D("h1_PlusLepEtaFidCutFullRange","LeptonPt",1,-2.1,2.1);
+  h1_MinuLepEtaFidCutFullRange = new TH1D("h1_MinuLepEtaFidCutFullRange","LeptonPt",1,-2.1,2.1);
   //for(int i(0); i< 6; i++)
   for(int i(0); i< 3; i++)
   {
@@ -212,6 +224,16 @@ int Wlnu12LoCtrPlt::InitHistogram()
     h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
     sprintf(histName, "h1_MinuLepPtAllCut_%d",i);
     h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
+    
+    sprintf(histName, "h1_PlusLepEtaFidCut_%d",i);
+    h1_PlusLepEtaFidCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
+    sprintf(histName, "h1_MinuLepEtaFidCut_%d",i);
+    h1_MinuLepEtaFidCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
+
+    sprintf(histName, "h1_PlusLepEtaAllCut_%d",i);
+    h1_PlusLepEtaAllCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
+    sprintf(histName, "h1_MinuLepEtaAllCut_%d",i);
+    h1_MinuLepEtaAllCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
   }
   
   return 0;
@@ -224,66 +246,40 @@ int Wlnu12LoCtrPlt::Fill_Histo()
 
   if(W.charge>0)
   {
-    //if(W.pt >0 && W.pt <7.5)
-    //{
-    //  h1_PlusLepPtAllCut[0]->Fill(W.lep_pt);
-    //}else if(W.pt >= 7.5 && W.pt <12.5)
-    //{
-    //  h1_PlusLepPtAllCut[1]->Fill(W.lep_pt);
-    //}else if(W.pt >= 12.5 && W.pt <17.5)
-    //{
-    //  h1_PlusLepPtAllCut[2]->Fill(W.lep_pt);
-    //}else if(W.pt >= 17.5 && W.pt <50)
-    //{
-    //  h1_PlusLepPtAllCut[3]->Fill(W.lep_pt);
-    //}else if(W.pt >= 50 && W.pt <110)
-    //{
-    //  h1_PlusLepPtAllCut[4]->Fill(W.lep_pt);
-    //}else if(W.pt >= 110 && W.pt <600)
-    //{
-    //  h1_PlusLepPtAllCut[5]->Fill(W.lep_pt);
-    //}
+    h2_PlusLepPtEtaAllCut->Fill(W.lep_pt,W.lep_eta);
+    h1_PlusLepPtAllCutFullRange->Fill(W.lep_pt);
+    h1_PlusLepEtaAllCutFullRange->Fill(W.lep_eta);
     if(W.pt >0 && W.pt <12.5)
     {
       h1_PlusLepPtAllCut[0]->Fill(W.lep_pt);
+      h1_PlusLepEtaAllCut[0]->Fill(W.lep_eta);
     }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_PlusLepPtAllCut[1]->Fill(W.lep_pt);
+      h1_PlusLepEtaAllCut[1]->Fill(W.lep_eta);
     }else if(W.pt >= 50 && W.pt <600)
     {
       h1_PlusLepPtAllCut[2]->Fill(W.lep_pt);
+      h1_PlusLepEtaAllCut[2]->Fill(W.lep_eta);
     }
   }
   if(W.charge <0)
   {
-    //if(W.pt >0 && W.pt <7.5)
-    //{
-    //  h1_MinuLepPtAllCut[0]->Fill(W.lep_pt);
-    //}else if(W.pt >= 7.5 && W.pt <12.5)
-    //{
-    //  h1_MinuLepPtAllCut[1]->Fill(W.lep_pt);
-    //}else if(W.pt >= 12.5 && W.pt <17.5)
-    //{
-    //  h1_MinuLepPtAllCut[2]->Fill(W.lep_pt);
-    //}else if(W.pt >= 17.5 && W.pt <50)
-    //{
-    //  h1_MinuLepPtAllCut[3]->Fill(W.lep_pt);
-    //}else if(W.pt >= 50 && W.pt <150)
-    //{
-    //  h1_MinuLepPtAllCut[4]->Fill(W.lep_pt);
-    //}else if(W.pt >= 150 && W.pt <600)
-    //{
-    //  h1_MinuLepPtAllCut[5]->Fill(W.lep_pt);
-    //}
+    h2_MinuLepPtEtaAllCut->Fill(W.lep_pt,W.lep_eta);
+    h1_MinuLepPtAllCutFullRange->Fill(W.lep_pt);
+    h1_MinuLepEtaAllCutFullRange->Fill(W.lep_eta);
     if(W.pt >0 && W.pt <12.5)
     {
       h1_MinuLepPtAllCut[0]->Fill(W.lep_pt);
+      h1_MinuLepEtaAllCut[0]->Fill(W.lep_eta);
     }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_MinuLepPtAllCut[1]->Fill(W.lep_pt);
+      h1_MinuLepEtaAllCut[1]->Fill(W.lep_eta);
     }else if(W.pt >= 50 && W.pt <600)
     {
       h1_MinuLepPtAllCut[2]->Fill(W.lep_pt);
+      h1_MinuLepEtaAllCut[2]->Fill(W.lep_eta);
     }
   }
   return 0;
@@ -292,66 +288,40 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
 {
   if(W.charge>0)
   {
-    //if(W.pt >0 && W.pt <7.5)
-    //{
-    //  h1_PlusLepPtFidCut[0]->Fill(W.lep_pt);
-    //}else if(W.pt >= 7.5 && W.pt <12.5)
-    //{
-    //  h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
-    //}else if(W.pt >= 12.5 && W.pt <17.5)
-    //{
-    //  h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
-    //}else if(W.pt >= 17.5 && W.pt <50)
-    //{
-    //  h1_PlusLepPtFidCut[3]->Fill(W.lep_pt);
-    //}else if(W.pt >= 50 && W.pt <110)
-    //{
-    //  h1_PlusLepPtFidCut[4]->Fill(W.lep_pt);
-    //}else if(W.pt >= 110 && W.pt <600)
-    //{
-    //  h1_PlusLepPtFidCut[5]->Fill(W.lep_pt);
-    //}
+    h2_PlusLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
+    h1_PlusLepPtFidCutFullRange->Fill(W.lep_pt);
+    h1_PlusLepEtaFidCutFullRange->Fill(W.lep_eta);
     if(W.pt >0 && W.pt <12.5)
     {
       h1_PlusLepPtFidCut[0]->Fill(W.lep_pt);
+      h1_PlusLepEtaFidCut[0]->Fill(W.lep_eta);
     }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
+      h1_PlusLepEtaFidCut[1]->Fill(W.lep_eta);
     }else if(W.pt >= 50 && W.pt <600)
     {
       h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
+      h1_PlusLepEtaFidCut[2]->Fill(W.lep_eta);
     }
   }
   if(W.charge <0)
   {
-    //if(W.pt >0 && W.pt <7.5)
-    //{
-    //  h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
-    //}else if(W.pt >= 7.5 && W.pt <12.5)
-    //{
-    //  h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
-    //}else if(W.pt >= 12.5 && W.pt <17.5)
-    //{
-    //  h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
-    //}else if(W.pt >= 17.5 && W.pt <50)
-    //{
-    //  h1_MinuLepPtFidCut[3]->Fill(W.lep_pt);
-    //}else if(W.pt >= 50 && W.pt <150)
-    //{
-    //  h1_MinuLepPtFidCut[4]->Fill(W.lep_pt);
-    //}else if(W.pt >= 150 && W.pt <600)
-    //{
-    //  h1_MinuLepPtFidCut[5]->Fill(W.lep_pt);
-    //}
+    h2_MinuLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
+    h1_MinuLepPtFidCutFullRange->Fill(W.lep_pt);
+    h1_MinuLepEtaFidCutFullRange->Fill(W.lep_eta);
     if(W.pt >0 && W.pt <12.5)
     {
       h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[0]->Fill(W.lep_eta);
     }else if(W.pt >= 12.5 && W.pt <50)
     {
       h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[1]->Fill(W.lep_eta);
     }else if(W.pt >= 50 && W.pt <600)
     {
       h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[2]->Fill(W.lep_eta);
     }
   }
   return 0;
@@ -362,6 +332,18 @@ int Wlnu12LoCtrPlt::Write_Histo()
   h1_W_pt->Write();
   h1_Wp_pt->Write();
   h1_Wm_pt->Write();
+  h2_PlusLepPtEtaFidCut->Write();
+  h2_MinuLepPtEtaFidCut->Write();
+  h2_PlusLepPtEtaAllCut->Write();
+  h2_MinuLepPtEtaAllCut->Write();
+  h1_PlusLepPtAllCutFullRange->Write();
+  h1_MinuLepPtAllCutFullRange->Write();
+  h1_PlusLepPtFidCutFullRange->Write();
+  h1_MinuLepPtFidCutFullRange->Write();
+  h1_PlusLepEtaAllCutFullRange->Write();
+  h1_MinuLepEtaAllCutFullRange->Write();
+  h1_PlusLepEtaFidCutFullRange->Write();
+  h1_MinuLepEtaFidCutFullRange->Write();
   //for(int i(0);i<6;i++)
   for(int i(0);i<3;i++)
   {
@@ -369,6 +351,10 @@ int Wlnu12LoCtrPlt::Write_Histo()
     h1_MinuLepPtAllCut[i]->Write();
     h1_PlusLepPtFidCut[i]->Write();
     h1_MinuLepPtFidCut[i]->Write();
+    h1_PlusLepEtaAllCut[i]->Write();
+    h1_MinuLepEtaAllCut[i]->Write();
+    h1_PlusLepEtaFidCut[i]->Write();
+    h1_MinuLepEtaFidCut[i]->Write();
   }
   return 0;
 }

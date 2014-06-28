@@ -1,14 +1,21 @@
 import os
 #import sys
 
+cmd_string = "rm -f *.d *.so"
+os.system(cmd_string)
+
 BaseName="WpToMuNu"
-cmd_string = "root -l -q AllOvFidCut.C+\(\\\"%s\\\"\)" %BaseName
+VarName="lep_pt"
+#VarName="lep_eta"
+cmd_string = "root -l -b -q AllOvFidCut.C+\(\\\"%s\\\",\\\"%s\\\"\)" %(BaseName,VarName)
 os.system(cmd_string)
 cmd_string = "rm -f *.d *.so"
 os.system(cmd_string)
 
 #BaseName="WmToMuNu"
-#cmd_string = "root -l -q AllOvFidCut.C+\(\\\"%s\\\"\)" %BaseName
+#VarName="lep_pt"
+#VarName="lep_eta"
+#cmd_string = "root -l -b -q AllOvFidCut.C+\(\\\"%s\\\",\\\"%s\\\"\)" %(BaseName,VarName)
 #os.system(cmd_string)
 #cmd_string = "rm -f *.d *.so"
 #os.system(cmd_string)
