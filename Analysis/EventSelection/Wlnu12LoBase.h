@@ -595,6 +595,18 @@ Int_t Wlnu12LoBase::MuonFidCut(int i)
   if(fabs((*W_Lept1_eta)[i])>2.1) return -1;
   return 1;
 }
+Int_t Wlnu12LoBase::ZMuon1FidCut(int i)
+{
+  if( (*Z_Lept1_pt)[i] < 20) return -1;
+  if(fabs((*Z_Lept1_eta)[i])>2.1) return -1;
+  return 1;
+}
+Int_t Wlnu12LoBase::ZMuon2FidCut(int i)
+{
+  if( (*Z_Lept2_pt)[i] < 20) return -1;
+  if(fabs((*Z_Lept2_eta)[i])>2.1) return -1;
+  return 1;
+}
 
 Int_t Wlnu12LoBase::MuonCutSide(int i)
 {

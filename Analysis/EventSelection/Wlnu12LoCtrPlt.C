@@ -326,6 +326,48 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
   }
   return 0;
 }
+int Wlnu12LoCtrPlt::FillZFiducialCutHistoMu1(int i)
+{
+  if( (*Z_Lept1_charge)[i]>0)
+  {
+    h2_ZPlusLepPtEtaFidCut->Fill( (*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
+    h1_ZPlusLepPtFidCutFullRange->Fill( (*Z_Lept1_pt)[i]);
+    h1_ZPlusLepEtaFidCutFullRange->Fill( (*Z_Lept1_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_ZPlusLepPtFidCut[0]->Fill(W.lep_pt);
+      h1_ZPlusLepEtaFidCut[0]->Fill(W.lep_eta);
+    }else if(W.pt >= 12.5 && W.pt <50)
+    {
+      h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
+      h1_PlusLepEtaFidCut[1]->Fill(W.lep_eta);
+    }else if(W.pt >= 50 && W.pt <600)
+    {
+      h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
+      h1_PlusLepEtaFidCut[2]->Fill(W.lep_eta);
+    }
+  }
+  if( (*Z_Lept1_charge)[i]<0)
+  {
+    h2_MinuLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
+    h1_MinuLepPtFidCutFullRange->Fill(W.lep_pt);
+    h1_MinuLepEtaFidCutFullRange->Fill(W.lep_eta);
+    if(W.pt >0 && W.pt <12.5)
+    {
+      h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[0]->Fill(W.lep_eta);
+    }else if(W.pt >= 12.5 && W.pt <50)
+    {
+      h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[1]->Fill(W.lep_eta);
+    }else if(W.pt >= 50 && W.pt <600)
+    {
+      h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
+      h1_MinuLepEtaFidCut[2]->Fill(W.lep_eta);
+    }
+  }
+  return 0;
+}
 
 int Wlnu12LoCtrPlt::Write_Histo()
 {
@@ -387,9 +429,9 @@ int Wlnu12LoCtrPlt::WreconEff()
     {
       DumpWbestCand(iw);
       FillFiducialCutHisto();
-      lep_Big = W.lep_pt_corr;
-      W.idxBest = iw;
-      W.Pass = true;
+      //lep_Big = W.lep_pt_corr;
+      //W.idxBest = iw;
+      //W.Pass = true;
     }
     if( ((AnaChannel == "Muon2012LoPU" ) && (MuonCut(iw) >0))||
 	((AnaChannel == "Muon2012") && (MuonCut(iw) >0))||
@@ -401,12 +443,51 @@ int Wlnu12LoCtrPlt::WreconEff()
     {
       DumpWbestCand(iw);
       Fill_Histo();
-      lep_Big = W.lep_pt_corr;
-      W.idxBest = iw;
-      W.Pass = true;
+      //lep_Big = W.lep_pt_corr;
+      //W.idxBest = iw;
+      //W.Pass = true;
     }
     return 1;
   }
-  W.lep_pt_corr = lep_Big;
+  //W.lep_pt_corr = lep_Big;
+  return 0;
+}
+int Wlnu12LoCtrPlt::ZreconEff()
+{
+  for(int i(0); i<Z_Mass->size(); i)
+  {
+    if( (*Z_Lept1_genIdxMatch)[i] < 0) continue;
+
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1FidCut(iw) >0))
+	  //Best Candidate selection
+    )
+    {
+      FillZmu1FiducialCutHist(i);
+    }
+
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2FidCut(iw) >0))
+	  //Best Candidate selection
+    )
+    {
+      FillZmu2FiducialCutHist(i);
+    }
+
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1Cut(iw) >0))
+	  //Best Candidate selection
+    )
+    {
+      FillZmu1CutHist(i);
+    }
+
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2Cut(iw) >0))
+	  //Best Candidate selection
+    )
+    {
+      FillZmu2CutHist(i);
+    }
+
+    return 1;
+  }
+  //W.lep_pt_corr = lep_Big;
   return 0;
 }

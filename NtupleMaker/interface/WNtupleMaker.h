@@ -2217,7 +2217,6 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
         //detector based isolation
         lepton2->back().setIsoDeposit( it2.trackIso(), it2.ecalIso(), it2.hcalIso());
 
-
         Lept2_isGlobal=it2.isGlobalMuon();
         Lept2_isTrker=it2.isTrackerMuon();
         Lept2_pt=it2.pt();

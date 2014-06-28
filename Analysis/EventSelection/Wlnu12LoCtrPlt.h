@@ -19,6 +19,7 @@ public :
    virtual void     Loop();
 protected:
   Int_t	    WreconEff();
+  Int_t	    ZreconEff();
   void Nselected4Bin();
   int InitVar(); // Init for Class
   int InitVar4Evt(); // Init for every event
