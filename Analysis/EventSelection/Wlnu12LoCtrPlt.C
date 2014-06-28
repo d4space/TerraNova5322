@@ -97,6 +97,7 @@ void Wlnu12LoCtrPlt::Loop()
    
     // Select the Best W boson
     WreconEff();
+    ZreconEff();
     if(W.Pass)
     {
     }
@@ -326,7 +327,7 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
   }
   return 0;
 }
-int Wlnu12LoCtrPlt::FillZFiducialCutHistoMu1(int i)
+int Wlnu12LoCtrPlt::FillZmu1FiducialCutHist(int i)
 {
   if( (*Z_Lept1_charge)[i]>0)
   {
