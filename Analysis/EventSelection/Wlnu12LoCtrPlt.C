@@ -735,8 +735,8 @@ int Wlnu12LoCtrPlt::ZreconEff()
     if( (*Z_Lept1_genIdxMatch)[i] < 0) continue;
     if((*Z_Sign)[i] != 0) continue;
     if(( (*Z_Mass)[i] < 60) || ( (*Z_Mass)[i] > 120)) continue;
-    if((*Z_Lept1_pt)[i] < 100 ) continue;
-    if((*Z_Lept2_pt)[i] < 100 ) continue;
+    if((*Z_Lept1_pt)[i] > 100 ) continue;
+    if((*Z_Lept2_pt)[i] > 100 ) continue;
 
     if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1FidCut(i) >0))
 	  //Best Candidate selection
