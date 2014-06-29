@@ -44,9 +44,9 @@ void Wlnu12LoCtrPlt::Loop()
 
   //gRandom->SetSeed(0);
   //gRandom->SetSeed(0x1234);
-//
+  
   if (fChain == 0) return;
-   //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
+  //int Ntries = fChain->GetEntriesFast(); this gives 1234567890 kkk
   Ntries = fChain->GetEntries();
   cout<<"Total: "<<Ntries<<endl;
 
@@ -97,13 +97,13 @@ void Wlnu12LoCtrPlt::Loop()
    
     // Select the Best W boson
     WreconEff();
-    ZreconEff();
+    //ZreconEff();
     if(W.Pass)
     {
     }
     WbestSelect();
 
-    if( W.Pass)
+    if(W.Pass)
     {
       //Fill_Histo();
     }
@@ -201,14 +201,14 @@ int Wlnu12LoCtrPlt::InitHistogram()
   h1_W_pt  = new TH1D("h1_W_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wp_pt = new TH1D("h1_Wp_pt","Wpt",NWptBinPlus-1,WptBins);
   h1_Wm_pt = new TH1D("h1_Wm_pt","Wpt",NWptBinPlus-1,WptBins);
-  h2_PlusLepPtEtaAllCut=new TH2D("h2_PlusLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,-2.1,2.1);
-  h2_MinuLepPtEtaAllCut=new TH2D("h2_MinuLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,-2.1,2.1);
-  h2_PlusLepPtEtaFidCut=new TH2D("h2_PlusLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,-2.1,2.1);
-  h2_MinuLepPtEtaFidCut=new TH2D("h2_MinuLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,-2.1,2.1);
-  h1_PlusLepPtAllCutFullRange = new TH1D("h1_PlusLepPtAllCutFullRange","LeptonPt",1,20,100);
-  h1_MinuLepPtAllCutFullRange = new TH1D("h1_MinuLepPtAllCutFullRange","LeptonPt",1,20,100);
-  h1_PlusLepPtFidCutFullRange = new TH1D("h1_PlusLepPtFidCutFullRange","LeptonPt",1,20,100);
-  h1_MinuLepPtFidCutFullRange = new TH1D("h1_MinuLepPtFidCutFullRange","LeptonPt",1,20,100);
+  h2_PlusLepPtEtaAllCut=new TH2D("h2_PlusLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,LepPtBins);
+  h2_MinuLepPtEtaAllCut=new TH2D("h2_MinuLepPtEtaAllCut","LepPt vs LeptEta at AllCut",6,20,100,10,LepPtBins);
+  h2_PlusLepPtEtaFidCut=new TH2D("h2_PlusLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,LepPtBins);
+  h2_MinuLepPtEtaFidCut=new TH2D("h2_MinuLepPtEtaFidCut","LepPt vs LeptEta at FidCut",6,20,100,10,LepPtBins);
+  h1_PlusLepPtAllCutFullRange = new TH1D("h1_PlusLepPtAllCutFullRange","LeptonPt",1,0,600);
+  h1_MinuLepPtAllCutFullRange = new TH1D("h1_MinuLepPtAllCutFullRange","LeptonPt",1,0,600);
+  h1_PlusLepPtFidCutFullRange = new TH1D("h1_PlusLepPtFidCutFullRange","LeptonPt",1,0,600);
+  h1_MinuLepPtFidCutFullRange = new TH1D("h1_MinuLepPtFidCutFullRange","LeptonPt",1,0,600);
   h1_PlusLepEtaAllCutFullRange = new TH1D("h1_PlusLepEtaAllCutFullRange","LeptonPt",1,-2.1,2.1);
   h1_MinuLepEtaAllCutFullRange = new TH1D("h1_MinuLepEtaAllCutFullRange","LeptonPt",1,-2.1,2.1);
   h1_PlusLepEtaFidCutFullRange = new TH1D("h1_PlusLepEtaFidCutFullRange","LeptonPt",1,-2.1,2.1);
@@ -217,14 +217,14 @@ int Wlnu12LoCtrPlt::InitHistogram()
   for(int i(0); i< 3; i++)
   {
     sprintf(histName, "h1_PlusLepPtFidCut_%d",i);
-    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
+    h1_PlusLepPtFidCut[i] = new TH1D(histName,"LeptonPt",7,LepPtBins);
     sprintf(histName, "h1_MinuLepPtFidCut_%d",i);
-    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
+    h1_MinuLepPtFidCut[i] = new TH1D(histName,"LeptonPt",7,LepPtBins);
 
     sprintf(histName, "h1_PlusLepPtAllCut_%d",i);
-    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
+    h1_PlusLepPtAllCut[i] = new TH1D(histName,"LeptonPt",7,LepPtBins);
     sprintf(histName, "h1_MinuLepPtAllCut_%d",i);
-    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",6,20,100);
+    h1_MinuLepPtAllCut[i] = new TH1D(histName,"LeptonPt",7,LepPtBins);
     
     sprintf(histName, "h1_PlusLepEtaFidCut_%d",i);
     h1_PlusLepEtaFidCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
@@ -235,6 +235,16 @@ int Wlnu12LoCtrPlt::InitHistogram()
     h1_PlusLepEtaAllCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
     sprintf(histName, "h1_MinuLepEtaAllCut_%d",i);
     h1_MinuLepEtaAllCut[i] = new TH1D(histName,"LeptonEta",10,-2.1,2.1);
+    
+    sprintf(histName, "h1_PlusLepEtaFidCutTnPbins_%d",i);
+    h1_PlusLepEtaFidCutTnPbins[i] = new TH1D(histName,"LeptonEta",10,LepEtaBins);
+    sprintf(histName, "h1_MinuLepEtaFidCutTnPbins_%d",i);
+    h1_MinuLepEtaFidCutTnPbins[i] = new TH1D(histName,"LeptonEta",10,LepEtaBins);
+
+    sprintf(histName, "h1_PlusLepEtaAllCutTnPbins_%d",i);
+    h1_PlusLepEtaAllCutTnPbins[i] = new TH1D(histName,"LeptonEta",10,LepEtaBins);
+    sprintf(histName, "h1_MinuLepEtaAllCutTnPbins_%d",i);
+    h1_MinuLepEtaAllCutTnPbins[i] = new TH1D(histName,"LeptonEta",10,LepEtaBins);
   }
   
   return 0;
@@ -245,6 +255,7 @@ int Wlnu12LoCtrPlt::Fill_Histo()
   if(W.charge>0)h1_Wp_pt->Fill(W.pt,mTTW);
   if(W.charge<0)h1_Wm_pt->Fill(W.pt,mTTW);
 
+  //if(W.charge>0)
   if(W.charge>0)
   {
     h2_PlusLepPtEtaAllCut->Fill(W.lep_pt,W.lep_eta);
@@ -263,8 +274,19 @@ int Wlnu12LoCtrPlt::Fill_Histo()
       h1_PlusLepPtAllCut[2]->Fill(W.lep_pt);
       h1_PlusLepEtaAllCut[2]->Fill(W.lep_eta);
     }
+    //TnP binning
+    if(W.lep_pt >20 && W.lep_pt <=40)
+    {
+      h1_PlusLepEtaAllCutTnPbins[0]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 40 && W.lep_pt <=55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[1]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[2]->Fill(W.lep_eta);
+    }
   }
-  if(W.charge <0)
+  if(W.charge<0)
   {
     h2_MinuLepPtEtaAllCut->Fill(W.lep_pt,W.lep_eta);
     h1_MinuLepPtAllCutFullRange->Fill(W.lep_pt);
@@ -282,11 +304,23 @@ int Wlnu12LoCtrPlt::Fill_Histo()
       h1_MinuLepPtAllCut[2]->Fill(W.lep_pt);
       h1_MinuLepEtaAllCut[2]->Fill(W.lep_eta);
     }
+    //TnP binning
+    if(W.lep_pt >20 && W.lep_pt <=40)
+    {
+      h1_MinuLepEtaAllCutTnPbins[0]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 40 && W.lep_pt <=55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[1]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[2]->Fill(W.lep_eta);
+    }
   }
   return 0;
 }
 int Wlnu12LoCtrPlt::FillFiducialCutHisto()
 {
+  //if(W.charge>0)
   if(W.charge>0)
   {
     h2_PlusLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
@@ -305,8 +339,19 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
       h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
       h1_PlusLepEtaFidCut[2]->Fill(W.lep_eta);
     }
+    //TnP binning
+    if(W.lep_pt >20 && W.lep_pt <=40)
+    {
+      h1_PlusLepEtaFidCutTnPbins[0]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 40 && W.lep_pt <=55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[1]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[2]->Fill(W.lep_eta);
+    }
   }
-  if(W.charge <0)
+  if(W.charge<0)
   {
     h2_MinuLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
     h1_MinuLepPtFidCutFullRange->Fill(W.lep_pt);
@@ -323,6 +368,145 @@ int Wlnu12LoCtrPlt::FillFiducialCutHisto()
     {
       h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
       h1_MinuLepEtaFidCut[2]->Fill(W.lep_eta);
+    }
+    //TnP binning
+    if(W.lep_pt >20 && W.lep_pt <=40)
+    {
+      h1_MinuLepEtaFidCutTnPbins[0]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 40 && W.lep_pt <=55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[1]->Fill(W.lep_eta);
+    }else if(W.lep_pt > 55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[2]->Fill(W.lep_eta);
+    }
+  }
+  return 0;
+}
+int Wlnu12LoCtrPlt::FillZmu1CutHist(int i)
+{
+  if( (*Z_Lept1_charge)[i]>0)
+  {
+    h2_PlusLepPtEtaAllCut->Fill((*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
+    h1_PlusLepPtAllCutFullRange->Fill( (*Z_Lept1_pt)[i]);
+    h1_PlusLepEtaAllCutFullRange->Fill( (*Z_Lept1_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_PlusLepPtAllCut[0]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaAllCut[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_PlusLepPtAllCut[1]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaAllCut[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_PlusLepPtAllCut[2]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaAllCut[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept1_pt)[i] >20 && (*Z_Lept1_pt)[i] <=40)
+    {
+      h1_PlusLepEtaAllCutTnPbins[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 40 && (*Z_Lept1_pt)[i] <=55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+  }
+  if( (*Z_Lept1_charge)[i]<0)
+  {
+    h2_MinuLepPtEtaAllCut->Fill((*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
+    h1_MinuLepPtAllCutFullRange->Fill((*Z_Lept1_pt)[i]);
+    h1_MinuLepEtaAllCutFullRange->Fill((*Z_Lept1_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_MinuLepPtAllCut[0]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaAllCut[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_MinuLepPtAllCut[1]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaAllCut[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_MinuLepPtAllCut[2]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaAllCut[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept1_pt)[i] >20 && (*Z_Lept1_pt)[i] <=40)
+    {
+      h1_MinuLepEtaAllCutTnPbins[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 40 && (*Z_Lept1_pt)[i] <=55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+  }
+  return 0;
+}
+int Wlnu12LoCtrPlt::FillZmu2CutHist(int i)
+{
+  if( (*Z_Lept2_charge)[i]>0)
+  {
+    h2_PlusLepPtEtaAllCut->Fill( (*Z_Lept2_pt)[i],(*Z_Lept2_eta)[i]);
+    h1_PlusLepPtAllCutFullRange->Fill( (*Z_Lept2_pt)[i]);
+    h1_PlusLepEtaAllCutFullRange->Fill( (*Z_Lept2_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_PlusLepPtAllCut[0]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaAllCut[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_PlusLepPtAllCut[1]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaAllCut[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_PlusLepPtAllCut[2]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaAllCut[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept2_pt)[i] >20 && (*Z_Lept2_pt)[i] <=40)
+    {
+      h1_PlusLepEtaAllCutTnPbins[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 40 && (*Z_Lept2_pt)[i] <=55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 55)
+    {
+      h1_PlusLepEtaAllCutTnPbins[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+  }
+  if( (*Z_Lept2_charge)[i]<0)
+  {
+    h2_MinuLepPtEtaAllCut->Fill((*Z_Lept2_pt)[i],(*Z_Lept2_eta)[i]);
+    h1_MinuLepPtAllCutFullRange->Fill((*Z_Lept2_pt)[i]);
+    h1_MinuLepEtaAllCutFullRange->Fill((*Z_Lept2_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_MinuLepPtAllCut[0]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaAllCut[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_MinuLepPtAllCut[1]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaAllCut[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_MinuLepPtAllCut[2]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaAllCut[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept2_pt)[i] >20 && (*Z_Lept2_pt)[i] <=40)
+    {
+      h1_MinuLepEtaAllCutTnPbins[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 40 && (*Z_Lept2_pt)[i] <=55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 55)
+    {
+      h1_MinuLepEtaAllCutTnPbins[2]->Fill((*Z_Lept2_eta)[i]);
     }
   }
   return 0;
@@ -331,40 +515,126 @@ int Wlnu12LoCtrPlt::FillZmu1FiducialCutHist(int i)
 {
   if( (*Z_Lept1_charge)[i]>0)
   {
-    h2_ZPlusLepPtEtaFidCut->Fill( (*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
-    h1_ZPlusLepPtFidCutFullRange->Fill( (*Z_Lept1_pt)[i]);
-    h1_ZPlusLepEtaFidCutFullRange->Fill( (*Z_Lept1_eta)[i]);
+    h2_PlusLepPtEtaFidCut->Fill( (*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
+    h1_PlusLepPtFidCutFullRange->Fill( (*Z_Lept1_pt)[i]);
+    h1_PlusLepEtaFidCutFullRange->Fill( (*Z_Lept1_eta)[i]);
     if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
     {
-      h1_ZPlusLepPtFidCut[0]->Fill(W.lep_pt);
-      h1_ZPlusLepEtaFidCut[0]->Fill(W.lep_eta);
-    }else if(W.pt >= 12.5 && W.pt <50)
+      h1_PlusLepPtFidCut[0]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaFidCut[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
     {
-      h1_PlusLepPtFidCut[1]->Fill(W.lep_pt);
-      h1_PlusLepEtaFidCut[1]->Fill(W.lep_eta);
-    }else if(W.pt >= 50 && W.pt <600)
+      h1_PlusLepPtFidCut[1]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaFidCut[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
     {
-      h1_PlusLepPtFidCut[2]->Fill(W.lep_pt);
-      h1_PlusLepEtaFidCut[2]->Fill(W.lep_eta);
+      h1_PlusLepPtFidCut[2]->Fill((*Z_Lept1_pt)[i]);
+      h1_PlusLepEtaFidCut[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept1_pt)[i] >20 && (*Z_Lept1_pt)[i] <=40)
+    {
+      h1_PlusLepEtaFidCutTnPbins[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 40 && (*Z_Lept1_pt)[i] <=55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[2]->Fill((*Z_Lept1_eta)[i]);
     }
   }
   if( (*Z_Lept1_charge)[i]<0)
   {
-    h2_MinuLepPtEtaFidCut->Fill(W.lep_pt,W.lep_eta);
-    h1_MinuLepPtFidCutFullRange->Fill(W.lep_pt);
-    h1_MinuLepEtaFidCutFullRange->Fill(W.lep_eta);
-    if(W.pt >0 && W.pt <12.5)
+    h2_MinuLepPtEtaFidCut->Fill((*Z_Lept1_pt)[i],(*Z_Lept1_eta)[i]);
+    h1_MinuLepPtFidCutFullRange->Fill((*Z_Lept1_pt)[i]);
+    h1_MinuLepEtaFidCutFullRange->Fill((*Z_Lept1_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
     {
-      h1_MinuLepPtFidCut[0]->Fill(W.lep_pt);
-      h1_MinuLepEtaFidCut[0]->Fill(W.lep_eta);
-    }else if(W.pt >= 12.5 && W.pt <50)
+      h1_MinuLepPtFidCut[0]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaFidCut[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
     {
-      h1_MinuLepPtFidCut[1]->Fill(W.lep_pt);
-      h1_MinuLepEtaFidCut[1]->Fill(W.lep_eta);
-    }else if(W.pt >= 50 && W.pt <600)
+      h1_MinuLepPtFidCut[1]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaFidCut[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
     {
-      h1_MinuLepPtFidCut[2]->Fill(W.lep_pt);
-      h1_MinuLepEtaFidCut[2]->Fill(W.lep_eta);
+      h1_MinuLepPtFidCut[2]->Fill((*Z_Lept1_pt)[i]);
+      h1_MinuLepEtaFidCut[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept1_pt)[i] >20 && (*Z_Lept1_pt)[i] <=40)
+    {
+      h1_MinuLepEtaFidCutTnPbins[0]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 40 && (*Z_Lept1_pt)[i] <=55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[1]->Fill((*Z_Lept1_eta)[i]);
+    }else if((*Z_Lept1_pt)[i] > 55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[2]->Fill((*Z_Lept1_eta)[i]);
+    }
+  }
+  return 0;
+}
+int Wlnu12LoCtrPlt::FillZmu2FiducialCutHist(int i)
+{
+  if( (*Z_Lept2_charge)[i]>0)
+  {
+    h2_PlusLepPtEtaFidCut->Fill( (*Z_Lept2_pt)[i],(*Z_Lept2_eta)[i]);
+    h1_PlusLepPtFidCutFullRange->Fill( (*Z_Lept2_pt)[i]);
+    h1_PlusLepEtaFidCutFullRange->Fill( (*Z_Lept2_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_PlusLepPtFidCut[0]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaFidCut[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_PlusLepPtFidCut[1]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaFidCut[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_PlusLepPtFidCut[2]->Fill((*Z_Lept2_pt)[i]);
+      h1_PlusLepEtaFidCut[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept2_pt)[i] >20 && (*Z_Lept2_pt)[i] <=40)
+    {
+      h1_PlusLepEtaFidCutTnPbins[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 40 && (*Z_Lept2_pt)[i] <=55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 55)
+    {
+      h1_PlusLepEtaFidCutTnPbins[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+  }
+  if( (*Z_Lept2_charge)[i]<0)
+  {
+    h2_MinuLepPtEtaFidCut->Fill((*Z_Lept2_pt)[i],(*Z_Lept2_eta)[i]);
+    h1_MinuLepPtFidCutFullRange->Fill((*Z_Lept2_pt)[i]);
+    h1_MinuLepEtaFidCutFullRange->Fill((*Z_Lept2_eta)[i]);
+    if((*Z_pt)[i] >0 && (*Z_pt)[i] <12.5)
+    {
+      h1_MinuLepPtFidCut[0]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaFidCut[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 12.5 && (*Z_pt)[i] <50)
+    {
+      h1_MinuLepPtFidCut[1]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaFidCut[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_pt)[i] >= 50 && (*Z_pt)[i] <600)
+    {
+      h1_MinuLepPtFidCut[2]->Fill((*Z_Lept2_pt)[i]);
+      h1_MinuLepEtaFidCut[2]->Fill((*Z_Lept2_eta)[i]);
+    }
+    //TnP binning
+    if((*Z_Lept2_pt)[i] >20 && (*Z_Lept2_pt)[i] <=40)
+    {
+      h1_MinuLepEtaFidCutTnPbins[0]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 40 && (*Z_Lept2_pt)[i] <=55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[1]->Fill((*Z_Lept2_eta)[i]);
+    }else if((*Z_Lept2_pt)[i] > 55)
+    {
+      h1_MinuLepEtaFidCutTnPbins[2]->Fill((*Z_Lept2_eta)[i]);
     }
   }
   return 0;
@@ -398,6 +668,10 @@ int Wlnu12LoCtrPlt::Write_Histo()
     h1_MinuLepEtaAllCut[i]->Write();
     h1_PlusLepEtaFidCut[i]->Write();
     h1_MinuLepEtaFidCut[i]->Write();
+    h1_PlusLepEtaAllCutTnPbins[i]->Write();
+    h1_MinuLepEtaAllCutTnPbins[i]->Write();
+    h1_PlusLepEtaFidCutTnPbins[i]->Write();
+    h1_MinuLepEtaFidCutTnPbins[i]->Write();
   }
   return 0;
 }
@@ -410,6 +684,7 @@ int Wlnu12LoCtrPlt::WreconEff()
     if( (*W_Lept1_genDeltaR)[iw] > 0.025) continue;
     //Cut to W.lep_pt_corr
     W.lep_pt_corr = (*W_Lept1_pt)[iw];
+    if(W.lep_pt_corr > 100) continue;
     if (Mode=="ScaleCorr")DoScaleCorr(iw);
     if((Mode == "SmeaRecEffCorr" || Mode == "SmeaEffCorr") || Mode == "Unfold")DoSmearCorr(iw);
     W_Lept1_pt_Corr.push_back(W.lep_pt_corr);
@@ -455,32 +730,36 @@ int Wlnu12LoCtrPlt::WreconEff()
 }
 int Wlnu12LoCtrPlt::ZreconEff()
 {
-  for(int i(0); i<Z_Mass->size(); i)
+  for(int i(0); i<Z_Mass->size(); i++)
   {
     if( (*Z_Lept1_genIdxMatch)[i] < 0) continue;
+    if((*Z_Sign)[i] != 0) continue;
+    if(( (*Z_Mass)[i] < 60) || ( (*Z_Mass)[i] > 120)) continue;
+    if((*Z_Lept1_pt)[i] < 100 ) continue;
+    if((*Z_Lept2_pt)[i] < 100 ) continue;
 
-    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1FidCut(iw) >0))
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1FidCut(i) >0))
 	  //Best Candidate selection
     )
     {
       FillZmu1FiducialCutHist(i);
     }
 
-    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2FidCut(iw) >0))
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2FidCut(i) >0))
 	  //Best Candidate selection
     )
     {
       FillZmu2FiducialCutHist(i);
     }
 
-    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1Cut(iw) >0))
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon1Cut(i) >0))
 	  //Best Candidate selection
     )
     {
       FillZmu1CutHist(i);
     }
 
-    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2Cut(iw) >0))
+    if( ((AnaChannel == "Muon2012LoPU" ) && (ZMuon2Cut(i) >0))
 	  //Best Candidate selection
     )
     {

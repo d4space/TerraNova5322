@@ -49,6 +49,8 @@ public :
    double	LumiWeight;
    double 	RecoilBins[U1Bin+1]; //Recoil Study Wpt bins
    double 	WptBins[NWptBinPlus]; //Wpt bins
+   double 	LepPtBins[8]; //LepPt bins
+   double 	LepEtaBins[11]; //LepEta bins
      
    Wlnu12LoBase(TTree *tree=0,double weight=1,
        TString OutNameBase_ = "Output",TString Mode="analysis",
@@ -82,6 +84,10 @@ protected:
   virtual Int_t     TauCut(int entry);
   virtual Int_t     MuonCut(int entry);
   virtual Int_t     MuonFidCut(int entry);
+  virtual Int_t     ZMuon1FidCut(int entry);
+  virtual Int_t     ZMuon2FidCut(int entry);
+  virtual Int_t     ZMuon1Cut(int entry);
+  virtual Int_t     ZMuon2Cut(int entry);
   virtual Int_t     MuonCutSide(int entry);
   virtual Int_t     AddMuonCut(int entry);
   virtual Int_t     ElectronCut(int entry);
@@ -258,6 +264,28 @@ Wlnu12LoBase::Wlnu12LoBase(TTree *Wlnu12LoBaseTree, double lumiweight,
   fChain=0;
    cout<<"Wlnu12LoBase constructor"<<endl;
    cout<<"initialization for bins"<<endl;
+   // Lept Pt Bins
+   LepPtBins[0]  = 20;
+   LepPtBins[1]  = 25;
+   LepPtBins[2]  = 35;
+   LepPtBins[3]  = 45;
+   LepPtBins[4]  = 60;
+   LepPtBins[5]  = 75;
+   LepPtBins[6]  = 85;
+   LepPtBins[7]  = 100;
+
+   LepEtaBins[0]  = -2.1;
+   LepEtaBins[1]  = -1.6;
+   LepEtaBins[2]  = -1.2;
+   LepEtaBins[3]  = -0.8;
+   LepEtaBins[4]  = -0.4;
+   LepEtaBins[5]  = 0;
+   LepEtaBins[6]  = 0.4;
+   LepEtaBins[7]  = 0.8;
+   LepEtaBins[8]  = 1.2;
+   LepEtaBins[9]  = 1.6;
+   LepEtaBins[10] = 2.1;
+
    // Final Bins
    WptBins[0]  = 0.;
    WptBins[1]  = 7.5;
@@ -608,6 +636,38 @@ Int_t Wlnu12LoBase::ZMuon2FidCut(int i)
   return 1;
 }
 
+Int_t Wlnu12LoBase::ZMuon1Cut(int i)
+{
+  if(!(*Z_Lept1_isGlobal)[i])return -1;
+  if((*Z_Lept1_pt)[i] < 20) return -1;//trigger SingleMu15 but we use 25 for Wpt
+  if(fabs((*Z_Lept1_eta)[i])>2.1) return -1;
+  if((*Z_Lept1_globalNormChi2)[i]<0 || (*Z_Lept1_globalNormChi2)[i] >= 10) return -1;
+  if((*Z_Lept1_muonHits)[i] <1) return -1;
+  if((*Z_Lept1_matchStations)[i] <2) return -1;
+  if((*Z_Lept1_trkLayers)[i] <6)return -1;
+  if((*Z_Lept1_pixelHits)[i] <1)return -1;
+  if(fabs((*Z_Lept1_dB)[i]) >0.02)return -1;
+  if(fabs((*Z_Lept1_dz)[i]) >0.5)return -1;
+  double betaCor04 = max(0.0,(*Z_Lept1_nhIso04)[i]+(*Z_Lept1_phIso04)[i]-0.5*(*Z_Lept1_pcIso04)[i]);
+  if(((*Z_Lept1_chIso04)[i]+betaCor04)/(*Z_Lept1_pt)[i] > 0.12) return -1; //Signal Band
+  return 1;
+}
+Int_t Wlnu12LoBase::ZMuon2Cut(int i)
+{
+  if(!(*Z_Lept2_isGlobal)[i])return -1;
+  if((*Z_Lept2_pt)[i] < 20) return -1;//trigger SingleMu15 but we use 25 for Wpt
+  if(fabs((*Z_Lept2_eta)[i])>2.1) return -1;
+  if((*Z_Lept2_globalNormChi2)[i]<0 || (*Z_Lept2_globalNormChi2)[i] >= 10) return -1;
+  if((*Z_Lept2_muonHits)[i] <1) return -1;
+  if((*Z_Lept2_matchStations)[i] <2) return -1;
+  if((*Z_Lept2_trkLayers)[i] <6)return -1;
+  if((*Z_Lept2_pixelHits)[i] <1)return -1;
+  if(fabs((*Z_Lept2_dB)[i]) >0.02)return -1;
+  if(fabs((*Z_Lept2_dz)[i]) >0.5)return -1;
+  double betaCor04 = max(0.0,(*Z_Lept2_nhIso04)[i]+(*Z_Lept2_phIso04)[i]-0.5*(*Z_Lept2_pcIso04)[i]);
+  if(((*Z_Lept2_chIso04)[i]+betaCor04)/(*Z_Lept2_pt)[i] > 0.12) return -1; //Signal Band
+  return 1;
+}
 Int_t Wlnu12LoBase::MuonCutSide(int i)
 {
   if(!(*W_Lept1_isGlobal)[i])return -1;

@@ -26,9 +26,14 @@ protected:
   int InitHistogram();
   int Fill_Histo();
   int FillFiducialCutHisto();
+  int FillZmu1FiducialCutHist(int entry);
+  int FillZmu2FiducialCutHist(int entry);
+  int FillZmu1CutHist(int entry);
+  int FillZmu2CutHist(int entry);
   int Write_Histo();
   ofstream Fout;
   TFile *myFile;
+  //Wboson
   TH1D*	h1_W_pt;
   TH1D*	h1_Wp_pt;
   TH1D*	h1_Wm_pt;
@@ -48,10 +53,39 @@ protected:
   TH1D*	h1_MinuLepEtaAllCut[3];
   TH1D*	h1_PlusLepEtaFidCut[3];
   TH1D*	h1_MinuLepEtaFidCut[3];
+  TH1D*	h1_PlusLepEtaAllCutTnPbins[3];
+  TH1D*	h1_MinuLepEtaAllCutTnPbins[3];
+  TH1D*	h1_PlusLepEtaFidCutTnPbins[3];
+  TH1D*	h1_MinuLepEtaFidCutTnPbins[3];
   TH2D* h2_PlusLepPtEtaAllCut;
   TH2D* h2_MinuLepPtEtaAllCut;
   TH2D* h2_PlusLepPtEtaFidCut;
   TH2D* h2_MinuLepPtEtaFidCut;
+  //Zboson
+  //TH1D*	h1_ZPlusLepPtAllCut[3];
+  //TH1D*	h1_ZMinuLepPtAllCut[3];
+  //TH1D*	h1_ZPlusLepPtFidCut[3];
+  //TH1D*	h1_ZMinuLepPtFidCut[3];
+  //TH1D*	h1_ZPlusLepEtaAllCut[3];
+  //TH1D*	h1_ZMinuLepEtaAllCut[3];
+  //TH1D*	h1_ZPlusLepEtaFidCut[3];
+  //TH1D*	h1_ZMinuLepEtaFidCut[3];
+  //TH1D*	h1_ZPlusLepEtaAllCutTnPbins[3];
+  //TH1D*	h1_ZMinuLepEtaAllCutTnPbins[3];
+  //TH1D*	h1_ZPlusLepEtaFidCutTnPbins[3];
+  //TH1D*	h1_ZMinuLepEtaFidCutTnPbins[3];
+  //TH2D* h2_ZPlusLepPtEtaAllCut;
+  //TH2D* h2_ZMinuLepPtEtaAllCut;
+  //TH2D* h2_ZPlusLepPtEtaFidCut;
+  //TH2D* h2_ZMinuLepPtEtaFidCut;
+  //TH1D*	h1_ZPlusLepPtAllCutFullRange;
+  //TH1D*	h1_ZMinuLepPtAllCutFullRange;
+  //TH1D*	h1_ZPlusLepPtFidCutFullRange;
+  //TH1D*	h1_ZMinuLepPtFidCutFullRange;
+  //TH1D*	h1_ZPlusLepEtaAllCutFullRange;
+  //TH1D*	h1_ZMinuLepEtaAllCutFullRange;
+  //TH1D*	h1_ZPlusLepEtaFidCutFullRange;
+  //TH1D*	h1_ZMinuLepEtaFidCutFullRange;
   // Member variables
   double mNselect4WptBin[NwPtBin];
   char histName[30];
