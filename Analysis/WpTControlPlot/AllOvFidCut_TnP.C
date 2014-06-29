@@ -159,7 +159,7 @@ int AllOvFidCut_TnP(const TString BaseName)
     h1_ZpRatio[i]->SetMarkerColor(kGreen+3);
     h1_ZmRatio[i]->SetMarkerColor(kMagenta+2);
 
-    sprintf(tmpName,"Eta_LeptBin_%d",i);
+    sprintf(tmpName,"TnP_EtaDistr_LepPtBin_%d",i+1);
     sprintf(tmpNameOrg,"Muon #eta");
     pltRatio= new CPlot(tmpName,"",tmpNameOrg,"AllCut/FidCut");
     pltRatio->setOutDir(resultDir);
