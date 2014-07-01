@@ -110,8 +110,8 @@ void Wlnu12LoUnfold::Loop()
       evtSelected+=mTTW;
       mTTW=mTTW*DoEffiCorr();
       // For systematic of WPt distribution
-      cout<<"CalcWPtWeight: "<<CalcWPtWeight()<<endl;
-      mTTW=mTTW*CalcWPtWeight();
+      //cout<<"CalcWPtWeight: "<<CalcWPtWeight()<<endl;
+      //mTTW=mTTW*CalcWPtWeight();
 
       if(TruthRecoPost)if(WCHARGE == W.charge) FillUnfHisto();
       Nselected4Bin();
