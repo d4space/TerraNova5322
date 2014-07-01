@@ -34,7 +34,8 @@ void wPtUnfoldMakeHisto()
   //Luminosity weight
   double LumiW_WpToMuNu = 1;
   double LumiW_WmToMuNu = 1;
- 
+
+  /***
 //WpToMuNu========================================
   cout<<"WpToMuNu_S8===================="<<endl;
   TChain *TC_WpToMuNu_S8    = new TChain("WMuNeu/tree","");
@@ -43,7 +44,9 @@ void wPtUnfoldMakeHisto()
   Wlnu12LoUnfold Wmunu12LoWpMuNu(
       TC_WpToMuNu_S8,LumiW_WpToMuNu, WpToMuNu_BaseName,ModeMC,AnaChannelMu,1,true,0x1235);
   Wmunu12LoWpMuNu.Loop();
+  ***/
 
+/**
 //WmToMuNu========================================
   cout<<"WmToMuNu_S8===================="<<endl;
   TChain *TC_WmToMuNu_S8    = new TChain("WMuNeu/tree","");
@@ -52,6 +55,7 @@ void wPtUnfoldMakeHisto()
   Wlnu12LoUnfold Wmunu12LoWmMuNu(
       TC_WmToMuNu_S8,LumiW_WmToMuNu, WmToMuNu_BaseName,ModeMC,AnaChannelMu,-1,true,0x1235);
   Wmunu12LoWmMuNu.Loop();
+  **/
 
 //====================
 /////////// Electron LowPU
@@ -61,6 +65,7 @@ void wPtUnfoldMakeHisto()
   double LumiW_WpToEleNu = 1;
   double LumiW_WmToEleNu = 1;
 
+  /***
 //WpToEleNu========================================
   cout<<"WpToEleNu_S8===================="<<endl;
   TChain *TC_WpToEleNu_S8    = new TChain("WEleNeu/tree","");
@@ -69,7 +74,9 @@ void wPtUnfoldMakeHisto()
   Wlnu12LoUnfold Wenu12LoWpEleNu(
       TC_WpToEleNu_S8,LumiW_WpToEleNu, WpToEleNu_BaseName,ModeMC,AnaChannelEle,1,true,0x1235);
   Wenu12LoWpEleNu.Loop();
+  **/
 
+  //***
 //WmToEleNu========================================
   cout<<"WmToEleNu_S8===================="<<endl;
   TChain *TC_WmToEleNu_S8    = new TChain("WEleNeu/tree","");
@@ -78,5 +85,5 @@ void wPtUnfoldMakeHisto()
   Wlnu12LoUnfold Wenu12LoWmEleNu(
       TC_WmToEleNu_S8,LumiW_WmToEleNu, WmToEleNu_BaseName,ModeMC,AnaChannelEle,-1,true,0x1235);
   Wenu12LoWmEleNu.Loop();
-
+   /**/
 }

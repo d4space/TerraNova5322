@@ -72,6 +72,7 @@ protected:
 
   // Selections
   double	    CalcEvtWeight();
+  double	    CalcWPtWeight();
   virtual Int_t	    WbestSelect();
   virtual Int_t	    ZbestSelect();
   virtual Int_t	    FillWSide(int entry);
@@ -104,6 +105,9 @@ protected:
   virtual Int_t     DoRecoilCorr();
   virtual Double_t  CalcMt(double lep_pt, double lep_phi, double Met,double  Met_phi);
   virtual Double_t  DoEffiCorr();
+  TFile* 	WPtCorrRoot;
+  TH1D*		h_WptWeight;
+  double WPt_Weight[NWptBinPlus-1];
 
   //------------------
   // Member Variables
@@ -254,6 +258,50 @@ void Wlnu12LoBase::Init(TTree *tree)
   smearRandom = new TRandom3();
   smearRandom->SetSeed(RandomSeed);
   mEffSf = 1;
+
+  //WpT correction
+  WPtCorrRoot = new TFile("../RstSelection/WpT_Data_MC_ratio_20140629.root");
+  TH1D* h_WPtWeight;
+
+  if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  {
+    if(WCHARGE == 1)
+    {
+      h_WPtWeight =(TH1D*)WPtCorrRoot->Get("h1_WpT_WpToMN_ratio")->Clone("h_WPtWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+	WPt_Weight[i-1]= h_WPtWeight->GetBinContent(i);
+	cout<<"WPt_Weight("<<i<<"): "<<WPt_Weight[i-1]<<endl;
+      }
+    }else if(WCHARGE == -1)
+    {
+      h_WPtWeight =(TH1D*)WPtCorrRoot->Get("h1_WpT_WmToMN_ratio")->Clone("h_WPtWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+	WPt_Weight[i-1]= h_WPtWeight->GetBinContent(i);
+	cout<<"WPt_Weight("<<i<<"): "<<WPt_Weight[i-1]<<endl;
+      }
+    }else{cout<<"No case as WCHARGE: "<<WCHARGE<<endl; exit(-1);}
+  }else if(AnaChannel == "Electron2012LoPU") //Electron ============================
+  {
+    if(WCHARGE == 1)
+    {
+      h_WPtWeight =(TH1D*)WPtCorrRoot->Get("h1_WpT_WpToEN_ratio")->Clone("h_WPtWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+	WPt_Weight[i-1]= h_WPtWeight->GetBinContent(i);
+	cout<<"WPt_Weight("<<i<<"): "<<WPt_Weight[i-1]<<endl;
+      }
+    }else if(WCHARGE == -1)
+    {
+      h_WPtWeight =(TH1D*)WPtCorrRoot->Get("h1_WpT_WmToEN_ratio")->Clone("h_WPtWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+	WPt_Weight[i-1]= h_WPtWeight->GetBinContent(i);
+	cout<<"WPt_Weight("<<i<<"): "<<WPt_Weight[i-1]<<endl;
+      }
+    }else{cout<<"No case as WCHARGE: "<<WCHARGE<<endl; exit(-1);}
+  }else{cout<<"No case as: "<<AnaChannel<<" in WPtCorr factor"<<endl;exit(-1);}
 
    Notify();
 }
@@ -1127,6 +1175,18 @@ double Wlnu12LoBase::CalcEvtWeight()
   {
     mTTW= LumiWeight*weight;} //reweighting value for S10
   return mTTW;
+}
+double Wlnu12LoBase::CalcWPtWeight()
+{
+  if(!WPtCorrRoot){cout<<"No WPtCorrRoot: check TerraNova/Analysis/RstSelection/WpT_Data_MC_ratio_20140629.root file"<<endl;exit(-1);}
+  for( int i(0);i<NWptBinPlus-1;i++)
+  {
+    if(W.pt >= WptBins[i] && W.pt < WptBins[i+1])
+    {
+      return WPt_Weight[i];
+    }
+  }
+  return 1;
 }
 
 #endif // #ifdef Wlnu12LoBase_cxx
