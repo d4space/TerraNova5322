@@ -391,6 +391,95 @@
   double eleBiasm12 = 4.8048;
   double eleBiasm13 = 5.9106;
 
+  double eleWptCorrp1  = 0.915318;
+  double eleWptCorrp2  = 0.0294394;
+  double eleWptCorrp3  = 0.793438;
+  double eleWptCorrp4  = 1.00581;
+  double eleWptCorrp5  = 0.659224;
+  double eleWptCorrp6  = 0.121046;
+  double eleWptCorrp7  = 0.299264;
+  double eleWptCorrp8  = 0.525082;
+  double eleWptCorrp9  = 0.592397;
+  double eleWptCorrp10 = 0.57529;
+  double eleWptCorrp11 = 0.529585;
+  double eleWptCorrp12 = 0.486141;
+  double eleWptCorrp13 = 0.461337;
+
+  double eleWptCorrm1  = 1.21547;
+  double eleWptCorrm2  = 0.262792;
+  double eleWptCorrm3  = 0.743959;
+  double eleWptCorrm4  = 1.17545;
+  double eleWptCorrm5  = 0.937213;
+  double eleWptCorrm6  = 0.336006;
+  double eleWptCorrm7  = 0.252154;
+  double eleWptCorrm8  = 0.603749;
+  double eleWptCorrm9  = 0.671394;
+  double eleWptCorrm10 = 0.576984;
+  double eleWptCorrm11 = 0.437997;
+  double eleWptCorrm12 = 0.319664;
+  double eleWptCorrm13 = 0.255065; 
+  
+  eleBiasp1 = sqrt(eleBiasp1 * eleBiasp1 + eleWptCorrp1 * eleWptCorrp1) ; 
+  eleBiasp2 = sqrt(eleBiasp2 * eleBiasp2 + eleWptCorrp2 * eleWptCorrp2) ; 
+  eleBiasp3 = sqrt(eleBiasp3 * eleBiasp3 + eleWptCorrp3 * eleWptCorrp3) ; 
+  eleBiasp4 = sqrt(eleBiasp4 * eleBiasp4 + eleWptCorrp4 * eleWptCorrp4) ; 
+  eleBiasp5 = sqrt(eleBiasp5 * eleBiasp5 + eleWptCorrp5 * eleWptCorrp5) ; 
+  eleBiasp6 = sqrt(eleBiasp6 * eleBiasp6 + eleWptCorrp6 * eleWptCorrp6) ; 
+  eleBiasp7 = sqrt(eleBiasp7 * eleBiasp7 + eleWptCorrp7 * eleWptCorrp7) ; 
+  eleBiasp8 = sqrt(eleBiasp8 * eleBiasp8 + eleWptCorrp8 * eleWptCorrp8) ; 
+  eleBiasp9 = sqrt(eleBiasp9 * eleBiasp9 + eleWptCorrp9 * eleWptCorrp9) ; 
+  eleBiasp10= sqrt(eleBiasp10* eleBiasp10+ eleWptCorrp10* eleWptCorrp10) ; 
+  eleBiasp11= sqrt(eleBiasp11* eleBiasp11+ eleWptCorrp11* eleWptCorrp11) ; 
+  eleBiasp12= sqrt(eleBiasp12* eleBiasp12+ eleWptCorrp12* eleWptCorrp12) ; 
+  eleBiasp13= sqrt(eleBiasp13* eleBiasp13+ eleWptCorrp13* eleWptCorrp13) ; 
+
+  eleBiasm1 = sqrt(eleBiasm1 * eleBiasm1 + eleWptCorrm1 * eleWptCorrm1) ; 
+  eleBiasm2 = sqrt(eleBiasm2 * eleBiasm2 + eleWptCorrm2 * eleWptCorrm2) ; 
+  eleBiasm3 = sqrt(eleBiasm3 * eleBiasm3 + eleWptCorrm3 * eleWptCorrm3) ; 
+  eleBiasm4 = sqrt(eleBiasm4 * eleBiasm4 + eleWptCorrm4 * eleWptCorrm4) ; 
+  eleBiasm5 = sqrt(eleBiasm5 * eleBiasm5 + eleWptCorrm5 * eleWptCorrm5) ; 
+  eleBiasm6 = sqrt(eleBiasm6 * eleBiasm6 + eleWptCorrm6 * eleWptCorrm6) ; 
+  eleBiasm7 = sqrt(eleBiasm7 * eleBiasm7 + eleWptCorrm7 * eleWptCorrm7) ; 
+  eleBiasm8 = sqrt(eleBiasm8 * eleBiasm8 + eleWptCorrm8 * eleWptCorrm8) ; 
+  eleBiasm9 = sqrt(eleBiasm9 * eleBiasm9 + eleWptCorrm9 * eleWptCorrm9) ; 
+  eleBiasm10= sqrt(eleBiasm10* eleBiasm10+ eleWptCorrm10* eleWptCorrm10) ; 
+  eleBiasm11= sqrt(eleBiasm11* eleBiasm11+ eleWptCorrm11* eleWptCorrm11) ; 
+  eleBiasm12= sqrt(eleBiasm12* eleBiasm12+ eleWptCorrm12* eleWptCorrm12) ; 
+  eleBiasm13= sqrt(eleBiasm13* eleBiasm13+ eleWptCorrm13* eleWptCorrm13) ; 
+
+  cout<<fixed << setprecision(2);
+  cout<<"UnfBias plus uncer"<<endl;
+  cout<<eleBiasp1 <<endl;
+  cout<<eleBiasp2 <<endl;
+  cout<<eleBiasp3 <<endl;
+  cout<<eleBiasp4 <<endl;
+  cout<<eleBiasp5 <<endl;
+  cout<<eleBiasp6 <<endl;
+  cout<<eleBiasp7 <<endl;
+  cout<<eleBiasp8 <<endl;
+  cout<<eleBiasp9 <<endl;
+  cout<<eleBiasp10<<endl;
+  cout<<eleBiasp11<<endl;
+  cout<<eleBiasp12<<endl;
+  cout<<eleBiasp13<<endl;
+  
+  cout<<"UnfBias minus uncer"<<endl;
+  cout<<eleBiasm1 <<endl;
+  cout<<eleBiasm2 <<endl;
+  cout<<eleBiasm3 <<endl;
+  cout<<eleBiasm4 <<endl;
+  cout<<eleBiasm5 <<endl;
+  cout<<eleBiasm6 <<endl;
+  cout<<eleBiasm7 <<endl;
+  cout<<eleBiasm8 <<endl;
+  cout<<eleBiasm9 <<endl;
+  cout<<eleBiasm10<<endl;
+  cout<<eleBiasm11<<endl;
+  cout<<eleBiasm12<<endl;
+  cout<<eleBiasm13<<endl;
+  
+  
+  
   double eletotaleffp1  = sqrt(eletoyp1 *eletoyp1 +elebinp1 *elebinp1 +elesigp1 *elesigp1 +elebckgrp1 *elebckgrp1 );
   double eletotaleffp2  = sqrt(eletoyp2 *eletoyp2 +elebinp2 *elebinp2 +elesigp2 *elesigp2 +elebckgrp2 *elebckgrp2 );
   double eletotaleffp3  = sqrt(eletoyp3 *eletoyp3 +elebinp3 *elebinp3 +elesigp3 *elesigp3 +elebckgrp3 *elebckgrp3 );
@@ -419,7 +508,6 @@
   double eletotaleffm12 = sqrt(eletoym12*eletoym12+elebinm12*elebinm12+elesigm12*elesigm12+elebckgrm12*elebckgrm12);
   double eletotaleffm13 = sqrt(eletoym13*eletoym13+elebinm13*elebinm13+elesigm13*elesigm13+elebckgrm13*elebckgrm13);
  
-  cout<<fixed << setprecision(2);
   cout<<"WplusToEle Recon. Syst"<<endl;
   cout<<eletotaleffp1 <<endl;
   cout<<eletotaleffp2 <<endl;

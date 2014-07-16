@@ -37,14 +37,16 @@ int WPtCorrCalc(const TString BaseName)
   TFile *fWmMN_MC;
   TFile *fWpEN_MC;
   TFile *fWmEN_MC;
-  fWpMN_MC = new TFile("Muon2012LoPU/WpToMuNu_S8_SmeaRecEffCorr.root");
-  fWmMN_MC = new TFile("Muon2012LoPU/WmToMuNu_S8_SmeaRecEffCorr.root");
-  fWpEN_MC = new TFile("Electron2012LoPU/WpToEleNu_S8_SmeaRecEffCorr.root");
-  fWmEN_MC = new TFile("Electron2012LoPU/WmToEleNu_S8_SmeaRecEffCorr.root");
+  fWpMN_MC = new TFile("../Unfolding/Muon2012LoPU/WpToMuNu_S8_Unfold.root");
+  fWmMN_MC = new TFile("../Unfolding/Muon2012LoPU/WmToMuNu_S8_Unfold.root");
+  fWpEN_MC = new TFile("../Unfolding/Electron2012LoPU/WpToEleNu_S8_Unfold.root");
+  fWmEN_MC = new TFile("../Unfolding/Electron2012LoPU/WpToEleNu_S8_Unfold.root");
 
-  TFile *fWMN_RD, *fWEN_RD;
-  fWMN_RD = new TFile("../RstSelection/SigYields_Mu_Norm_20140629.root");
-  fWEN_RD = new TFile("../RstSelection/SigYields_El_Norm_20140629.root");
+  TFile *fWpMN_RD, *fWmMN_RD, *fWpEN_RD, *fWmEN_RD;
+  fWpMN_RD = new TFile("../Unfolding/Nominal/ResultWpToMuNu/Result_WpToMuNu.root");
+  fWmMN_RD = new TFile("../Unfolding/Nominal/ResultWmToMuNu/Result_WmToMuNu.root");
+  fWpEN_RD = new TFile("../Unfolding/Nominal/ResultWpToEleNu/Result_WpToEleNu.root");
+  fWmEN_RD = new TFile("../Unfolding/Nominal/ResultWmToEleNu/Result_WmToEleNu.root");
 
   TH1D* h1_WpT_WpToMN_MC;
   TH1D* h1_WpT_WpToMN_MC_NormToRD;
@@ -79,23 +81,22 @@ int WPtCorrCalc(const TString BaseName)
   //======================
   // Histo from root
   //======================
-  h1_WpT_WpToMN_MC = (TH1D*)fWpMN_MC->Get("h1_Wp_pt")->Clone("h1_WpT_WpToMN_MC");
-  h1_WpT_WmToMN_MC = (TH1D*)fWmMN_MC->Get("h1_Wm_pt")->Clone("h1_WpT_WmToMN_MC");
-  h1_WpT_WpToEN_MC = (TH1D*)fWpEN_MC->Get("h1_Wp_pt")->Clone("h1_WpT_WpToEN_MC");
-  h1_WpT_WmToEN_MC = (TH1D*)fWmEN_MC->Get("h1_Wm_pt")->Clone("h1_WpT_WmToEN_MC");
+  h1_WpT_WpToMN_MC = (TH1D*)fWpMN_MC->Get("h1_Truth_Post")->Clone("h1_WpT_WpToMN_MC");
+  h1_WpT_WmToMN_MC = (TH1D*)fWmMN_MC->Get("h1_Truth_Post")->Clone("h1_WpT_WmToMN_MC");
+  h1_WpT_WpToEN_MC = (TH1D*)fWpEN_MC->Get("h1_Truth_Post")->Clone("h1_WpT_WpToEN_MC");
+  h1_WpT_WmToEN_MC = (TH1D*)fWmEN_MC->Get("h1_Truth_Post")->Clone("h1_WpT_WmToEN_MC");
   h1_WpT_WpToMN_MC->Sumw2();
   h1_WpT_WmToMN_MC->Sumw2();
   h1_WpT_WpToEN_MC->Sumw2();
   h1_WpT_WmToEN_MC->Sumw2();
-  h1_WpT_WpToMN_RD = (TH1D*)fWMN_RD->Get("hSigWPpt")->Clone("h1_WpT_WpToMN_RD");
-  h1_WpT_WmToMN_RD = (TH1D*)fWMN_RD->Get("hSigWMpt")->Clone("h1_WpT_WmToMN_RD");
-  h1_WpT_WpToEN_RD = (TH1D*)fWEN_RD->Get("hSigWPpt")->Clone("h1_WpT_WpToEN_RD");
-  h1_WpT_WmToEN_RD = (TH1D*)fWEN_RD->Get("hSigWMpt")->Clone("h1_WpT_WmToEN_RD");
+  h1_WpT_WpToMN_RD = (TH1D*)fWpMN_RD->Get("DetUnf")->Clone("h1_WpT_WpToMN_RD");
+  h1_WpT_WmToMN_RD = (TH1D*)fWmMN_RD->Get("DetUnf")->Clone("h1_WpT_WmToMN_RD");
+  h1_WpT_WpToEN_RD = (TH1D*)fWpEN_RD->Get("DetUnf")->Clone("h1_WpT_WpToEN_RD");
+  h1_WpT_WmToEN_RD = (TH1D*)fWmEN_RD->Get("DetUnf")->Clone("h1_WpT_WmToEN_RD");
   h1_WpT_WpToMN_RD->Sumw2();
   h1_WpT_WmToMN_RD->Sumw2();
   h1_WpT_WpToEN_RD->Sumw2();
   h1_WpT_WmToEN_RD->Sumw2();
-
 
   h1_WpT_WpToMN_ratio = (TH1D*)h1_WpT_WpToMN_RD->Clone("h1_WpT_WpToMN_ratio");
   h1_WpT_WmToMN_ratio = (TH1D*)h1_WpT_WmToMN_RD->Clone("h1_WpT_WmToMN_ratio");
@@ -210,7 +211,7 @@ int WPtCorrCalc(const TString BaseName)
   pltWpEN_ratio->Draw(myCan,kTRUE,format);
   pltWmEN_ratio->Draw(myCan,kTRUE,format);
 
-  TFile *RootOut= new TFile("../RstSelection/WpT_Data_MC_ratio.root","recreate");
+  TFile *RootOut= new TFile("../RstSelection/WpT_Data_MC_ratio_sangil.root","recreate");
   h1_WpT_WpToMN_ratio->Write();
   h1_WpT_WmToMN_ratio->Write();
   h1_WpT_WpToEN_ratio->Write();

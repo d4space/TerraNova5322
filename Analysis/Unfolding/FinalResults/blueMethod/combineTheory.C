@@ -21,6 +21,8 @@ int combineTheory(const TString BaseName)
 
   if(BaseName == "Wmuon")
   {
+    double fScale_Wp[14] = {0, 64.48, 1.105, 8.274, 9.716, 7.226, 8.534, 5.76, 6.4783, 4.5879, 1.3952, 0.52169, 0.2662, 0.09476};
+    double fScale_Wm[14] = {0, 45.388, 1.601, 4.628, 6.315, 4.866, 5.935, 4.1334, 4.6873, 3.4607, 1.0583, 0.36488, 0.18399, 0.063812};
     f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Mu_NNLO.root");
     f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Mu_NNLO.root");
     f_Resbos_1 = new TFile("../../../RstResbos/Resbos_WpToMuNu.root");
@@ -28,12 +30,14 @@ int combineTheory(const TString BaseName)
   }
   if(BaseName == "Wele")
   {
+    double fScale_Wp[14] = {0, 74.18, 2.079, 8.808, 10.496, 7.646, 8.934, 5.998, 6.6528, 4.7955, 1.4991, 0.4733, 0.28867, 0.09178};
+    double fScale_Wm[14] = {0, 48.427, 1.315, 5.692, 6.855, 5.33, 6.332, 4.3037, 4.9102, 3.7312, 1.1115, 0.38448, 0.19356, 0.062427};
     f_Fewz_1 = new TFile("../../../RstFEWZ/Wp_Ele_NNLO.root");
     f_Fewz_2 = new TFile("../../../RstFEWZ/Wm_Ele_NNLO.root");
     f_Resbos_1 = new TFile("../../../RstResbos/Resbos_WpToEleNu.root");
     f_Resbos_2 = new TFile("../../../RstResbos/Resbos_WmToEleNu.root");
   }
-
+  
   TH1D* lFewz_1;
   TH1D* lFewz_2;
   
@@ -78,9 +82,9 @@ int combineTheory(const TString BaseName)
   for( int ipt(0);ipt<nBins-1;ipt++)
   {
     MC1[ipt] = lFewz_1->GetBinContent(ipt+1);
-    MC1Err[ipt] = lFewz_1->GetBinError(ipt+1);
+    MC1Err[ipt] = sqrt((lFewz_1->GetBinError(ipt+1))*(lFewz_1->GetBinError(ipt+1)) + (fScale_Wp[ipt+1])*(fScale_Wp[ipt+1]));
     MC2[ipt] = lFewz_2->GetBinContent(ipt+1);
-    MC2Err[ipt] = lFewz_2->GetBinError(ipt+1);
+    MC2Err[ipt] = sqrt((lFewz_2->GetBinError(ipt+1))*(lFewz_2->GetBinError(ipt+1)) + (fScale_Wm[ipt+1])*(fScale_Wm[ipt+1]));
     MCmeanErr[ipt]=1.0/(MC1Err[ipt]*MC1Err[ipt])+1.0/(MC2Err[ipt]*MC2Err[ipt]);
     MCmean[ipt]=(MC1[ipt]/(MC1Err[ipt]*MC1Err[ipt])+MC2[ipt]/(MC2Err[ipt]*MC2Err[ipt]))/MCmeanErr[ipt];
     

@@ -13,7 +13,7 @@ double WptBins[nBins] = {0.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
 double ax[13]  = {4.25,10,15,20.75,27,35,45,60,90,130,170,220,425};
 double aex[13] = {3.25,2.5,2.5,3.25,3,5,5,10,20,20,20,30,175};
 
-void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGraphErrors* iH4,TGraphAsymmErrors* iH5,TH1* StatErrBand){
+void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGraphErrors* iH4,TGraphAsymmErrors* iH5,TH1* StatErrBand,TGraphErrors* iH6){
   std::string lName = std::string(iH0->GetName());
   TH1F *lHDiff  = new TH1F((lName+"Diff").c_str(),(lName+"Diff").c_str(),nBins-1,WptLogBins);// lHDiff->Sumw2();
   TH1F *lXHDiff1 = new TH1F((lName+"XDiff1").c_str(),(lName+"XDiff1").c_str(),iH0->GetNbinsX(),iH0->GetXaxis()->GetXmin(),iH0->GetXaxis()->GetXmax());
@@ -28,7 +28,7 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   if (chnl == 2)
     lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
   if (chnl == 3)
-    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
+    lHDiff->GetYaxis()->SetRangeUser(0.3,1.3);
   lHDiff->GetYaxis()->SetTitleOffset(0.4);
   lHDiff->GetYaxis()->SetTitleSize(0.12);
   lHDiff->GetYaxis()->SetLabelSize(0.12);
@@ -91,6 +91,8 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
     iH4->Draw("2same");
   if (chnl == 2 || chnl == 3)
     iH3->Draw("2same");
+  if (chnl == 3)
+    iH6->Draw("2");
   lXHDiff1->Draw("histsame");
   ErrBand->Draw("2same");
   lHDiff->Draw("Esame");
@@ -105,14 +107,36 @@ int theoryStudy_separate(const TString BaseName)
 
   TFile *f_theory;
   TFile *f_Data;
-
+  double fScale[14]={0};
+  double fScale_WtoMu[14]={0};
+  double fScale_WtoEle[14]={0};
+  double fScale_WptoMu[14] = {0, 64.48, 1.105, 8.274, 9.716, 7.226, 8.534, 5.76, 6.4783, 4.5879, 1.3952, 0.52169, 0.2662, 0.09476};
+  double fScale_WmtoMu[14] = {0, 45.388, 1.601, 4.628, 6.315, 4.866, 5.935, 4.1334, 4.6873, 3.4607, 1.0583, 0.36488, 0.18399, 0.063812};
+  double fScale_WptoEle[14] = {0, 74.18, 2.079, 8.808, 10.496, 7.646, 8.934, 5.998, 6.6528, 4.7955, 1.4991, 0.4733, 0.28867, 0.09178};
+  double fScale_WmtoEle[14] = {0, 48.427, 1.315, 5.692, 6.855, 5.33, 6.332, 4.3037, 4.9102, 3.7312, 1.1115, 0.38448, 0.19356, 0.062427};
+  
+  for(int i(0);i<14;i++)
+  {
+    fScale_WtoMu[i] = sqrt((fScale_WptoMu[i]*fScale_WptoMu[i])+(fScale_WmtoMu[i]*fScale_WmtoMu[i]));
+    fScale_WtoEle[i] = sqrt((fScale_WptoEle[i]*fScale_WptoEle[i])+(fScale_WmtoEle[i]*fScale_WmtoEle[i]));
+  } 
   if(BaseName=="WInclToMuNu")
   {
+    for(int i(0);i<14;i++)
+    {
+      fScale[i] = fScale_WtoMu[i];
+      cout << "fScale : " << fScale[i] << "\t fScale_WtoMu : " << fScale_WtoMu[i] << endl;
+    }
     f_theory = new TFile("Theory_Muon.root");
     f_Data = new TFile("Result_WinclMu.root");
   }
   if(BaseName=="WInclToEleNu")
   {
+    for(int i(0);i<14;i++)
+    {
+      fScale[i] = fScale_WtoEle[i];
+      cout << "fScale : " << fScale[i] << "\t fScale_WtoEle : " << fScale_WtoEle[i] << endl;
+    }
     f_theory = new TFile("Theory_Ele.root");
     f_Data = new TFile("Result_WinclEle.root");
   }
@@ -129,6 +153,9 @@ int theoryStudy_separate(const TString BaseName)
   TH1D *hPowhegErrBandPDF = new TH1D("hPowhegErrBandPDF","hPowhegErrBandPDF",13,WptLogBins);hPowhegErrBandPDF->Sumw2();
   TH1D *hFewzErrBand = new TH1D("hFewzErrBand","hFewzErrBand",13,WptLogBins);hFewzErrBand->Sumw2();
   TH1D *hFewzTheoryErrBand = new TH1D("hFewzTheoryErrBand","hFewzTheoryErrBand",13,WptLogBins);hFewzTheoryErrBand->Sumw2();
+  //FEWZ Scale Syst
+  TH1D *hFewzScale = new TH1D("hFewzScale","hFewzScale",13,WptLogBins);hFewzScale->Sumw2();
+  TH1D *hFewzScaleErrBand = new TH1D("hFewzScaleErrBand","hFewzScaleErrBand",13,WptLogBins);hFewzScaleErrBand->Sumw2();
   TH1D *hStatErr = new TH1D("hStatErr","hStatErr",13,WptLogBins);hStatErr->Sumw2();
   
   TH1D* lResbos[7];
@@ -214,7 +241,8 @@ int theoryStudy_separate(const TString BaseName)
     hResbosLog34->SetBinContent(ipt,lResbos34->GetBinContent(ipt));
     
     hFewzLog->SetBinContent(ipt,lFEWZ->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    //hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hFewzLog->SetBinError(ipt,sqrt((lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt))*(lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt))+(fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt))*(fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt))));
     
     hPowhegLog->SetBinContent(ipt,lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hPowhegLog->SetBinError(ipt,sqrt(lPowheg->GetBinContent(ipt))/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
@@ -233,9 +261,14 @@ int theoryStudy_separate(const TString BaseName)
     hPowhegErrBandPDF->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)+lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzErrBand->SetBinError(ipt,0.01);
+    hFewzScale->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));  
+    hFewzScale->SetBinError(ipt,fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     //hFewzTheoryErrBand->SetBinError(ipt,hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
-    hFewzTheoryErrBand->SetBinError(ipt,0.01+hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    //hFewzTheoryErrBand->SetBinError(ipt,0.01+hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzTheoryErrBand->SetBinError(ipt,0.01+(hFewzLog->GetBinError(ipt)+hFewzScale->GetBinError(ipt))/hDataLog->GetBinContent(ipt));
+    hFewzScaleErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzScaleErrBand->SetBinError(ipt,0.01+hFewzScale->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
     
     resbVal[ipt-1]=hResbosLog30->GetBinContent(ipt)/hDataLog->GetBinContent(ipt);
     errResbosDataLo[ipt-1]=errMin[ipt-1]/hDataLog->GetBinContent(ipt);
@@ -257,6 +290,7 @@ int theoryStudy_separate(const TString BaseName)
   TGraphErrors* pRatioPDF = new TGraphErrors(hPowhegErrBandPDF);
   TGraphErrors* fRatio = new TGraphErrors(hFewzErrBand);
   TGraphErrors* fTheoryRatio = new TGraphErrors(hFewzTheoryErrBand);
+  TGraphErrors* fScaleRatio = new TGraphErrors(hFewzScaleErrBand);
   
   TGraphErrors* dataErrBand = new TGraphErrors(hDataErrBand);
   dataErrBand->SetFillColor(kBlack);
@@ -276,8 +310,11 @@ int theoryStudy_separate(const TString BaseName)
   fRatio->SetFillStyle(3001);
   
   //fTheoryRatio->SetFillColor(kGreen-9);
-  fTheoryRatio->SetFillColor(kGreen+2);
+  fTheoryRatio->SetFillColor(kGreen+3);
   fTheoryRatio->SetFillStyle(3001);
+
+  fScaleRatio->SetFillColor(kGreen+7);
+  fScaleRatio->SetFillStyle(3001);
 
   hFewz->SetFillColor(kGreen);
   hFewz->SetFillStyle(3305);
@@ -372,7 +409,7 @@ int theoryStudy_separate(const TString BaseName)
   rL1->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL1->SetTextSize(0.07);
 
-  drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand,hStatErr);
+  drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand,hStatErr,fScaleRatio);
   rL1->Draw();
   tb1->Draw();
 
@@ -392,13 +429,13 @@ int theoryStudy_separate(const TString BaseName)
   tb2->AddText("Powheg");
   TLegend *rL2 =new TLegend(0.2,0.05,0.68,0.30); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
-  rL2->AddEntry(pRatioPDF,"Theory unc. (gen)","F");
+  rL2->AddEntry(pRatioPDF,"PDF unc. (gen)","F");
   rL2->AddEntry(hStatErr,"Statistic error (data)","PLE1");
   rL2->AddEntry(pRatio,"Statistical unc. (gen)","F");
   rL2->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL2->SetTextSize(0.07);
 
-  drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand,hStatErr);
+  drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand,hStatErr,fScaleRatio);
   rL2->Draw();
   tb2->Draw();
 
@@ -418,13 +455,14 @@ int theoryStudy_separate(const TString BaseName)
   tb3->AddText("Fewz");
   TLegend *rL3 =new TLegend(0.2,0.1,0.68,0.30); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
-  rL3->AddEntry(fTheoryRatio,"Theory unc. (gen)","F");
+  rL3->AddEntry(fTheoryRatio,"PDF unc. (gen)","F");
+  rL3->AddEntry(fScaleRatio,"Scale unc. (gen)","F");
   rL3->AddEntry(hStatErr,"Statistic error (data)","PLE1");
   rL3->AddEntry(fRatio,"Statistical unc. (gen)","F");
   rL3->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
   rL3->SetTextSize(0.07);
 
-  drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr);
+  drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr,fScaleRatio);
   rL3->Draw();
   tb3->Draw();
 
