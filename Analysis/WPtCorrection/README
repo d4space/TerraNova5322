@@ -1,0 +1,30 @@
+
+In this folder we make Data/MC WPt Correction ratio to applt to MC.
+We do it 2 steps.
+
+1. For Detector Unfolding stage, we take PostFSR Data(SVD_Post.unf) vs TruthPost(h1_Truth_Post) - ratio.
+To get this 
+python WPtCorrPostFSRCalc.py
+
+it creates ../RstSelection/WpT_PostFSRData_MC_ratio.root
+
+
+2. For FSR Unfolding stage, we take FSR unfolded data(before bin-by-bin corr)  vs  Born Both Fid MC  -  ratio.
+To get this
+python WPtCorrFSRCalc.py
+
+it creates ../RstSelection/WpT_FSRData_MC_ratio.root
+
+
+
+To calculate the WPt Correction systematics:
+apply ratio-1 in the analysis, in the ../EventSelection/Wlnu12LoUnfold.C file uncomment the line with CalcWPtPostFSRWeight, and run ../Unfolding/wPtUnfoldMakeHisto.C
+apply ratio-2 in the analysis, in the ../EventSelection/Wlnu12LoAccept.C file uncomment the line with CalcWPtFSRWeight, and run ../WPtAcceptance/WPtAcceptMakeHisto.C
+
+and compare the final result with Nominal Wpt study Final result(SVD_Born.EffCorr).
+
+
+
+For Electron case, we used Detector Unf rank: 4 and FSR Unf rank: 3  both in Nominal and WPtCorr applied one. 
+For Muon case, we used Detector Unf rank: 3 and FSR Unf rank: 4  both in Nominal and WPtCorr applied one. 
+
