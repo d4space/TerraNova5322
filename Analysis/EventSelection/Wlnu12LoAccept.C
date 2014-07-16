@@ -70,9 +70,12 @@ void Wlnu12LoAccept::Loop()
     // Calculate Event Weight
     //=====================
     mTTW = CalcEvtWeight();
+    
+    
     // Acceptance
     if(Mode == "Acceptance")if(GenW_Born_Id->size() > 0)
     {
+      
       if(FillAcceptInfo() != 0) exit(-1);
       // Don't go futher
       continue;
@@ -218,7 +221,10 @@ int Wlnu12LoAccept::FillAcceptInfo()
   //if( (fabs((*GenW_PostLept1_eta)[0]) < 1.444) || (fabs((*GenW_PostLept1_eta)[0]) >1.566 ) )  
     isPostPassAcc = true;
   
-  // Fill Histo
+   // Uncomment this to calculate WPt correction ( takes RD/MC from FSR unfolded data/BornBothFid(lumiweighted and norm to RD), then applys ratio to FSR unfolding MC)
+   // mTTW = mTTW*CalcWPtFSRWeight();
+  
+    // Fill Histo
   h1_Born_AP->Fill(genInfo.BornW_pt,mTTW);
   if(isBornPassAcc)
   {

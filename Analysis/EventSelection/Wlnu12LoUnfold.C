@@ -112,6 +112,9 @@ void Wlnu12LoUnfold::Loop()
       // For systematic of WPt distribution
       //cout<<"CalcWPtWeight: "<<CalcWPtWeight()<<endl;
       //mTTW=mTTW*CalcWPtWeight();
+    
+      // Uncomment this to calculate WPt correction ( takes RD/MC from Detetector unfolded data/TruthPost(lumiweighted and norm to RD), then applys ratio to DetUnfolding MC)
+      // mTTW=mTTW*CalcWPtPostFSRWeight();
 
       if(TruthRecoPost)if(WCHARGE == W.charge) FillUnfHisto();
       Nselected4Bin();
