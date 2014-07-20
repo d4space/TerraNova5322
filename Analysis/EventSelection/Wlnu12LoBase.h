@@ -75,6 +75,7 @@ protected:
   double	    CalcWPtWeight();
   double	    CalcWPtPostFSRWeight();
   double	    CalcWPtFSRWeight();
+  double	    CalcWPtFitDetUnfWeight();
   virtual Int_t	    WbestSelect();
   virtual Int_t	    ZbestSelect();
   virtual Int_t	    FillWSide(int entry);
@@ -110,10 +111,12 @@ protected:
   TFile* 	WPtCorrRoot;
   TFile* 	WPtPostFSRCorrRoot;
   TFile* 	WPtFSRCorrRoot;
+  TFile* 	WPtFitDetUnfCorrRoot;
   TH1D*		h_WptWeight;
   double WPt_Weight[NWptBinPlus-1];
   double WPt_PostFSRWeight[NWptBinPlus-1];
   double WPt_FSRWeight[NWptBinPlus-1];
+  double WPt_FitDetUnfWeight[NWptBinPlus-1];
 
   //------------------
   // Member Variables
@@ -398,6 +401,49 @@ void Wlnu12LoBase::Init(TTree *tree)
     }else{cout<<"No case as WCHARGE: "<<WCHARGE<<endl; exit(-1);}
   }else{cout<<"No case as: "<<AnaChannel<<" in WPtFSRCorr factor"<<endl;exit(-1);}
  
+  //WpT Fitted DetUnf correction
+  WPtFitDetUnfCorrRoot = new TFile("../RstSelection/WpT_FitDetUnfData_MC_ratio.root");
+  TH1D* h_WPtFitDetUnfWeight;
+
+  if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  {
+    if(WCHARGE == 1)
+    {
+      h_WPtFitDetUnfWeight =(TH1D*)WPtFitDetUnfCorrRoot->Get("h1_WpT_WpToMN_ratio")->Clone("h_WPtFitDetUnfWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+        WPt_FitDetUnfWeight[i-1]= h_WPtFitDetUnfWeight->GetBinContent(i);
+        cout<<"WPt_FitDetUnfWeight("<<i<<"): "<<WPt_FitDetUnfWeight[i-1]<<endl;
+      }
+    }else if(WCHARGE == -1)
+    {
+      h_WPtFitDetUnfWeight =(TH1D*)WPtFitDetUnfCorrRoot->Get("h1_WpT_WmToMN_ratio")->Clone("h_WPtFitDetUnfWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+        WPt_FitDetUnfWeight[i-1]= h_WPtFitDetUnfWeight->GetBinContent(i);
+        cout<<"WPt_FitDetUnfWeight("<<i<<"): "<<WPt_FitDetUnfWeight[i-1]<<endl;
+      }
+    }else{cout<<"No case as WCHARGE: "<<WCHARGE<<endl; exit(-1);}
+  }else if(AnaChannel == "Electron2012LoPU") //Electron ============================
+  {
+    if(WCHARGE == 1)
+    {
+      h_WPtFitDetUnfWeight =(TH1D*)WPtFitDetUnfCorrRoot->Get("h1_WpT_WpToEN_ratio")->Clone("h_WPtFitDetUnfWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+        WPt_FitDetUnfWeight[i-1]= h_WPtFitDetUnfWeight->GetBinContent(i);
+        cout<<"WPt_FitDetUnfWeight("<<i<<"): "<<WPt_FitDetUnfWeight[i-1]<<endl;
+      }
+    }else if(WCHARGE == -1)
+    {
+      h_WPtFitDetUnfWeight =(TH1D*)WPtFitDetUnfCorrRoot->Get("h1_WpT_WmToEN_ratio")->Clone("h_WPtFitDetUnfWeight");
+      for(int i(1); i<NWptBinPlus;i++)
+      {
+        WPt_FitDetUnfWeight[i-1]= h_WPtFitDetUnfWeight->GetBinContent(i);
+        cout<<"WPt_FitDetUnfWeight("<<i<<"): "<<WPt_FitDetUnfWeight[i-1]<<endl;
+      }
+    }else{cout<<"No case as WCHARGE: "<<WCHARGE<<endl; exit(-1);}
+  }else{cout<<"No case as: "<<AnaChannel<<" in WPt FitDetUnfCorr factor"<<endl;exit(-1);}
 
   Notify();
 }
@@ -1308,7 +1354,18 @@ double Wlnu12LoBase::CalcWPtFSRWeight()
   }
   return 1;
 }
-
+double Wlnu12LoBase::CalcWPtFitDetUnfWeight()
+{
+  if(!WPtFitDetUnfCorrRoot){cout<<"No WPtFitDetUnfCorrRoot: check TerraNova/Analysis/RstSelection/WpT_FitDetUnfData_MC_ratio.root file"<<endl;exit(-1);}
+  for( int i(0);i<NWptBinPlus-1;i++)
+  {
+    if(genInfo.PostW_pt >= WptBins[i] && genInfo.PostW_pt < WptBins[i+1])
+    {
+      return WPt_FitDetUnfWeight[i];
+    }
+  }
+  return 1;
+}
 #endif // #ifdef Wlnu12LoBase_cxx
 
 
