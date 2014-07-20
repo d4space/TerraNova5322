@@ -22,7 +22,7 @@
 
 int WPtCorrFitDetUnfCalc(const TString BaseName)
 {
-  TString resultDir = "ResultsDetUnf";
+  TString resultDir = "ResultsFitDetUnf";
   
   gSystem->mkdir(resultDir,kTRUE);
 

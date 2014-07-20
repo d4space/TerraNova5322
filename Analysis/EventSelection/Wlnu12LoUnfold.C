@@ -117,7 +117,7 @@ void Wlnu12LoUnfold::Loop()
       // mTTW=mTTW*CalcWPtPostFSRWeight();
 
       // Uncomment this to calculate WPt correction ( takes Fitted DetUnf data/TruthPost(lumiweighted and norm to RD), then applys ratio to DetUnfolding MC)
-      // mTTW=mTTW*CalcWPtFitDetUnfWeight();
+       mTTW=mTTW*CalcWPtFitDetUnfWeight();
       
       if(TruthRecoPost)if(WCHARGE == W.charge) FillUnfHisto();
       Nselected4Bin();
