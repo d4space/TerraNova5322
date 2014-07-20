@@ -314,7 +314,7 @@ cout << "check1" << endl;
   pltWmEN_ratio->Draw(myCan,kTRUE,format);
 
   //TFile *RootOut= new TFile("./WpT_PostFSRData_MC_ratio.root","recreate");
-  TFile *RootOut= new TFile("./WpT_DetUnfData_MC_ratio.root","recreate");
+  TFile *RootOut= new TFile("../RstSelection/WpT_FitDetUnfData_MC_ratio.root","recreate");
   h1_WpT_WpToMN_ratio->Write();
   h1_WpT_WmToMN_ratio->Write();
   h1_WpT_WpToEN_ratio->Write();
