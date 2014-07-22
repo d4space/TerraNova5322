@@ -1,825 +1,773 @@
 {
-  double mutracksigp1 = 0.19;
-  double mutracksigp2 = 0.17;
-  double mutracksigp3 = 0.14;
-  double mutracksigp4 = 0.11;
-  double mutracksigp5 = 0.11;
-  double mutracksigp6 = 0.13;
-  double mutracksigp7 = 0.16;
-  double mutracksigp8 = 0.20;
-  double mutracksigp9 = 0.23;
-  double mutracksigp10= 0.25;
-  double mutracksigp11= 0.27;
-  double mutracksigp12= 0.29;
-  double mutracksigp13= 0.30;
- 
-  double mutracksigm1 = 0.10; 
-  double mutracksigm2 = 0.16;
-  double mutracksigm3 = 0.17;
-  double mutracksigm4 = 0.14;
-  double mutracksigm5 = 0.13;
-  double mutracksigm6 = 0.11;
-  double mutracksigm7 = 0.08;
-  double mutracksigm8 = 0.13;
-  double mutracksigm9 = 0.09;
-  double mutracksigm10= 0.14;
-  double mutracksigm11= 0.19;
-  double mutracksigm12= 0.22;
-  double mutracksigm13= 0.24;
- 
-  double mutrackbckp1 = 0.22;
-  double mutrackbckp2 = 0.21;
-  double mutrackbckp3 = 0.18;
-  double mutrackbckp4 = 0.16;
-  double mutrackbckp5 = 0.15;
-  double mutrackbckp6 = 0.15;
-  double mutrackbckp7 = 0.16;
-  double mutrackbckp8 = 0.18;
-  double mutrackbckp9 = 0.20;
-  double mutrackbckp10= 0.21;
-  double mutrackbckp11= 0.22;
-  double mutrackbckp12= 0.23;
-  double mutrackbckp13= 0.24;
+  TFile *fp = new TFile("ResultWpToMuNu/Result_WpToMuNu.root");
+  TFile *fm = new TFile("ResultWmToMuNu/Result_WmToMuNu.root");
+  TH1D *h_data_p;
+  TH1D *h_data_m;
+  TH1D *h_MC_p;
+  TH1D *h_MC_m;
+  TH1D *h_dataRec_p;
+  TH1D *h_dataRec_m;
+  h_data_p = (TH1D*)fp->Get("BornEffCorr")->Clone("h_data_p");
+  h_data_m = (TH1D*)fm->Get("BornEffCorr")->Clone("h_data_m");
+  h_MC_p = (TH1D*)fp->Get("SVD_Born.Gen")->Clone("h_MC_p");
+  h_MC_m = (TH1D*)fm->Get("SVD_Born.Gen")->Clone("h_MC_m");
+  h_dataRec_p = (TH1D*)fp->Get("data_Rec")->Clone("h_dataRec_p");
+  h_dataRec_m = (TH1D*)fm->Get("data_Rec")->Clone("h_dataRec_m");
+  for( int ipt(1);ipt<14;ipt++)
+  {
+    cout<<ipt<<"\t"<<h_data_p->GetBinContent(ipt)<<"\t"<<h_data_m->GetBinContent(ipt)<<endl;
+  }
   
-  double mutrackbckm1 = 0.17;
-  double mutrackbckm2 = 0.24;
-  double mutrackbckm3 = 0.31;
-  double mutrackbckm4 = 0.29;
-  double mutrackbckm5 = 0.22;
-  double mutrackbckm6 = 0.17;
-  double mutrackbckm7 = 0.15;
-  double mutrackbckm8 = 0.16;
-  double mutrackbckm9 = 0.21; 
-  double mutrackbckm10= 0.27;
-  double mutrackbckm11= 0.32;
-  double mutrackbckm12= 0.35;
-  double mutrackbckm13= 0.37;
-  
-  double muidisosigp1  = 0.12;
-  double muidisosigp2  = 0.11;
-  double muidisosigp3  = 0.10;
-  double muidisosigp4  = 0.09;
-  double muidisosigp5  = 0.09;
-  double muidisosigp6  = 0.10;
-  double muidisosigp7  = 0.10;
-  double muidisosigp8  = 0.12;
-  double muidisosigp9  = 0.13;
-  double muidisosigp10 = 0.13;
-  double muidisosigp11 = 0.14;
-  double muidisosigp12 = 0.14;
-  double muidisosigp13 = 0.15;
-
-  double muidisosigm1  = 0.13;
-  double muidisosigm2  = 0.13; 
-  double muidisosigm3  = 0.15;
-  double muidisosigm4  = 0.16;
-  double muidisosigm5  = 0.10;
-  double muidisosigm6  = 0.12;
-  double muidisosigm7  = 0.13;
-  double muidisosigm8  = 0.10;
-  double muidisosigm9  = 0.09;
-  double muidisosigm10 = 0.11;
-  double muidisosigm11 = 0.13;
-  double muidisosigm12 = 0.14;
-  double muidisosigm13 = 0.15;
-
-  double muidisobckp1  = 0.10;
-  double muidisobckp2  = 0.10;
-  double muidisobckp3  = 0.10;
-  double muidisobckp4  = 0.11;
-  double muidisobckp5  = 0.13;
-  double muidisobckp6  = 0.16;
-  double muidisobckp7  = 0.18;
-  double muidisobckp8  = 0.20;
-  double muidisobckp9  = 0.22;
-  double muidisobckp10 = 0.24;
-  double muidisobckp11 = 0.25;
-  double muidisobckp12 = 0.25;
-  double muidisobckp13 = 0.26;
-
-  double muidisobckm1  = 0.20;
-  double muidisobckm2  = 0.16;
-  double muidisobckm3  = 0.18;
-  double muidisobckm4  = 0.15;
-  double muidisobckm5  = 0.13;
-  double muidisobckm6  = 0.17;
-  double muidisobckm7  = 0.23;
-  double muidisobckm8  = 0.24;
-  double muidisobckm9  = 0.25;
-  double muidisobckm10 = 0.27;
-  double muidisobckm11 = 0.28;
-  double muidisobckm12 = 0.29;
-  double muidisobckm13 = 0.29;
-
-  double mutrackp1  = TMath::Sqrt(mutracksigp1 *mutracksigp1  + mutrackbckp1*mutrackbckp1);
-  double mutrackp2  = TMath::Sqrt(mutracksigp2 *mutracksigp2  + mutrackbckp2*mutrackbckp2);
-  double mutrackp3  = TMath::Sqrt(mutracksigp3 *mutracksigp3  + mutrackbckp3*mutrackbckp3);
-  double mutrackp4  = TMath::Sqrt(mutracksigp4 *mutracksigp4  + mutrackbckp4*mutrackbckp4);
-  double mutrackp5  = TMath::Sqrt(mutracksigp5 *mutracksigp5  + mutrackbckp5*mutrackbckp5);
-  double mutrackp6  = TMath::Sqrt(mutracksigp6 *mutracksigp6  + mutrackbckp6*mutrackbckp6);
-  double mutrackp7  = TMath::Sqrt(mutracksigp7 *mutracksigp7  + mutrackbckp7*mutrackbckp7);
-  double mutrackp8  = TMath::Sqrt(mutracksigp8 *mutracksigp8  + mutrackbckp8*mutrackbckp8);
-  double mutrackp9  = TMath::Sqrt(mutracksigp9 *mutracksigp9  + mutrackbckp9*mutrackbckp9);
-  double mutrackp10 = TMath::Sqrt(mutracksigp10*mutracksigp10 + mutrackbckp10*mutrackbckp10);
-  double mutrackp11 = TMath::Sqrt(mutracksigp11*mutracksigp11 + mutrackbckp11*mutrackbckp11);
-  double mutrackp12 = TMath::Sqrt(mutracksigp12*mutracksigp12 + mutrackbckp12*mutrackbckp12);
-  double mutrackp13 = TMath::Sqrt(mutracksigp13*mutracksigp13 + mutrackbckp13*mutrackbckp13);
-
-  double mutrackm1  = TMath::Sqrt(mutracksigm1 *mutracksigm1  + mutrackbckm1 *mutrackbckm1);
-  double mutrackm2  = TMath::Sqrt(mutracksigm2 *mutracksigm2  + mutrackbckm2 *mutrackbckm2);
-  double mutrackm3  = TMath::Sqrt(mutracksigm3 *mutracksigm3  + mutrackbckm3 *mutrackbckm3);
-  double mutrackm4  = TMath::Sqrt(mutracksigm4 *mutracksigm4  + mutrackbckm4 *mutrackbckm4);
-  double mutrackm5  = TMath::Sqrt(mutracksigm5 *mutracksigm5  + mutrackbckm5 *mutrackbckm5);
-  double mutrackm6  = TMath::Sqrt(mutracksigm6 *mutracksigm6  + mutrackbckm6 *mutrackbckm6);
-  double mutrackm7  = TMath::Sqrt(mutracksigm7 *mutracksigm7  + mutrackbckm7 *mutrackbckm7);
-  double mutrackm8  = TMath::Sqrt(mutracksigm8 *mutracksigm8  + mutrackbckm8 *mutrackbckm8);
-  double mutrackm9  = TMath::Sqrt(mutracksigm9 *mutracksigm9  + mutrackbckm9 *mutrackbckm9);
-  double mutrackm10 = TMath::Sqrt(mutracksigm10*mutracksigm10 + mutrackbckm10*mutrackbckm10);
-  double mutrackm11 = TMath::Sqrt(mutracksigm11*mutracksigm11 + mutrackbckm11*mutrackbckm11);
-  double mutrackm12 = TMath::Sqrt(mutracksigm12*mutracksigm12 + mutrackbckm12*mutrackbckm12);
-  double mutrackm13 = TMath::Sqrt(mutracksigm13*mutracksigm13 + mutrackbckm13*mutrackbckm13);
-
-  double muidisop1  = TMath::Sqrt(muidisosigp1 *muidisosigp1  + muidisobckp1 *muidisobckp1);
-  double muidisop2  = TMath::Sqrt(muidisosigp2 *muidisosigp2  + muidisobckp2 *muidisobckp2);
-  double muidisop3  = TMath::Sqrt(muidisosigp3 *muidisosigp3  + muidisobckp3 *muidisobckp3);
-  double muidisop4  = TMath::Sqrt(muidisosigp4 *muidisosigp4  + muidisobckp4 *muidisobckp4);
-  double muidisop5  = TMath::Sqrt(muidisosigp5 *muidisosigp5  + muidisobckp5 *muidisobckp5);
-  double muidisop6  = TMath::Sqrt(muidisosigp6 *muidisosigp6  + muidisobckp6 *muidisobckp6);
-  double muidisop7  = TMath::Sqrt(muidisosigp7 *muidisosigp7  + muidisobckp7 *muidisobckp7);
-  double muidisop8  = TMath::Sqrt(muidisosigp8 *muidisosigp8  + muidisobckp8 *muidisobckp8);
-  double muidisop9  = TMath::Sqrt(muidisosigp9 *muidisosigp9  + muidisobckp9 *muidisobckp9);
-  double muidisop10 = TMath::Sqrt(muidisosigp10*muidisosigp10 + muidisobckp10*muidisobckp10);
-  double muidisop11 = TMath::Sqrt(muidisosigp11*muidisosigp11 + muidisobckp11*muidisobckp11);
-  double muidisop12 = TMath::Sqrt(muidisosigp12*muidisosigp12 + muidisobckp12*muidisobckp12);
-  double muidisop13 = TMath::Sqrt(muidisosigp13*muidisosigp13 + muidisobckp13*muidisobckp13);
-
-  double muidisom1  = TMath::Sqrt(muidisosigm1 *muidisosigm1  + muidisobckm1 *muidisobckm1);
-  double muidisom2  = TMath::Sqrt(muidisosigm2 *muidisosigm2  + muidisobckm2 *muidisobckm2);
-  double muidisom3  = TMath::Sqrt(muidisosigm3 *muidisosigm3  + muidisobckm3 *muidisobckm3);
-  double muidisom4  = TMath::Sqrt(muidisosigm4 *muidisosigm4  + muidisobckm4 *muidisobckm4);
-  double muidisom5  = TMath::Sqrt(muidisosigm5 *muidisosigm5  + muidisobckm5 *muidisobckm5);
-  double muidisom6  = TMath::Sqrt(muidisosigm6 *muidisosigm6  + muidisobckm6 *muidisobckm6);
-  double muidisom7  = TMath::Sqrt(muidisosigm7 *muidisosigm7  + muidisobckm7 *muidisobckm7);
-  double muidisom8  = TMath::Sqrt(muidisosigm8 *muidisosigm8  + muidisobckm8 *muidisobckm8);
-  double muidisom9  = TMath::Sqrt(muidisosigm9 *muidisosigm9  + muidisobckm9 *muidisobckm9);
-  double muidisom10 = TMath::Sqrt(muidisosigm10*muidisosigm10 + muidisobckm10*muidisobckm10);
-  double muidisom11 = TMath::Sqrt(muidisosigm11*muidisosigm11 + muidisobckm11*muidisobckm11);
-  double muidisom12 = TMath::Sqrt(muidisosigm12*muidisosigm12 + muidisobckm12*muidisobckm12);
-  double muidisom13 = TMath::Sqrt(muidisosigm13*muidisosigm13 + muidisobckm13*muidisobckm13);
-  
-  double mutoyp1  = 0.4323;
-  double mutoyp2  = 0.2473;
-  double mutoyp3  = 0.2742;
-  double mutoyp4  = 0.4182;
-  double mutoyp5  = 0.4885;
-  double mutoyp6  = 0.5158;
-  double mutoyp7  = 0.5746;
-  double mutoyp8  = 0.7582;
-  double mutoyp9  = 0.3349;
-  double mutoyp10 = 0.3527;
-  double mutoyp11 = 0.4707;
-  double mutoyp12 = 0.5730;
-  double mutoyp13 = 0.5338;
-
-  double mutoym1  = 0.2001;
-  double mutoym2  = 0.1545;
-  double mutoym3  = 0.1734;
-  double mutoym4  = 0.3098;
-  double mutoym5  = 0.4001;
-  double mutoym6  = 0.4068;
-  double mutoym7  = 0.7785;
-  double mutoym8  = 0.4950;
-  double mutoym9  = 0.3063;
-  double mutoym10 = 0.3146;
-  double mutoym11 = 0.3719;
-  double mutoym12 = 0.4312;
-  double mutoym13 = 0.4685;
-
-  double mutotaleffp1  = sqrt(mutrackp1 *mutrackp1 +mutoyp1 *mutoyp1 +muidisop1 *muidisop1 );
-  double mutotaleffp2  = sqrt(mutrackp2 *mutrackp2 +mutoyp2 *mutoyp2 +muidisop2 *muidisop2 );
-  double mutotaleffp3  = sqrt(mutrackp3 *mutrackp3 +mutoyp3 *mutoyp3 +muidisop3 *muidisop3 );
-  double mutotaleffp4  = sqrt(mutrackp4 *mutrackp4 +mutoyp4 *mutoyp4 +muidisop4 *muidisop4 );
-  double mutotaleffp5  = sqrt(mutrackp5 *mutrackp5 +mutoyp5 *mutoyp5 +muidisop5 *muidisop5 );
-  double mutotaleffp6  = sqrt(mutrackp6 *mutrackp6 +mutoyp6 *mutoyp6 +muidisop6 *muidisop6 );
-  double mutotaleffp7  = sqrt(mutrackp7 *mutrackp7 +mutoyp7 *mutoyp7 +muidisop7 *muidisop7 );
-  double mutotaleffp8  = sqrt(mutrackp8 *mutrackp8 +mutoyp8 *mutoyp8 +muidisop8 *muidisop8 );
-  double mutotaleffp9  = sqrt(mutrackp9 *mutrackp9 +mutoyp9 *mutoyp9 +muidisop9 *muidisop9 );
-  double mutotaleffp10 = sqrt(mutrackp10*mutrackp10+mutoyp10*mutoyp10+muidisop10*muidisop10);
-  double mutotaleffp11 = sqrt(mutrackp11*mutrackp11+mutoyp11*mutoyp11+muidisop11*muidisop11);
-  double mutotaleffp12 = sqrt(mutrackp12*mutrackp12+mutoyp12*mutoyp12+muidisop12*muidisop12);
-  double mutotaleffp13 = sqrt(mutrackp13*mutrackp13+mutoyp13*mutoyp13+muidisop13*muidisop13);
-
-  double mutotaleffm1  = sqrt(mutrackm1 *mutrackm1 +mutoym1 *mutoym1 +muidisom1 *muidisom1 );
-  double mutotaleffm2  = sqrt(mutrackm2 *mutrackm2 +mutoym2 *mutoym2 +muidisom2 *muidisom2 );
-  double mutotaleffm3  = sqrt(mutrackm3 *mutrackm3 +mutoym3 *mutoym3 +muidisom3 *muidisom3 );
-  double mutotaleffm4  = sqrt(mutrackm4 *mutrackm4 +mutoym4 *mutoym4 +muidisom4 *muidisom4 );
-  double mutotaleffm5  = sqrt(mutrackm5 *mutrackm5 +mutoym5 *mutoym5 +muidisom5 *muidisom5 );
-  double mutotaleffm6  = sqrt(mutrackm6 *mutrackm6 +mutoym6 *mutoym6 +muidisom6 *muidisom6 );
-  double mutotaleffm7  = sqrt(mutrackm7 *mutrackm7 +mutoym7 *mutoym7 +muidisom7 *muidisom7 );
-  double mutotaleffm8  = sqrt(mutrackm8 *mutrackm8 +mutoym8 *mutoym8 +muidisom8 *muidisom8 );
-  double mutotaleffm9  = sqrt(mutrackm9 *mutrackm9 +mutoym9 *mutoym9 +muidisom9 *muidisom9 );
-  double mutotaleffm10 = sqrt(mutrackm10*mutrackm10+mutoym10*mutoym10+muidisom10*muidisom10);
-  double mutotaleffm11 = sqrt(mutrackm11*mutrackm11+mutoym11*mutoym11+muidisom11*muidisom11);
-  double mutotaleffm12 = sqrt(mutrackm12*mutrackm12+mutoym12*mutoym12+muidisom12*muidisom12);
-  double mutotaleffm13 = sqrt(mutrackm13*mutrackm13+mutoym13*mutoym13+muidisom13*muidisom13);
- 
-  cout<<fixed<<setprecision(2);
-  cout<<"WpToMuNu Recon. Syst"<<endl;
-  cout<<mutotaleffp1 <<endl;
-  cout<<mutotaleffp2 <<endl;
-  cout<<mutotaleffp3 <<endl;
-  cout<<mutotaleffp4 <<endl;
-  cout<<mutotaleffp5 <<endl;
-  cout<<mutotaleffp6 <<endl;
-  cout<<mutotaleffp7 <<endl;
-  cout<<mutotaleffp8 <<endl;
-  cout<<mutotaleffp9 <<endl;
-  cout<<mutotaleffp10<<endl;
-  cout<<mutotaleffp11<<endl;
-  cout<<mutotaleffp12<<endl;
-  cout<<mutotaleffp13<<endl;
-  
-  cout<<"WmToMuNu Recon. Syst"<<endl;
-  cout<<mutotaleffm1 <<endl;
-  cout<<mutotaleffm2 <<endl;
-  cout<<mutotaleffm3 <<endl;
-  cout<<mutotaleffm4 <<endl;
-  cout<<mutotaleffm5 <<endl;
-  cout<<mutotaleffm6 <<endl;
-  cout<<mutotaleffm7 <<endl;
-  cout<<mutotaleffm8 <<endl;
-  cout<<mutotaleffm9 <<endl;
-  cout<<mutotaleffm10<<endl;
-  cout<<mutotaleffm11<<endl;
-  cout<<mutotaleffm12<<endl;
-  cout<<mutotaleffm13<<endl;
-
-  double mustatp1 = 0.9202 ; 
-  double mustatp2 = 0.9267 ;
-  double mustatp3 = 1.0331 ;
-  double mustatp4 = 1.1262 ;
-  double mustatp5 = 1.5045 ;
-  double mustatp6 = 1.4961 ;
-  double mustatp7 = 2.1085 ;
-  double mustatp8 = 2.0564 ;
-  double mustatp9 = 2.7194 ;
-  double mustatp10= 5.4584 ;
-  double mustatp11= 10.5096;
-  double mustatp12= 18.2816;
-  double mustatp13= 24.2144;
-
-  double mustatm1  = 1.1495 ;
-  double mustatm2  = 1.1196 ;
-  double mustatm3  = 1.2729 ;
-  double mustatm4  = 1.3512 ;
-  double mustatm5  = 1.7651 ;
-  double mustatm6  = 1.8067 ;
-  double mustatm7  = 2.4696 ;
-  double mustatm8  = 2.4629 ;
-  double mustatm9  = 3.1121 ;
-  double mustatm10 = 6.2686 ;
-  double mustatm11 = 12.1287;
-  double mustatm12 = 16.3956;
-  double mustatm13 = 33.3982;
-
-  double mumetp1  = 0.0593; 
-  double mumetp2  = 0.0268;
-  double mumetp3  = 0.0814;
-  double mumetp4  = 0.1138;
-  double mumetp5  = 0.1052;
-  double mumetp6  = 0.0943;
-  double mumetp7  = 0.0808;
-  double mumetp8  = 0.0721;
-  double mumetp9  = 0.1328;
-  double mumetp10 = 0.2775;
-  double mumetp11 = 0.4882;
-  double mumetp12 = 0.7080;
-  double mumetp13 = 0.8547;
-
-  double mumetm1  = 0.0593;
-  double mumetm2  = 0.0268;
-  double mumetm3  = 0.0815;
-  double mumetm4  = 0.1138;
-  double mumetm5  = 0.1051;
-  double mumetm6  = 0.0944;
-  double mumetm7  = 0.0808;
-  double mumetm8  = 0.0721;
-  double mumetm9  = 0.1328;
-  double mumetm10 = 0.2774;
-  double mumetm11 = 0.4889;
-  double mumetm12 = 0.7099;
-  double mumetm13 = 0.8547;
-
-  double muscalep1  = 0.0243; 
-  double muscalep2  = 0.0280;
-  double muscalep3  = 0.0315;
-  double muscalep4  = 0.0391;
-  double muscalep5  = 0.0447;
-  double muscalep6  = 0.0611;
-  double muscalep7  = 0.0915;
-  double muscalep8  = 0.1054;
-  double muscalep9  = 0.0662;
-  double muscalep10 = 0.1203;
-  double muscalep11 = 0.0534;
-  double muscalep12 = 0.0558;
-  double muscalep13 = 0.0570;
-
-  double muscalem1  = 0.0238; 
-  double muscalem2  = 0.0309;
-  double muscalem3  = 0.0390;
-  double muscalem4  = 0.0403;
-  double muscalem5  = 0.0431;
-  double muscalem6  = 0.0585;
-  double muscalem7  = 0.0872;
-  double muscalem8  = 0.1253;
-  double muscalem9  = 0.0544;
-  double muscalem10 = 0.1214;
-  double muscalem11 = 0.0563;
-  double muscalem12 = 0.0578;
-  double muscalem13 = 0.0586;
-
-  double musmearp1  = 0.3902; 
-  double musmearp2  = 0.2034;
-  double musmearp3  = 0.2562;
-  double musmearp4  = 0.3877;
-  double musmearp5  = 0.4036;
-  double musmearp6  = 0.3791;
-  double musmearp7  = 0.6556;
-  double musmearp8  = 0.5697;
-  double musmearp9  = 0.3184;
-  double musmearp10 = 0.3328;
-  double musmearp11 = 0.4681;
-  double musmearp12 = 0.5542;
-  double musmearp13 = 0.4548;
-
-  double musmearm1  = 0.1460; 
-  double musmearm2  = 0.0965;
-  double musmearm3  = 0.1786;
-  double musmearm4  = 0.2578;
-  double musmearm5  = 0.2341;
-  double musmearm6  = 0.2278;
-  double musmearm7  = 0.3668;
-  double musmearm8  = 0.5848;
-  double musmearm9  = 0.2307;
-  double musmearm10 = 0.3182;
-  double musmearm11 = 0.4379;
-  double musmearm12 = 0.5160;
-  double musmearm13 = 0.5613;
-  
-  double muMomResp1  = sqrt(musmearp1 *musmearp1 +muscalep1 *muscalep1 ); 
-  double muMomResp2  = sqrt(musmearp2 *musmearp2 +muscalep2 *muscalep2 );
-  double muMomResp3  = sqrt(musmearp3 *musmearp3 +muscalep3 *muscalep3 );
-  double muMomResp4  = sqrt(musmearp4 *musmearp4 +muscalep4 *muscalep4 );
-  double muMomResp5  = sqrt(musmearp5 *musmearp5 +muscalep5 *muscalep5 );
-  double muMomResp6  = sqrt(musmearp6 *musmearp6 +muscalep6 *muscalep6 );
-  double muMomResp7  = sqrt(musmearp7 *musmearp7 +muscalep7 *muscalep7 );
-  double muMomResp8  = sqrt(musmearp8 *musmearp8 +muscalep8 *muscalep8 );
-  double muMomResp9  = sqrt(musmearp9 *musmearp9 +muscalep9 *muscalep9 );
-  double muMomResp10 = sqrt(musmearp10*musmearp10+muscalep10*muscalep10);
-  double muMomResp11 = sqrt(musmearp11*musmearp11+muscalep11*muscalep11);
-  double muMomResp12 = sqrt(musmearp12*musmearp12+muscalep12*muscalep12);
-  double muMomResp13 = sqrt(musmearp13*musmearp13+muscalep13*muscalep13);
-  
-  double muMomResm1  = sqrt(musmearm1 *musmearm1 +muscalem1 *muscalem1 ); 
-  double muMomResm2  = sqrt(musmearm2 *musmearm2 +muscalem2 *muscalem2 );
-  double muMomResm3  = sqrt(musmearm3 *musmearm3 +muscalem3 *muscalem3 );
-  double muMomResm4  = sqrt(musmearm4 *musmearm4 +muscalem4 *muscalem4 );
-  double muMomResm5  = sqrt(musmearm5 *musmearm5 +muscalem5 *muscalem5 );
-  double muMomResm6  = sqrt(musmearm6 *musmearm6 +muscalem6 *muscalem6 );
-  double muMomResm7  = sqrt(musmearm7 *musmearm7 +muscalem7 *muscalem7 );
-  double muMomResm8  = sqrt(musmearm8 *musmearm8 +muscalem8 *muscalem8 );
-  double muMomResm9  = sqrt(musmearm9 *musmearm9 +muscalem9 *muscalem9 );
-  double muMomResm10 = sqrt(musmearm10*musmearm10+muscalem10*muscalem10);
-  double muMomResm11 = sqrt(musmearm11*musmearm11+muscalem11*muscalem11);
-  double muMomResm12 = sqrt(musmearm12*musmearm12+muscalem12*muscalem12);
-  double muMomResm13 = sqrt(musmearm13*musmearm13+muscalem13*muscalem13);
-  
-  cout<<"WpToMuNu MomRes.Syst"<<endl;
-  cout<<muMomResp1 <<endl; 
-  cout<<muMomResp2 <<endl;
-  cout<<muMomResp3 <<endl;
-  cout<<muMomResp4 <<endl;
-  cout<<muMomResp5 <<endl;
-  cout<<muMomResp6 <<endl;
-  cout<<muMomResp7 <<endl;
-  cout<<muMomResp8 <<endl;
-  cout<<muMomResp9 <<endl;
-  cout<<muMomResp10<<endl;
-  cout<<muMomResp11<<endl;
-  cout<<muMomResp12<<endl;
-  cout<<muMomResp13<<endl;
-  
-  cout<<"WmToMuNu MomRes.Syst"<<endl;
-  cout<<muMomResm1 <<endl; 
-  cout<<muMomResm2 <<endl;
-  cout<<muMomResm3 <<endl;
-  cout<<muMomResm4 <<endl;
-  cout<<muMomResm5 <<endl;
-  cout<<muMomResm6 <<endl;
-  cout<<muMomResm7 <<endl;
-  cout<<muMomResm8 <<endl;
-  cout<<muMomResm9 <<endl;
-  cout<<muMomResm10<<endl;
-  cout<<muMomResm11<<endl;
-  cout<<muMomResm12<<endl;
-  cout<<muMomResm13<<endl;
-  
-/*
-  double muqcdratiop1  = 0; 
-  double muqcdratiop2  = 0; 
-  double muqcdratiop3  = 0; 
-  double muqcdratiop4  = 0; 
-  double muqcdratiop5  = 0; 
-  double muqcdratiop6  = 0; 
-  double muqcdratiop7  = 0; 
-  double muqcdratiop8  = 0; 
-  double muqcdratiop9  = 1.4115; 
-  double muqcdratiop10 = 1.0739;
-  double muqcdratiop11 = 1.0753;
-  double muqcdratiop12 = 1.3828;
-  double muqcdratiop13 = 1.6162;
-  
-  double muqcdratiom1  = 0; 
-  double muqcdratiom2  = 0; 
-  double muqcdratiom3  = 0; 
-  double muqcdratiom4  = 0; 
-  double muqcdratiom5  = 0; 
-  double muqcdratiom6  = 0; 
-  double muqcdratiom7  = 0; 
-  double muqcdratiom8  = 0; 
-  double muqcdratiom9  = 2.9211; 
-  double muqcdratiom10 = 3.6179;
-  double muqcdratiom11 = 4.3220;
-  double muqcdratiom12 = 4.9494;
-  double muqcdratiom13 = 5.3774;
-*/
-  double muqcdbckgrp1  = 1.1888;
-  double muqcdbckgrp2  = 1.5950;
-  double muqcdbckgrp3  = 1.1278;
-  double muqcdbckgrp4  = 1.3924;
-  double muqcdbckgrp5  = 1.2443;
-  double muqcdbckgrp6  = 2.2605;
-  double muqcdbckgrp7  = 1.1487;
-  double muqcdbckgrp8  = 1.8617;
-  double muqcdbckgrp9  = 0.6912; 
-  double muqcdbckgrp10 = 0.6790;
-  double muqcdbckgrp11 = 0.6995;
-  double muqcdbckgrp12 = 0.7260;
-  double muqcdbckgrp13 = 0.7427;
-  
-  double muqcdbckgrm1  = 1.2431;
-  double muqcdbckgrm2  = 1.4121;
-  double muqcdbckgrm3  = 1.3396;
-  double muqcdbckgrm4  = 1.0235;
-  double muqcdbckgrm5  = 1.1964;
-  double muqcdbckgrm6  = 1.9669;
-  double muqcdbckgrm7  = 1.0839;
-  double muqcdbckgrm8  = 2.3055;
-  double muqcdbckgrm9  = 0.8416; 
-  double muqcdbckgrm10 = 0.8401;
-  double muqcdbckgrm11 = 0.8623;
-  double muqcdbckgrm12 = 0.8890;
-  double muqcdbckgrm13 = 0.9061;
-
-  double muqcdshapep1  = 0.3729;
-  double muqcdshapep2  = 0.4557;
-  double muqcdshapep3  = 0.2102;
-  double muqcdshapep4  = 0.3853;
-  double muqcdshapep5  = 0.4290;
-  double muqcdshapep6  = 0.3940;
-  double muqcdshapep7  = 0.1659;
-  double muqcdshapep8  = 0.2923;
-  double muqcdshapep9  = 0.3466; 
-  double muqcdshapep10 = 0.1299;
-  double muqcdshapep11 = 0.8764;
-  double muqcdshapep12 = 0.9405;
-  double muqcdshapep13 = 0.9226;
-  
-  double muqcdshapem1  = 0.1329;
-  double muqcdshapem2  = 0.3125;
-  double muqcdshapem3  = 0.4215;
-  double muqcdshapem4  = 0.3460;
-  double muqcdshapem5  = 0.2472;
-  double muqcdshapem6  = 0.2124;
-  double muqcdshapem7  = 0.1092;
-  double muqcdshapem8  = 0.5836;
-  double muqcdshapem9  = 0.2582; 
-  double muqcdshapem10 = 0.1055;
-  double muqcdshapem11 = 0.8416;
-  double muqcdshapem12 = 0.8987;
-  double muqcdshapem13 = 0.8923;
-
-  double muewkp1  = 0.1660;
-  double muewkp2  = 0.1523;
-  double muewkp3  = 0.1530;
-  double muewkp4  = 0.1462;
-  double muewkp5  = 0.1527;
-  double muewkp6  = 0.1857;
-  double muewkp7  = 0.2406;
-  double muewkp8  = 0.2713;
-  double muewkp9  = 0.3387; 
-  double muewkp10 = 0.3608;
-  double muewkp11 = 0.3753;
-  double muewkp12 = 0.3940;
-  double muewkp13 = 0.4029;
-  
-  double muewkm1  = 0.2042;
-  double muewkm2  = 0.1913;
-  double muewkm3  = 0.1806;
-  double muewkm4  = 0.1696;
-  double muewkm5  = 0.1847;
-  double muewkm6  = 0.2389;
-  double muewkm7  = 0.2957;
-  double muewkm8  = 0.3627;
-  double muewkm9  = 0.3358; 
-  double muewkm10 = 0.3494;
-  double muewkm11 = 0.3632;
-  double muewkm12 = 0.3638;
-  double muewkm13 = 0.3680;
-
-  double mufsrp1  = 0.0148003;
-  double mufsrp2  = 0.0256613;
-  double mufsrp3  = 0.0265483;
-  double mufsrp4  = 0.0198106;
-  double mufsrp5  = 0.0241401;
-  double mufsrp6  = 0.0268263;
-  double mufsrp7  = 0.0318734;
-  double mufsrp8  = 0.0312375;
-  double mufsrp9  = 0.0377605;
-  double mufsrp10 = 0.0228441;
-  double mufsrp11 = 0.0295351;
-  double mufsrp12 = 0.0393;
-  double mufsrp13 = 0.0518017;
-  
-  double mufsrm1  = 0.0216572;
-  double mufsrm2  = 0.0290663;
-  double mufsrm3  = 0.0304291;
-  double mufsrm4  = 0.0180261;
-  double mufsrm5  = 0.0173884;
-  double mufsrm6  = 0.0233484;
-  double mufsrm7  = 0.0205926;
-  double mufsrm8  = 0.0297664;
-  double mufsrm9  = 0.0338547;
-  double mufsrm10 = 0.0371577;
-  double mufsrm11 = 0.0485584;
-  double mufsrm12 = 0.042456;
-  double mufsrm13 = 0.0246013;
-
-  double musvdunfp1  = 0.2036;
-  double musvdunfp2  = 0.1786;
-  double musvdunfp3  = 0.2121;
-  double musvdunfp4  = 0.2623;
-  double musvdunfp5  = 0.2858;
-  double musvdunfp6  = 0.2961;
-  double musvdunfp7  = 0.3214;
-  double musvdunfp8  = 0.3971;
-  double musvdunfp9  = 0.5205;
-  double musvdunfp10 = 0.6648;
-  double musvdunfp11 = 0.8008;
-  double musvdunfp12 = 0.9051;
-  double musvdunfp13 = 0.9609;
-  
-  double musvdunfm1  = 0.1421;
-  double musvdunfm2  = 0.1275;
-  double musvdunfm3  = 0.1514;
-  double musvdunfm4  = 0.1769;
-  double musvdunfm5  = 0.1907;
-  double musvdunfm6  = 0.2037;
-  double musvdunfm7  = 0.2255;
-  double musvdunfm8  = 0.2802;
-  double musvdunfm9  = 0.3717;
-  double musvdunfm10 = 0.4873;
-  double musvdunfm11 = 0.6025;
-  double musvdunfm12 = 0.6930;
-  double musvdunfm13 = 0.7420;
-
-  double muBiasp1  = 0.9022;
-  double muBiasp2  = 0.6571;
-  double muBiasp3  = 1.1301;
-  double muBiasp4  = 3.3043;
-  double muBiasp5  = 2.7469;
-  double muBiasp6  = 3.0764;
-  double muBiasp7  = 3.2467;
-  double muBiasp8  = 5.5057;
-  double muBiasp9  = 5.3121;
-  double muBiasp10 = 1.8476;
-  double muBiasp11 = 1.6692;
-  double muBiasp12 = 4.4869;
-  double muBiasp13 = 5.9061;
-  
-  double muBiasm1  = 0.4327;
-  double muBiasm2  = 0.7800;
-  double muBiasm3  = 0.3212;
-  double muBiasm4  = 2.2542;
-  double muBiasm5  = 2.3913;
-  double muBiasm6  = 3.4663;
-  double muBiasm7  = 3.1813;
-  double muBiasm8  = 4.2104;
-  double muBiasm9  = 3.7714;
-  double muBiasm10 = 1.8951;
-  double muBiasm11 = 2.5063;
-  double muBiasm12 = 4.7858;
-  double muBiasm13 = 6.1218;
-
-  double muWptCorrp1  = 0.434398;
-  double muWptCorrp2  = 0.102483;
-  double muWptCorrp3  = 0.636979;
-  double muWptCorrp4  = 0.806102;
-  double muWptCorrp5  = 0.576642;
-  double muWptCorrp6  = 0.156077;
-  double muWptCorrp7  = 0.223734;
-  double muWptCorrp8  = 0.446839;
-  double muWptCorrp9  = 0.504610;
-  double muWptCorrp10 = 0.471174;
-  double muWptCorrp11 = 0.408033;
-  double muWptCorrp12 = 0.350842;
-  double muWptCorrp13 = 0.318765;
-
-  double muWptCorrm1  = 0.499474;
-  double muWptCorrm2  = 0.00656399;
-  double muWptCorrm3  = 0.493798;
-  double muWptCorrm4  = 0.671649;
-  double muWptCorrm5  = 0.486533;
-  double muWptCorrm6  = 0.101952;
-  double muWptCorrm7  = 0.287443;
-  double muWptCorrm8  = 0.561686;
-  double muWptCorrm9  = 0.683695;
-  double muWptCorrm10 = 0.702180;
-  double muWptCorrm11 = 0.676472;
-  double muWptCorrm12 = 0.643882;
-  double muWptCorrm13 = 0.624098; 
-
-  muBiasp1 = sqrt(muBiasp1 * muBiasp1 + muWptCorrp1 * muWptCorrp1) ; 
-  muBiasp2 = sqrt(muBiasp2 * muBiasp2 + muWptCorrp2 * muWptCorrp2) ; 
-  muBiasp3 = sqrt(muBiasp3 * muBiasp3 + muWptCorrp3 * muWptCorrp3) ; 
-  muBiasp4 = sqrt(muBiasp4 * muBiasp4 + muWptCorrp4 * muWptCorrp4) ; 
-  muBiasp5 = sqrt(muBiasp5 * muBiasp5 + muWptCorrp5 * muWptCorrp5) ; 
-  muBiasp6 = sqrt(muBiasp6 * muBiasp6 + muWptCorrp6 * muWptCorrp6) ; 
-  muBiasp7 = sqrt(muBiasp7 * muBiasp7 + muWptCorrp7 * muWptCorrp7) ; 
-  muBiasp8 = sqrt(muBiasp8 * muBiasp8 + muWptCorrp8 * muWptCorrp8) ; 
-  muBiasp9 = sqrt(muBiasp9 * muBiasp9 + muWptCorrp9 * muWptCorrp9) ; 
-  muBiasp10= sqrt(muBiasp10* muBiasp10+ muWptCorrp10* muWptCorrp10) ; 
-  muBiasp11= sqrt(muBiasp11* muBiasp11+ muWptCorrp11* muWptCorrp11) ; 
-  muBiasp12= sqrt(muBiasp12* muBiasp12+ muWptCorrp12* muWptCorrp12) ; 
-  muBiasp13= sqrt(muBiasp13* muBiasp13+ muWptCorrp13* muWptCorrp13) ; 
-
-  muBiasm1 = sqrt(muBiasm1 * muBiasm1 + muWptCorrm1 * muWptCorrm1) ; 
-  muBiasm2 = sqrt(muBiasm2 * muBiasm2 + muWptCorrm2 * muWptCorrm2) ; 
-  muBiasm3 = sqrt(muBiasm3 * muBiasm3 + muWptCorrm3 * muWptCorrm3) ; 
-  muBiasm4 = sqrt(muBiasm4 * muBiasm4 + muWptCorrm4 * muWptCorrm4) ; 
-  muBiasm5 = sqrt(muBiasm5 * muBiasm5 + muWptCorrm5 * muWptCorrm5) ; 
-  muBiasm6 = sqrt(muBiasm6 * muBiasm6 + muWptCorrm6 * muWptCorrm6) ; 
-  muBiasm7 = sqrt(muBiasm7 * muBiasm7 + muWptCorrm7 * muWptCorrm7) ; 
-  muBiasm8 = sqrt(muBiasm8 * muBiasm8 + muWptCorrm8 * muWptCorrm8) ; 
-  muBiasm9 = sqrt(muBiasm9 * muBiasm9 + muWptCorrm9 * muWptCorrm9) ; 
-  muBiasm10= sqrt(muBiasm10* muBiasm10+ muWptCorrm10* muWptCorrm10) ; 
-  muBiasm11= sqrt(muBiasm11* muBiasm11+ muWptCorrm11* muWptCorrm11) ; 
-  muBiasm12= sqrt(muBiasm12* muBiasm12+ muWptCorrm12* muWptCorrm12) ; 
-  muBiasm13= sqrt(muBiasm13* muBiasm13+ muWptCorrm13* muWptCorrm13) ; 
-
-  cout<<"UnfBias plus uncer"<<endl;
-  cout<<muBiasp1 <<endl;
-  cout<<muBiasp2 <<endl;
-  cout<<muBiasp3 <<endl;
-  cout<<muBiasp4 <<endl;
-  cout<<muBiasp5 <<endl;
-  cout<<muBiasp6 <<endl;
-  cout<<muBiasp7 <<endl;
-  cout<<muBiasp8 <<endl;
-  cout<<muBiasp9 <<endl;
-  cout<<muBiasp10<<endl;
-  cout<<muBiasp11<<endl;
-  cout<<muBiasp12<<endl;
-  cout<<muBiasp13<<endl;
-  
-  cout<<"UnfBias minus uncer"<<endl;
-  cout<<muBiasm1 <<endl;
-  cout<<muBiasm2 <<endl;
-  cout<<muBiasm3 <<endl;
-  cout<<muBiasm4 <<endl;
-  cout<<muBiasm5 <<endl;
-  cout<<muBiasm6 <<endl;
-  cout<<muBiasm7 <<endl;
-  cout<<muBiasm8 <<endl;
-  cout<<muBiasm9 <<endl;
-  cout<<muBiasm10<<endl;
-  cout<<muBiasm11<<endl;
-  cout<<muBiasm12<<endl;
-  cout<<muBiasm13<<endl;
- 
-  double systtotalp1 =sqrt(mutotaleffp1 *mutotaleffp1 +mumetp1 *mumetp1 +muMomResp1 *muMomResp1 +muqcdshapep1 *muqcdshapep1 +muqcdbckgrp1 *muqcdbckgrp1 + muewkp1 *muewkp1  +muBiasp1 *muBiasp1 +musvdunfp1 *musvdunfp1  +mufsrp1 *mufsrp1 + 2.6*2.6);
-  double systtotalp2 =sqrt(mutotaleffp2 *mutotaleffp2 +mumetp2 *mumetp2 +muMomResp2 *muMomResp2 +muqcdshapep2 *muqcdshapep2 +muqcdbckgrp2 *muqcdbckgrp2 + muewkp2 *muewkp2  +muBiasp2 *muBiasp2 +musvdunfp2 *musvdunfp2  +mufsrp2 *mufsrp2 + 2.6*2.6);
-  double systtotalp3 =sqrt(mutotaleffp3 *mutotaleffp3 +mumetp3 *mumetp3 +muMomResp3 *muMomResp3 +muqcdshapep3 *muqcdshapep3 +muqcdbckgrp3 *muqcdbckgrp3 + muewkp3 *muewkp3  +muBiasp3 *muBiasp3 +musvdunfp3 *musvdunfp3  +mufsrp3 *mufsrp3 + 2.6*2.6);
-  double systtotalp4 =sqrt(mutotaleffp4 *mutotaleffp4 +mumetp4 *mumetp4 +muMomResp4 *muMomResp4 +muqcdshapep4 *muqcdshapep4 +muqcdbckgrp4 *muqcdbckgrp4 + muewkp4 *muewkp4  +muBiasp4 *muBiasp4 +musvdunfp4 *musvdunfp4  +mufsrp4 *mufsrp4 + 2.6*2.6);
-  double systtotalp5 =sqrt(mutotaleffp5 *mutotaleffp5 +mumetp5 *mumetp5 +muMomResp5 *muMomResp5 +muqcdshapep5 *muqcdshapep5 +muqcdbckgrp5 *muqcdbckgrp5 + muewkp5 *muewkp5  +muBiasp5 *muBiasp5 +musvdunfp5 *musvdunfp5  +mufsrp5 *mufsrp5 + 2.6*2.6);
-  double systtotalp6 =sqrt(mutotaleffp6 *mutotaleffp6 +mumetp6 *mumetp6 +muMomResp6 *muMomResp6 +muqcdshapep6 *muqcdshapep6 +muqcdbckgrp6 *muqcdbckgrp6 + muewkp6 *muewkp6  +muBiasp6 *muBiasp6 +musvdunfp6 *musvdunfp6  +mufsrp6 *mufsrp6 + 2.6*2.6);
-  double systtotalp7 =sqrt(mutotaleffp7 *mutotaleffp7 +mumetp7 *mumetp7 +muMomResp7 *muMomResp7 +muqcdshapep7 *muqcdshapep7 +muqcdbckgrp7 *muqcdbckgrp7 + muewkp7 *muewkp7  +muBiasp7 *muBiasp7 +musvdunfp7 *musvdunfp7  +mufsrp7 *mufsrp7 + 2.6*2.6);
-  double systtotalp8 =sqrt(mutotaleffp8 *mutotaleffp8 +mumetp8 *mumetp8 +muMomResp8 *muMomResp8 +muqcdshapep8 *muqcdshapep8 +muqcdbckgrp8 *muqcdbckgrp8 + muewkp8 *muewkp8  +muBiasp8 *muBiasp8 +musvdunfp8 *musvdunfp8  +mufsrp8 *mufsrp8 + 2.6*2.6);
-  double systtotalp9 =sqrt(mutotaleffp9 *mutotaleffp9 +mumetp9 *mumetp9 +muMomResp9 *muMomResp9 +muqcdshapep9 *muqcdshapep9 +muqcdbckgrp9 *muqcdbckgrp9 + muewkp9 *muewkp9  +muBiasp9 *muBiasp9 +musvdunfp9 *musvdunfp9  +mufsrp9 *mufsrp9 + 2.6*2.6);
-  double systtotalp10=sqrt(mutotaleffp10*mutotaleffp10+mumetp10*mumetp10+muMomResp10*muMomResp10+muqcdshapep10*muqcdshapep10+muqcdbckgrp10*muqcdbckgrp10+ muewkp10*muewkp10 +muBiasp10*muBiasp10+musvdunfp10*musvdunfp10 +mufsrp10*mufsrp10+ 2.6*2.6);
-  double systtotalp11=sqrt(mutotaleffp11*mutotaleffp11+mumetp11*mumetp11+muMomResp11*muMomResp11+muqcdshapep11*muqcdshapep11+muqcdbckgrp11*muqcdbckgrp11+ muewkp11*muewkp11 +muBiasp11*muBiasp11+musvdunfp11*musvdunfp11 +mufsrp11*mufsrp11+ 2.6*2.6);
-  double systtotalp12=sqrt(mutotaleffp12*mutotaleffp12+mumetp12*mumetp12+muMomResp12*muMomResp12+muqcdshapep12*muqcdshapep12+muqcdbckgrp12*muqcdbckgrp12+ muewkp12*muewkp12 +muBiasp12*muBiasp12+musvdunfp12*musvdunfp12 +mufsrp12*mufsrp12+ 2.6*2.6);
-  double systtotalp13=sqrt(mutotaleffp13*mutotaleffp13+mumetp13*mumetp13+muMomResp13*muMomResp13+muqcdshapep13*muqcdshapep13+muqcdbckgrp13*muqcdbckgrp13+ muewkp13*muewkp13 +muBiasp13*muBiasp13+musvdunfp13*musvdunfp13 +mufsrp13*mufsrp13+ 2.6*2.6);
-  
-  double systtotalm1 =sqrt(mutotaleffm1 *mutotaleffm1 +mumetm1 *mumetm1 +muMomResm1 *muMomResm1 +muqcdshapem1 *muqcdshapem1 +muqcdbckgrm1 *muqcdbckgrm1 + muewkm1 *muewkm1  +muBiasm1 *muBiasm1 +musvdunfm1 *musvdunfm1  +mufsrm1 *mufsrm1 + 2.6*2.6);
-  double systtotalm2 =sqrt(mutotaleffm2 *mutotaleffm2 +mumetm2 *mumetm2 +muMomResm2 *muMomResm2 +muqcdshapem2 *muqcdshapem2 +muqcdbckgrm2 *muqcdbckgrm2 + muewkm2 *muewkm2  +muBiasm2 *muBiasm2 +musvdunfm2 *musvdunfm2  +mufsrm2 *mufsrm2 + 2.6*2.6);
-  double systtotalm3 =sqrt(mutotaleffm3 *mutotaleffm3 +mumetm3 *mumetm3 +muMomResm3 *muMomResm3 +muqcdshapem3 *muqcdshapem3 +muqcdbckgrm3 *muqcdbckgrm3 + muewkm3 *muewkm3  +muBiasm3 *muBiasm3 +musvdunfm3 *musvdunfm3  +mufsrm3 *mufsrm3 + 2.6*2.6);
-  double systtotalm4 =sqrt(mutotaleffm4 *mutotaleffm4 +mumetm4 *mumetm4 +muMomResm4 *muMomResm4 +muqcdshapem4 *muqcdshapem4 +muqcdbckgrm4 *muqcdbckgrm4 + muewkm4 *muewkm4  +muBiasm4 *muBiasm4 +musvdunfm4 *musvdunfm4  +mufsrm4 *mufsrm4 + 2.6*2.6);
-  double systtotalm5 =sqrt(mutotaleffm5 *mutotaleffm5 +mumetm5 *mumetm5 +muMomResm5 *muMomResm5 +muqcdshapem5 *muqcdshapem5 +muqcdbckgrm5 *muqcdbckgrm5 + muewkm5 *muewkm5  +muBiasm5 *muBiasm5 +musvdunfm5 *musvdunfm5  +mufsrm5 *mufsrm5 + 2.6*2.6);
-  double systtotalm6 =sqrt(mutotaleffm6 *mutotaleffm6 +mumetm6 *mumetm6 +muMomResm6 *muMomResm6 +muqcdshapem6 *muqcdshapem6 +muqcdbckgrm6 *muqcdbckgrm6 + muewkm6 *muewkm6  +muBiasm6 *muBiasm6 +musvdunfm6 *musvdunfm6  +mufsrm6 *mufsrm6 + 2.6*2.6);
-  double systtotalm7 =sqrt(mutotaleffm7 *mutotaleffm7 +mumetm7 *mumetm7 +muMomResm7 *muMomResm7 +muqcdshapem7 *muqcdshapem7 +muqcdbckgrm7 *muqcdbckgrm7 + muewkm7 *muewkm7  +muBiasm7 *muBiasm7 +musvdunfm7 *musvdunfm7  +mufsrm7 *mufsrm7 + 2.6*2.6);
-  double systtotalm8 =sqrt(mutotaleffm8 *mutotaleffm8 +mumetm8 *mumetm8 +muMomResm8 *muMomResm8 +muqcdshapem8 *muqcdshapem8 +muqcdbckgrm8 *muqcdbckgrm8 + muewkm8 *muewkm8  +muBiasm8 *muBiasm8 +musvdunfm8 *musvdunfm8  +mufsrm8 *mufsrm8 + 2.6*2.6);
-  double systtotalm9 =sqrt(mutotaleffm9 *mutotaleffm9 +mumetm9 *mumetm9 +muMomResm9 *muMomResm9 +muqcdshapem9 *muqcdshapem9 +muqcdbckgrm9 *muqcdbckgrm9 + muewkm9 *muewkm9  +muBiasm9 *muBiasm9 +musvdunfm9 *musvdunfm9  +mufsrm9 *mufsrm9 + 2.6*2.6);
-  double systtotalm10=sqrt(mutotaleffm10*mutotaleffm10+mumetm10*mumetm10+muMomResm10*muMomResm10+muqcdshapem10*muqcdshapem10+muqcdbckgrm10*muqcdbckgrm10+ muewkm10*muewkm10 +muBiasm10*muBiasm10+musvdunfm10*musvdunfm10 +mufsrm10*mufsrm10+ 2.6*2.6);
-  double systtotalm11=sqrt(mutotaleffm11*mutotaleffm11+mumetm11*mumetm11+muMomResm11*muMomResm11+muqcdshapem11*muqcdshapem11+muqcdbckgrm11*muqcdbckgrm11+ muewkm11*muewkm11 +muBiasm11*muBiasm11+musvdunfm11*musvdunfm11 +mufsrm11*mufsrm11+ 2.6*2.6);
-  double systtotalm12=sqrt(mutotaleffm12*mutotaleffm12+mumetm12*mumetm12+muMomResm12*muMomResm12+muqcdshapem12*muqcdshapem12+muqcdbckgrm12*muqcdbckgrm12+ muewkm12*muewkm12 +muBiasm12*muBiasm12+musvdunfm12*musvdunfm12 +mufsrm12*mufsrm12+ 2.6*2.6);
-  double systtotalm13=sqrt(mutotaleffm13*mutotaleffm13+mumetm13*mumetm13+muMomResm13*muMomResm13+muqcdshapem13*muqcdshapem13+muqcdbckgrm13*muqcdbckgrm13+ muewkm13*muewkm13 +muBiasm13*muBiasm13+musvdunfm13*musvdunfm13 +mufsrm13*mufsrm13+ 2.6*2.6);
-
-  double totaluncerp1  = sqrt(mustatp1 *mustatp1 +systtotalp1 *systtotalp1 );
-  double totaluncerp2  = sqrt(mustatp2 *mustatp2 +systtotalp2 *systtotalp2 );
-  double totaluncerp3  = sqrt(mustatp3 *mustatp3 +systtotalp3 *systtotalp3 );
-  double totaluncerp4  = sqrt(mustatp4 *mustatp4 +systtotalp4 *systtotalp4 );
-  double totaluncerp5  = sqrt(mustatp5 *mustatp5 +systtotalp5 *systtotalp5 );
-  double totaluncerp6  = sqrt(mustatp6 *mustatp6 +systtotalp6 *systtotalp6 );
-  double totaluncerp7  = sqrt(mustatp7 *mustatp7 +systtotalp7 *systtotalp7 );
-  double totaluncerp8  = sqrt(mustatp8 *mustatp8 +systtotalp8 *systtotalp8 );
-  double totaluncerp9  = sqrt(mustatp9 *mustatp9 +systtotalp9 *systtotalp9 );
-  double totaluncerp10 = sqrt(mustatp10*mustatp10+systtotalp10*systtotalp10);
-  double totaluncerp11 = sqrt(mustatp11*mustatp11+systtotalp11*systtotalp11);
-  double totaluncerp12 = sqrt(mustatp12*mustatp12+systtotalp12*systtotalp12);
-  double totaluncerp13 = sqrt(mustatp13*mustatp13+systtotalp13*systtotalp13);
-                                                                          
-  double totaluncerm1  = sqrt(mustatm1 *mustatm1 +systtotalm1 *systtotalm1 );
-  double totaluncerm2  = sqrt(mustatm2 *mustatm2 +systtotalm2 *systtotalm2 );
-  double totaluncerm3  = sqrt(mustatm3 *mustatm3 +systtotalm3 *systtotalm3 );
-  double totaluncerm4  = sqrt(mustatm4 *mustatm4 +systtotalm4 *systtotalm4 );
-  double totaluncerm5  = sqrt(mustatm5 *mustatm5 +systtotalm5 *systtotalm5 );
-  double totaluncerm6  = sqrt(mustatm6 *mustatm6 +systtotalm6 *systtotalm6 );
-  double totaluncerm7  = sqrt(mustatm7 *mustatm7 +systtotalm7 *systtotalm7 );
-  double totaluncerm8  = sqrt(mustatm8 *mustatm8 +systtotalm8 *systtotalm8 );
-  double totaluncerm9  = sqrt(mustatm9 *mustatm9 +systtotalm9 *systtotalm9 );
-  double totaluncerm10 = sqrt(mustatm10*mustatm10+systtotalm10*systtotalm10);
-  double totaluncerm11 = sqrt(mustatm11*mustatm11+systtotalm11*systtotalm11);
-  double totaluncerm12 = sqrt(mustatm12*mustatm12+systtotalm12*systtotalm12);
-  double totaluncerm13 = sqrt(mustatm13*mustatm13+systtotalm13*systtotalm13);
   //*
-  cout<<"WpToMuNu Syst uncer"<<endl;
-  cout<<systtotalp1 <<endl;
-  cout<<systtotalp2 <<endl;
-  cout<<systtotalp3 <<endl;
-  cout<<systtotalp4 <<endl;
-  cout<<systtotalp5 <<endl;
-  cout<<systtotalp6 <<endl;
-  cout<<systtotalp7 <<endl;
-  cout<<systtotalp8 <<endl;
-  cout<<systtotalp9 <<endl;
-  cout<<systtotalp10<<endl;
-  cout<<systtotalp11<<endl;
-  cout<<systtotalp12<<endl;
-  cout<<systtotalp13<<endl;
-  
-  cout<<"WmToMuNu Syst uncer"<<endl;
-  cout<<systtotalm1 <<endl;
-  cout<<systtotalm2 <<endl;
-  cout<<systtotalm3 <<endl;
-  cout<<systtotalm4 <<endl;
-  cout<<systtotalm5 <<endl;
-  cout<<systtotalm6 <<endl;
-  cout<<systtotalm7 <<endl;
-  cout<<systtotalm8 <<endl;
-  cout<<systtotalm9 <<endl;
-  cout<<systtotalm10<<endl;
-  cout<<systtotalm11<<endl;
-  cout<<systtotalm12<<endl;
-  cout<<systtotalm13<<endl;
+  double mutracksigp[14]={0};
+  mutracksigp[1]= 0.19;
+  mutracksigp[2]= 0.17;
+  mutracksigp[3]= 0.14;
+  mutracksigp[4]= 0.11;
+  mutracksigp[5]= 0.11;
+  mutracksigp[6]= 0.13;
+  mutracksigp[7]= 0.16;
+  mutracksigp[8]= 0.20;
+  mutracksigp[9]= 0.23;
+  mutracksigp[10]= 0.25;
+  mutracksigp[11]= 0.27;
+  mutracksigp[12]= 0.29;
+  mutracksigp[13]= 0.30;
 
-  cout<<"WpToMuNu total uncer"<<endl;
-  cout<<totaluncerp1 <<endl;
-  cout<<totaluncerp2 <<endl;
-  cout<<totaluncerp3 <<endl;
-  cout<<totaluncerp4 <<endl;
-  cout<<totaluncerp5 <<endl;
-  cout<<totaluncerp6 <<endl;
-  cout<<totaluncerp7 <<endl;
-  cout<<totaluncerp8 <<endl;
-  cout<<totaluncerp9 <<endl;
-  cout<<totaluncerp10<<endl;
-  cout<<totaluncerp11<<endl;
-  cout<<totaluncerp12<<endl;
-  cout<<totaluncerp13<<endl;
+  double mutracksigm[14] ={0};
+  mutracksigm[1]= 0.10; 
+  mutracksigm[2]= 0.16;
+  mutracksigm[3]= 0.17;
+  mutracksigm[4]= 0.14;
+  mutracksigm[5]= 0.13;
+  mutracksigm[6]= 0.11;
+  mutracksigm[7]= 0.08;
+  mutracksigm[8]= 0.13;
+  mutracksigm[9]= 0.09;
+  mutracksigm[10]= 0.14;
+  mutracksigm[11]= 0.19;
+  mutracksigm[12]= 0.22;
+  mutracksigm[13]= 0.24;
+ 
+  double mutrackbckp[14] = {0};
+  mutrackbckp[1 ]= 0.22;
+  mutrackbckp[2 ]= 0.21;
+  mutrackbckp[3 ]= 0.18;
+  mutrackbckp[4 ]= 0.16;
+  mutrackbckp[5 ]= 0.15;
+  mutrackbckp[6 ]= 0.15;
+  mutrackbckp[7 ]= 0.16;
+  mutrackbckp[8 ]= 0.18;
+  mutrackbckp[9 ]= 0.20;
+  mutrackbckp[10]= 0.21;
+  mutrackbckp[11]= 0.22;
+  mutrackbckp[12]= 0.23;
+  mutrackbckp[13]= 0.24;
+ 
+  double mutrackbckm[14] ={0};
+  mutrackbckm[1 ]= 0.17;
+  mutrackbckm[2 ]= 0.24;
+  mutrackbckm[3 ]= 0.31;
+  mutrackbckm[4 ]= 0.29;
+  mutrackbckm[5 ]= 0.22;
+  mutrackbckm[6 ]= 0.17;
+  mutrackbckm[7 ]= 0.15;
+  mutrackbckm[8 ]= 0.16;
+  mutrackbckm[9 ]= 0.21; 
+  mutrackbckm[10]= 0.27;
+  mutrackbckm[11]= 0.32;
+  mutrackbckm[12]= 0.35;
+  mutrackbckm[13]= 0.37;
   
-  cout<<"WmToMuNu totalt uncer"<<endl;
-  cout<<totaluncerm1 <<endl;
-  cout<<totaluncerm2 <<endl;
-  cout<<totaluncerm3 <<endl;
-  cout<<totaluncerm4 <<endl;
-  cout<<totaluncerm5 <<endl;
-  cout<<totaluncerm6 <<endl;
-  cout<<totaluncerm7 <<endl;
-  cout<<totaluncerm8 <<endl;
-  cout<<totaluncerm9 <<endl;
-  cout<<totaluncerm10<<endl;
-  cout<<totaluncerm11<<endl;
-  cout<<totaluncerm12<<endl;
-  cout<<totaluncerm13<<endl;
+  double muidisosigp[14] = {0};
+  muidisosigp[1 ] = 0.12;
+  muidisosigp[2 ] = 0.11;
+  muidisosigp[3 ] = 0.10;
+  muidisosigp[4 ] = 0.09;
+  muidisosigp[5 ] = 0.09;
+  muidisosigp[6 ] = 0.10;
+  muidisosigp[7 ] = 0.10;
+  muidisosigp[8 ] = 0.12;
+  muidisosigp[9 ] = 0.13;
+  muidisosigp[10] = 0.13;
+  muidisosigp[11] = 0.14;
+  muidisosigp[12] = 0.14;
+  muidisosigp[13] = 0.15;
+
+  double muidisosigm[14] = {0};
+  muidisosigm[1 ] = 0.13;
+  muidisosigm[2 ] = 0.13; 
+  muidisosigm[3 ] = 0.15;
+  muidisosigm[4 ] = 0.16;
+  muidisosigm[5 ] = 0.10;
+  muidisosigm[6 ] = 0.12;
+  muidisosigm[7 ] = 0.13;
+  muidisosigm[8 ] = 0.10;
+  muidisosigm[9 ] = 0.09;
+  muidisosigm[10] = 0.11;
+  muidisosigm[11] = 0.13;
+  muidisosigm[12] = 0.14;
+  muidisosigm[13] = 0.15;
+
+  double muidisobckp[14]={0};
+  muidisobckp[1 ] = 0.10;
+  muidisobckp[2 ] = 0.10;
+  muidisobckp[3 ] = 0.10;
+  muidisobckp[4 ] = 0.11;
+  muidisobckp[5 ] = 0.13;
+  muidisobckp[6 ] = 0.16;
+  muidisobckp[7 ] = 0.18;
+  muidisobckp[8 ] = 0.20;
+  muidisobckp[9 ] = 0.22;
+  muidisobckp[10] = 0.24;
+  muidisobckp[11] = 0.25;
+  muidisobckp[12] = 0.25;
+  muidisobckp[13] = 0.26;
+
+  double muidisobckm[14] = {0};
+  muidisobckm[1 ] = 0.20;
+  muidisobckm[2 ] = 0.16;
+  muidisobckm[3 ] = 0.18;
+  muidisobckm[4 ] = 0.15;
+  muidisobckm[5 ] = 0.13;
+  muidisobckm[6 ] = 0.17;
+  muidisobckm[7 ] = 0.23;
+  muidisobckm[8 ] = 0.24;
+  muidisobckm[9 ] = 0.25;
+  muidisobckm[10] = 0.27;
+  muidisobckm[11] = 0.28;
+  muidisobckm[12] = 0.29;
+  muidisobckm[13] = 0.29;
+
+  double mutrackp[14]={0};
+  double mutrackm[14]={0};
+  double muidisop[14]={0};
+  double muidisom[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    mutrackp[i]  = TMath::Sqrt(mutracksigp[i] *mutracksigp[i]  + mutrackbckp[i]*mutrackbckp[i]);
+    mutrackm[i]  = TMath::Sqrt(mutracksigm[i] *mutracksigm[i]  + mutrackbckm[i]*mutrackbckm[i]);
+
+    muidisop[i]  = TMath::Sqrt(muidisosigp[i] *muidisosigp[i]  + muidisobckp[i] *muidisobckp[i]);
+    muidisom[i]  = TMath::Sqrt(muidisosigm[i] *muidisosigm[i]  + muidisobckm[i] *muidisobckm[i]);
+  }
+ 
+  double mutoyp[14] = {0};
+  mutoyp[1 ] = 0.4323;
+  mutoyp[2 ] = 0.2473;
+  mutoyp[3 ] = 0.2742;
+  mutoyp[4 ] = 0.4182;
+  mutoyp[5 ] = 0.4885;
+  mutoyp[6 ] = 0.5158;
+  mutoyp[7 ] = 0.5746;
+  mutoyp[8 ] = 0.7582;
+  mutoyp[9 ] = 0.3349;
+  mutoyp[10] = 0.3527;
+  mutoyp[11] = 0.4707;
+  mutoyp[12] = 0.5730;
+  mutoyp[13] = 0.5338;
+
+  double mutoym[14] = {0};
+  mutoym[1 ] = 0.2001;
+  mutoym[2 ] = 0.1545;
+  mutoym[3 ] = 0.1734;
+  mutoym[4 ] = 0.3098;
+  mutoym[5 ] = 0.4001;
+  mutoym[6 ] = 0.4068;
+  mutoym[7 ] = 0.7785;
+  mutoym[8 ] = 0.4950;
+  mutoym[9 ] = 0.3063;
+  mutoym[10] = 0.3146;
+  mutoym[11] = 0.3719;
+  mutoym[12] = 0.4312;
+  mutoym[13] = 0.4685;
+
+  double muPOGp[14] = {0};
+  muPOGp[1 ] = 0.87;
+  muPOGp[2 ] = 1.12;
+  muPOGp[3 ] = 0.73;
+  muPOGp[4 ] = 0.91;
+  muPOGp[5 ] = 1.00;
+  muPOGp[6 ] = 0.76;
+  muPOGp[7 ] = 0.81;
+  muPOGp[8 ] = 1.11;
+  muPOGp[9 ] = 1.11;
+  muPOGp[10] = 1.01;
+  muPOGp[11] = 2.04;
+  muPOGp[12] = 2.22;
+  muPOGp[13] = 2.20;
+
+  double muPOGm[14] = {0};
+  muPOGm[1 ] = 0.83;
+  muPOGm[2 ] = 0.77;
+  muPOGm[3 ] = 0.82;
+  muPOGm[4 ] = 0.69;
+  muPOGm[5 ] = 1.02;
+  muPOGm[6 ] = 1.19;
+  muPOGm[7 ] = 0.95;
+  muPOGm[8 ] = 0.72;
+  muPOGm[9 ] = 0.79;
+  muPOGm[10] = 1.34;
+  muPOGm[11] = 1.72;
+  muPOGm[12] = 2.87;
+  muPOGm[13] = 2.62;
+
+  double mutotaleffp[14]={0};
+  double mutotaleffm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    mutotaleffp[i]  = sqrt(mutrackp[i] *mutrackp[i] +mutoyp[i] *mutoyp[i] +muidisop[i] *muidisop[i] +muPOGp[i] *muPOGp[i]);
+    mutotaleffm[i]  = sqrt(mutrackm[i] *mutrackm[i] +mutoym[i] *mutoym[i] +muidisom[i] *muidisom[i] +muPOGm[i] *muPOGm[i]);
+  } 
+  
+  cout<<fixed<<setprecision(2);
+  cout<<"WpToMuNu Recon. Syst \t W- Recon.Syst"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< mutotaleffp[i] << "\t" << mutotaleffm[i] <<endl;
+  }
+
+  double mustatp[14] = {0};
+  mustatp[1 ]= 0.9202 ; 
+  mustatp[2 ]= 0.9267 ;
+  mustatp[3 ]= 1.0331 ;
+  mustatp[4 ]= 1.1262 ;
+  mustatp[5 ]= 1.5045 ;
+  mustatp[6 ]= 1.4961 ;
+  mustatp[7 ]= 2.1085 ;
+  mustatp[8 ]= 2.0564 ;
+  mustatp[9 ]= 2.7194 ;
+  mustatp[10]= 5.4584 ;
+  mustatp[11]= 10.5096;
+  mustatp[12]= 18.2816;
+  mustatp[13]= 24.2144;
+
+  double mustatm[14] = {0};
+  mustatm[1 ] = 1.1495 ;
+  mustatm[2 ] = 1.1196 ;
+  mustatm[3 ] = 1.2729 ;
+  mustatm[4 ] = 1.3512 ;
+  mustatm[5 ] = 1.7651 ;
+  mustatm[6 ] = 1.8067 ;
+  mustatm[7 ] = 2.4696 ;
+  mustatm[8 ] = 2.4629 ;
+  mustatm[9 ] = 3.1121 ;
+  mustatm[10] = 6.2686 ;
+  mustatm[11] = 12.1287;
+  mustatm[12] = 16.3956;
+  mustatm[13] = 33.3982;
+
+  double mumetp[14] = {0};
+  mumetp[1 ] = 0.0593; 
+  mumetp[2 ] = 0.0268;
+  mumetp[3 ] = 0.0814;
+  mumetp[4 ] = 0.1138;
+  mumetp[5 ] = 0.1052;
+  mumetp[6 ] = 0.0943;
+  mumetp[7 ] = 0.0808;
+  mumetp[8 ] = 0.0721;
+  mumetp[9 ] = 0.1328;
+  mumetp[10] = 0.2775;
+  mumetp[11] = 0.4882;
+  mumetp[12] = 0.7080;
+  mumetp[13] = 0.8547;
+
+  double mumetm[14] ={0};
+  mumetm[1 ] = 0.0593;
+  mumetm[2 ] = 0.0268;
+  mumetm[3 ] = 0.0815;
+  mumetm[4 ] = 0.1138;
+  mumetm[5 ] = 0.1051;
+  mumetm[6 ] = 0.0944;
+  mumetm[7 ] = 0.0808;
+  mumetm[8 ] = 0.0721;
+  mumetm[9 ] = 0.1328;
+  mumetm[10] = 0.2774;
+  mumetm[11] = 0.4889;
+  mumetm[12] = 0.7099;
+  mumetm[13] = 0.8547;
+
+  double muscalep[14] = {0};
+  muscalep[1 ] = 0.0243; 
+  muscalep[2 ] = 0.0280;
+  muscalep[3 ] = 0.0315;
+  muscalep[4 ] = 0.0391;
+  muscalep[5 ] = 0.0447;
+  muscalep[6 ] = 0.0611;
+  muscalep[7 ] = 0.0915;
+  muscalep[8 ] = 0.1054;
+  muscalep[9 ] = 0.0662;
+  muscalep[10] = 0.1203;
+  muscalep[11] = 0.0534;
+  muscalep[12] = 0.0558;
+  muscalep[13] = 0.0570;
+
+  double muscalem[14] ={0};
+  muscalem[1 ] = 0.0238; 
+  muscalem[2 ] = 0.0309;
+  muscalem[3 ] = 0.0390;
+  muscalem[4 ] = 0.0403;
+  muscalem[5 ] = 0.0431;
+  muscalem[6 ] = 0.0585;
+  muscalem[7 ] = 0.0872;
+  muscalem[8 ] = 0.1253;
+  muscalem[9 ] = 0.0544;
+  muscalem[10] = 0.1214;
+  muscalem[11] = 0.0563;
+  muscalem[12] = 0.0578;
+  muscalem[13] = 0.0586;
+
+  double musmearp[14] ={0};
+  musmearp[1 ] = 0.3902; 
+  musmearp[2 ] = 0.2034;
+  musmearp[3 ] = 0.2562;
+  musmearp[4 ] = 0.3877;
+  musmearp[5 ] = 0.4036;
+  musmearp[6 ] = 0.3791;
+  musmearp[7 ] = 0.6556;
+  musmearp[8 ] = 0.5697;
+  musmearp[9 ] = 0.3184;
+  musmearp[10] = 0.3328;
+  musmearp[11] = 0.4681;
+  musmearp[12] = 0.5542;
+  musmearp[13] = 0.4548;
+
+  double musmearm[14] = {0};
+  musmearm[1 ] = 0.1460; 
+  musmearm[2 ] = 0.0965;
+  musmearm[3 ] = 0.1786;
+  musmearm[4 ] = 0.2578;
+  musmearm[5 ] = 0.2341;
+  musmearm[6 ] = 0.2278;
+  musmearm[7 ] = 0.3668;
+  musmearm[8 ] = 0.5848;
+  musmearm[9 ] = 0.2307;
+  musmearm[10] = 0.3182;
+  musmearm[11] = 0.4379;
+  musmearm[12] = 0.5160;
+  musmearm[13] = 0.5613;
+
+  double muMomResp[14]={0};
+  double muMomResm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    muMomResp[i]  = sqrt(musmearp[i] *musmearp[i] +muscalep[i] *muscalep[i] ); 
+    muMomResm[i]  = sqrt(musmearm[i] *musmearm[i] +muscalem[i] *muscalem[i] ); 
+  }
+  
+  cout<<"WpToMuNu MomRes.Syst \t W- MomRes.Syst"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<muMomResp[i] <<"\t"<< muMomResm[i]<<endl; 
+  } 
+
+  double muqcdbckgrp[14]={0};
+  muqcdbckgrp[1 ] = 1.1888;
+  muqcdbckgrp[2 ] = 1.5950;
+  muqcdbckgrp[3 ] = 1.1278;
+  muqcdbckgrp[4 ] = 1.3924;
+  muqcdbckgrp[5 ] = 1.2443;
+  muqcdbckgrp[6 ] = 2.2605;
+  muqcdbckgrp[7 ] = 1.1487;
+  muqcdbckgrp[8 ] = 1.8617;
+  muqcdbckgrp[9 ] = 0.6912; 
+  muqcdbckgrp[10] = 0.6790;
+  muqcdbckgrp[11] = 0.6995;
+  muqcdbckgrp[12] = 0.7260;
+  muqcdbckgrp[13] = 0.7427;
+ 
+  double muqcdbckgrm[14]={0};
+  muqcdbckgrm[1 ] = 1.2431;
+  muqcdbckgrm[2 ] = 1.4121;
+  muqcdbckgrm[3 ] = 1.3396;
+  muqcdbckgrm[4 ] = 1.0235;
+  muqcdbckgrm[5 ] = 1.1964;
+  muqcdbckgrm[6 ] = 1.9669;
+  muqcdbckgrm[7 ] = 1.0839;
+  muqcdbckgrm[8 ] = 2.3055;
+  muqcdbckgrm[9 ] = 0.8416; 
+  muqcdbckgrm[10] = 0.8401;
+  muqcdbckgrm[11] = 0.8623;
+  muqcdbckgrm[12] = 0.8890;
+  muqcdbckgrm[13] = 0.9061;
+
+  double muqcdshapep[14] = {0};
+  muqcdshapep[1 ] = 0.3729;
+  muqcdshapep[2 ] = 0.4557;
+  muqcdshapep[3 ] = 0.2102;
+  muqcdshapep[4 ] = 0.3853;
+  muqcdshapep[5 ] = 0.4290;
+  muqcdshapep[6 ] = 0.3940;
+  muqcdshapep[7 ] = 0.1659;
+  muqcdshapep[8 ] = 0.2923;
+  muqcdshapep[9 ] = 0.3466; 
+  muqcdshapep[10] = 0.1299;
+  muqcdshapep[11] = 0.8764;
+  muqcdshapep[12] = 0.9405;
+  muqcdshapep[13] = 0.9226;
+ 
+  double muqcdshapem[14] ={0};
+  muqcdshapem[1 ] = 0.1329;
+  muqcdshapem[2 ] = 0.3125;
+  muqcdshapem[3 ] = 0.4215;
+  muqcdshapem[4 ] = 0.3460;
+  muqcdshapem[5 ] = 0.2472;
+  muqcdshapem[6 ] = 0.2124;
+  muqcdshapem[7 ] = 0.1092;
+  muqcdshapem[8 ] = 0.5836;
+  muqcdshapem[9 ] = 0.2582; 
+  muqcdshapem[10] = 0.1055;
+  muqcdshapem[11] = 0.8416;
+  muqcdshapem[12] = 0.8987;
+  muqcdshapem[13] = 0.8923;
+
+  double muewkp[14] ={0};
+  muewkp[1 ] = 0.1660;
+  muewkp[2 ] = 0.1523;
+  muewkp[3 ] = 0.1530;
+  muewkp[4 ] = 0.1462;
+  muewkp[5 ] = 0.1527;
+  muewkp[6 ] = 0.1857;
+  muewkp[7 ] = 0.2406;
+  muewkp[8 ] = 0.2713;
+  muewkp[9 ] = 0.3387; 
+  muewkp[10] = 0.3608;
+  muewkp[11] = 0.3753;
+  muewkp[12] = 0.3940;
+  muewkp[13] = 0.4029;
+ 
+  double muewkm[14] ={0};
+  muewkm[1 ] = 0.2042;
+  muewkm[2 ] = 0.1913;
+  muewkm[3 ] = 0.1806;
+  muewkm[4 ] = 0.1696;
+  muewkm[5 ] = 0.1847;
+  muewkm[6 ] = 0.2389;
+  muewkm[7 ] = 0.2957;
+  muewkm[8 ] = 0.3627;
+  muewkm[9 ] = 0.3358; 
+  muewkm[10] = 0.3494;
+  muewkm[11] = 0.3632;
+  muewkm[12] = 0.3638;
+  muewkm[13] = 0.3680;
+
+  double mufsrp[14] ={0};
+  mufsrp[1 ] = 0.0148003;
+  mufsrp[2 ] = 0.0256613;
+  mufsrp[3 ] = 0.0265483;
+  mufsrp[4 ] = 0.0198106;
+  mufsrp[5 ] = 0.0241401;
+  mufsrp[6 ] = 0.0268263;
+  mufsrp[7 ] = 0.0318734;
+  mufsrp[8 ] = 0.0312375;
+  mufsrp[9 ] = 0.0377605;
+  mufsrp[10] = 0.0228441;
+  mufsrp[11] = 0.0295351;
+  mufsrp[12] = 0.0393;
+  mufsrp[13] = 0.0518017;
+ 
+  double mufsrm[14] ={0};
+  mufsrm[1 ] = 0.0216572;
+  mufsrm[2 ] = 0.0290663;
+  mufsrm[3 ] = 0.0304291;
+  mufsrm[4 ] = 0.0180261;
+  mufsrm[5 ] = 0.0173884;
+  mufsrm[6 ] = 0.0233484;
+  mufsrm[7 ] = 0.0205926;
+  mufsrm[8 ] = 0.0297664;
+  mufsrm[9 ] = 0.0338547;
+  mufsrm[10] = 0.0371577;
+  mufsrm[11] = 0.0485584;
+  mufsrm[12] = 0.042456;
+  mufsrm[13] = 0.0246013;
+
+  double musvdunfp[14] ={0};
+  musvdunfp[1 ] = 0.2036;
+  musvdunfp[2 ] = 0.1786;
+  musvdunfp[3 ] = 0.2121;
+  musvdunfp[4 ] = 0.2623;
+  musvdunfp[5 ] = 0.2858;
+  musvdunfp[6 ] = 0.2961;
+  musvdunfp[7 ] = 0.3214;
+  musvdunfp[8 ] = 0.3971;
+  musvdunfp[9 ] = 0.5205;
+  musvdunfp[10] = 0.6648;
+  musvdunfp[11] = 0.8008;
+  musvdunfp[12] = 0.9051;
+  musvdunfp[13] = 0.9609;
+  
+  double musvdunfm[14] ={0};
+  musvdunfm[1 ] = 0.1421;
+  musvdunfm[2 ] = 0.1275;
+  musvdunfm[3 ] = 0.1514;
+  musvdunfm[4 ] = 0.1769;
+  musvdunfm[5 ] = 0.1907;
+  musvdunfm[6 ] = 0.2037;
+  musvdunfm[7 ] = 0.2255;
+  musvdunfm[8 ] = 0.2802;
+  musvdunfm[9 ] = 0.3717;
+  musvdunfm[10] = 0.4873;
+  musvdunfm[11] = 0.6025;
+  musvdunfm[12] = 0.6930;
+  musvdunfm[13] = 0.7420;
+
+  double muBiasp[14] = {0};
+  muBiasp[1 ] = 0.9022;
+  muBiasp[2 ] = 0.6571;
+  muBiasp[3 ] = 1.1301;
+  muBiasp[4 ] = 3.3043;
+  muBiasp[5 ] = 2.7469;
+  muBiasp[6 ] = 3.0764;
+  muBiasp[7 ] = 3.2467;
+  muBiasp[8 ] = 5.5057;
+  muBiasp[9 ] = 5.3121;
+  muBiasp[10] = 1.8476;
+  muBiasp[11] = 1.6692;
+  muBiasp[12] = 4.4869;
+  muBiasp[13] = 5.9061;
+ 
+  double muBiasm[14]={0};
+  muBiasm[1 ] = 0.4327;
+  muBiasm[2 ] = 0.7800;
+  muBiasm[3 ] = 0.3212;
+  muBiasm[4 ] = 2.2542;
+  muBiasm[5 ] = 2.3913;
+  muBiasm[6 ] = 3.4663;
+  muBiasm[7 ] = 3.1813;
+  muBiasm[8 ] = 4.2104;
+  muBiasm[9 ] = 3.7714;
+  muBiasm[10] = 1.8951;
+  muBiasm[11] = 2.5063;
+  muBiasm[12] = 4.7858;
+  muBiasm[13] = 6.1218;
+/*
+  double muWptCorrp[14] = {0};
+  muWptCorrp[1 ] = 0.434398;
+  muWptCorrp[2 ] = 0.102483;
+  muWptCorrp[3 ] = 0.636979;
+  muWptCorrp[4 ] = 0.806102;
+  muWptCorrp[5 ] = 0.576642;
+  muWptCorrp[6 ] = 0.156077;
+  muWptCorrp[7 ] = 0.223734;
+  muWptCorrp[8 ] = 0.446839;
+  muWptCorrp[9 ] = 0.504610;
+  muWptCorrp[10] = 0.471174;
+  muWptCorrp[11] = 0.408033;
+  muWptCorrp[12] = 0.350842;
+  muWptCorrp[13] = 0.318765;
+
+  double muWptCorrm[14] ={0};
+  muWptCorrm[1 ] = 0.499474;
+  muWptCorrm[2 ] = 0.00656399;
+  muWptCorrm[3 ] = 0.493798;
+  muWptCorrm[4 ] = 0.671649;
+  muWptCorrm[5 ] = 0.486533;
+  muWptCorrm[6 ] = 0.101952;
+  muWptCorrm[7 ] = 0.287443;
+  muWptCorrm[8 ] = 0.561686;
+  muWptCorrm[9 ] = 0.683695;
+  muWptCorrm[10] = 0.702180;
+  muWptCorrm[11] = 0.676472;
+  muWptCorrm[12] = 0.643882;
+  muWptCorrm[13] = 0.624098; 
+
+  for(int i(1);i<14;i++)
+  {
+    muBiasp[i] = sqrt(muBiasp[i] * muBiasp[i] + muWptCorrp[i] * muWptCorrp[i]) ; 
+    muBiasm[i] = sqrt(muBiasm[i] * muBiasm[i] + muWptCorrm[i] * muWptCorrm[i]) ; 
+  }
+  */
+  cout<<"UnfBias W+ \t UnfBias W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<muBiasp[i] << "\t" << muBiasm[i] <<endl;
+  } 
+
+  double systtotalp[14] = {0};
+  double systtotalm[14] = {0};
+  for(int i(1);i<14;i++)
+  {
+    systtotalp[i] =sqrt(mutotaleffp[i] *mutotaleffp[i] +mumetp[i] *mumetp[i] +muMomResp[i] *muMomResp[i] +muqcdshapep[i] *muqcdshapep[i] +muqcdbckgrp[i] *muqcdbckgrp[i] + muewkp[i] *muewkp[i]  +muBiasp[i] *muBiasp[i] +musvdunfp[i] *musvdunfp[i]  +mufsrp[i] *mufsrp[i] + 2.6*2.6);
+    systtotalm[i] =sqrt(mutotaleffm[i] *mutotaleffm[i] +mumetm[i] *mumetm[i] +muMomResm[i] *muMomResm[i] +muqcdshapem[i] *muqcdshapem[i] +muqcdbckgrm[i] *muqcdbckgrm[i] + muewkm[i] *muewkm[i]  +muBiasm[i] *muBiasm[i] +musvdunfm[i] *musvdunfm[i]  +mufsrm[i] *mufsrm[i] + 2.6*2.6);
+  }
+
+  double totaluncerp[14]={0};
+  double totaluncerm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    totaluncerp[i] = sqrt(mustatp[i] *mustatp[i] +systtotalp[i] *systtotalp[i]);
+    totaluncerm[i] = sqrt(mustatm[i] *mustatm[i] +systtotalm[i] *systtotalm[i]);
+  }
+  
+  //*
+  cout<<"W+ Total Syst \t W- Total Syst"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<systtotalp[i] << "\t" << systtotalm[i]<<endl;
+  }
+
+  cout<<"W+ Total Unc \t W- Total Unc"<<endl;
+  for(int i(1);i<14;i++)
+  {
+  cout<<totaluncerp[i] << "\t" << totaluncerm[i]<<endl;
+  }
+ // */
+  
+  
+  // Make Inclusive root file
+  double muEffErrp[14]={0};
+  double muEffErrm[14]={0};
+  double muEffErri[14]={0};
+  cout <<"W+ EffErr \t W- EffErr \t W EffErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muEffErrp[i] = h_data_p->GetBinContent(i)*0.01*mutotaleffp[i];
+    muEffErrm[i] = h_data_m->GetBinContent(i)*0.01*mutotaleffm[i];
+    muEffErri[i] = sqrt(muEffErrp[i]*muEffErrp[i] + muEffErrm[i]*muEffErrm[i]);
+    cout << muEffErrp[i] << "\t" << muEffErrm[i] << "\t" << muEffErri[i] << endl;
+  }
+
+  double muMomResErrp[14]={0};
+  double muMomResErrm[14]={0};
+  double muMomResErri[14]={0};
+  cout <<"W+ MomResErr \t W- MomResErr \t W EffErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muMomResErrp[i] = h_data_p->GetBinContent(i)*0.01*muMomResp[i];
+    muMomResErrm[i] = h_data_m->GetBinContent(i)*0.01*muMomResm[i];
+    muMomResErri[i] = sqrt(muMomResErrp[i]*muMomResErrp[i] + muMomResErrm[i]*muMomResErrm[i]);
+    cout << muMomResErrp[i] << "\t" << muMomResErrm[i] << "\t" << muMomResErri[i]<<endl;
+  }
+
+  double muMetErrp[14]={0};
+  double muMetErrm[14]={0};
+  double muMetErri[14]={0};
+  cout <<"W+ MetErr \t W- MetErr \t W MetErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muMetErrp[i] = h_data_p->GetBinContent(i)*0.01*mumetp[i];
+    muMetErrm[i] = h_data_m->GetBinContent(i)*0.01*mumetm[i];
+    muMetErri[i] = sqrt(muMetErrp[i]*muMetErrp[i] + muMetErrm[i]*muMetErrm[i]);
+    cout << muMetErrp[i] << "\t" << muMetErrm[i] <<"\t" << muMetErri[i]<<endl;
+  }
+  
+  double muQCDBckErrp[14]={0};
+  double muQCDBckErrm[14]={0};
+  double muQCDBckErri[14]={0};
+  cout <<"W+ QCDBckErr \t W- QCDBckErr \t W QCDBckErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muQCDBckErrp[i] = h_data_p->GetBinContent(i)*0.01*muqcdbckgrp[i];
+    muQCDBckErrm[i] = h_data_m->GetBinContent(i)*0.01*muqcdbckgrm[i];
+    muQCDBckErri[i] = sqrt(muQCDBckErrp[i]*muQCDBckErrp[i] + muQCDBckErrm[i]*muQCDBckErrm[i]);
+    cout << muQCDBckErrp[i] << "\t" << muQCDBckErrm[i] <<"\t" << muQCDBckErri[i] <<endl;
+  }
+  
+  double muQCDShapeErrp[14]={0};
+  double muQCDShapeErrm[14]={0};
+  double muQCDShapeErri[14]={0};
+  cout <<"W+ QCDShapeErr \t W- QCDShapeErr \t W QCDShapeErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muQCDShapeErrp[i] = h_data_p->GetBinContent(i)*0.01*muqcdshapep[i];
+    muQCDShapeErrm[i] = h_data_m->GetBinContent(i)*0.01*muqcdshapem[i];
+    muQCDShapeErri[i] = sqrt(muQCDShapeErrp[i]*muQCDShapeErrp[i] + muQCDShapeErrm[i]*muQCDShapeErrm[i]);
+    cout << muQCDShapeErrp[i] << "\t" << muQCDShapeErrm[i] <<"\t" << muQCDShapeErri[i] <<endl;
+  }
+  
+  double muEWKErrp[14]={0};
+  double muEWKErrm[14]={0};
+  double muEWKErri[14]={0};
+  cout <<"W+ EWKErr \t W- EWKErr \t W EWKKErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muEWKErrp[i] = h_data_p->GetBinContent(i)*0.01*muewkp[i];
+    muEWKErrm[i] = h_data_m->GetBinContent(i)*0.01*muewkm[i];
+    muEWKErri[i] = sqrt(muEWKErrp[i]*muEWKErrp[i] + muEWKErrm[i]*muEWKErrm[i]);
+    cout << muEWKErrp[i] << "\t" << muEWKErrm[i] <<"\t" << muEWKErri[i] <<endl;
+  }
+  
+  double muSVDUnfErrp[14]={0};
+  double muSVDUnfErrm[14]={0};
+  double muSVDUnfErri[14]={0};
+  cout <<"W+ SVDUnfErr \t W- SVDUnfErr \t W SVDUnfErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muSVDUnfErrp[i] = h_data_p->GetBinContent(i)*0.01*musvdunfp[i];
+    muSVDUnfErrm[i] = h_data_m->GetBinContent(i)*0.01*musvdunfm[i];
+    muSVDUnfErri[i] = sqrt(muSVDUnfErrp[i]*muSVDUnfErrp[i] + muSVDUnfErrm[i]*muSVDUnfErrm[i]);
+    cout << muSVDUnfErrp[i] << "\t" << muSVDUnfErrm[i] <<"\t" << muSVDUnfErri[i] <<endl;
+  }
+  
+  double muFSRErrp[14]={0};
+  double muFSRErrm[14]={0};
+  double muFSRErri[14]={0};
+  cout <<"W+ FSRErr \t W- FSRErr \t W FSRErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muFSRErrp[i] = h_data_p->GetBinContent(i)*0.01*mufsrp[i];
+    muFSRErrm[i] = h_data_m->GetBinContent(i)*0.01*mufsrm[i];
+    muFSRErri[i] = sqrt(muFSRErrp[i]*muFSRErrp[i] + muFSRErrm[i]*muFSRErrm[i]);
+    cout << muFSRErrp[i] << "\t" << muFSRErrm[i] <<"\t" << muFSRErri[i] <<endl;
+  }
+  
+  double muLumiErrp[14]={0};
+  double muLumiErrm[14]={0};
+  double muLumiErri[14]={0};
+  cout <<"W+ LumiErr \t W- LumiErr \t W LumiErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muLumiErrp[i] = h_data_p->GetBinContent(i)*0.01*2.6;
+    muLumiErrm[i] = h_data_m->GetBinContent(i)*0.01*2.6;
+    muLumiErri[i] = sqrt(muLumiErrp[i]*muLumiErrp[i] + muLumiErrm[i]*muLumiErrm[i]);
+    cout << muLumiErrp[i] << "\t" << muLumiErrm[i] <<"\t" << muLumiErri[i] <<endl;
+  }
+  
+  double muUnfBiasErrp[14]={0};
+  double muUnfBiasErrm[14]={0};
+  double muUnfBiasErri[14]={0};
+  cout <<"W+ UnfBiasErr \t W- UnfBiasErr \t W UnfBiasErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muUnfBiasErrp[i] = h_data_p->GetBinContent(i)*0.01*muBiasp[i];
+    muUnfBiasErrm[i] = h_data_m->GetBinContent(i)*0.01*muBiasm[i];
+    muUnfBiasErri[i] = sqrt(muUnfBiasErrp[i]*muUnfBiasErrp[i] + muUnfBiasErrm[i]*muUnfBiasErrm[i]);
+    cout << muUnfBiasErrp[i] << "\t" << muUnfBiasErrm[i] <<"\t" << muUnfBiasErri[i] <<endl;
+  }
+  
+  double muStatErrp[14]={0};
+  double muStatErrm[14]={0};
+  double muStatErri[14]={0};
+  cout <<"W+ StatErr \t W- StatErr \t W StatErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muStatErrp[i] = h_data_p->GetBinContent(i)*0.01*mustatp[i];
+    muStatErrm[i] = h_data_m->GetBinContent(i)*0.01*mustatm[i];
+    muStatErri[i] = sqrt(muStatErrp[i]*muStatErrp[i] + muStatErrm[i]*muStatErrm[i]);
+    cout << muStatErrp[i] << "\t" << muStatErrm[i] <<"\t" << muStatErri[i] <<endl;
+  }
+  
+  double muTotalSystErri[14]={0};
+  cout <<" Wincl TotalSyst" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muTotalSystErri[i] = sqrt(muEffErri[i]*muEffErri[i] + muMomResErri[i]*muMomResErri[i]+muMetErri[i]*muMetErri[i]+ muQCDBckErri[i]*muQCDBckErri[i] + muQCDShapeErri[i]*muQCDShapeErri[i]+ muEWKErri[i]*muEWKErri[i] + muSVDUnfErri[i]*muSVDUnfErri[i] + muFSRErri[i]*muFSRErri[i]+ muLumiErri[i]*muLumiErri[i] + muUnfBiasErri[i]*muUnfBiasErri[i]+ muStatErri[i]*muStatErri[i]);
+    cout << muTotalSystErri[i] <<endl;
+  }
+ 
+  TFile f_out("Result_WinclMu.root","recreate");
+  TH1D* BornEffCorr = new TH1D("BornEffCorr","BornEffCorr",13,0,13);
+  TH1D* SVD_BornGen = new TH1D("SVD_BornGen","SVD_BornGen",13,0,13);SVD_BornGen->Sumw2();
+  TH1D* data_Rec = new TH1D("data_Rec","data_Rec",13,0,13);data_Rec->Sumw2();
+    
+    for(int i(1);i<14;i++)
+    {
+      BornEffCorr->SetBinContent(i,h_data_p->GetBinContent(i) + h_data_m->GetBinContent(i));
+      BornEffCorr->SetBinError(i,muTotalSystErri[i]);
+      SVD_BornGen->SetBinContent(i,h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i));
+      data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
+    }
+    BornEffCorr->Write();
+    SVD_BornGen->Write();
+    data_Rec->Write();
 }
