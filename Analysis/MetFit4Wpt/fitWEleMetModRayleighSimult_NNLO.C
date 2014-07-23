@@ -2091,9 +2091,9 @@ void fitWEleMetModRayleighSimult_NNLO(const TString  outputDir,   // output dire
       }
 
     if (ipt==0)
-      sprintf(binlabel,"0 < p_{T} < 600");
+      sprintf(binlabel,"0 < p_{T} < 600 (GeV)");
     else
-      sprintf(binlabel,"%.1f < p_{T} < %.1f",WptBins[ipt-1],WptBins[ipt]);
+      sprintf(binlabel,"%.1f < p_{T} < %.1f (GeV)",WptBins[ipt-1],WptBins[ipt]);
 
     //-------------------------------------------------
     // Make MET Fit plots 
