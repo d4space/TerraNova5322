@@ -272,7 +272,7 @@ void Wlnu12LoBase::Init(TTree *tree)
   WPtCorrRoot = new TFile("../RstSelection/WpT_Data_MC_ratio_20140629.root");
   TH1D* h_WPtWeight;
 
-  if (Mode == "SmeaRecEffCorr")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  if (Mode == "Unfold" || Mode == "Acceptance")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
   {
     if(WCHARGE == 1)
     {
@@ -316,7 +316,7 @@ void Wlnu12LoBase::Init(TTree *tree)
   WPtPostFSRCorrRoot = new TFile("../RstSelection/WpT_PostFSRData_MC_ratio.root");
   TH1D* h_WPtPostFSRWeight;
 
-  if (Mode == "SmeaRecEffCorr")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  if (Mode == "Unfold" || Mode == "Acceptance")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
   {
     if(WCHARGE == 1)
     {
@@ -361,7 +361,7 @@ void Wlnu12LoBase::Init(TTree *tree)
   WPtFSRCorrRoot = new TFile("../RstSelection/WpT_FSRData_MC_ratio.root");
   TH1D* h_WPtFSRWeight;
 
-  if (Mode == "SmeaRecEffCorr")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  if (Mode == "Unfold" || Mode == "Acceptance")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
   {
     if(WCHARGE == 1)
     {
@@ -405,7 +405,7 @@ void Wlnu12LoBase::Init(TTree *tree)
   WPtFitDetUnfCorrRoot = new TFile("../RstSelection/WpT_FitDetUnfData_MC_ratio.root");
   TH1D* h_WPtFitDetUnfWeight;
 
-  if (Mode == "SmeaRecEffCorr")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
+  if (Mode == "Unfold" || Mode == "Acceptance")if(AnaChannel == "Muon2012LoPU")//Muon ===========================================
   {
     if(WCHARGE == 1)
     {
