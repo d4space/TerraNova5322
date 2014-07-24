@@ -22,7 +22,7 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   
   StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
   StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
-
+  
   //lHDiff->GetYaxis()->SetRangeUser(0.6,1.6); //Wplus
   lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Eleminus
   //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Muminus
@@ -33,7 +33,8 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   if(chnl==3)
     //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
-    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
+    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
+    lHDiff->GetYaxis()->SetRangeUser(0.45,1.45);
   lHDiff->GetYaxis()->SetTitleOffset(0.4);
   lHDiff->GetYaxis()->SetTitleSize(0.12);
   lHDiff->GetYaxis()->SetLabelSize(0.12);
@@ -45,7 +46,8 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
     lHDiff->GetXaxis()->SetLabelSize(0.12);
   lHDiff->GetYaxis()->SetNdivisions(405);
   if(chnl==3)
-    lHDiff->GetXaxis()->SetTitle(" W p_{T} ");
+    //lHDiff->GetXaxis()->SetTitle(" W p_{T} ");
+    lHDiff->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   lHDiff->GetYaxis()->SetTitle("Theory/Data");
   //lHDiff->GetYaxis()->SetTitle("Data/ResBos");
   gStyle->SetOptStat(0);
@@ -85,7 +87,8 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   }
   
   lHDiff->SetMarkerSize(0.8);
-  
+
+
   //lHDiff->SetLineColor(kBlack); lHDiff->SetMarkerColor(kBlack);
   
   lHDiff->SetTitle("");
@@ -330,16 +333,17 @@ int theoryStudy_separate(const TString BaseName)
 
   //TLegend *lL =new TLegend(0.6,0.65,0.92,0.85); lL->SetFillColor(0); lL->SetBorderSize(0);
   TLegend *lL =new TLegend(0.2,0.2,0.52,0.38); lL->SetFillColor(0); lL->SetBorderSize(0);
-  lL->AddEntry(hData,"Unfolded","PL");
-  lL->AddEntry(hPowheg,"Powheg CT10 NLO","f");
+  //lL->AddEntry(hData,"Unfolded","PL");
+  lL->AddEntry(hData,"data","PL");
+  lL->AddEntry(hPowheg,"POWHEG CT10 NLO","f");
   lL->AddEntry(hFewz,"FEWZ CT10 NNLO","f");
-  lL->AddEntry(hResbos,"ResBos CT10 NNLO","f");
+  lL->AddEntry(hResbos,"ResBos CT10 NNLL","f");
 
   //TPaveText *tb = new TPaveText(0.6,0.44,0.9,0.58,"NDC");
   TPaveText *tb = new TPaveText(0.2,0.39,0.52,0.5,"NDC");
   tb->SetBorderSize(0);
   tb->SetFillStyle(0);
-  tb->AddText("18.43 pb^{-1} at #sqrt{s} = 8 TeV");
+  tb->AddText("18.4 pb^{-1} at #sqrt{s} = 8 TeV");
   if (BaseName=="WpToMuNu")
     tb->AddText("W^{+} #rightarrow #mu^{+} #nu");
   if (BaseName=="WmToMuNu")
@@ -370,16 +374,24 @@ int theoryStudy_separate(const TString BaseName)
 
   hPowheg->GetYaxis()->SetRangeUser(1e-4,5*resb30[0]);
   hPowheg->SetTitle("");
-  hPowheg->GetYaxis()->SetTitle("Cross-section [pb (GeV/c)^{-1}]");
-  hPowheg->GetXaxis()->SetTitle("W p_{T}");
-  hPowheg->GetYaxis()->SetTitleOffset(1.2);
+  //hPowheg->GetYaxis()->SetTitle("Cross-section [pb (GeV/c)^{-1}]");
+  hPowheg->GetYaxis()->SetTitle("d#sigma/dp_{T}^{W} [pb/GeV]");
+  //hPowheg->GetYaxis()->SetTitleOffset(1.2);
+  //hPowheg->GetXaxis()->SetTitle("W p_{T}");
+  hPowheg->GetYaxis()->SetTitleOffset(1.8);
+  hPowheg->GetXaxis()->SetTitle("p_{T}^{W} [GeV]");
   
+  TPaveText *cmspre = new TPaveText(0.63,0.95,0.95,0.99,"NDC");
+  cmspre->SetBorderSize(0);
+  cmspre->SetFillStyle(0);
+  cmspre->AddText("CMS Preliminary");
   hPowheg->Draw("A2");
   hFewz->Draw("2");
   hResbos->Draw("2");
   hData->Draw("p");
   lL->Draw();
   tb->Draw();
+  cmspre->Draw();
   
   if(BaseName=="WpToMuNu")
     sprintf(tmpName,"wpmnCrossSec.png");
@@ -394,7 +406,8 @@ int theoryStudy_separate(const TString BaseName)
   TCanvas *lC2 = new TCanvas("Can","Can",800,800); lC2->cd(); lC2->SetLogy();
   lC2->Divide(1,3,0,0);
   lC2->cd(1)->SetPad(0,0.67,0.95,0.95);
-  lC2->cd(1)->SetTopMargin(0.05);
+  //lC2->cd(1)->SetTopMargin(0.05);
+  lC2->cd(1)->SetTopMargin(0.15);
   lC2->cd(1)->SetBottomMargin(0.01);
   lC2->cd(1)->SetLeftMargin(0.15);
   lC2->cd(1)->SetRightMargin(0.07);
@@ -402,21 +415,58 @@ int theoryStudy_separate(const TString BaseName)
   lC2->cd(1)->SetTicky(1);
   lC2->cd(1)->SetLogx(1);
 
-  TPaveText *tb1 = new TPaveText(0.15,0.82,0.35,0.92,"NDC");
+  TPaveText *tb1 = new TPaveText(0.15,0.72,0.35,0.82,"NDC");
   tb1->SetBorderSize(0);
   tb1->SetFillStyle(0);
   tb1->SetTextSize(0.12);
   tb1->AddText("ResBos");
-  TLegend *rL1 =new TLegend(0.2,0.05,0.86,0.15); rL1->SetFillColor(0); rL1->SetBorderSize(0);
-  rL1-> SetNColumns(3);
-  rL1->AddEntry(ResbosErrBand,"Theory unc. (gen)","F");
-  rL1->AddEntry(hStatErr,"Statistic error (data)","PLE1");
-  rL1->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  //TLegend *rL1 =new TLegend(0.2,0.05,0.86,0.15); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  TLegend *rL1 =new TLegend(0.2,0.1,0.58,0.30); rL1->SetFillColor(0); rL1->SetBorderSize(0);
+  rL1-> SetNColumns(2);
+  //rL1->AddEntry(ResbosErrBand,"Theory unc. (gen)","F");
+  rL1->AddEntry(ResbosErrBand,"Theory syst","F");
+  //rL1->AddEntry(hStatErr,"Statistic error (data)","PLE1");
+  rL1->AddEntry(hStatErr,"Data stat","PLE1");
+  hStatErr->SetTitle("");
+  rL1->AddEntry(hStatErr,"","");
+  //rL1->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  rL1->AddEntry(dataErrBand,"Data stat+syst","F");
   rL1->SetTextSize(0.07);
+  
+  TLegend *tL1 =new TLegend(0.17,0.72,0.37,0.82); tL1->SetFillColor(0); tL1->SetBorderSize(0);
+  tL1->AddEntry(ResbosErrBand,"ResBos","F");
+  tL1->SetTextSize(0.12);
+  tL1->SetTextFont(2);
 
+  TPaveText *cmspre2 = new TPaveText(0.05,0.92,0.85,0.99,"NDC");
+  cmspre2->SetBorderSize(0);
+  cmspre2->SetFillStyle(0);
+  cmspre2->SetTextSize(0.10);
+  cmspre2->AddText("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8 TeV");
+
+  TPaveText *tb4 = new TPaveText(0.35,0.72,0.67,0.83,"NDC");
+  tb4->SetBorderSize(0);
+  tb4->SetFillStyle(0);
+  if (BaseName=="WpToMuNu")
+    tb4->AddText("W^{+} #rightarrow #mu^{+} #nu");
+  if (BaseName=="WmToMuNu")
+    tb4->AddText("W^{-} #rightarrow #mu^{-} #bar{#nu}");
+  if (BaseName=="WInclToMuNu")
+    tb4->AddText("W #rightarrow #mu #nu");
+  if (BaseName=="WpToEleNu")
+    tb4->AddText("W^{+} #rightarrow e^{+} #nu");
+  if (BaseName=="WmToEleNu")
+    tb4->AddText("W^{-} #rightarrow e^{-} #bar{#nu}");
+  if (BaseName=="WInclToEleNu")
+    tb4->AddText("W #rightarrow e #nu");
+  
+  
   drawDifference(hResbosLog30,hDataLog,hDataErrBand,pRatio,1,pRatio,ResbosErrBand,hStatErr,fScaleRatio);
   rL1->Draw();
-  tb1->Draw();
+  //tb1->Draw();
+  tL1->Draw();
+  tb4->Draw();
+  cmspre2->Draw();
 
   lC2->cd(2)->SetPad(0,0.37,0.95,0.65);
   lC2->cd(2)->SetTopMargin(0.01);
@@ -434,15 +484,25 @@ int theoryStudy_separate(const TString BaseName)
   tb2->AddText("Powheg");
   TLegend *rL2 =new TLegend(0.2,0.05,0.68,0.30); rL2->SetFillColor(0); rL2->SetBorderSize(0);
   rL2-> SetNColumns(2);
-  rL2->AddEntry(pRatioPDF,"PDF unc. (gen)","F");
-  rL2->AddEntry(hStatErr,"Statistic error (data)","PLE1");
-  rL2->AddEntry(pRatio,"Statistical unc. (gen)","F");
-  rL2->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  //rL2->AddEntry(pRatioPDF,"PDF unc. (gen)","F");
+  rL2->AddEntry(pRatioPDF,"PDF    ","F");
+  //rL2->AddEntry(hStatErr,"Statistic error (data)","PLE1");
+  rL2->AddEntry(hStatErr,"Data stat","PLE1");
+  //rL2->AddEntry(pRatio,"Statistical unc. (gen)","F");
+  rL2->AddEntry(pRatio,"stat","F");
+  //rL2->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  rL2->AddEntry(dataErrBand,"Data stat+syst","F");
   rL2->SetTextSize(0.07);
 
+  TLegend *tL2 =new TLegend(0.17,0.85,0.37,0.95); tL2->SetFillColor(0); tL2->SetBorderSize(0);
+  tL2->AddEntry(pRatioPDF,"POWHEG","F");
+  tL2->SetTextSize(0.12);
+  tL2->SetTextFont(2);
+  
   drawDifference(hPowhegLog,hDataLog,hDataErrBand,pRatio,2,pRatioPDF,ResbosErrBand,hStatErr,fScaleRatio);
   rL2->Draw();
-  tb2->Draw();
+  //tb2->Draw();
+  tL2->Draw();
 
   lC2->cd(3)->SetPad(0,0.07,0.95,0.35);
   lC2->cd(3)->SetTopMargin(0.01);
@@ -458,20 +518,31 @@ int theoryStudy_separate(const TString BaseName)
   tb3->SetFillStyle(0);
   tb3->SetTextSize(0.12);
   tb3->AddText("Fewz");
-  TLegend *rL3 =new TLegend(0.2,0.1,0.68,0.30); rL3->SetFillColor(0); rL3->SetBorderSize(0);
+  TLegend *rL3 =new TLegend(0.2,0.1,0.58,0.30); rL3->SetFillColor(0); rL3->SetBorderSize(0);
   rL3-> SetNColumns(2);
-  rL3->AddEntry(fTheoryRatio,"PDF unc. (gen)","F");
-  rL3->AddEntry(fScaleRatio,"Scale unc. (gen)","F");
-  rL3->AddEntry(hStatErr,"Statistic error (data)","PLE1");
-  rL3->AddEntry(fRatio,"Statistical unc. (gen)","F");
-  rL3->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  //rL3->AddEntry(fTheoryRatio,"PDF unc. (gen)","F");
+  rL3->AddEntry(fTheoryRatio,"PDF","F");
+  //rL3->AddEntry(hStatErr,"Statistic error (data)","PLE1");
+  rL3->AddEntry(hStatErr,"Data stat","PLE1");
+  //rL3->AddEntry(fScaleRatio,"Scale unc. (gen)","F");
+  rL3->AddEntry(fScaleRatio,"QCD scales","F");
+  //rL3->AddEntry(dataErrBand,"Stat. + Syst. (data)","F");
+  rL3->AddEntry(dataErrBand,"Data stat+syst","F");
+  //rL3->AddEntry(fRatio,"Statistical unc. (gen)","F");
+  rL3->AddEntry(fRatio,"stat","F");
   rL3->SetTextSize(0.07);
 
+  TLegend *tL3 =new TLegend(0.17,0.85,0.37,0.95); tL3->SetFillColor(0); tL3->SetBorderSize(0);
+  tL3->AddEntry(fTheoryRatio,"FEWZ","F");
+  tL3->SetTextSize(0.12);
+  tL3->SetTextFont(2);
+  
   //drawDifferencefewz(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr,fScaleRatio);
   //drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr);
   drawDifference(hFewzLog,hDataLog,hDataErrBand,fRatio,3,fTheoryRatio,ResbosErrBand,hStatErr,fScaleRatio);
   rL3->Draw();
-  tb3->Draw();
+  //tb3->Draw();
+  tL3->Draw();
 
   if(BaseName=="WpToMuNu")
     sprintf(tmpName,"wpmnRatioTheoData.png");
