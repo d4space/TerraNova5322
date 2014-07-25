@@ -19,59 +19,58 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   CPlot::sOutDir = outputDir;  
   if (Mode=="Muon")
      {
-     if (filetype=="Inclusive")
+     if (filetype=="NoCorrWholeZ")
      {
-     f_Org  = new TFile("MuonLowPU/Muon_WToMuNu_S8_Analysis.root");
-     f_Corr = new TFile("MuonLowPU/Muon_WToMuNu_S8_Nom_RecoilCorr.root");
-     f_Up   = new TFile("MuonLowPU/Muon_WToMuNu_S8_Up_RecoilCorr.root");
-     f_Down = new TFile("MuonLowPU/Muon_WToMuNu_S8_Down_RecoilCorr.root");
+    f_Org  = new TFile("Muon2012LoPU/Muon_DYToMuMu_S8.root");
+    f_Corr = new TFile("Muon2012LoPU/Muon_RD_LowPU.root");
      }
-  else if (filetype=="Plus")
+  else if (filetype=="CorrWholeZ")
     {
-    f_Org  = new TFile("MuonLowPU/Muon_WpToMuNu_S8_Analysis.root");
-    f_Corr = new TFile("MuonLowPU/Muon_WpToMuNu_S8_RecoilCorr.root");
+    f_Org  = new TFile("Muon2012LoPU/Muon_DYToMuMu_S8.root");
+    f_Corr = new TFile("Muon2012LoPU/Muon_RD_LowPU.root");
     }
-  else if (filetype=="Minus")
+  else if (filetype=="CorrBB")
     {
-    f_Org  = new TFile("MuonLowPU/Muon_WmToMuNu_S8_Analysis.root");
-    f_Corr = new TFile("MuonLowPU/Muon_WmToMuNu_S8_RecoilCorr.root");
+    f_Org  = new TFile("Muon2012LoPU/Muon_DYToMuMu_S8.root");
+    f_Corr = new TFile("Muon2012LoPU/Muon_RD_LowPU.root");
+    }
+  else if (filetype=="CorrBE")
+    {
+    f_Org  = new TFile("Muon2012LoPU/Muon_DYToMuMu_S8.root");
+    f_Corr = new TFile("Muon2012LoPU/Muon_RD_LowPU.root");
+    }
+  else if (filetype=="CorrEE")
+    {
+    f_Org  = new TFile("Muon2012LoPU/Muon_DYToMuMu_S8.root");
+    f_Corr = new TFile("Muon2012LoPU/Muon_RD_LowPU.root");
     }
     }
   else if (Mode=="Electron")
     {
-    if (filetype=="Inclusive")
+    if (filetype=="NoCorrWholeZ")
     {
-    f_Org  = new TFile("ElectronLowPU/Ele_WToEleNu_S8_Analysis.root");
-    f_Corr = new TFile("ElectronLowPU/Ele_WToEleNu_S8_Nom_RecoilCorr.root");
-    f_Up   = new TFile("ElectronLowPU/Ele_WToEleNu_S8_Up_RecoilCorr.root");
-    f_Down = new TFile("ElectronLowPU/Ele_WToEleNu_S8_Down_RecoilCorr.root");
-    }
-  else if (filetype=="Plus")
-    {
-  //  f_Org  = new TFile("ElectronLowPU/Ele_WpToEleNu_S8_Analysis.root");
-  //  f_Corr = new TFile("ElectronLowPU/Ele_WpToEleNu_S8_RecoilCorr.root");
-    
     f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
     f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
-    
-    //f_Org = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
-    //f_Corr  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
     }
-  else if (filetype=="Minus")
+  else if (filetype=="CorrWholeZ")
     {
-  //  f_Org  = new TFile("ElectronLowPU/Ele_WmToEleNu_S8_Analysis.root");
-  //  f_Corr = new TFile("ElectronLowPU/Ele_WmToEleNu_S8_RecoilCorr.root");
-  
-    // Ele
-    f_Org  = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
-   		// f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
-   		// f_Corr = new TFile("ElectronLowPU/Ele_DYToEE_S8_ScaleMakeMC_Eta_0.root");
-    f_Corr = new TFile("ElectronLowPU/Ele_RD_LowPU_ScaleMakeRD_Eta_0.root");
-  
-    // Muon
-    //f_Org  = new TFile("MuonLowPU/Muon_DYToMuMu_S8_ScaleMakeMC_Eta_0.root");
-    //f_Corr = new TFile("MuonLowPU/Muon_RD_LowPU_ScaleMakeRD_Eta_0.root");
-    
+    f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
+    f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
+    }
+  else if (filetype=="CorrBB")
+    {
+    f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
+    f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
+    }
+  else if (filetype=="CorrBE")
+    {
+    f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
+    f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
+    }
+  else if (filetype=="CorrEE")
+    {
+    f_Org  = new TFile("Electron2012LoPU/Ele_DYToEE_S8.root");
+    f_Corr = new TFile("Electron2012LoPU/Ele_RD_LowPU.root");
     }
     }
   TH1D *hCorrDiff;
@@ -157,10 +156,44 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
 //  sprintf(histNameCorrNew,"h1_W_Neu_pt_%d_Corr",i);
   
   //sprintf(histNameOrg,"h1_ZmassCorr_BB");
-  sprintf(histNameOrg,"h1_ZmassCorr_EE");
-  sprintf(histNameOrgNew,"h1_Zmass_Org");
-  sprintf(histNameCorrNew,"h1_Zmass_EE");
-  
+  //sprintf(histNameOrg,"h1_ZmassCorr_EE");
+  //sprintf(histNameOrgNew,"h1_Zmass_Org");
+  //sprintf(histNameCorrNew,"h1_Zmass_EE");
+ 
+
+  if (filetype=="NoCorrWholeZ")
+  {
+    sprintf(histNameOrg,"h1_Zmass");
+    sprintf(histNameOrgNew,"h1_Zmass_Org");
+    sprintf(histNameCorrNew,"h1_Zmass");
+  }
+  else if (filetype=="CorrWholeZ")
+  {
+    sprintf(histNameOrg,"h1_ZmassCorr");
+    sprintf(histNameOrgNew,"h1_Zmass_Org");
+    sprintf(histNameCorrNew,"h1_Zmass");
+  }
+  else if (filetype=="CorrBB")
+  {
+    sprintf(histNameOrg,"h1_ZmassCorr_BB");
+    sprintf(histNameOrgNew,"h1_Zmass_Org");
+    sprintf(histNameCorrNew,"h1_Zmass_BB");
+  }
+  else if (filetype=="CorrBE")
+  {
+    sprintf(histNameOrg,"h1_ZmassCorr_BE");
+    sprintf(histNameOrgNew,"h1_Zmass_Org");
+    sprintf(histNameCorrNew,"h1_Zmass_BE");
+  }
+  else if (filetype=="CorrEE")
+  {
+    sprintf(histNameOrg,"h1_ZmassCorr_EE");
+    sprintf(histNameOrgNew,"h1_Zmass_Org");
+    sprintf(histNameCorrNew,"h1_Zmass_EE");
+  }
+
+
+
   if (i==1){
   sprintf(binlabel,"0 < p_{T} < 300");
   if (filetype=="Inclusive"){
@@ -213,11 +246,18 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   //plotNeuComp->AddHist1D(hOrg[i],"NoCorr","",kBlue);
   //plotNeuComp->AddHist1D(hCorr[i],"Corr","",kRed);
   //plotNeuComp->AddHist1D(hOrg[i],"UnCorrected MC","H",kBlue,1);
+ 
+
+  if (Mode=="Electron")
+  {
+    plotNeuComp->AddToStack(hOrg[i],"Z#rightarrow ee",kOrange-2,kOrange-3);
+  }
+  else if (Mode=="Muon")
+  {
+    plotNeuComp->AddToStack(hOrg[i],"Z#rightarrow #mu#mu",kOrange-2,kOrange-3);
+  }
   
- // plotNeuComp->AddToStack(hOrg[i],"Z#rightarrow #mu#mu",kOrange-2,kOrange-3);
-  plotNeuComp->AddToStack(hOrg[i],"Z#rightarrow ee",kOrange-2,kOrange-3);
-  
-  plotNeuComp->AddHist1D(hCorr[i],"RD","",kBlack);
+  plotNeuComp->AddHist1D(hCorr[i],"Data","",kBlack);
   
   plotNeuComp->SetLegend(0.68,0.57,0.9,0.8);
   plotNeuComp->AddTextBox(binlabel,0.62,0.80,0.92,0.85,0,kBlack,-1);
@@ -233,10 +273,23 @@ void WNeuCorrComp(const TString Mode,//Channel - Muon or Electron
   hCorrDiff = makeDiffHist(hOrg[i],hCorr[i],"hCorrDiff");
   hCorrDiff->SetMarkerStyle(kFullCircle);
   hCorrDiff->SetMarkerSize(0.1);
- // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, #eta-whole range ","#chi");
- // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Barrel ","#chi");
- // plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Endcap ","#chi");
-  plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Endcap-Endcap ","#chi");
+ 
+  if (filetype=="NoCorrWholeZ" || filetype=="CorrWholeZ")
+  {
+    plotCorrDiff=new CPlot(histNameOrg,"","Z mass, #eta-whole range ","#chi");
+  }
+  if (filetype=="CorrBB")
+  {
+    plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Barrel ","#chi");
+  } 
+  if (filetype=="CorrBE")
+  {
+    plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Barrel-Endcap ","#chi");
+  } 
+  if (filetype=="CorrEE")
+  {
+    plotCorrDiff=new CPlot(histNameOrg,"","Z mass, Endcap-Endcap ","#chi");
+  }
   plotCorrDiff->setOutDir(CPlot::sOutDir);
   plotCorrDiff->AddHist1D(hCorrDiff,"EX0",ratioColor);
   plotCorrDiff->SetYRange(-8,8);
