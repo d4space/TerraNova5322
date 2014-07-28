@@ -1,743 +1,922 @@
 {
-  double elestatp1 = 1.0746 ; 
-  double elestatp2 = 1.0554 ;
-  double elestatp3 = 1.1768 ;
-  double elestatp4 = 1.2603 ;
-  double elestatp5 = 1.6796 ;
-  double elestatp6 = 1.6726 ;
-  double elestatp7 = 2.2624 ;
-  double elestatp8 = 2.3801 ;
-  double elestatp9 = 2.8107 ;
-  double elestatp10= 5.6647 ;
-  double elestatp11= 9.6737 ;
-  double elestatp12= 13.6849;
-  double elestatp13= 23.5662;
+ //*
+  double elestatp[14] = {0};
+  elestatp[1 ]= 1.0752 ; 
+  elestatp[2 ]= 1.0567 ;
+  elestatp[3 ]= 1.1783 ;
+  elestatp[4 ]= 1.2620 ;
+  elestatp[5 ]= 1.6822 ;
+  elestatp[6 ]= 1.6760 ;
+  elestatp[7 ]= 2.2662 ;
+  elestatp[8 ]= 2.3749 ;
+  elestatp[9 ]= 2.8686 ;
+  elestatp[10]= 5.9348 ;
+  elestatp[11]= 10.0838;
+  elestatp[12]= 14.2986;
+  elestatp[13]= 24.4511;
 
-  double elestatm1  = 1.3121 ;
-  double elestatm2  = 1.2526 ;
-  double elestatm3  = 1.4332 ;
-  double elestatm4  = 1.5053 ;
-  double elestatm5  = 2.0086 ;
-  double elestatm6  = 2.0652 ;
-  double elestatm7  = 2.6859 ;
-  double elestatm8  = 2.6290 ;
-  double elestatm9  = 3.2659 ;
-  double elestatm10 = 6.5184 ;
-  double elestatm11 = 11.6433;
-  double elestatm12 = 16.8824;
-  double elestatm13 = 23.8266;
+  double elestatm[14] = {0};
+  elestatm[1 ] = 1.3125 ;
+  elestatm[2 ] = 1.2542 ;
+  elestatm[3 ] = 1.4351 ;
+  elestatm[4 ] = 1.5077 ;
+  elestatm[5 ] = 2.0249 ;
+  elestatm[6 ] = 2.0699 ;
+  elestatm[7 ] = 2.6916 ;
+  elestatm[8 ] = 2.6401 ;
+  elestatm[9 ] = 3.3518 ;
+  elestatm[10] = 6.8042 ;
+  elestatm[11] = 12.2459;
+  elestatm[12] = 17.8293;
+  elestatm[13] = 25.4102;
 
-  double eletoyp1  =0.17;
-  double eletoyp2  =0.11;
-  double eletoyp3  =0.23;
-  double eletoyp4  =0.34;
-  double eletoyp5  =0.42;
-  double eletoyp6  =0.41;
-  double eletoyp7  =0.44;
-  double eletoyp8  =0.70;
-  double eletoyp9  =0.78;
-  double eletoyp10 =1.01;
-  double eletoyp11 =1.27;
-  double eletoyp12 =1.59;
-  double eletoyp13 =1.30;
+  double elebinp[14]={0};
+  elebinp[1 ]= 0.65;
+  elebinp[2 ]= 0.59;
+  elebinp[3 ]= 0.56;
+  elebinp[4 ]= 0.53;
+  elebinp[5 ]= 0.53;
+  elebinp[6 ]= 0.53;
+  elebinp[7 ]= 0.54;
+  elebinp[8 ]= 0.62;
+  elebinp[9 ]= 0.62;
+  elebinp[10]= 0.73;
+  elebinp[11]= 0.85;
+  elebinp[12]= 0.94;
+  elebinp[13]= 0.98;
 
-  double eletoym1  = 0.19;
-  double eletoym2  = 0.10;
-  double eletoym3  = 0.26;
-  double eletoym4  = 0.36;
-  double eletoym5  = 0.34;
-  double eletoym6  = 0.44;
-  double eletoym7  = 0.43;
-  double eletoym8  = 0.60;
-  double eletoym9  = 1.22;
-  double eletoym10 = 1.10;
-  double eletoym11 = 0.84;
-  double eletoym12 = 2.09;
-  double eletoym13 = 1.51;
-
-  double elebinp1  = 0.65;
-  double elebinp2  = 0.59;
-  double elebinp3  = 0.56;
-  double elebinp4  = 0.53;
-  double elebinp5  = 0.53;
-  double elebinp6  = 0.53;
-  double elebinp7  = 0.54;
-  double elebinp8  = 0.62;
-  double elebinp9  = 0.62;
-  double elebinp10 = 0.73;
-  double elebinp11 = 0.85;
-  double elebinp12 = 0.94;
-  double elebinp13 = 0.98;
-
-  double elebinm1  =  0.59;
-  double elebinm2  =  0.58;
-  double elebinm3  =  0.43;
-  double elebinm4  =  0.43;
-  double elebinm5  =  0.49;
-  double elebinm6  =  0.31;
-  double elebinm7  =  0.36;
-  double elebinm8  =  0.57;
-  double elebinm9  =  0.72;
-  double elebinm10 =  0.73;
-  double elebinm11 =  0.83;
-  double elebinm12 =  1.01;
-  double elebinm13 =  1.11;
-
-  double elesigp1  = 1.54; 
-  double elesigp2  = 1.54; 
-  double elesigp3  = 1.37; 
-  double elesigp4  = 1.01; 
-  double elesigp5  = 0.69; 
-  double elesigp6  = 0.36; 
-  double elesigp7  = 0.81; 
-  double elesigp8  = 1.54; 
-  double elesigp9  = 1.28; 
-  double elesigp10 = 1.20;
-  double elesigp11 = 1.39;
-  double elesigp12 = 1.63;
-  double elesigp13 = 1.75;
-
-  double elesigm1  =  1.39; 
-  double elesigm2  =  1.42; 
-  double elesigm3  =  1.42;
-  double elesigm4  =  1.17; 
-  double elesigm5  =  0.74; 
-  double elesigm6  =  0.28; 
-  double elesigm7  =  0.40; 
-  double elesigm8  =  0.69;
-  double elesigm9  =  1.29; 
-  double elesigm10 =  1.82;
-  double elesigm11 =  2.14;
-  double elesigm12 =  2.31;
-  double elesigm13 =  2.39;
-   
-  double elebckgrp1  = 0.28; 
-  double elebckgrp2  = 0.25;  
-  double elebckgrp3  = 0.25;  
-  double elebckgrp4  = 0.29;  
-  double elebckgrp5  = 0.36; 
-  double elebckgrp6  = 0.42;  
-  double elebckgrp7  = 0.48;  
-  double elebckgrp8  = 0.53; 
-  double elebckgrp9  = 0.64; 
-  double elebckgrp10 = 0.80;
-  double elebckgrp11 = 0.91; 
-  double elebckgrp12 = 1.00; 
-  double elebckgrp13 = 1.05; 
-   
-  double elebckgrm1  = 0.68;
-  double elebckgrm2  = 0.61;
-  double elebckgrm3  = 0.49;
-  double elebckgrm4  = 0.38;
-  double elebckgrm5  = 0.30;
-  double elebckgrm6  = 0.26;
-  double elebckgrm7  = 0.38;
-  double elebckgrm8  = 0.57;
-  double elebckgrm9  = 0.73;
-  double elebckgrm10 = 0.68;
-  double elebckgrm11 = 0.75;
-  double elebckgrm12 = 0.78;
-  double elebckgrm13 = 0.88;
-
-  double elemetp1  = 0.07;
-  double elemetp2  = 0.04;
-  double elemetp3  = 0.07;
-  double elemetp4  = 0.09;
-  double elemetp5  = 0.08;
-  double elemetp6  = 0.08;
-  double elemetp7  = 0.17;
-  double elemetp8  = 0.20;
-  double elemetp9  = 0.18;
-  double elemetp10 = 0.28;
-  double elemetp11 = 0.53;
-  double elemetp12 = 1.01;
-  double elemetp13 = 3.16;
-
-  double elemetm1  = 0.10;
-  double elemetm2  = 0.04;
-  double elemetm3  = 0.09;
-  double elemetm4  = 0.12;
-  double elemetm5  = 0.10;
-  double elemetm6  = 0.10;
-  double elemetm7  = 0.13;
-  double elemetm8  = 0.23;
-  double elemetm9  = 0.24;
-  double elemetm10 = 0.43;
-  double elemetm11 = 0.84;
-  double elemetm12 = 1.14;
-  double elemetm13 = 2.71;
-
-  double elesmearp1  = 0.1925; 
-  double elesmearp2  = 0.1171;
-  double elesmearp3  = 0.2128;
-  double elesmearp4  = 0.2856;
-  double elesmearp5  = 0.3235;
-  double elesmearp6  = 0.3091;
-  double elesmearp7  = 0.3859;
-  double elesmearp8  = 0.5160;
-  double elesmearp9  = 0.9845;
-  double elesmearp10 = 0.9941;
-  double elesmearp11 = 1.3365;
-  double elesmearp12 = 1.5571;
-  double elesmearp13 = 1.3165;
-                            
-  double elesmearm1  = 0.2141; 
-  double elesmearm2  = 0.1048;
-  double elesmearm3  = 0.2826;
-  double elesmearm4  = 0.4092;
-  double elesmearm5  = 0.4038;
-  double elesmearm6  = 0.4418;
-  double elesmearm7  = 0.4065;
-  double elesmearm8  = 0.5679;
-  double elesmearm9  = 1.3676;
-  double elesmearm10 = 0.8140;
-  double elesmearm11 = 1.2340;
-  double elesmearm12 = 1.9885;
-  double elesmearm13 = 1.4780;
-
-  double elescalep1  = 0.35; 
-  double elescalep2  = 0.19; 
-  double elescalep3  = 0.14; 
-  double elescalep4  = 0.21; 
-  double elescalep5  = 0.15; 
-  double elescalep6  = 0.17; 
-  double elescalep7  = 0.24; 
-  double elescalep8  = 0.43; 
-  double elescalep9  = 0.36; 
-  double elescalep10 = 0.18;
-  double elescalep11 = 0.19;
-  double elescalep12 = 0.29;
-  double elescalep13 = 0.20;
-
-  double elescalem1  = 0.06; 
-  double elescalem2  = 0.12; 
-  double elescalem3  = 0.18; 
-  double elescalem4  = 0.28; 
-  double elescalem5  = 0.15; 
-  double elescalem6  = 0.21; 
-  double elescalem7  = 0.33; 
-  double elescalem8  = 0.57; 
-  double elescalem9  = 0.66; 
-  double elescalem10 = 0.71;
-  double elescalem11 = 0.67;
-  double elescalem12 = 1.10;
-  double elescalem13 = 0.56;
-
-  double eleqcdbckgrp1  = 1.0729;
-  double eleqcdbckgrp2  = 1.1023;
-  double eleqcdbckgrp3  = 0.5858;
-  double eleqcdbckgrp4  = 0.9564;
-  double eleqcdbckgrp5  = 1.1488;
-  double eleqcdbckgrp6  = 1.9617;
-  double eleqcdbckgrp7  = 1.2419;
-  double eleqcdbckgrp8  = 2.6948;
-  double eleqcdbckgrp9  = 1.1687;
-  double eleqcdbckgrp10 = 1.6848;
-  double eleqcdbckgrp11 = 1.8207;
-  double eleqcdbckgrp12 = 1.7103;
-  double eleqcdbckgrp13 = 1.9070;
-   
-  double eleqcdbckgrm1  = 0.7984;
-  double eleqcdbckgrm2  = 0.7248;
-  double eleqcdbckgrm3  = 0.5155;
-  double eleqcdbckgrm4  = 0.7454;
-  double eleqcdbckgrm5  = 0.8799;
-  double eleqcdbckgrm6  = 1.4930;
-  double eleqcdbckgrm7  = 0.9734;
-  double eleqcdbckgrm8  = 2.0400;
-  double eleqcdbckgrm9  = 0.7698;
-  double eleqcdbckgrm10 = 2.1598;
-  double eleqcdbckgrm11 = 1.4424;
-  double eleqcdbckgrm12 = 1.3827;
-  double eleqcdbckgrm13 = 3.4378;
-  
-  double eleqcdshapep1  = 0.3621;
-  double eleqcdshapep2  = 0.4677;
-  double eleqcdshapep3  = 0.6164;
-  double eleqcdshapep4  = 0.4155;
-  double eleqcdshapep5  = 0.6913;
-  double eleqcdshapep6  = 0.6007;
-  double eleqcdshapep7  = 0.6103;
-  double eleqcdshapep8  = 0.8874;
-  double eleqcdshapep9  = 0.8704;
-  double eleqcdshapep10 = 0.9543;
-  double eleqcdshapep11 = 0.4220;
-  double eleqcdshapep12 = 0.8768;
-  double eleqcdshapep13 = 0.8999;
-   
-  double eleqcdshapem1  = 0.3548;
-  double eleqcdshapem2  = 0.2352;
-  double eleqcdshapem3  = 0.3452;
-  double eleqcdshapem4  = 0.9577;
-  double eleqcdshapem5  = 0.8137;
-  double eleqcdshapem6  = 0.4763;
-  double eleqcdshapem7  = 0.6415;
-  double eleqcdshapem8  = 0.6790;
-  double eleqcdshapem9  = 0.8890;
-  double eleqcdshapem10 = 0.6282;
-  double eleqcdshapem11 = 0.9061;
-  double eleqcdshapem12 = 0.7652;
-  double eleqcdshapem13 = 0.8495;
-
-  double eleewkp1  = 0.10;
-  double eleewkp2  = 0.07;
-  double eleewkp3  = 0.08;
-  double eleewkp4  = 0.10;
-  double eleewkp5  = 0.13;
-  double eleewkp6  = 0.18;
-  double eleewkp7  = 0.24;
-  double eleewkp8  = 0.34;
-  double eleewkp9  = 0.42;
-  double eleewkp10 = 0.41;
-  double eleewkp11 = 0.49;
-  double eleewkp12 = 0.50;
-  double eleewkp13 = 0.54;
-   
-  double eleewkm1  = 0.09;
-  double eleewkm2  = 0.11;
-  double eleewkm3  = 0.21;
-  double eleewkm4  = 0.34;
-  double eleewkm5  = 0.21;
-  double eleewkm6  = 0.23;
-  double eleewkm7  = 0.26;
-  double eleewkm8  = 0.32;
-  double eleewkm9  = 0.48;
-  double eleewkm10 = 0.48;
-  double eleewkm11 = 0.95;
-  double eleewkm12 = 0.73;
-  double eleewkm13 = 0.33;
-
-  double elefsrp1  = 0.135506;
-  double elefsrp2  = 0.149677;
-  double elefsrp3  = 0.114017;
-  double elefsrp4  = 0.0665356;
-  double elefsrp5  = 0.126617;
-  double elefsrp6  = 0.290229;
-  double elefsrp7  = 0.585178;
-  double elefsrp8  = 0.729473;
-  double elefsrp9  = 1.07369;
-  double elefsrp10 = 1.91924;
-  double elefsrp11 = 1.33236;
-  double elefsrp12 = 1.3188;
-  double elefsrp13 = 1.33945;
-   
-  double elefsrm1  = 0.0903484;
-  double elefsrm2  = 0.0934524;
-  double elefsrm3  = 0.0748422;
-  double elefsrm4  = 0.117356;
-  double elefsrm5  = 0.141232;
-  double elefsrm6  = 0.333736;
-  double elefsrm7  = 0.231212;
-  double elefsrm8  = 0.710899;
-  double elefsrm9  = 1.159;
-  double elefsrm10 = 0.819618;
-  double elefsrm11 = 0.761551;
-  double elefsrm12 = 1.81484;
-  double elefsrm13 = 0.757732;
-
-  double elesvdunfp1  = 0.1153;
-  double elesvdunfp2  = 0.1043;
-  double elesvdunfp3  = 0.1063;
-  double elesvdunfp4  = 0.1227;
-  double elesvdunfp5  = 0.1418;
-  double elesvdunfp6  = 0.1621;
-  double elesvdunfp7  = 0.1875;
-  double elesvdunfp8  = 0.2223;
-  double elesvdunfp9  = 0.2622;
-  double elesvdunfp10 = 0.3000;
-  double elesvdunfp11 = 0.3312;
-  double elesvdunfp12 = 0.3531;
-  double elesvdunfp13 = 0.3644;
-   
-  double elesvdunfm1  = 0.1196;
-  double elesvdunfm2  = 0.1094;
-  double elesvdunfm3  = 0.1138;
-  double elesvdunfm4  = 0.1303;
-  double elesvdunfm5  = 0.1481;
-  double elesvdunfm6  = 0.1684;
-  double elesvdunfm7  = 0.1979;
-  double elesvdunfm8  = 0.2364;
-  double elesvdunfm9  = 0.2783;
-  double elesvdunfm10 = 0.3174;
-  double elesvdunfm11 = 0.3489;
-  double elesvdunfm12 = 0.3706;
-  double elesvdunfm13 = 0.3816;
-
-  double eleBiasp1  = 0.7707;
-  double eleBiasp2  = 0.4368;
-  double eleBiasp3  = 0.4672;
-  double eleBiasp4  = 1.6650;
-  double eleBiasp5  = 2.2206;
-  double eleBiasp6  = 2.9381;
-  double eleBiasp7  = 3.8440;
-  double eleBiasp8  = 5.4072;
-  double eleBiasp9  = 5.5939;
-  double eleBiasp10 = 4.0037;
-  double eleBiasp11 = 3.4396;
-  double eleBiasp12 = 4.0359;
-  double eleBiasp13 = 4.6224;
-   
-  double eleBiasm1  = 0.9882;
-  double eleBiasm2  = 0.5143;
-  double eleBiasm3  = 0.4613;
-  double eleBiasm4  = 1.6006;
-  double eleBiasm5  = 2.1511;
-  double eleBiasm6  = 2.9418;
-  double eleBiasm7  = 3.8949;
-  double eleBiasm8  = 5.5269;
-  double eleBiasm9  = 5.8131;
-  double eleBiasm10 = 4.1519;
-  double eleBiasm11 = 3.5869;
-  double eleBiasm12 = 4.8048;
-  double eleBiasm13 = 5.9106;
-
-  double eleWptCorrp1  = 0.915318;
-  double eleWptCorrp2  = 0.0294394;
-  double eleWptCorrp3  = 0.793438;
-  double eleWptCorrp4  = 1.00581;
-  double eleWptCorrp5  = 0.659224;
-  double eleWptCorrp6  = 0.121046;
-  double eleWptCorrp7  = 0.299264;
-  double eleWptCorrp8  = 0.525082;
-  double eleWptCorrp9  = 0.592397;
-  double eleWptCorrp10 = 0.57529;
-  double eleWptCorrp11 = 0.529585;
-  double eleWptCorrp12 = 0.486141;
-  double eleWptCorrp13 = 0.461337;
-
-  double eleWptCorrm1  = 1.21547;
-  double eleWptCorrm2  = 0.262792;
-  double eleWptCorrm3  = 0.743959;
-  double eleWptCorrm4  = 1.17545;
-  double eleWptCorrm5  = 0.937213;
-  double eleWptCorrm6  = 0.336006;
-  double eleWptCorrm7  = 0.252154;
-  double eleWptCorrm8  = 0.603749;
-  double eleWptCorrm9  = 0.671394;
-  double eleWptCorrm10 = 0.576984;
-  double eleWptCorrm11 = 0.437997;
-  double eleWptCorrm12 = 0.319664;
-  double eleWptCorrm13 = 0.255065; 
-  
-  eleBiasp1 = sqrt(eleBiasp1 * eleBiasp1 + eleWptCorrp1 * eleWptCorrp1) ; 
-  eleBiasp2 = sqrt(eleBiasp2 * eleBiasp2 + eleWptCorrp2 * eleWptCorrp2) ; 
-  eleBiasp3 = sqrt(eleBiasp3 * eleBiasp3 + eleWptCorrp3 * eleWptCorrp3) ; 
-  eleBiasp4 = sqrt(eleBiasp4 * eleBiasp4 + eleWptCorrp4 * eleWptCorrp4) ; 
-  eleBiasp5 = sqrt(eleBiasp5 * eleBiasp5 + eleWptCorrp5 * eleWptCorrp5) ; 
-  eleBiasp6 = sqrt(eleBiasp6 * eleBiasp6 + eleWptCorrp6 * eleWptCorrp6) ; 
-  eleBiasp7 = sqrt(eleBiasp7 * eleBiasp7 + eleWptCorrp7 * eleWptCorrp7) ; 
-  eleBiasp8 = sqrt(eleBiasp8 * eleBiasp8 + eleWptCorrp8 * eleWptCorrp8) ; 
-  eleBiasp9 = sqrt(eleBiasp9 * eleBiasp9 + eleWptCorrp9 * eleWptCorrp9) ; 
-  eleBiasp10= sqrt(eleBiasp10* eleBiasp10+ eleWptCorrp10* eleWptCorrp10) ; 
-  eleBiasp11= sqrt(eleBiasp11* eleBiasp11+ eleWptCorrp11* eleWptCorrp11) ; 
-  eleBiasp12= sqrt(eleBiasp12* eleBiasp12+ eleWptCorrp12* eleWptCorrp12) ; 
-  eleBiasp13= sqrt(eleBiasp13* eleBiasp13+ eleWptCorrp13* eleWptCorrp13) ; 
-
-  eleBiasm1 = sqrt(eleBiasm1 * eleBiasm1 + eleWptCorrm1 * eleWptCorrm1) ; 
-  eleBiasm2 = sqrt(eleBiasm2 * eleBiasm2 + eleWptCorrm2 * eleWptCorrm2) ; 
-  eleBiasm3 = sqrt(eleBiasm3 * eleBiasm3 + eleWptCorrm3 * eleWptCorrm3) ; 
-  eleBiasm4 = sqrt(eleBiasm4 * eleBiasm4 + eleWptCorrm4 * eleWptCorrm4) ; 
-  eleBiasm5 = sqrt(eleBiasm5 * eleBiasm5 + eleWptCorrm5 * eleWptCorrm5) ; 
-  eleBiasm6 = sqrt(eleBiasm6 * eleBiasm6 + eleWptCorrm6 * eleWptCorrm6) ; 
-  eleBiasm7 = sqrt(eleBiasm7 * eleBiasm7 + eleWptCorrm7 * eleWptCorrm7) ; 
-  eleBiasm8 = sqrt(eleBiasm8 * eleBiasm8 + eleWptCorrm8 * eleWptCorrm8) ; 
-  eleBiasm9 = sqrt(eleBiasm9 * eleBiasm9 + eleWptCorrm9 * eleWptCorrm9) ; 
-  eleBiasm10= sqrt(eleBiasm10* eleBiasm10+ eleWptCorrm10* eleWptCorrm10) ; 
-  eleBiasm11= sqrt(eleBiasm11* eleBiasm11+ eleWptCorrm11* eleWptCorrm11) ; 
-  eleBiasm12= sqrt(eleBiasm12* eleBiasm12+ eleWptCorrm12* eleWptCorrm12) ; 
-  eleBiasm13= sqrt(eleBiasm13* eleBiasm13+ eleWptCorrm13* eleWptCorrm13) ; 
-
-  cout<<fixed << setprecision(2);
-  cout<<"UnfBias plus uncer"<<endl;
-  cout<<eleBiasp1 <<endl;
-  cout<<eleBiasp2 <<endl;
-  cout<<eleBiasp3 <<endl;
-  cout<<eleBiasp4 <<endl;
-  cout<<eleBiasp5 <<endl;
-  cout<<eleBiasp6 <<endl;
-  cout<<eleBiasp7 <<endl;
-  cout<<eleBiasp8 <<endl;
-  cout<<eleBiasp9 <<endl;
-  cout<<eleBiasp10<<endl;
-  cout<<eleBiasp11<<endl;
-  cout<<eleBiasp12<<endl;
-  cout<<eleBiasp13<<endl;
-  
-  cout<<"UnfBias minus uncer"<<endl;
-  cout<<eleBiasm1 <<endl;
-  cout<<eleBiasm2 <<endl;
-  cout<<eleBiasm3 <<endl;
-  cout<<eleBiasm4 <<endl;
-  cout<<eleBiasm5 <<endl;
-  cout<<eleBiasm6 <<endl;
-  cout<<eleBiasm7 <<endl;
-  cout<<eleBiasm8 <<endl;
-  cout<<eleBiasm9 <<endl;
-  cout<<eleBiasm10<<endl;
-  cout<<eleBiasm11<<endl;
-  cout<<eleBiasm12<<endl;
-  cout<<eleBiasm13<<endl;
-  
-  
-  
-  double eletotaleffp1  = sqrt(eletoyp1 *eletoyp1 +elebinp1 *elebinp1 +elesigp1 *elesigp1 +elebckgrp1 *elebckgrp1 );
-  double eletotaleffp2  = sqrt(eletoyp2 *eletoyp2 +elebinp2 *elebinp2 +elesigp2 *elesigp2 +elebckgrp2 *elebckgrp2 );
-  double eletotaleffp3  = sqrt(eletoyp3 *eletoyp3 +elebinp3 *elebinp3 +elesigp3 *elesigp3 +elebckgrp3 *elebckgrp3 );
-  double eletotaleffp4  = sqrt(eletoyp4 *eletoyp4 +elebinp4 *elebinp4 +elesigp4 *elesigp4 +elebckgrp4 *elebckgrp4 );
-  double eletotaleffp5  = sqrt(eletoyp5 *eletoyp5 +elebinp5 *elebinp5 +elesigp5 *elesigp5 +elebckgrp5 *elebckgrp5 );
-  double eletotaleffp6  = sqrt(eletoyp6 *eletoyp6 +elebinp6 *elebinp6 +elesigp6 *elesigp6 +elebckgrp6 *elebckgrp6 );
-  double eletotaleffp7  = sqrt(eletoyp7 *eletoyp7 +elebinp7 *elebinp7 +elesigp7 *elesigp7 +elebckgrp7 *elebckgrp7 );
-  double eletotaleffp8  = sqrt(eletoyp8 *eletoyp8 +elebinp8 *elebinp8 +elesigp8 *elesigp8 +elebckgrp8 *elebckgrp8 );
-  double eletotaleffp9  = sqrt(eletoyp9 *eletoyp9 +elebinp9 *elebinp9 +elesigp9 *elesigp9 +elebckgrp9 *elebckgrp9 );
-  double eletotaleffp10 = sqrt(eletoyp10*eletoyp10+elebinp10*elebinp10+elesigp10*elesigp10+elebckgrp10*elebckgrp10);
-  double eletotaleffp11 = sqrt(eletoyp11*eletoyp11+elebinp11*elebinp11+elesigp11*elesigp11+elebckgrp11*elebckgrp11);
-  double eletotaleffp12 = sqrt(eletoyp12*eletoyp12+elebinp12*elebinp12+elesigp12*elesigp12+elebckgrp12*elebckgrp12);
-  double eletotaleffp13 = sqrt(eletoyp13*eletoyp13+elebinp13*elebinp13+elesigp13*elesigp13+elebckgrp13*elebckgrp13);
-
-  double eletotaleffm1  = sqrt(eletoym1 *eletoym1 +elebinm1 *elebinm1 +elesigm1 *elesigm1 +elebckgrm1 *elebckgrm1 );
-  double eletotaleffm2  = sqrt(eletoym2 *eletoym2 +elebinm2 *elebinm2 +elesigm2 *elesigm2 +elebckgrm2 *elebckgrm2 );
-  double eletotaleffm3  = sqrt(eletoym3 *eletoym3 +elebinm3 *elebinm3 +elesigm3 *elesigm3 +elebckgrm3 *elebckgrm3 );
-  double eletotaleffm4  = sqrt(eletoym4 *eletoym4 +elebinm4 *elebinm4 +elesigm4 *elesigm4 +elebckgrm4 *elebckgrm4 );
-  double eletotaleffm5  = sqrt(eletoym5 *eletoym5 +elebinm5 *elebinm5 +elesigm5 *elesigm5 +elebckgrm5 *elebckgrm5 );
-  double eletotaleffm6  = sqrt(eletoym6 *eletoym6 +elebinm6 *elebinm6 +elesigm6 *elesigm6 +elebckgrm6 *elebckgrm6 );
-  double eletotaleffm7  = sqrt(eletoym7 *eletoym7 +elebinm7 *elebinm7 +elesigm7 *elesigm7 +elebckgrm7 *elebckgrm7 );
-  double eletotaleffm8  = sqrt(eletoym8 *eletoym8 +elebinm8 *elebinm8 +elesigm8 *elesigm8 +elebckgrm8 *elebckgrm8 );
-  double eletotaleffm9  = sqrt(eletoym9 *eletoym9 +elebinm9 *elebinm9 +elesigm9 *elesigm9 +elebckgrm9 *elebckgrm9 );
-  double eletotaleffm10 = sqrt(eletoym10*eletoym10+elebinm10*elebinm10+elesigm10*elesigm10+elebckgrm10*elebckgrm10);
-  double eletotaleffm11 = sqrt(eletoym11*eletoym11+elebinm11*elebinm11+elesigm11*elesigm11+elebckgrm11*elebckgrm11);
-  double eletotaleffm12 = sqrt(eletoym12*eletoym12+elebinm12*elebinm12+elesigm12*elesigm12+elebckgrm12*elebckgrm12);
-  double eletotaleffm13 = sqrt(eletoym13*eletoym13+elebinm13*elebinm13+elesigm13*elesigm13+elebckgrm13*elebckgrm13);
+  double elebinm[14] ={0};
+  elebinm[1 ]= 0.59; 
+  elebinm[2 ]= 0.58;
+  elebinm[3 ]= 0.43;
+  elebinm[4 ]= 0.43;
+  elebinm[5 ]= 0.49;
+  elebinm[6 ]= 0.31;
+  elebinm[7 ]= 0.36;
+  elebinm[8 ]= 0.57;
+  elebinm[9 ]= 0.72;
+  elebinm[10]= 0.73;
+  elebinm[11]= 0.83;
+  elebinm[12]= 1.01;
+  elebinm[13]= 1.11;
  
-  cout<<"WplusToEle Recon. Syst"<<endl;
-  cout<<eletotaleffp1 <<endl;
-  cout<<eletotaleffp2 <<endl;
-  cout<<eletotaleffp3 <<endl;
-  cout<<eletotaleffp4 <<endl;
-  cout<<eletotaleffp5 <<endl;
-  cout<<eletotaleffp6 <<endl;
-  cout<<eletotaleffp7 <<endl;
-  cout<<eletotaleffp8 <<endl;
-  cout<<eletotaleffp9 <<endl;
-  cout<<eletotaleffp10<<endl;
-  cout<<eletotaleffp11<<endl;
-  cout<<eletotaleffp12<<endl;
-  cout<<eletotaleffp13<<endl;
-  
-  cout<<"WmlusToEle Recon Syst"<<endl;
-  cout<<eletotaleffm1 <<endl;
-  cout<<eletotaleffm2 <<endl;
-  cout<<eletotaleffm3 <<endl;
-  cout<<eletotaleffm4 <<endl;
-  cout<<eletotaleffm5 <<endl;
-  cout<<eletotaleffm6 <<endl;
-  cout<<eletotaleffm7 <<endl;
-  cout<<eletotaleffm8 <<endl;
-  cout<<eletotaleffm9 <<endl;
-  cout<<eletotaleffm10<<endl;
-  cout<<eletotaleffm11<<endl;
-  cout<<eletotaleffm12<<endl;
-  cout<<eletotaleffm13<<endl;
-  
-  double resoltotalp1  = 0.41;
-  double resoltotalp2  = 0.23;
-  double resoltotalp3  = 0.26;
-  double resoltotalp4  = 0.39;
-  double resoltotalp5  = 0.40;
-  double resoltotalp6  = 0.43;
-  double resoltotalp7  = 0.47;
-  double resoltotalp8  = 0.69;
-  double resoltotalp9  = 1.07;
-  double resoltotalp10 = 1.22;
-  double resoltotalp11 = 1.38;
-  double resoltotalp12 = 1.64;
-  double resoltotalp13 = 1.51;
-
-  double resoltotalm1  = 0.24;
-  double resoltotalm2  = 0.18;
-  double resoltotalm3  = 0.41;
-  double resoltotalm4  = 0.64;
-  double resoltotalm5  = 0.49;
-  double resoltotalm6  = 0.54;
-  double resoltotalm7  = 0.57;
-  double resoltotalm8  = 0.94;
-  double resoltotalm9  = 1.54;
-  double resoltotalm10 = 1.18;
-  double resoltotalm11 = 1.42;
-  double resoltotalm12 = 2.28;
-  double resoltotalm13 = 1.66;
+  double elesigp[14] = {0};
+  elesigp[1 ]= 1.54;
+  elesigp[2 ]= 1.54;
+  elesigp[3 ]= 1.37;
+  elesigp[4 ]= 1.01;
+  elesigp[5 ]= 0.69;
+  elesigp[6 ]= 0.36;
+  elesigp[7 ]= 0.81;
+  elesigp[8 ]= 1.54;
+  elesigp[9 ]= 1.28;
+  elesigp[10]= 1.20;
+  elesigp[11]= 1.39;
+  elesigp[12]= 1.63;
+  elesigp[13]= 1.75;
  
-  double systtotalp1  = sqrt(eletotaleffp1 *eletotaleffp1 +elemetp1 *elemetp1 +resoltotalp1 *resoltotalp1 +eleqcdbckgrp1 *eleqcdbckgrp1 +eleqcdshapep1 *eleqcdshapep1 + eleewkp1 *eleewkp1 +eleBiasp1 *eleBiasp1 +elesvdunfp1 *elesvdunfp1 +elefsrp1 *elefsrp1  + 2.6*2.6);
-  double systtotalp2  = sqrt(eletotaleffp2 *eletotaleffp2 +elemetp2 *elemetp2 +resoltotalp2 *resoltotalp2 +eleqcdbckgrp2 *eleqcdbckgrp2 +eleqcdshapep2 *eleqcdshapep2 + eleewkp2 *eleewkp2 +eleBiasp2 *eleBiasp2 +elesvdunfp2 *elesvdunfp2 +elefsrp2 *elefsrp2  + 2.6*2.6);
-  double systtotalp3  = sqrt(eletotaleffp3 *eletotaleffp3 +elemetp3 *elemetp3 +resoltotalp3 *resoltotalp3 +eleqcdbckgrp3 *eleqcdbckgrp3 +eleqcdshapep3 *eleqcdshapep3 + eleewkp3 *eleewkp3 +eleBiasp3 *eleBiasp3 +elesvdunfp3 *elesvdunfp3 +elefsrp3 *elefsrp3  + 2.6*2.6);
-  double systtotalp4  = sqrt(eletotaleffp4 *eletotaleffp4 +elemetp4 *elemetp4 +resoltotalp4 *resoltotalp4 +eleqcdbckgrp4 *eleqcdbckgrp4 +eleqcdshapep4 *eleqcdshapep4 + eleewkp4 *eleewkp4 +eleBiasp4 *eleBiasp4 +elesvdunfp4 *elesvdunfp4 +elefsrp4 *elefsrp4  + 2.6*2.6);
-  double systtotalp5  = sqrt(eletotaleffp5 *eletotaleffp5 +elemetp5 *elemetp5 +resoltotalp5 *resoltotalp5 +eleqcdbckgrp5 *eleqcdbckgrp5 +eleqcdshapep5 *eleqcdshapep5 + eleewkp5 *eleewkp5 +eleBiasp5 *eleBiasp5 +elesvdunfp5 *elesvdunfp5 +elefsrp5 *elefsrp5  + 2.6*2.6);
-  double systtotalp6  = sqrt(eletotaleffp6 *eletotaleffp6 +elemetp6 *elemetp6 +resoltotalp6 *resoltotalp6 +eleqcdbckgrp6 *eleqcdbckgrp6 +eleqcdshapep6 *eleqcdshapep6 + eleewkp6 *eleewkp6 +eleBiasp6 *eleBiasp6 +elesvdunfp6 *elesvdunfp6 +elefsrp6 *elefsrp6  + 2.6*2.6);
-  double systtotalp7  = sqrt(eletotaleffp7 *eletotaleffp7 +elemetp7 *elemetp7 +resoltotalp7 *resoltotalp7 +eleqcdbckgrp7 *eleqcdbckgrp7 +eleqcdshapep7 *eleqcdshapep7 + eleewkp7 *eleewkp7 +eleBiasp7 *eleBiasp7 +elesvdunfp7 *elesvdunfp7 +elefsrp7 *elefsrp7  + 2.6*2.6);
-  double systtotalp8  = sqrt(eletotaleffp8 *eletotaleffp8 +elemetp8 *elemetp8 +resoltotalp8 *resoltotalp8 +eleqcdbckgrp8 *eleqcdbckgrp8 +eleqcdshapep8 *eleqcdshapep8 + eleewkp8 *eleewkp8 +eleBiasp8 *eleBiasp8 +elesvdunfp8 *elesvdunfp8 +elefsrp8 *elefsrp8  + 2.6*2.6);
-  double systtotalp9  = sqrt(eletotaleffp9 *eletotaleffp9 +elemetp9 *elemetp9 +resoltotalp9 *resoltotalp9 +eleqcdbckgrp9 *eleqcdbckgrp9 +eleqcdshapep9 *eleqcdshapep9 + eleewkp9 *eleewkp9 +eleBiasp9 *eleBiasp9 +elesvdunfp9 *elesvdunfp9 +elefsrp9 *elefsrp9  + 2.6*2.6);
-  double systtotalp10 = sqrt(eletotaleffp10*eletotaleffp10+elemetp10*elemetp10+resoltotalp10*resoltotalp10+eleqcdbckgrp10*eleqcdbckgrp10+eleqcdshapep10*eleqcdshapep10+ eleewkp10*eleewkp10+eleBiasp10*eleBiasp10+elesvdunfp10*elesvdunfp10+elefsrp10*elefsrp10 + 2.6*2.6);
-  double systtotalp11 = sqrt(eletotaleffp11*eletotaleffp11+elemetp11*elemetp11+resoltotalp11*resoltotalp11+eleqcdbckgrp11*eleqcdbckgrp11+eleqcdshapep11*eleqcdshapep11+ eleewkp11*eleewkp11+eleBiasp11*eleBiasp11+elesvdunfp11*elesvdunfp11+elefsrp11*elefsrp11 + 2.6*2.6);
-  double systtotalp12 = sqrt(eletotaleffp12*eletotaleffp12+elemetp12*elemetp12+resoltotalp12*resoltotalp12+eleqcdbckgrp12*eleqcdbckgrp12+eleqcdshapep12*eleqcdshapep12+ eleewkp12*eleewkp12+eleBiasp12*eleBiasp12+elesvdunfp12*elesvdunfp12+elefsrp12*elefsrp12 + 2.6*2.6);
-  double systtotalp13 = sqrt(eletotaleffp13*eletotaleffp13+elemetp13*elemetp13+resoltotalp13*resoltotalp13+eleqcdbckgrp13*eleqcdbckgrp13+eleqcdshapep13*eleqcdshapep13+ eleewkp13*eleewkp13+eleBiasp13*eleBiasp13+elesvdunfp13*elesvdunfp13+elefsrp13*elefsrp13 + 2.6*2.6);
-
-  double systtotalm1  = sqrt(eletotaleffm1 *eletotaleffm1 +elemetm1 *elemetm1 +resoltotalm1 *resoltotalm1 +eleqcdbckgrm1 *eleqcdbckgrm1 +eleqcdshapem1 *eleqcdshapem1 + eleewkm1 *eleewkm1 +eleBiasm1 *eleBiasm1 +elesvdunfm1 *elesvdunfm1 +elefsrm1 *elefsrm1  + 2.6*2.6);
-  double systtotalm2  = sqrt(eletotaleffm2 *eletotaleffm2 +elemetm2 *elemetm2 +resoltotalm2 *resoltotalm2 +eleqcdbckgrm2 *eleqcdbckgrm2 +eleqcdshapem2 *eleqcdshapem2 + eleewkm2 *eleewkm2 +eleBiasm2 *eleBiasm2 +elesvdunfm2 *elesvdunfm2 +elefsrm2 *elefsrm2  + 2.6*2.6);
-  double systtotalm3  = sqrt(eletotaleffm3 *eletotaleffm3 +elemetm3 *elemetm3 +resoltotalm3 *resoltotalm3 +eleqcdbckgrm3 *eleqcdbckgrm3 +eleqcdshapem3 *eleqcdshapem3 + eleewkm3 *eleewkm3 +eleBiasm3 *eleBiasm3 +elesvdunfm3 *elesvdunfm3 +elefsrm3 *elefsrm3  + 2.6*2.6);
-  double systtotalm4  = sqrt(eletotaleffm4 *eletotaleffm4 +elemetm4 *elemetm4 +resoltotalm4 *resoltotalm4 +eleqcdbckgrm4 *eleqcdbckgrm4 +eleqcdshapem4 *eleqcdshapem4 + eleewkm4 *eleewkm4 +eleBiasm4 *eleBiasm4 +elesvdunfm4 *elesvdunfm4 +elefsrm4 *elefsrm4  + 2.6*2.6);
-  double systtotalm5  = sqrt(eletotaleffm5 *eletotaleffm5 +elemetm5 *elemetm5 +resoltotalm5 *resoltotalm5 +eleqcdbckgrm5 *eleqcdbckgrm5 +eleqcdshapem5 *eleqcdshapem5 + eleewkm5 *eleewkm5 +eleBiasm5 *eleBiasm5 +elesvdunfm5 *elesvdunfm5 +elefsrm5 *elefsrm5  + 2.6*2.6);
-  double systtotalm6  = sqrt(eletotaleffm6 *eletotaleffm6 +elemetm6 *elemetm6 +resoltotalm6 *resoltotalm6 +eleqcdbckgrm6 *eleqcdbckgrm6 +eleqcdshapem6 *eleqcdshapem6 + eleewkm6 *eleewkm6 +eleBiasm6 *eleBiasm6 +elesvdunfm6 *elesvdunfm6 +elefsrm6 *elefsrm6  + 2.6*2.6);
-  double systtotalm7  = sqrt(eletotaleffm7 *eletotaleffm7 +elemetm7 *elemetm7 +resoltotalm7 *resoltotalm7 +eleqcdbckgrm7 *eleqcdbckgrm7 +eleqcdshapem7 *eleqcdshapem7 + eleewkm7 *eleewkm7 +eleBiasm7 *eleBiasm7 +elesvdunfm7 *elesvdunfm7 +elefsrm7 *elefsrm7  + 2.6*2.6);
-  double systtotalm8  = sqrt(eletotaleffm8 *eletotaleffm8 +elemetm8 *elemetm8 +resoltotalm8 *resoltotalm8 +eleqcdbckgrm8 *eleqcdbckgrm8 +eleqcdshapem8 *eleqcdshapem8 + eleewkm8 *eleewkm8 +eleBiasm8 *eleBiasm8 +elesvdunfm8 *elesvdunfm8 +elefsrm8 *elefsrm8  + 2.6*2.6);
-  double systtotalm9  = sqrt(eletotaleffm9 *eletotaleffm9 +elemetm9 *elemetm9 +resoltotalm9 *resoltotalm9 +eleqcdbckgrm9 *eleqcdbckgrm9 +eleqcdshapem9 *eleqcdshapem9 + eleewkm9 *eleewkm9 +eleBiasm9 *eleBiasm9 +elesvdunfm9 *elesvdunfm9 +elefsrm9 *elefsrm9  + 2.6*2.6);
-  double systtotalm10 = sqrt(eletotaleffm10*eletotaleffm10+elemetm10*elemetm10+resoltotalm10*resoltotalm10+eleqcdbckgrm10*eleqcdbckgrm10+eleqcdshapem10*eleqcdshapem10+ eleewkm10*eleewkm10+eleBiasm10*eleBiasm10+elesvdunfm10*elesvdunfm10+elefsrm10*elefsrm10 + 2.6*2.6);
-  double systtotalm11 = sqrt(eletotaleffm11*eletotaleffm11+elemetm11*elemetm11+resoltotalm11*resoltotalm11+eleqcdbckgrm11*eleqcdbckgrm11+eleqcdshapem11*eleqcdshapem11+ eleewkm11*eleewkm11+eleBiasm11*eleBiasm11+elesvdunfm11*elesvdunfm11+elefsrm11*elefsrm11 + 2.6*2.6);
-  double systtotalm12 = sqrt(eletotaleffm12*eletotaleffm12+elemetm12*elemetm12+resoltotalm12*resoltotalm12+eleqcdbckgrm12*eleqcdbckgrm12+eleqcdshapem12*eleqcdshapem12+ eleewkm12*eleewkm12+eleBiasm12*eleBiasm12+elesvdunfm12*elesvdunfm12+elefsrm12*elefsrm12 + 2.6*2.6);
-  double systtotalm13 = sqrt(eletotaleffm13*eletotaleffm13+elemetm13*elemetm13+resoltotalm13*resoltotalm13+eleqcdbckgrm13*eleqcdbckgrm13+eleqcdshapem13*eleqcdshapem13+ eleewkm13*eleewkm13+eleBiasm13*eleBiasm13+elesvdunfm13*elesvdunfm13+elefsrm13*elefsrm13 + 2.6*2.6);
-
-  double totaluncerp1  = sqrt(elestatp1 *elestatp1 +systtotalp1 *systtotalp1 );
-  double totaluncerp2  = sqrt(elestatp2 *elestatp2 +systtotalp2 *systtotalp2 );
-  double totaluncerp3  = sqrt(elestatp3 *elestatp3 +systtotalp3 *systtotalp3 );
-  double totaluncerp4  = sqrt(elestatp4 *elestatp4 +systtotalp4 *systtotalp4 );
-  double totaluncerp5  = sqrt(elestatp5 *elestatp5 +systtotalp5 *systtotalp5 );
-  double totaluncerp6  = sqrt(elestatp6 *elestatp6 +systtotalp6 *systtotalp6 );
-  double totaluncerp7  = sqrt(elestatp7 *elestatp7 +systtotalp7 *systtotalp7 );
-  double totaluncerp8  = sqrt(elestatp8 *elestatp8 +systtotalp8 *systtotalp8 );
-  double totaluncerp9  = sqrt(elestatp9 *elestatp9 +systtotalp9 *systtotalp9 );
-  double totaluncerp10 = sqrt(elestatp10*elestatp10+systtotalp10*systtotalp10);
-  double totaluncerp11 = sqrt(elestatp11*elestatp11+systtotalp11*systtotalp11);
-  double totaluncerp12 = sqrt(elestatp12*elestatp12+systtotalp12*systtotalp12);
-  double totaluncerp13 = sqrt(elestatp13*elestatp13+systtotalp13*systtotalp13);
-
-  double totaluncerm1  = sqrt(elestatm1 *elestatm1 +systtotalm1 *systtotalm1 );
-  double totaluncerm2  = sqrt(elestatm2 *elestatm2 +systtotalm2 *systtotalm2 );
-  double totaluncerm3  = sqrt(elestatm3 *elestatm3 +systtotalm3 *systtotalm3 );
-  double totaluncerm4  = sqrt(elestatm4 *elestatm4 +systtotalm4 *systtotalm4 );
-  double totaluncerm5  = sqrt(elestatm5 *elestatm5 +systtotalm5 *systtotalm5 );
-  double totaluncerm6  = sqrt(elestatm6 *elestatm6 +systtotalm6 *systtotalm6 );
-  double totaluncerm7  = sqrt(elestatm7 *elestatm7 +systtotalm7 *systtotalm7 );
-  double totaluncerm8  = sqrt(elestatm8 *elestatm8 +systtotalm8 *systtotalm8 );
-  double totaluncerm9  = sqrt(elestatm9 *elestatm9 +systtotalm9 *systtotalm9 );
-  double totaluncerm10 = sqrt(elestatm10*elestatm10+systtotalm10*systtotalm10);
-  double totaluncerm11 = sqrt(elestatm11*elestatm11+systtotalm11*systtotalm11);
-  double totaluncerm12 = sqrt(elestatm12*elestatm12+systtotalm12*systtotalm12);
-  double totaluncerm13 = sqrt(elestatm13*elestatm13+systtotalm13*systtotalm13);
-//*
-  cout<<"Wplus Tot. Syst"<<endl;
-  cout<<systtotalp1 <<endl;
-  cout<<systtotalp2 <<endl;
-  cout<<systtotalp3 <<endl;
-  cout<<systtotalp4 <<endl;
-  cout<<systtotalp5 <<endl;
-  cout<<systtotalp6 <<endl;
-  cout<<systtotalp7 <<endl;
-  cout<<systtotalp8 <<endl;
-  cout<<systtotalp9 <<endl;
-  cout<<systtotalp10<<endl;
-  cout<<systtotalp11<<endl;
-  cout<<systtotalp12<<endl;
-  cout<<systtotalp13<<endl;
+  double elesigm[14] ={0};
+  elesigm[1 ]= 1.39;
+  elesigm[2 ]= 1.42;
+  elesigm[3 ]= 1.42;
+  elesigm[4 ]= 1.17;
+  elesigm[5 ]= 0.74;
+  elesigm[6 ]= 0.28;
+  elesigm[7 ]= 0.40;
+  elesigm[8 ]= 0.69;
+  elesigm[9 ]= 1.29; 
+  elesigm[10]= 1.82;
+  elesigm[11]= 2.14;
+  elesigm[12]= 2.31;
+  elesigm[13]= 2.39;
   
-  cout<<"Wmlus Tot. Syst"<<endl;
-  cout<<systtotalm1 <<endl;
-  cout<<systtotalm2 <<endl;
-  cout<<systtotalm3 <<endl;
-  cout<<systtotalm4 <<endl;
-  cout<<systtotalm5 <<endl;
-  cout<<systtotalm6 <<endl;
-  cout<<systtotalm7 <<endl;
-  cout<<systtotalm8 <<endl;
-  cout<<systtotalm9 <<endl;
-  cout<<systtotalm10<<endl;
-  cout<<systtotalm11<<endl;
-  cout<<systtotalm12<<endl;
-  cout<<systtotalm13<<endl;
-  
-  cout<<"Wplus Total Uncer"<<endl;
-  cout<<totaluncerp1 <<endl;
-  cout<<totaluncerp2 <<endl;
-  cout<<totaluncerp3 <<endl;
-  cout<<totaluncerp4 <<endl;
-  cout<<totaluncerp5 <<endl;
-  cout<<totaluncerp6 <<endl;
-  cout<<totaluncerp7 <<endl;
-  cout<<totaluncerp8 <<endl;
-  cout<<totaluncerp9 <<endl;
-  cout<<totaluncerp10<<endl;
-  cout<<totaluncerp11<<endl;
-  cout<<totaluncerp12<<endl;
-  cout<<totaluncerp13<<endl;
-  
-  cout<<"Wmlus Total Uncer"<<endl;
-  cout<<totaluncerm1 <<endl;
-  cout<<totaluncerm2 <<endl;
-  cout<<totaluncerm3 <<endl;
-  cout<<totaluncerm4 <<endl;
-  cout<<totaluncerm5 <<endl;
-  cout<<totaluncerm6 <<endl;
-  cout<<totaluncerm7 <<endl;
-  cout<<totaluncerm8 <<endl;
-  cout<<totaluncerm9 <<endl;
-  cout<<totaluncerm10<<endl;
-  cout<<totaluncerm11<<endl;
-  cout<<totaluncerm12<<endl;
-  cout<<totaluncerm13<<endl;
-//*/
- /* 
-  double resoltotalp1  = sqrt(elesmearp1 *elesmearp1 +elescalep1 *elescalep1 );
-  double resoltotalp2  = sqrt(elesmearp2 *elesmearp2 +elescalep2 *elescalep2 );
-  double resoltotalp3  = sqrt(elesmearp3 *elesmearp3 +elescalep3 *elescalep3 );
-  double resoltotalp4  = sqrt(elesmearp4 *elesmearp4 +elescalep4 *elescalep4 );
-  double resoltotalp5  = sqrt(elesmearp5 *elesmearp5 +elescalep5 *elescalep5 );
-  double resoltotalp6  = sqrt(elesmearp6 *elesmearp6 +elescalep6 *elescalep6 );
-  double resoltotalp7  = sqrt(elesmearp7 *elesmearp7 +elescalep7 *elescalep7 );
-  double resoltotalp8  = sqrt(elesmearp8 *elesmearp8 +elescalep8 *elescalep8 );
-  double resoltotalp9  = sqrt(elesmearp9 *elesmearp9 +elescalep9 *elescalep9 );
-  double resoltotalp10 = sqrt(elesmearp10*elesmearp10+elescalep10*elescalep10);
-  double resoltotalp11 = sqrt(elesmearp11*elesmearp11+elescalep11*elescalep11);
-  double resoltotalp12 = sqrt(elesmearp12*elesmearp12+elescalep12*elescalep12);
-  double resoltotalp13 = sqrt(elesmearp13*elesmearp13+elescalep13*elescalep13);
+  double elebckgrp[14] = {0};
+  elebckgrp[1 ] = 0.28;
+  elebckgrp[2 ] = 0.25;
+  elebckgrp[3 ] = 0.25;
+  elebckgrp[4 ] = 0.29;
+  elebckgrp[5 ] = 0.36;
+  elebckgrp[6 ] = 0.42;
+  elebckgrp[7 ] = 0.48;
+  elebckgrp[8 ] = 0.53;
+  elebckgrp[9 ] = 0.64;
+  elebckgrp[10] = 0.80;
+  elebckgrp[11] = 0.91;
+  elebckgrp[12] = 1.00;
+  elebckgrp[13] = 1.05;
 
-  double resoltotalm1  = sqrt(elesmearm1 *elesmearm1 +elescalem1 *elescalem1 );
-  double resoltotalm2  = sqrt(elesmearm2 *elesmearm2 +elescalem2 *elescalem2 );
-  double resoltotalm3  = sqrt(elesmearm3 *elesmearm3 +elescalem3 *elescalem3 );
-  double resoltotalm4  = sqrt(elesmearm4 *elesmearm4 +elescalem4 *elescalem4 );
-  double resoltotalm5  = sqrt(elesmearm5 *elesmearm5 +elescalem5 *elescalem5 );
-  double resoltotalm6  = sqrt(elesmearm6 *elesmearm6 +elescalem6 *elescalem6 );
-  double resoltotalm7  = sqrt(elesmearm7 *elesmearm7 +elescalem7 *elescalem7 );
-  double resoltotalm8  = sqrt(elesmearm8 *elesmearm8 +elescalem8 *elescalem8 );
-  double resoltotalm9  = sqrt(elesmearm9 *elesmearm9 +elescalem9 *elescalem9 );
-  double resoltotalm10 = sqrt(elesmearm10*elesmearm10+elescalem10*elescalem10);
-  double resoltotalm11 = sqrt(elesmearm11*elesmearm11+elescalem11*elescalem11);
-  double resoltotalm12 = sqrt(elesmearm12*elesmearm12+elescalem12*elescalem12);
-  double resoltotalm13 = sqrt(elesmearm13*elesmearm13+elescalem13*elescalem13);
-*/ 
-  cout<<"Wplus Resolution Syst"<<endl;
-  cout<<resoltotalp1 <<endl;
-  cout<<resoltotalp2 <<endl;
-  cout<<resoltotalp3 <<endl;
-  cout<<resoltotalp4 <<endl;
-  cout<<resoltotalp5 <<endl;
-  cout<<resoltotalp6 <<endl;
-  cout<<resoltotalp7 <<endl;
-  cout<<resoltotalp8 <<endl;
-  cout<<resoltotalp9 <<endl;
-  cout<<resoltotalp10<<endl;
-  cout<<resoltotalp11<<endl;
-  cout<<resoltotalp12<<endl;
-  cout<<resoltotalp13<<endl;
+  double elebckgrm[14] = {0};
+  elebckgrm[1 ] = 0.68;
+  elebckgrm[2 ] = 0.61; 
+  elebckgrm[3 ] = 0.49;
+  elebckgrm[4 ] = 0.38;
+  elebckgrm[5 ] = 0.30;
+  elebckgrm[6 ] = 0.26;
+  elebckgrm[7 ] = 0.38;
+  elebckgrm[8 ] = 0.57;
+  elebckgrm[9 ] = 0.73;
+  elebckgrm[10] = 0.68;
+  elebckgrm[11] = 0.75;
+  elebckgrm[12] = 0.78;
+  elebckgrm[13] = 0.88;
+
+  double eletoyp[14] = {0};
+  eletoyp[1 ] = 0.17;
+  eletoyp[2 ] = 0.11;
+  eletoyp[3 ] = 0.23;
+  eletoyp[4 ] = 0.34;
+  eletoyp[5 ] = 0.42;
+  eletoyp[6 ] = 0.41;
+  eletoyp[7 ] = 0.44;
+  eletoyp[8 ] = 0.70;
+  eletoyp[9 ] = 0.78;
+  eletoyp[10] = 1.01;
+  eletoyp[11] = 1.27;
+  eletoyp[12] = 1.59;
+  eletoyp[13] = 1.30;
+
+  double eletoym[14] = {0};
+  eletoym[1 ] = 0.19;
+  eletoym[2 ] = 0.10;
+  eletoym[3 ] = 0.26;
+  eletoym[4 ] = 0.36;
+  eletoym[5 ] = 0.34;
+  eletoym[6 ] = 0.44;
+  eletoym[7 ] = 0.43;
+  eletoym[8 ] = 0.60;
+  eletoym[9 ] = 1.22;
+  eletoym[10] = 1.10;
+  eletoym[11] = 0.84;
+  eletoym[12] = 2.09;
+  eletoym[13] = 1.51;
+
+  double eletotaleffp[14]={0};
+  double eletotaleffm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    eletotaleffp[i]  = sqrt(elebinp[i] *elebinp[i] + elesigp[i]*elesigp[i] + elebckgrp[i]*elebckgrp[i] + eletoyp[i] *eletoyp[i] );
+    eletotaleffm[i]  = sqrt(elebinm[i] *elebinm[i] + elesigm[i]*elesigm[i] + elebckgrm[i]*elebckgrm[i] + eletoym[i] *eletoym[i] );
+  } 
   
-  cout<<"Wmlus Resolution Syst"<<endl;
-  cout<<resoltotalm1 <<endl;
-  cout<<resoltotalm2 <<endl;
-  cout<<resoltotalm3 <<endl;
-  cout<<resoltotalm4 <<endl;
-  cout<<resoltotalm5 <<endl;
-  cout<<resoltotalm6 <<endl;
-  cout<<resoltotalm7 <<endl;
-  cout<<resoltotalm8 <<endl;
-  cout<<resoltotalm9 <<endl;
-  cout<<resoltotalm10<<endl;
-  cout<<resoltotalm11<<endl;
-  cout<<resoltotalm12<<endl;
-  cout<<resoltotalm13<<endl;
+  double elemetp[14] = {0};
+  elemetp[1 ] = 0.07; 
+  elemetp[2 ] = 0.04;
+  elemetp[3 ] = 0.07;
+  elemetp[4 ] = 0.09;
+  elemetp[5 ] = 0.08;
+  elemetp[6 ] = 0.08;
+  elemetp[7 ] = 0.17;
+  elemetp[8 ] = 0.20;
+  elemetp[9 ] = 0.18;
+  elemetp[10] = 0.28;
+  elemetp[11] = 0.53;
+  elemetp[12] = 1.01;
+  elemetp[13] = 3.16;
+
+  double elemetm[14] ={0};
+  elemetm[1 ] = 0.10;
+  elemetm[2 ] = 0.04;
+  elemetm[3 ] = 0.09;
+  elemetm[4 ] = 0.12;
+  elemetm[5 ] = 0.10;
+  elemetm[6 ] = 0.10;
+  elemetm[7 ] = 0.13;
+  elemetm[8 ] = 0.23;
+  elemetm[9 ] = 0.24;
+  elemetm[10] = 0.43;
+  elemetm[11] = 0.84;
+  elemetm[12] = 1.14;
+  elemetm[13] = 2.71;
+
+  double elescalep[14] = {0};
+  elescalep[1 ] = 0.35; 
+  elescalep[2 ] = 0.19;
+  elescalep[3 ] = 0.14;
+  elescalep[4 ] = 0.21;
+  elescalep[5 ] = 0.15;
+  elescalep[6 ] = 0.17;
+  elescalep[7 ] = 0.24;
+  elescalep[8 ] = 0.43;
+  elescalep[9 ] = 0.36;
+  elescalep[10] = 0.18;
+  elescalep[11] = 0.19;
+  elescalep[12] = 0.29;
+  elescalep[13] = 0.20;
+
+  double elescalem[14] ={0};
+  elescalem[1 ] = 0.06; 
+  elescalem[2 ] = 0.12;
+  elescalem[3 ] = 0.18;
+  elescalem[4 ] = 0.28;
+  elescalem[5 ] = 0.15;
+  elescalem[6 ] = 0.21;
+  elescalem[7 ] = 0.33;
+  elescalem[8 ] = 0.57;
+  elescalem[9 ] = 0.66;
+  elescalem[10] = 0.71;
+  elescalem[11] = 0.67;
+  elescalem[12] = 1.10;
+  elescalem[13] = 0.56;
+
+  double elesmearp[14] ={0};
+  elesmearp[1 ] = 0.1925; 
+  elesmearp[2 ] = 0.1171;
+  elesmearp[3 ] = 0.2128;
+  elesmearp[4 ] = 0.2856;
+  elesmearp[5 ] = 0.3235;
+  elesmearp[6 ] = 0.3091;
+  elesmearp[7 ] = 0.3859;
+  elesmearp[8 ] = 0.5160;
+  elesmearp[9 ] = 0.9845;
+  elesmearp[10] = 0.9941;
+  elesmearp[11] = 1.3365;
+  elesmearp[12] = 1.5571;
+  elesmearp[13] = 1.3165;
+
+  double elesmearm[14] = {0};
+  elesmearm[1 ] = 0.2141; 
+  elesmearm[2 ] = 0.1048;
+  elesmearm[3 ] = 0.2826;
+  elesmearm[4 ] = 0.4092;
+  elesmearm[5 ] = 0.4038;
+  elesmearm[6 ] = 0.4418;
+  elesmearm[7 ] = 0.4065;
+  elesmearm[8 ] = 0.5679;
+  elesmearm[9 ] = 1.3676;
+  elesmearm[10] = 0.8140;
+  elesmearm[11] = 1.2340;
+  elesmearm[12] = 1.9885;
+  elesmearm[13] = 1.4780;
+
+  double eleEnResp[14]={0};
+  double eleEnResm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    eleEnResp[i]  = sqrt(elesmearp[i] *elesmearp[i] +elescalep[i] *elescalep[i] ); 
+    eleEnResm[i]  = sqrt(elesmearm[i] *elesmearm[i] +elescalem[i] *elescalem[i] ); 
+  }
+  
+  double eleqcdbckgrp[14]={0};
+  eleqcdbckgrp[1 ] = 1.0729;
+  eleqcdbckgrp[2 ] = 1.1023;
+  eleqcdbckgrp[3 ] = 0.5858;
+  eleqcdbckgrp[4 ] = 0.9564;
+  eleqcdbckgrp[5 ] = 1.1488;
+  eleqcdbckgrp[6 ] = 1.9617;
+  eleqcdbckgrp[7 ] = 1.2419;
+  eleqcdbckgrp[8 ] = 2.6948;
+  eleqcdbckgrp[9 ] = 1.1687; 
+  eleqcdbckgrp[10] = 1.6848;
+  eleqcdbckgrp[11] = 1.8207;
+  eleqcdbckgrp[12] = 1.7103;
+  eleqcdbckgrp[13] = 1.9070;
+ 
+  double eleqcdbckgrm[14]={0};
+  eleqcdbckgrm[1 ] = 0.7984;
+  eleqcdbckgrm[2 ] = 0.7248;
+  eleqcdbckgrm[3 ] = 0.5155;
+  eleqcdbckgrm[4 ] = 0.7454;
+  eleqcdbckgrm[5 ] = 0.8799;
+  eleqcdbckgrm[6 ] = 1.4930;
+  eleqcdbckgrm[7 ] = 0.9734;
+  eleqcdbckgrm[8 ] = 2.0400;
+  eleqcdbckgrm[9 ] = 0.7698; 
+  eleqcdbckgrm[10] = 2.1598;
+  eleqcdbckgrm[11] = 1.4424;
+  eleqcdbckgrm[12] = 1.3827;
+  eleqcdbckgrm[13] = 3.4378;
+
+  double eleqcdshapep[14] = {0};
+  eleqcdshapep[1 ] = 0.3621;
+  eleqcdshapep[2 ] = 0.4677;
+  eleqcdshapep[3 ] = 0.6164;
+  eleqcdshapep[4 ] = 0.4155;
+  eleqcdshapep[5 ] = 0.6913;
+  eleqcdshapep[6 ] = 0.6007;
+  eleqcdshapep[7 ] = 0.6103;
+  eleqcdshapep[8 ] = 0.8874;
+  eleqcdshapep[9 ] = 0.8704; 
+  eleqcdshapep[10] = 0.9543;
+  eleqcdshapep[11] = 0.4220;
+  eleqcdshapep[12] = 0.8768;
+  eleqcdshapep[13] = 0.8999;
+ 
+  double eleqcdshapem[14] ={0};
+  eleqcdshapem[1 ] = 0.3548;
+  eleqcdshapem[2 ] = 0.2352;
+  eleqcdshapem[3 ] = 0.3452;
+  eleqcdshapem[4 ] = 0.9577;
+  eleqcdshapem[5 ] = 0.8137;
+  eleqcdshapem[6 ] = 0.4763;
+  eleqcdshapem[7 ] = 0.6415;
+  eleqcdshapem[8 ] = 0.6790;
+  eleqcdshapem[9 ] = 0.8890; 
+  eleqcdshapem[10] = 0.6282;
+  eleqcdshapem[11] = 0.9061;
+  eleqcdshapem[12] = 0.7652;
+  eleqcdshapem[13] = 0.8495;
+
+  double eleewkp[14] ={0};
+  eleewkp[1 ] = 0.10;
+  eleewkp[2 ] = 0.07;
+  eleewkp[3 ] = 0.08;
+  eleewkp[4 ] = 0.10;
+  eleewkp[5 ] = 0.13;
+  eleewkp[6 ] = 0.18;
+  eleewkp[7 ] = 0.24;
+  eleewkp[8 ] = 0.34;
+  eleewkp[9 ] = 0.42; 
+  eleewkp[10] = 0.41;
+  eleewkp[11] = 0.49;
+  eleewkp[12] = 0.50;
+  eleewkp[13] = 0.54;
+ 
+  double eleewkm[14] ={0};
+  eleewkm[1 ] = 0.09;
+  eleewkm[2 ] = 0.11;
+  eleewkm[3 ] = 0.21;
+  eleewkm[4 ] = 0.34;
+  eleewkm[5 ] = 0.21;
+  eleewkm[6 ] = 0.23;
+  eleewkm[7 ] = 0.26;
+  eleewkm[8 ] = 0.32;
+  eleewkm[9 ] = 0.48; 
+  eleewkm[10] = 0.48;
+  eleewkm[11] = 0.95;
+  eleewkm[12] = 0.73;
+  eleewkm[13] = 0.33;
+
+  double elefsrp[14] ={0};
+  elefsrp[1 ] = 0.135506;
+  elefsrp[2 ] = 0.149677;
+  elefsrp[3 ] = 0.114017;
+  elefsrp[4 ] = 0.0665356;
+  elefsrp[5 ] = 0.126617;
+  elefsrp[6 ] = 0.290229;
+  elefsrp[7 ] = 0.585178;
+  elefsrp[8 ] = 0.729473;
+  elefsrp[9 ] = 1.07369;
+  elefsrp[10] = 1.91924; 
+  elefsrp[11] = 1.33236; 
+  elefsrp[12] = 1.3188;  
+  elefsrp[13] = 1.33945; 
+ 
+  double elefsrm[14] ={0};
+  elefsrm[1 ] = 0.0903484;
+  elefsrm[2 ] = 0.0934524;
+  elefsrm[3 ] = 0.0748422;
+  elefsrm[4 ] = 0.117356; 
+  elefsrm[5 ] = 0.141232; 
+  elefsrm[6 ] = 0.333736; 
+  elefsrm[7 ] = 0.231212; 
+  elefsrm[8 ] = 0.710899; 
+  elefsrm[9 ] = 1.159;    
+  elefsrm[10] = 0.819618; 
+  elefsrm[11] = 0.761551; 
+  elefsrm[12] = 1.81484;  
+  elefsrm[13] = 0.757732; 
+
+  double elesvdunfp[14] ={0};
+  elesvdunfp[1 ] = 0.1153;
+  elesvdunfp[2 ] = 0.1043;
+  elesvdunfp[3 ] = 0.1063;
+  elesvdunfp[4 ] = 0.1227;
+  elesvdunfp[5 ] = 0.1418;
+  elesvdunfp[6 ] = 0.1621;
+  elesvdunfp[7 ] = 0.1875;
+  elesvdunfp[8 ] = 0.2223;
+  elesvdunfp[9 ] = 0.2622;
+  elesvdunfp[10] = 0.3000;
+  elesvdunfp[11] = 0.3312;
+  elesvdunfp[12] = 0.3531;
+  elesvdunfp[13] = 0.3644;
+  
+  double elesvdunfm[14] ={0};
+  elesvdunfm[1 ] = 0.1196;
+  elesvdunfm[2 ] = 0.1094;
+  elesvdunfm[3 ] = 0.1138;
+  elesvdunfm[4 ] = 0.1303;
+  elesvdunfm[5 ] = 0.1481;
+  elesvdunfm[6 ] = 0.1684;
+  elesvdunfm[7 ] = 0.1979;
+  elesvdunfm[8 ] = 0.2364;
+  elesvdunfm[9 ] = 0.2783;
+  elesvdunfm[10] = 0.3174;
+  elesvdunfm[11] = 0.3489;
+  elesvdunfm[12] = 0.3706;
+  elesvdunfm[13] = 0.3816;
+
+  double eleBiasp[14] = {0};
+  eleBiasp[1 ] = 0.7707;
+  eleBiasp[2 ] = 0.4368;
+  eleBiasp[3 ] = 0.4672;
+  eleBiasp[4 ] = 1.6650;
+  eleBiasp[5 ] = 2.2206;
+  eleBiasp[6 ] = 2.9381;
+  eleBiasp[7 ] = 3.8440;
+  eleBiasp[8 ] = 5.4072;
+  eleBiasp[9 ] = 5.5939;
+  eleBiasp[10] = 4.0037;
+  eleBiasp[11] = 3.4396;
+  eleBiasp[12] = 4.0359;
+  eleBiasp[13] = 4.6224;
+ 
+  double eleBiasm[14]={0};
+  eleBiasm[1 ] = 0.9882;
+  eleBiasm[2 ] = 0.5143;
+  eleBiasm[3 ] = 0.4613;
+  eleBiasm[4 ] = 1.6006;
+  eleBiasm[5 ] = 2.1511;
+  eleBiasm[6 ] = 2.9418;
+  eleBiasm[7 ] = 3.8949;
+  eleBiasm[8 ] = 5.5269;
+  eleBiasm[9 ] = 5.8131;
+  eleBiasm[10] = 4.1519;
+  eleBiasm[11] = 3.5869;
+  eleBiasm[12] = 4.8048;
+  eleBiasm[13] = 5.9106;
+/*
+  double eleWptCorrp[14] = {0};
+  eleWptCorrp[1 ] = 0.915318; 
+  eleWptCorrp[2 ] = 0.0294394;
+  eleWptCorrp[3 ] = 0.793438; 
+  eleWptCorrp[4 ] = 1.00581;  
+  eleWptCorrp[5 ] = 0.659224; 
+  eleWptCorrp[6 ] = 0.121046; 
+  eleWptCorrp[7 ] = 0.299264; 
+  eleWptCorrp[8 ] = 0.525082; 
+  eleWptCorrp[9 ] = 0.592397; 
+  eleWptCorrp[10] = 0.57529;  
+  eleWptCorrp[11] = 0.529585; 
+  eleWptCorrp[12] = 0.486141; 
+  eleWptCorrp[13] = 0.461337; 
+
+  double eleWptCorrm[14] ={0};
+  eleWptCorrm[1 ] = 1.21547; 
+  eleWptCorrm[2 ] = 0.262792;
+  eleWptCorrm[3 ] = 0.743959;
+  eleWptCorrm[4 ] = 1.17545; 
+  eleWptCorrm[5 ] = 0.937213;
+  eleWptCorrm[6 ] = 0.336006;
+  eleWptCorrm[7 ] = 0.252154;
+  eleWptCorrm[8 ] = 0.603749;
+  eleWptCorrm[9 ] = 0.671394;
+  eleWptCorrm[10] = 0.576984;
+  eleWptCorrm[11] = 0.437997;
+  eleWptCorrm[12] = 0.319664;
+  eleWptCorrm[13] = 0.255065;
+
+  for(int i(1);i<14;i++)
+  {
+    eleBiasp[i] = sqrt(eleBiasp[i] * eleBiasp[i] + eleWptCorrp[i] * eleWptCorrp[i]) ; 
+    eleBiasm[i] = sqrt(eleBiasm[i] * eleBiasm[i] + eleWptCorrm[i] * eleWptCorrm[i]) ; 
+  }
+ */ 
+
+  double systtotalp[14] = {0};
+  double systtotalm[14] = {0};
+  for(int i(1);i<14;i++)
+  {
+    systtotalp[i] =sqrt(eletotaleffp[i] *eletotaleffp[i] +elemetp[i] *elemetp[i] +eleEnResp[i] *eleEnResp[i] +eleqcdshapep[i] *eleqcdshapep[i] +eleqcdbckgrp[i] *eleqcdbckgrp[i] + eleewkp[i] *eleewkp[i]  +eleBiasp[i] *eleBiasp[i] +elesvdunfp[i] *elesvdunfp[i]  +elefsrp[i] *elefsrp[i] + 2.6*2.6);
+    systtotalm[i] =sqrt(eletotaleffm[i] *eletotaleffm[i] +elemetm[i] *elemetm[i] +eleEnResm[i] *eleEnResm[i] +eleqcdshapem[i] *eleqcdshapem[i] +eleqcdbckgrm[i] *eleqcdbckgrm[i] + eleewkm[i] *eleewkm[i]  +eleBiasm[i] *eleBiasm[i] +elesvdunfm[i] *elesvdunfm[i]  +elefsrm[i] *elefsrm[i] + 2.6*2.6);
+  }
+
+  double totaluncerp[14]={0};
+  double totaluncerm[14]={0};
+  for(int i(1);i<14;i++)
+  {
+    totaluncerp[i] = sqrt(elestatp[i] *elestatp[i] +systtotalp[i] *systtotalp[i]);
+    totaluncerm[i] = sqrt(elestatm[i] *elestatm[i] +systtotalm[i] *systtotalm[i]);
+  }
+ 
+//  Print out result
+  cout<<fixed<<setprecision(2);
+  
+  // Recon. 
+  cout<<"Recon. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< eletotaleffp[i] << "\t" << eletotaleffm[i] <<endl;
+  }
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eletotaleffp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eletotaleffm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+  
+  //Energy Resolution
+  cout<<"EnRes.Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<eleEnResp[i] <<"\t"<< eleEnResm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleEnResp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleEnResm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //MET Resolution
+  cout<<"METRes.Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<elemetp[i] <<"\t"<< elemetm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elemetp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elemetm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //QCD Background
+  cout<<"QCD Bckgr.Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<eleqcdbckgrp[i] <<"\t"<< eleqcdbckgrm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleqcdbckgrp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleqcdbckgrm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //QCD Shape
+  cout<<"QCD Shape. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<eleqcdshapep[i] <<"\t"<< eleqcdshapem[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleqcdshapep[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleqcdshapem[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //EWK
+  cout<<"EWK. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<eleewkp[i] <<"\t"<< eleewkm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleewkp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleewkm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //SVD.Unf
+  cout<<"SVD.Unf. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<elesvdunfp[i] <<"\t"<< elesvdunfm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elesvdunfp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elesvdunfm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //FSR
+  cout<<"FSR. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<elefsrp[i] <<"\t"<< elefsrm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elefsrp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elefsrm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //Unf.Bias
+  cout<<"Unf.Bias. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<eleBiasp[i] <<"\t"<< eleBiasm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleBiasp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << eleBiasm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //Total syst
+  cout<<"Total. Syst"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<systtotalp[i] <<"\t"<< systtotalm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << systtotalp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << systtotalm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //Statistical error
+  cout<<"Statistical Error"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<elestatp[i] <<"\t"<< elestatm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elestatp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << elestatm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  //Total Uncertainty
+  cout<<"Total Uncertainty"<<endl;
+  cout<<"W+ \t W-"<<endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<<totaluncerp[i] <<"\t"<< totaluncerm[i]<<endl; 
+  } 
+  cout << "======= Put in note=======" << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << totaluncerp[i] ;
+  }
+    cout << endl;
+  for(int i(1);i<14;i++)
+  {
+    cout<< " & " << totaluncerm[i] ;
+  }
+    cout << endl;
+    cout << endl;
+
+  // Make Incl
+  //*
+  TFile *fp = new TFile("ResultWpToEleNu/Result_WpToEleNu.root");
+  TFile *fm = new TFile("ResultWmToEleNu/Result_WmToEleNu.root");
+  TH1D *h_data_p;
+  TH1D *h_data_m;
+  TH1D *h_MC_p;
+  TH1D *h_MC_m;
+  TH1D *h_dataRec_p;
+  TH1D *h_dataRec_m;
+  h_data_p = (TH1D*)fp->Get("BornEffCorr")->Clone("h_data_p");
+  h_data_m = (TH1D*)fm->Get("BornEffCorr")->Clone("h_data_m");
+  h_MC_p = (TH1D*)fp->Get("SVD_Born.Gen")->Clone("h_MC_p");
+  h_MC_m = (TH1D*)fm->Get("SVD_Born.Gen")->Clone("h_MC_m");
+  h_dataRec_p = (TH1D*)fp->Get("data_Rec")->Clone("h_dataRec_p");
+  h_dataRec_m = (TH1D*)fm->Get("data_Rec")->Clone("h_dataRec_m");
+  cout << "Inclusive Cross-section" << endl;
+  cout << "bin\tW+\t\tW-"<<endl;
+  for( int ipt(1);ipt<14;ipt++)
+  {
+    cout<<ipt<<"\t"<<h_data_p->GetBinContent(ipt)<<"\t\t"<<h_data_m->GetBinContent(ipt)<<endl;
+  }
+  
+  double eleEffErrp[14]={0};
+  double eleEffErrm[14]={0};
+  double eleEffErri[14]={0};
+  cout <<"W+ EffErr \t W- EffErr \t W EffErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleEffErrp[i] = h_data_p->GetBinContent(i)*0.01*eletotaleffp[i];
+    eleEffErrm[i] = h_data_m->GetBinContent(i)*0.01*eletotaleffm[i];
+    eleEffErri[i] = sqrt(eleEffErrp[i]*eleEffErrp[i] + eleEffErrm[i]*eleEffErrm[i]);
+    cout << eleEffErrp[i] << "\t" << eleEffErrm[i] << "\t" << eleEffErri[i] << endl;
+  }
+
+  double eleEnResErrp[14]={0};
+  double eleEnResErrm[14]={0};
+  double eleEnResErri[14]={0};
+  cout <<"W+ MomResErr \t W- MomResErr \t W EffErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleEnResErrp[i] = h_data_p->GetBinContent(i)*0.01*eleEnResp[i];
+    eleEnResErrm[i] = h_data_m->GetBinContent(i)*0.01*eleEnResm[i];
+    eleEnResErri[i] = sqrt(eleEnResErrp[i]*eleEnResErrp[i] + eleEnResErrm[i]*eleEnResErrm[i]);
+    cout << eleEnResErrp[i] << "\t" << eleEnResErrm[i] << "\t" << eleEnResErri[i]<<endl;
+  }
+
+  double eleMetErrp[14]={0};
+  double eleMetErrm[14]={0};
+  double eleMetErri[14]={0};
+  cout <<"W+ MetErr \t W- MetErr \t W MetErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleMetErrp[i] = h_data_p->GetBinContent(i)*0.01*elemetp[i];
+    eleMetErrm[i] = h_data_m->GetBinContent(i)*0.01*elemetm[i];
+    eleMetErri[i] = sqrt(eleMetErrp[i]*eleMetErrp[i] + eleMetErrm[i]*eleMetErrm[i]);
+    cout << eleMetErrp[i] << "\t" << eleMetErrm[i] <<"\t" << eleMetErri[i]<<endl;
+  }
+  
+  double eleQCDBckErrp[14]={0};
+  double eleQCDBckErrm[14]={0};
+  double eleQCDBckErri[14]={0};
+  cout <<"W+ QCDBckErr \t W- QCDBckErr \t W QCDBckErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleQCDBckErrp[i] = h_data_p->GetBinContent(i)*0.01*eleqcdbckgrp[i];
+    eleQCDBckErrm[i] = h_data_m->GetBinContent(i)*0.01*eleqcdbckgrm[i];
+    eleQCDBckErri[i] = sqrt(eleQCDBckErrp[i]*eleQCDBckErrp[i] + eleQCDBckErrm[i]*eleQCDBckErrm[i]);
+    cout << eleQCDBckErrp[i] << "\t" << eleQCDBckErrm[i] <<"\t" << eleQCDBckErri[i] <<endl;
+  }
+  
+  double eleQCDShapeErrp[14]={0};
+  double eleQCDShapeErrm[14]={0};
+  double eleQCDShapeErri[14]={0};
+  cout <<"W+ QCDShapeErr \t W- QCDShapeErr \t W QCDShapeErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleQCDShapeErrp[i] = h_data_p->GetBinContent(i)*0.01*eleqcdshapep[i];
+    eleQCDShapeErrm[i] = h_data_m->GetBinContent(i)*0.01*eleqcdshapem[i];
+    eleQCDShapeErri[i] = sqrt(eleQCDShapeErrp[i]*eleQCDShapeErrp[i] + eleQCDShapeErrm[i]*eleQCDShapeErrm[i]);
+    cout << eleQCDShapeErrp[i] << "\t" << eleQCDShapeErrm[i] <<"\t" << eleQCDShapeErri[i] <<endl;
+  }
+  
+  double eleEWKErrp[14]={0};
+  double eleEWKErrm[14]={0};
+  double eleEWKErri[14]={0};
+  cout <<"W+ EWKErr \t W- EWKErr \t W EWKKErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleEWKErrp[i] = h_data_p->GetBinContent(i)*0.01*eleewkp[i];
+    eleEWKErrm[i] = h_data_m->GetBinContent(i)*0.01*eleewkm[i];
+    eleEWKErri[i] = sqrt(eleEWKErrp[i]*eleEWKErrp[i] + eleEWKErrm[i]*eleEWKErrm[i]);
+    cout << eleEWKErrp[i] << "\t" << eleEWKErrm[i] <<"\t" << eleEWKErri[i] <<endl;
+  }
+  
+  double eleSVDUnfErrp[14]={0};
+  double eleSVDUnfErrm[14]={0};
+  double eleSVDUnfErri[14]={0};
+  cout <<"W+ SVDUnfErr \t W- SVDUnfErr \t W SVDUnfErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleSVDUnfErrp[i] = h_data_p->GetBinContent(i)*0.01*elesvdunfp[i];
+    eleSVDUnfErrm[i] = h_data_m->GetBinContent(i)*0.01*elesvdunfm[i];
+    eleSVDUnfErri[i] = sqrt(eleSVDUnfErrp[i]*eleSVDUnfErrp[i] + eleSVDUnfErrm[i]*eleSVDUnfErrm[i]);
+    cout << eleSVDUnfErrp[i] << "\t" << eleSVDUnfErrm[i] <<"\t" << eleSVDUnfErri[i] <<endl;
+  }
+  
+  double eleFSRErrp[14]={0};
+  double eleFSRErrm[14]={0};
+  double eleFSRErri[14]={0};
+  cout <<"W+ FSRErr \t W- FSRErr \t W FSRErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleFSRErrp[i] = h_data_p->GetBinContent(i)*0.01*elefsrp[i];
+    eleFSRErrm[i] = h_data_m->GetBinContent(i)*0.01*elefsrm[i];
+    eleFSRErri[i] = sqrt(eleFSRErrp[i]*eleFSRErrp[i] + eleFSRErrm[i]*eleFSRErrm[i]);
+    cout << eleFSRErrp[i] << "\t" << eleFSRErrm[i] <<"\t" << eleFSRErri[i] <<endl;
+  }
+  
+  double eleLumiErrp[14]={0};
+  double eleLumiErrm[14]={0};
+  double eleLumiErri[14]={0};
+  cout <<"W+ LumiErr \t W- LumiErr \t W LumiErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleLumiErrp[i] = h_data_p->GetBinContent(i)*0.01*2.6;
+    eleLumiErrm[i] = h_data_m->GetBinContent(i)*0.01*2.6;
+    //eleLumiErri[i] = sqrt(eleLumiErrp[i]*eleLumiErrp[i] + eleLumiErrm[i]*eleLumiErrm[i]);
+    eleLumiErri[i] = eleLumiErrp[i]+eleLumiErrm[i];
+    cout << eleLumiErrp[i] << "\t" << eleLumiErrm[i] <<"\t" << eleLumiErri[i] <<endl;
+  }
+  
+  double eleUnfBiasErrp[14]={0};
+  double eleUnfBiasErrm[14]={0};
+  double eleUnfBiasErri[14]={0};
+  cout <<"W+ UnfBiasErr \t W- UnfBiasErr \t W UnfBiasErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleUnfBiasErrp[i] = h_data_p->GetBinContent(i)*0.01*eleBiasp[i];
+    eleUnfBiasErrm[i] = h_data_m->GetBinContent(i)*0.01*eleBiasm[i];
+    eleUnfBiasErri[i] = sqrt(eleUnfBiasErrp[i]*eleUnfBiasErrp[i] + eleUnfBiasErrm[i]*eleUnfBiasErrm[i]);
+    cout << eleUnfBiasErrp[i] << "\t" << eleUnfBiasErrm[i] <<"\t" << eleUnfBiasErri[i] <<endl;
+  }
+  
+  double eleStatErrp[14]={0};
+  double eleStatErrm[14]={0};
+  double eleStatErri[14]={0};
+  cout <<"W+ StatErr \t W- StatErr \t W StatErr" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleStatErrp[i] = h_data_p->GetBinContent(i)*0.01*elestatp[i];
+    eleStatErrm[i] = h_data_m->GetBinContent(i)*0.01*elestatm[i];
+    eleStatErri[i] = sqrt(eleStatErrp[i]*eleStatErrp[i] + eleStatErrm[i]*eleStatErrm[i]);
+    cout << eleStatErrp[i] << "\t" << eleStatErrm[i] <<"\t" << eleStatErri[i] <<endl;
+  }
+  
+  double eleTotalUnceri[14]={0};
+  cout <<" Wincl TotalUncertainty" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleTotalUnceri[i] = sqrt(eleEffErri[i]*eleEffErri[i] + eleEnResErri[i]*eleEnResErri[i]+eleMetErri[i]*eleMetErri[i]+ eleQCDBckErri[i]*eleQCDBckErri[i] + eleQCDShapeErri[i]*eleQCDShapeErri[i]+ eleEWKErri[i]*eleEWKErri[i] + eleSVDUnfErri[i]*eleSVDUnfErri[i] + eleFSRErri[i]*eleFSRErri[i]+ eleLumiErri[i]*eleLumiErri[i] + eleUnfBiasErri[i]*eleUnfBiasErri[i]+ eleStatErri[i]*eleStatErri[i]);
+   // eleTotalUnceri[i] = eleEffErri[i] + eleEnResErri[i] + eleMetErri[i] + eleQCDBckErri[i] + eleQCDShapeErri[i] + eleEWKErri[i] + eleSVDUnfErri[i] + eleFSRErri[i] + eleLumiErri[i] + eleUnfBiasErri[i] + eleStatErri[i];
+    cout << eleTotalUnceri[i] <<endl;
+  }
+
+  TString resultDir = "ResultWinclToEleNu";
+  gSystem->mkdir(resultDir,kTRUE);
+
+  TFile f_out(resultDir+"/Result_WinclEle.root","recreate");
+  TH1D* BornEffCorr = new TH1D("BornEffCorr","BornEffCorr",13,0,13);
+  TH1D* SVD_BornGen = new TH1D("SVD_BornGen","SVD_BornGen",13,0,13);SVD_BornGen->Sumw2();
+  TH1D* data_Rec = new TH1D("data_Rec","data_Rec",13,0,13);data_Rec->Sumw2();
+    
+    for(int i(1);i<14;i++)
+    {
+      BornEffCorr->SetBinContent(i,h_data_p->GetBinContent(i) + h_data_m->GetBinContent(i));
+      BornEffCorr->SetBinError(i,eleTotalUnceri[i]);
+      SVD_BornGen->SetBinContent(i,h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i));
+      SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
+      data_Rec->SetBinError(i,sqrt(h_dataRec_p->GetBinError(i)*h_dataRec_p->GetBinError(i) + h_dataRec_m->GetBinError(i)*h_dataRec_m->GetBinError(i)));
+    }
+    BornEffCorr->Write();
+    SVD_BornGen->Write();
+    data_Rec->Write();
+
+  // */
 }
