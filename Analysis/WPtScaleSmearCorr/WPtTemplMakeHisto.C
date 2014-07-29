@@ -50,7 +50,6 @@ void WPtTemplMakeHisto()
   double LumiW_Muon_DYToMuMu_S8 = RealLumi*1*1871.0/1.9802e6;
   double LumiW_Muon_RD_LowPU = 1;
 
-/*  
 //Muon_RD_LowPU========================================
   cout<<"Muon_RD_LowPU===================="<<endl;
   TChain *TC_Muon_RD_LowPU = new TChain("WMuNeu/tree","");
@@ -59,9 +58,7 @@ void WPtTemplMakeHisto()
   Wlnu12LoScaleSmearCorr Wmunu12LoRD(
       TC_Muon_RD_LowPU,LumiW_Muon_RD_LowPU, Muon_RD_LowPU_BaseName,ModeRD,AnaChannelMu,0,RunOnRD,0x1235);
   Wmunu12LoRD.Loop();
-////*/
  
-/*
 //DYToMuMu========================================
   cout<<"DYToMuMu_S8========================="<<endl;
   TChain *TC_DYToMuMu_S8	= new TChain("WMuNeu/tree","");
@@ -70,7 +67,6 @@ void WPtTemplMakeHisto()
   Wlnu12LoScaleSmearCorr Wmunu12LoDYToMuMu(
       TC_DYToMuMu_S8,LumiW_Muon_DYToMuMu_S8, DYToMuMu_BaseName,ModeMC,AnaChannelMu,0,RunOnMC,0x1235);
   Wmunu12LoDYToMuMu.Loop();
-///*/
   
 //====================
 /////////// Electron LowPU
@@ -80,8 +76,8 @@ void WPtTemplMakeHisto()
   //double LumiW_Ele_DYToEE_S8= Lumi_LowPU*1*1871.0/3297045;
   double LumiW_Ele_DYToEE_S8= RealLumi*1*1871.0/3297045;
   double LumiW_Ele_RD_LowPU = 1;
-/*
-//Ele_RD_LowPU========================================
+
+  //Ele_RD_LowPU========================================
   cout<<"Ele_RD_LowPU===================="<<endl;
   TChain *TC_Ele_RD_LowPU = new TChain("WEleNeu/tree","");
   SetupTree("Ele_RD_LowPU",TC_Ele_RD_LowPU);
@@ -89,9 +85,7 @@ void WPtTemplMakeHisto()
   Wlnu12LoScaleSmearCorr Wenu12LoRD(
       TC_Ele_RD_LowPU,LumiW_Ele_RD_LowPU, Ele_RD_LowPU_BaseName,ModeRD,AnaChannelEle,0,RunOnRD,0x12345);
   Wenu12LoRD.Loop();
-////*///
 
-//*
 //DYToEE========================================
   cout<<"DYToEE_S8========================="<<endl;
   TChain *TC_Ele_DYToEE_S8	= new TChain("WEleNeu/tree","");
@@ -100,6 +94,5 @@ void WPtTemplMakeHisto()
   Wlnu12LoScaleSmearCorr Wenu12LoDYToEE(
       TC_Ele_DYToEE_S8,LumiW_Ele_DYToEE_S8, Ele_DYToEE_BaseName,ModeMC,AnaChannelEle,0,RunOnMC,0x12345);
   Wenu12LoDYToEE.Loop();
-///*////
 
 }
