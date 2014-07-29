@@ -3,7 +3,17 @@
 In Wpt differential cross section analysis we use Recoil corrected MET fit to get yields 
 and then Unfold it to postFSR(Detector unfolding) and preFSR(FSR unfolding).
 
+
+
+Put nTuple locations in 
+EventSelection/include/Tree2012LoPU/chain_All.tcsh          --- for nTuple which we use to get MET fit yileds  
+EventSelection/include/Tree2012LoPU/chain_Accpt_All.tcsh    --- for Acceptance nTuple which we use to get Born Level distributions from Signal MC  
+and run those shell files.
+
+Then folllow these steps to get the Wpt differential cross section results:
+
 1.
+Recoil parameters to apply on MET.
 To create Recoil parameters run WPtRecoilCorr/
 root -l WPtRecoilMakeHisto.C
 
@@ -14,6 +24,7 @@ this will create recoil parameter to apply on MET.
 (it is already created and exists in Terranova  in Recoil/ folder)
 
 2.
+ScaleSmear correction values.
 Calculate Electron/Muon energy scale and resolution factors to apply on MET before selection
 run WPtScaleSmearCorr/
 root -l WPtTemplMakeHisto.C
@@ -24,5 +35,25 @@ python scaleSmearTemplateFit_Ele(Muon).py
 for Electron and Muon cases to get the scale/smear values 
 (these values are already calculated and included in EventSelection/Wlnu12LoBase.h, 
 so it will be applied when you run MET selection in WPtMET/ folder)
+
+3.
+Selection and filling histogram for MET fit.
+
+run WPtMET/
+root -l WPtMEtMakeHisto.C
+to pass the Wpt selection criteria and fill the histograms for MET fit.
+
+4. 
+MET fitting.
+run the shell file in MetFit4Wpt/
+./runAllFits.csh
+
+This will create fit result folders with MEt fit plots and etc.
+ElectronFitResultsModRayleighSimultNominal/RstElectron/SigYields_Nominal.root
+MuonFitResultsModRayleighSimultNominal/RstMuon/SigYields_Nominal.root
+
+Move these SigYields_Nominal.root files to RstSelection/ with an appropriate name.
+
+
 
 
