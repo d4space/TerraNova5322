@@ -1,0 +1,28 @@
+
+
+In Wpt differential cross section analysis we use Recoil corrected MET fit to get yields 
+and then Unfold it to postFSR(Detector unfolding) and preFSR(FSR unfolding).
+
+1.
+To create Recoil parameters run WPtRecoilCorr/
+root -l WPtRecoilMakeHisto.C
+
+then Recoil/
+./runRecoilFits.sh
+
+this will create recoil parameter to apply on MET.
+(it is already created and exists in Terranova  in Recoil/ folder)
+
+2.
+Calculate Electron/Muon energy scale and resolution factors to apply on MET before selection
+run WPtScaleSmearCorr/
+root -l WPtTemplMakeHisto.C
+
+run WPtScaleSmearCorr/
+python scaleSmearTemplateFit_Ele(Muon).py
+
+for Electron and Muon cases to get the scale/smear values 
+(these values are already calculated and included in EventSelection/Wlnu12LoBase.h, 
+so it will be applied when you run MET selection in WPtMET/ folder)
+
+
