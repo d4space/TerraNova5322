@@ -975,6 +975,7 @@
 
   TFile f_out(resultDir+"/Result_WinclMu.root","recreate");
   TH1D* BornEffCorr = new TH1D("BornEffCorr","BornEffCorr",13,0,13);
+  TH1D* PowhegErr = new TH1D("PowhegErr","PowhegErr",13,0,13);
   TH1D* SVD_BornGen = new TH1D("SVD_BornGen","SVD_BornGen",13,0,13);SVD_BornGen->Sumw2();
   TH1D* data_Rec = new TH1D("data_Rec","data_Rec",13,0,13);data_Rec->Sumw2();
     
@@ -983,11 +984,13 @@
       BornEffCorr->SetBinContent(i,h_data_p->GetBinContent(i) + h_data_m->GetBinContent(i));
       BornEffCorr->SetBinError(i,muTotalUnceri[i]);
       SVD_BornGen->SetBinContent(i,h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i));
-      SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinContent(i)+h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) +h_MC_m->GetBinContent(i)+ h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
       data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
       data_Rec->SetBinError(i,sqrt(h_dataRec_p->GetBinError(i)*h_dataRec_p->GetBinError(i) + h_dataRec_m->GetBinError(i)*h_dataRec_m->GetBinError(i)));
+      PowhegErr->SetBinContent(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
     }
     BornEffCorr->Write();
+    PowhegErr->Write();
     SVD_BornGen->Write();
     data_Rec->Write();
 
