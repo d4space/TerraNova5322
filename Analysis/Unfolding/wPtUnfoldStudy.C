@@ -2200,19 +2200,19 @@ int wPtUnfoldStudy
     TotalUncertErr[12]= 17.39;
     TotalUncertErr[13]= 34.12;
     errPowheg[0] = 0; 
-    errPowheg[1] = 4.398; 
-    errPowheg[2] = 4.382; 
-    errPowheg[3] = 4.423; 
-    errPowheg[4] = 4.443; 
-    errPowheg[5] = 5.604; 
+    errPowheg[1] = 4.4  ; 
+    errPowheg[2] = 4.385; 
+    errPowheg[3] = 4.426; 
+    errPowheg[4] = 4.444; 
+    errPowheg[5] = 4.451; 
     errPowheg[6] = 4.532; 
     errPowheg[7] = 7.792; 
-    errPowheg[8] = 3.349; 
+    errPowheg[8] = 6.181; 
     errPowheg[9] = 4.622; 
-    errPowheg[10]= 19.15;
-    errPowheg[11]= 4.587; 
-    errPowheg[12]= 4.323; 
-    errPowheg[13]= 5.229; 
+    errPowheg[10]= 4.33 ;
+    errPowheg[11]= 4.573; 
+    errPowheg[12]= 5.005; 
+    errPowheg[13]= 5.269; 
   }else if(BaseName == "WpToEleNu"){
     TotalUncertErr[0] = 0; 
     TotalUncertErr[1] = 3.71 ;  
@@ -2229,19 +2229,19 @@ int wPtUnfoldStudy
     TotalUncertErr[12]= 15.07; 
     TotalUncertErr[13]= 24.69;
     errPowheg[0] = 0; 
-    errPowheg[1] = 4.37 ; 
-    errPowheg[2] = 4.314; 
-    errPowheg[3] = 4.109; 
-    errPowheg[4] = 12.58; 
-    errPowheg[5] = 19.8 ; 
-    errPowheg[6] = 7.864; 
-    errPowheg[7] = 3.68 ; 
-    errPowheg[8] = 3.741; 
-    errPowheg[9] = 19.27; 
-    errPowheg[10]= 6.264;
-    errPowheg[11]= 4.312; 
-    errPowheg[12]= 4.235; 
-    errPowheg[13]= 5.534; 
+    errPowheg[1] = 4.285; 
+    errPowheg[2] = 4.156; 
+    errPowheg[3] = 4.132 ; 
+    errPowheg[4] = 5.839; 
+    errPowheg[5] = 4.127; 
+    errPowheg[6] = 5.549; 
+    errPowheg[7] = 3.104; 
+    errPowheg[8] = 4.887; 
+    errPowheg[9] = 2.932; 
+    errPowheg[10]= 2.299;
+    errPowheg[11]= 2.881; 
+    errPowheg[12]= 2.793; 
+    errPowheg[13]= 5.133; 
   }else if(BaseName == "WmToEleNu"){
     TotalUncertErr[0] = 0;
     TotalUncertErr[1] = 3.82 ; 
@@ -2258,21 +2258,20 @@ int wPtUnfoldStudy
     TotalUncertErr[12]= 18.42; 
     TotalUncertErr[13]= 25.36;
     errPowheg[0] = 0; 
-    errPowheg[1] = 4.285; 
-    errPowheg[2] = 4.156; 
-    errPowheg[3] = 4.132; 
-    errPowheg[4] = 4.129; 
-    errPowheg[5] = 4.128; 
-    errPowheg[6] = 7.152; 
-    errPowheg[7] = 4.143; 
-    errPowheg[8] = 18.56; 
-    errPowheg[9] = 16.32; 
-    errPowheg[10]= 4.427;
-    errPowheg[11]= 4.582; 
-    errPowheg[12]= 4.939; 
-    errPowheg[13]= 5.144; 
+    errPowheg[1] = 4.369; 
+    errPowheg[2] = 4.373; 
+    errPowheg[3] = 4.392; 
+    errPowheg[4] = 4.416; 
+    errPowheg[5] = 4.475; 
+    errPowheg[6] = 4.811; 
+    errPowheg[7] = 4.394; 
+    errPowheg[8] = 4.216; 
+    errPowheg[9] = 4.728 ; 
+    errPowheg[10]= 4.818;
+    errPowheg[11]= 4.679; 
+    errPowheg[12]= 4.765; 
+    errPowheg[13]= 5.371; 
   }
-  
   for( int i(1);i<=h1_Data_SigYild->GetNbinsX(); i++)
   {
     SVD_Born.EffCorr->SetBinError(i,0.01*TotalUncertErr[i]*SVD_Born.EffCorr->GetBinContent(i));

@@ -577,12 +577,12 @@
   {
     cout<< " & " << mutotaleffp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << mutotaleffm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\"<<endl;
     cout << endl;
   
   //Momentum Resolution
@@ -597,12 +597,12 @@
   {
     cout<< " & " << muMomResp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << muMomResm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //MET Resolution
@@ -617,12 +617,12 @@
   {
     cout<< " & " << mumetp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << mumetm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //QCD Background
@@ -637,12 +637,12 @@
   {
     cout<< " & " << muqcdbckgrp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << muqcdbckgrm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //QCD Shape
@@ -657,12 +657,12 @@
   {
     cout<< " & " << muqcdshapep[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << muqcdshapem[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //EWK
@@ -677,12 +677,12 @@
   {
     cout<< " & " << muewkp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << muewkm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //SVD.Unf
@@ -697,12 +697,12 @@
   {
     cout<< " & " << musvdunfp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << musvdunfm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //FSR
@@ -717,12 +717,12 @@
   {
     cout<< " & " << mufsrp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << mufsrm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Unf.Bias
@@ -737,12 +737,12 @@
   {
     cout<< " & " << muBiasp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << muBiasm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Total syst
@@ -757,12 +757,12 @@
   {
     cout<< " & " << systtotalp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << systtotalm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Statistical error
@@ -777,12 +777,12 @@
   {
     cout<< " & " << mustatp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << mustatm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Total Uncertainty
@@ -797,12 +797,12 @@
   {
     cout<< " & " << totaluncerp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << totaluncerm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   // Make Incl
@@ -822,10 +822,10 @@
   h_dataRec_p = (TH1D*)fp->Get("data_Rec")->Clone("h_dataRec_p");
   h_dataRec_m = (TH1D*)fm->Get("data_Rec")->Clone("h_dataRec_m");
   cout << "Inclusive Cross-section" << endl;
-  cout << "bin\tW+\t\tW-"<<endl;
+  cout << "bin\tW+\t\tW-\t\t Wincl"<<endl;
   for( int ipt(1);ipt<14;ipt++)
   {
-    cout<<ipt<<"\t"<<h_data_p->GetBinContent(ipt)<<"\t\t"<<h_data_m->GetBinContent(ipt)<<endl;
+    cout<<ipt<<"\t"<<h_data_p->GetBinContent(ipt)<<"\t\t"<<h_data_m->GetBinContent(ipt)<< "\t\t" << h_data_p->GetBinContent(ipt)+h_data_m->GetBinContent(ipt) << endl;
   }
   
   double muEffErrp[14]={0};

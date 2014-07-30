@@ -504,12 +504,12 @@
   {
     cout<< " & " << eletotaleffp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eletotaleffm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
   
   //Energy Resolution
@@ -524,12 +524,12 @@
   {
     cout<< " & " << eleEnResp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eleEnResm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //MET Resolution
@@ -544,12 +544,12 @@
   {
     cout<< " & " << elemetp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << elemetm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //QCD Background
@@ -564,12 +564,12 @@
   {
     cout<< " & " << eleqcdbckgrp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eleqcdbckgrm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //QCD Shape
@@ -584,12 +584,12 @@
   {
     cout<< " & " << eleqcdshapep[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eleqcdshapem[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //EWK
@@ -604,12 +604,12 @@
   {
     cout<< " & " << eleewkp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eleewkm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //SVD.Unf
@@ -624,12 +624,12 @@
   {
     cout<< " & " << elesvdunfp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << elesvdunfm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //FSR
@@ -644,12 +644,12 @@
   {
     cout<< " & " << elefsrp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << elefsrm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Unf.Bias
@@ -664,12 +664,12 @@
   {
     cout<< " & " << eleBiasp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << eleBiasm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Total syst
@@ -684,12 +684,12 @@
   {
     cout<< " & " << systtotalp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << systtotalm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Statistical error
@@ -704,12 +704,12 @@
   {
     cout<< " & " << elestatp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << elestatm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   //Total Uncertainty
@@ -724,12 +724,12 @@
   {
     cout<< " & " << totaluncerp[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
   for(int i(1);i<14;i++)
   {
     cout<< " & " << totaluncerm[i] ;
   }
-    cout << endl;
+    cout << " \\"<<"\\" << endl;
     cout << endl;
 
   // Make Incl
