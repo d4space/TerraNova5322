@@ -1,0 +1,31 @@
+
+To combine data W+ and W- results to W Inclusive data run:
+root -l CombineChargeToIncl_Ele(Mu).C
+
+
+To combine Theory(ResBos,FEWZ) W+ and W- results to W Inclusive run:
+python combineTheory.py
+
+To get the plot where we compare Inclusive W Electron and Muon channel results with Resbos run:
+python theoryCompChannel.py
+
+
+
+To get the Inclsuive W cross section plots and Theory-Data comparison(ResBos, Powheg, FEWZ) plots run:
+python theoryStudy_separate.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
