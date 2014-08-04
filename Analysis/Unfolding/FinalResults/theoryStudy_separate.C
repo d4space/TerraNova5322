@@ -29,7 +29,9 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   if(chnl==2)
     //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Muminus
-    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
+    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
+    //lHDiff->GetYaxis()->SetRangeUser(0.1,1.9);//Eleminus
+    lHDiff->GetYaxis()->SetRangeUser(-0.2.,2.1);//Eleminus
   if(chnl==3)
     //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -169,7 +171,9 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* lResbos34;
   TH1D* lFEWZ;
   TH1D* lPowheg;
+  TH1D* orgPowheg;
   TH1D* lData;
+  TH1D* orgData;
   TH1D* hRD;
   
   for( int i(0);i<7;i++)
@@ -188,6 +192,7 @@ int theoryStudy_separate(const TString BaseName)
   lPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
   orgPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
+  orgData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
   hRD     = (TH1D*)f_Data->Get("data_Rec")->Clone();
   
   for( int ipt(1);ipt<nBins;ipt++)
@@ -197,9 +202,20 @@ int theoryStudy_separate(const TString BaseName)
     cout<<ipt<<"\t"<<hRD->GetBinContent(ipt)<<"\t"<<hRD->GetBinError(ipt)<<endl;
   }
 
+  for( int ipt(1);ipt<=nBins-1;ipt++)
+  {
+    //cout << "lData before scale : " << lData->GetBinContent(ipt) << endl;
+  }
+
   lPowheg->Scale(1./18.429);
   lData->Scale(1./18.429);
-  hRD->Scale(1./18.429);
+  //hRD->Scale(1./18.429);
+  
+  for( int ipt(1);ipt<=nBins-1;ipt++)
+  {
+    //cout << "lData after scale : " << lData->GetBinContent(ipt) << endl;
+    cout << "lPowheg after scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
+  }
   
   for( int ipt(1);ipt<nBins;ipt++)
   {
@@ -238,47 +254,68 @@ int theoryStudy_separate(const TString BaseName)
   Double_t vPowheg[nBins-1];
   Double_t vFewz[nBins-1];
   Double_t resbVal[nBins-1],errResbosDataLo[nBins-1],errResbosDataHi[nBins-1];
-
+  
+  double FewzTotErr[14];
+  double PowhegStatErr[14];
+  double PowhegTotErr[14];
+  double DataStatErr[14];
+  double DataTotErr[14];
   for( int ipt(1);ipt<=nBins-1;ipt++)
+  {
+    FewzTotErr[ipt]= sqrt(lFEWZ->GetBinError(ipt)*lFEWZ->GetBinError(ipt) + fScale[ipt]*fScale[ipt]);
+    PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
+    PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
+    DataStatErr[ipt] = lData->GetBinContent(ipt) * hRD->GetBinError(ipt)/hRD->GetBinContent(ipt);
+    DataTotErr[ipt] = lData->GetBinError(ipt);
+    //cout << "FEWZ cross-section["<<ipt<<"] : "<< lFEWZ->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << " Error : " << FewzTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << endl; 
+    //cout << "Powheg cross-section["<<ipt<<"] : "<< lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << " Error : " << PowhegTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << endl; 
+    cout << "Data StatErr["<<ipt<<"] : "<< DataStatErr[ipt] << endl;
+  }
+    for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     hResbosLog30->SetBinContent(ipt,lResbos30->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) );
     hResbosLog31->SetBinContent(ipt,lResbos31->GetBinContent(ipt));
     hResbosLog34->SetBinContent(ipt,lResbos34->GetBinContent(ipt));
     
     hFewzLog->SetBinContent(ipt,lFEWZ->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    //hFewzLog->SetBinError(ipt,lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    hFewzLog->SetBinError(ipt,sqrt((lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt))*(lFEWZ->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt))+(fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt))*(fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt))));
+    hFewzLog->SetBinError(ipt,FewzTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     
     hPowhegLog->SetBinContent(ipt,lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    hPowhegLog->SetBinError(ipt,sqrt(lPowheg->GetBinContent(ipt))/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hPowhegLog->SetBinError(ipt,PowhegTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     
     hDataLog->SetBinContent(ipt,lData->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    hDataLog->SetBinError(ipt,lData->GetBinError(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    hDataLog->SetBinError(ipt,DataTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+
+    // Ratio plot 
     hDataErrBand->SetBinContent(ipt,1.);
     hDataErrBand->SetBinError(ipt,lData->GetBinError(ipt)/lData->GetBinContent(ipt));
+    //cout << "lData Error : " << lData->GetBinError(ipt) << " lData Contetn : " << lData->GetBinContent(ipt) << " Ratio : " << lData->GetBinError(ipt)/lData->GetBinContent(ipt)<< endl;
+    
     hStatErr->SetBinContent(ipt,1.);
-    hStatErr->SetBinError(ipt,hRD->GetBinError(ipt)/lData->GetBinContent(ipt));
+    //hStatErr->SetBinError(ipt,hRD->GetBinError(ipt)/lData->GetBinContent(ipt));
+    hStatErr->SetBinError(ipt,DataStatErr[ipt]/lData->GetBinContent(ipt));
 
     hPowhegErrBand->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
-    hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
+    //hPowhegErrBand->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt));
+    //hPowhegErrBand->SetBinError(ipt,PowhegStatErr[ipt]/lData->GetBinContent(ipt));
+    hPowhegErrBand->SetBinError(ipt,PowhegStatErr[ipt]/lData->GetBinContent(ipt));
     hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     //hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    hPowhegErrBandPDF->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)+lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    cout<<hPowhegErrBandPDF->GetBinContent(ipt)<<" "<<hPowhegErrBandPDF->GetBinError(ipt)<<" "<<100*hPowhegErrBandPDF->GetBinError(ipt)/hPowhegErrBandPDF->GetBinContent(ipt)<<"  "<<100*orgPowheg->GetBinError(ipt)/orgPowheg->GetBinContent(ipt)<<endl; 
+    //hPowhegErrBandPDF->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)+lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
+    cout << "lData Bincontent : " << lData->GetBinContent(ipt) << " Powheg stat error : " << PowhegStatErr[ipt] << " PDF : " << lPowheg->GetBinError(ipt) <<  endl;
+    hPowhegErrBandPDF->SetBinError(ipt,(PowhegStatErr[ipt]+lPowheg->GetBinError(ipt))/lData->GetBinContent(ipt));
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzErrBand->SetBinError(ipt,0.01);
     hFewzScale->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));  
     hFewzScale->SetBinError(ipt,fScale[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    cout << fScale[ipt] << endl;
-    hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzScaleErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzScaleErrBand->SetBinError(ipt,0.01+hFewzScale->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
     //hFewzTheoryErrBand->SetBinError(ipt,hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
     //hFewzTheoryErrBand->SetBinError(ipt,0.01+hFewzLog->GetBinError(ipt)/hDataLog->GetBinContent(ipt));
+    hFewzTheoryErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     hFewzTheoryErrBand->SetBinError(ipt,0.01+(hFewzLog->GetBinError(ipt)+hFewzScale->GetBinError(ipt))/hDataLog->GetBinContent(ipt));
     // FEWZ SCale syst
-    
-    cout << "Bin " <<ipt <<" FewzTheory : " <<  hFewzTheoryErrBand->GetBinError(ipt) << "\t FewzScale : " << hFewzScale->GetBinError(ipt) << "\t FewzStat : " << hFewzErrBand->GetBinError(ipt) << endl; ;
+//    cout << "Bin " <<ipt <<" FewzTheory : " <<  hFewzTheoryErrBand->GetBinError(ipt) << "\t FewzScale : " << hFewzScale->GetBinError(ipt) << "\t FewzStat : " << hFewzErrBand->GetBinError(ipt) << endl; ;
     
     
     resbVal[ipt-1]=hResbosLog30->GetBinContent(ipt)/hDataLog->GetBinContent(ipt);
@@ -294,13 +331,14 @@ int theoryStudy_separate(const TString BaseName)
   TGraphErrors *hFewz = new TGraphErrors(hFewzLog);
   TGraphAsymmErrors* hResbos = new TGraphAsymmErrors(nBins-1, ax, resb30, aex, aex, errMin, errMax);
   TGraphAsymmErrors* ResbosErrBand = new TGraphAsymmErrors(nBins-1, ax, resbVal, aex, aex, errResbosDataLo, errResbosDataHi);
+  
   TGraphErrors* pRatio = new TGraphErrors(hPowhegErrBand);
   TGraphErrors* pRatioPDF = new TGraphErrors(hPowhegErrBandPDF);
   TGraphErrors* fRatio = new TGraphErrors(hFewzErrBand);
   TGraphErrors* fTheoryRatio = new TGraphErrors(hFewzTheoryErrBand);
   TGraphErrors* fScaleRatio = new TGraphErrors(hFewzScaleErrBand);
-  
   TGraphErrors* dataErrBand = new TGraphErrors(hDataErrBand);
+  
   dataErrBand->SetFillColor(kBlack);
   dataErrBand->SetFillStyle(3354);
   
@@ -325,9 +363,14 @@ int theoryStudy_separate(const TString BaseName)
 
   hFewz->SetFillColor(kGreen);
   hFewz->SetFillStyle(3305);
+  //hFewz->SetMarkerStyle(21);
+  //hFewz->SetMarkerColor(4);
 
   hPowheg->SetFillColor(kRed);
   hPowheg->SetFillStyle(3345);
+  //hPowheg->SetMarkerStyle(21);
+  //hPowheg->SetMarkerColor(4);
+  
   hResbos->SetFillColor(kBlue);
   hResbos->SetFillStyle(3354);
 
