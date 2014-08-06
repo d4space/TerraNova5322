@@ -29,9 +29,8 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   if(chnl==2)
     //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Muminus
-    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
+    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
     //lHDiff->GetYaxis()->SetRangeUser(0.1,1.9);//Eleminus
-    lHDiff->GetYaxis()->SetRangeUser(-0.2.,2.1);//Eleminus
   if(chnl==3)
     //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
@@ -206,6 +205,7 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* lResbos34;
   TH1D* lFEWZ;
   TH1D* lPowheg;
+  TH1D* lPowheg_pdf;
   TH1D* orgPowheg;
   TH1D* lData;
   TH1D* orgData;
@@ -225,6 +225,7 @@ int theoryStudy_separate(const TString BaseName)
   
   lFEWZ   = (TH1D*)f_Fewz->Get("hxsec")->Clone();
   lPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
+  lPowheg_pdf = (TH1D*)f_Data->Get("PowhegErr")->Clone();
   orgPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
   orgData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
@@ -250,6 +251,7 @@ int theoryStudy_separate(const TString BaseName)
   {
     //cout << "lData after scale : " << lData->GetBinContent(ipt) << endl;
     cout << "lPowheg after scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
+    cout << "orgPowheg after scale : " << orgPowheg->GetBinContent(ipt) << " sqrt(orgPowheg) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " org PDF : " << orgPowheg->GetBinError(ipt)<< endl;
   }
   
   for( int ipt(1);ipt<nBins;ipt++)
@@ -292,6 +294,7 @@ int theoryStudy_separate(const TString BaseName)
   
   double FewzTotErr[14];
   double PowhegStatErr[14];
+  double PowhegPDFErr[14];
   double PowhegTotErr[14];
   double DataStatErr[14];
   double DataTotErr[14];
@@ -299,13 +302,16 @@ int theoryStudy_separate(const TString BaseName)
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     FewzTotErr[ipt]= sqrt(lFEWZ->GetBinError(ipt)*lFEWZ->GetBinError(ipt) + fScale[ipt]*fScale[ipt]);
-    PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
-    PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
+    //PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
+    PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/18.429;
+    PowhegPDFErr[ipt] = lPowheg_pdf->GetBinContent(ipt)/18.429;
+    //PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
+    PowhegTotErr[ipt] = sqrt(PowhegStatErr[ipt]*PowhegStatErr[ipt] + PowhegPDFErr[ipt]*PowhegPDFErr[ipt]);
     DataStatErr[ipt] = lData->GetBinContent(ipt) * hRD->GetBinError(ipt)/hRD->GetBinContent(ipt);
     DataTotErr[ipt] = lData->GetBinError(ipt);
     //cout << "FEWZ cross-section["<<ipt<<"] : "<< lFEWZ->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << " Error : " << FewzTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << endl; 
     //cout << "Powheg cross-section["<<ipt<<"] : "<< lPowheg->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << " Error : " << PowhegTotErr[ipt]/hDataNoLog->GetXaxis()->GetBinWidth(ipt) << endl; 
-    cout << "Data StatErr["<<ipt<<"] : "<< DataStatErr[ipt] << endl;
+    cout << "Powheg cross-section : "<< lPowheg->GetBinContent(ipt) << " Powheg Stat Error : " << PowhegStatErr[ipt] << "Powheg PDF Error : " << PowhegPDFErr[ipt] << " Powheg TotErr : " << PowhegTotErr[ipt]  << endl;
   }
 
 
@@ -340,8 +346,9 @@ int theoryStudy_separate(const TString BaseName)
     hPowhegErrBandPDF->SetBinContent(ipt,hPowhegLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
     //hPowhegErrBandPDF->SetBinError(ipt,lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
     //hPowhegErrBandPDF->SetBinError(ipt,sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)+lPowheg->GetBinError(ipt)/hDataLog->GetBinContent(ipt)/hDataNoLog->GetXaxis()->GetBinWidth(ipt));
-    cout << "lData Bincontent : " << lData->GetBinContent(ipt) << " Powheg stat error : " << PowhegStatErr[ipt] << " PDF : " << lPowheg->GetBinError(ipt) <<  endl;
-    hPowhegErrBandPDF->SetBinError(ipt,(PowhegStatErr[ipt]+lPowheg->GetBinError(ipt))/lData->GetBinContent(ipt));
+    cout << "lData Bincontent : " << lData->GetBinContent(ipt) << " Powheg stat error : " << PowhegStatErr[ipt] << " PDF : " << lPowheg_pdf->GetBinContent(ipt) <<  endl;
+    //hPowhegErrBandPDF->SetBinError(ipt,(PowhegStatErr[ipt]+lPowheg->GetBinError(ipt))/lData->GetBinContent(ipt));
+    hPowhegErrBandPDF->SetBinError(ipt,(PowhegStatErr[ipt]+PowhegPDFErr[ipt])/lData->GetBinContent(ipt));
     
     
     hFewzErrBand->SetBinContent(ipt,hFewzLog->GetBinContent(ipt)/hDataLog->GetBinContent(ipt));
