@@ -369,7 +369,8 @@ int theoryStudy_separate(const TString BaseName)
   fScaleRatio->SetFillStyle(3001);
 
   hFewz->SetFillColor(kGreen);
-  hFewz->SetFillStyle(3305);
+  hFewz->SetFillStyle(3444);
+  //hFewz->SetFillStyle(3305);
   //hFewz->SetMarkerStyle(21);
   //hFewz->SetMarkerColor(4);
 
@@ -422,7 +423,8 @@ int theoryStudy_separate(const TString BaseName)
   gPad->SetLogx(1);
   gPad->SetLogy(1);
 
-  hPowheg->GetYaxis()->SetRangeUser(1e-4,5*resb30[0]);
+  //hPowheg->GetYaxis()->SetRangeUser(1e-4,5*resb30[0]);
+  hPowheg->GetYaxis()->SetRangeUser(1e-3,5*resb30[0]);
   hPowheg->SetTitle("");
   //hPowheg->GetYaxis()->SetTitle("Cross-section [pb (GeV/c)^{-1}]");
   hPowheg->GetYaxis()->SetTitle("d#sigma/dp_{T}^{W} [pb/GeV]");
