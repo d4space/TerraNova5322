@@ -5,6 +5,7 @@
 #include <TGraphErrors.h>             // graph class
 #include <TGraphAsymmErrors.h>        // graph class
 #include <TLatex.h>
+#include "../../Utils/const.h"
 
 const int nBins = 14;
 double WptLogBins[nBins] = {1.0,7.5,12.5,17.5,24,30,40,50,70,110,150,190,250,600};
@@ -206,19 +207,29 @@ int theoryStudy_separate(const TString BaseName)
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     //cout << "lData before scale : " << lData->GetBinContent(ipt) << endl;
-    cout << "lPowheg before scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
-//    cout << "orgPowheg before scale : " << orgPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
+//    cout << "lPowheg before scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
+    cout << "SVD_Born.Gen : " << orgPowheg->GetBinContent(ipt) << " sqrt(SVD_Born.Gen) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
   }
 
   lPowheg->Scale(1./18.429);
+  // To make SVD_Born.Gen to h1_Born_BornFid(Not LumiWeighted)
+  if(BaseName == "WpToMuNu")
+    orgPowheg->Scale(1./LumiWeight_Muon_WpToMuNu_S8);
+  else if (BaseName== "WmToMuNu")
+    orgPowheg->Scale(1./LumiWeight_Muon_WmToMuNu_S8);
+  else if (BaseName== "WpToEleNu")
+    orgPowheg->Scale(1./LumiWeight_Ele_WpToEleNu_S8);
+  else if (BaseName== "WmToEleNu")
+    orgPowheg->Scale(1./LumiWeight_Ele_WmToEleNu_S8);
+  
   lData->Scale(1./18.429);
   //hRD->Scale(1./18.429);
   
   for( int ipt(1);ipt<=nBins-1;ipt++)
   {
     //cout << "lData after scale : " << lData->GetBinContent(ipt) << endl;
-    cout << "lPowheg after scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
-    cout << "orgPowheg after scale : " << orgPowheg->GetBinContent(ipt) << " sqrt(orgPowheg) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " AfterScale error " << sqrt(orgPowheg->GetBinContent(ipt))/18.429 << endl;
+ //   cout << "lPowheg after scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
+    cout << "SVD_Born.Gen(UnWeighted) : " << orgPowheg->GetBinContent(ipt) << " sqrt(SVD_Born.Gen(UnWeighted)) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " Percent : " << sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt) * 100 << " %" <<endl;
   }
   
   for( int ipt(1);ipt<nBins;ipt++)
@@ -268,7 +279,8 @@ int theoryStudy_separate(const TString BaseName)
   {
     FewzTotErr[ipt]= sqrt(lFEWZ->GetBinError(ipt)*lFEWZ->GetBinError(ipt) + fScale[ipt]*fScale[ipt]);
     //PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
-    PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/18.429;
+    //PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/18.429;
+    PowhegStatErr[ipt] = lPowheg->GetBinContent(ipt)*sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt);
     //PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
     PowhegTotErr[ipt] = sqrt(PowhegStatErr[ipt]*PowhegStatErr[ipt] + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
     DataStatErr[ipt] = lData->GetBinContent(ipt) * hRD->GetBinError(ipt)/hRD->GetBinContent(ipt);

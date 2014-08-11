@@ -1,4 +1,5 @@
 {
+#include "../../../Utils/const.h"
  //*
   double elestatp[14] = {0};
   elestatp[1 ]= 1.0752 ; 
@@ -740,12 +741,20 @@
   TH1D *h_data_m;
   TH1D *h_MC_p;
   TH1D *h_MC_m;
+  TH1D *h_MC_p_UnWeighted;
+  TH1D *h_MC_m_UnWeighted;
   TH1D *h_dataRec_p;
   TH1D *h_dataRec_m;
   h_data_p = (TH1D*)fp->Get("BornEffCorr")->Clone("h_data_p");
   h_data_m = (TH1D*)fm->Get("BornEffCorr")->Clone("h_data_m");
   h_MC_p = (TH1D*)fp->Get("SVD_Born.Gen")->Clone("h_MC_p");
   h_MC_m = (TH1D*)fm->Get("SVD_Born.Gen")->Clone("h_MC_m");
+  h_MC_p_UnWeighted = (TH1D*)fp->Get("SVD_Born.Gen")->Clone("h_MC_p_UnWeighted");
+  h_MC_m_UnWeighted = (TH1D*)fm->Get("SVD_Born.Gen")->Clone("h_MC_m_UnWeighted");
+  // To make SVD_Born.Gen to h1_Born_BornFid(Not LumiWeighted)
+    h_MC_p_UnWeighted->Scale(1./LumiWeight_Ele_WpToEleNu_S8);
+    h_MC_m_UnWeighted->Scale(1./LumiWeight_Ele_WmToEleNu_S8);
+  
   h_dataRec_p = (TH1D*)fp->Get("data_Rec")->Clone("h_dataRec_p");
   h_dataRec_m = (TH1D*)fm->Get("data_Rec")->Clone("h_dataRec_m");
   cout << "Inclusive Cross-section" << endl;
@@ -905,6 +914,7 @@
   TFile f_out(resultDir+"/Result_WInclToEleNu.root","recreate");
   TH1D* BornEffCorr = new TH1D("BornEffCorr","BornEffCorr",13,0,13);
   TH1D* SVD_BornGen = new TH1D("SVD_Born.Gen","SVD_Born.Gen",13,0,13);SVD_BornGen->Sumw2();
+  TH1D* SVD_BornGen_UnWeighted = new TH1D("SVD_Born.Gen_UnWeighted","SVD_Born.Gen_UnWeighted",13,0,13);SVD_BornGen_UnWeighted->Sumw2();
   TH1D* PowhegErr = new TH1D("PowhegErr","PowhegErr",13,0,13);
   TH1D* data_Rec = new TH1D("data_Rec","data_Rec",13,0,13);data_Rec->Sumw2();
     
@@ -914,12 +924,14 @@
       BornEffCorr->SetBinError(i,eleTotalUnceri[i]);
       SVD_BornGen->SetBinContent(i,h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i));
       SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i)+h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      SVD_BornGen_UnWeighted->SetBinContent(i,h_MC_p_UnWeighted->GetBinContent(i) + h_MC_m_UnWeighted->GetBinContent(i));
       data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
       data_Rec->SetBinError(i,sqrt(h_dataRec_p->GetBinError(i)*h_dataRec_p->GetBinError(i) + h_dataRec_m->GetBinError(i)*h_dataRec_m->GetBinError(i)));
       PowhegErr->SetBinContent(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
     }
     BornEffCorr->Write();
     SVD_BornGen->Write();
+    SVD_BornGen_UnWeighted->Write();
     PowhegErr->Write();
     data_Rec->Write();
 
