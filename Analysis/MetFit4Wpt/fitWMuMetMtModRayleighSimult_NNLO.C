@@ -887,7 +887,7 @@ void fitWMuMetMtModRayleighSimult_NNLO(const TString  outputDir,   // output dir
   //Loop for each Wpt bins==============
   // 0 is the total
   for(int ipt(0);ipt<NWptBinPlus;ipt++)
-  //for(int ipt(11);ipt<12;ipt++)
+  //for(int ipt(3);ipt<4;ipt++)
   {
     if ( ipt<NBIN_PT_DIVIDER_1and2 ){
       METMAX = METMAX_1;
@@ -2255,9 +2255,9 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       }
     
     if (ipt==0)
-      sprintf(binlabel,"0 < p_{T} < 600");
+      sprintf(binlabel,"0 < p_{T}^{W} < 600 (GeV)");
     else
-      sprintf(binlabel,"%.1f < p_{T} < %.1f",WptBins[ipt-1],WptBins[ipt]);
+      sprintf(binlabel,"%.1f < p_{T}^{W} < %.1f (GeV)",WptBins[ipt-1],WptBins[ipt]);
 
     //-------------------------------------------------
     // Make MET Fit plots 
@@ -2344,15 +2344,19 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotMet->SetYRange(0.1,1.3*(hDataMet[ipt]->GetMaximum()));
     plotMet->Draw(c,kFALSE,format,1);
 
-    plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
     if(ipt>8)
-      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      //plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotMetDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetDiff->setOutDir(CPlot::sOutDir);
-    plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
-    plotMetDiff->SetYRange(-8,8);
+    //plotMetDiff->AddHist1D(hMetDiff,"EX0",ratioColor);
+    plotMetDiff->AddHist1D(hMetDiff,"",kAzure+1,1,1001);
+    //plotMetDiff->SetYRange(-8,8);
+    plotMetDiff->SetYRange(-5,5);
     plotMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WMuNu_%d_log",ipt);
@@ -2442,15 +2446,18 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotAntiMet->SetYRange(0.1,2.0*(hAntiDataMet[ipt]->GetMaximum()));
     plotAntiMet->Draw(c,kFALSE,format,1);
     
-    plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotAntiMetDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
     if(ipt>8)
       plotAntiMetDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
     plotAntiMetDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
-    plotAntiMetDiff->SetYRange(-8,8);
+    //plotAntiMetDiff->AddHist1D(hAntiMetDiff,"EX0",ratioColor);
+    plotAntiMetDiff->AddHist1D(hAntiMetDiff,"",kAzure+1,1,1001);
+    //plotAntiMetDiff->SetYRange(-8,8);
+    plotAntiMetDiff->SetYRange(-5,5);
     plotAntiMetDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotAntiMetDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotAntiMetDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WMuNu_cont_%d_log",ipt);
@@ -2541,15 +2548,18 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotMetp->SetYRange(0.1,1.3*(hDataMetp[ipt]->GetMaximum()));
     plotMetp->Draw(c,kFALSE,format,1);
 
-    plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetpDiff=new CPlot (histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
     if(ipt>8)
-      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","#chi");
+      plotMetpDiff=new CPlot (histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetpDiff->setOutDir(CPlot::sOutDir);
-    plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
-    plotMetpDiff->SetYRange(-8,8);
+    //plotMetpDiff->AddHist1D(hMetpDiff,"EX0",ratioColor);
+    plotMetpDiff->AddHist1D(hMetpDiff,"",kAzure+1,1,1001);
+    //plotMetpDiff->SetYRange(-8,8);
+    plotMetpDiff->SetYRange(-5,5);
     plotMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetpDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WpMuNu_%d_log",ipt);
@@ -2640,15 +2650,19 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotAntiMetp->SetYRange(0.1,2.0*(hAntiDataMetp[ipt]->GetMaximum()));
     plotAntiMetp->Draw(c,kFALSE,format,1);
     
-    plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotAntiMetpDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(sigma-mc)/#sigma_{data}");
     if(ipt>8)
-      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      //plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotAntiMetpDiff=new CPlot(histName,"","M_{T} [GeV]","(sigma-mc)/#sigma_{data}");
     plotAntiMetpDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
-    plotAntiMetpDiff->SetYRange(-8,8);
+    //plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"EX0",ratioColor);
+    plotAntiMetpDiff->AddHist1D(hAntiMetpDiff,"",kAzure+1,1,1001);
+    //plotAntiMetpDiff->SetYRange(-8,8);
+    plotAntiMetpDiff->SetYRange(-5,5);
     plotAntiMetpDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotAntiMetpDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotAntiMetpDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetpDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WpMuNu_cont_%d_log",ipt);
@@ -2740,15 +2754,19 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotMetm->SetYRange(0.1,1.3*(hDataMetm[ipt]->GetMaximum()));
     plotMetm->Draw(c,kFALSE,format,1);
 
-    plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
     if(ipt>8)
-      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      //plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotMetmDiff->setOutDir(CPlot::sOutDir);
-    plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
-    plotMetmDiff->SetYRange(-8,8);
+    //plotMetmDiff->AddHist1D(hMetmDiff,"EX0",ratioColor);
+    plotMetmDiff->AddHist1D(hMetmDiff,"",kAzure+1,1,1001);
+    //plotMetmDiff->SetYRange(-8,8);
+    plotMetmDiff->SetYRange(-5,5);
     plotMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotMetmDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WmMuNu_%d_log",ipt);
@@ -2840,15 +2858,19 @@ aqcdMsigma2[ipt]->setVal(2.69409);
       plotAntiMetm->SetYRange(0.1,2.0*(hAntiDataMetm[ipt]->GetMaximum()));
     plotAntiMetm->Draw(c,kFALSE,format,1);
     
-    plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    //plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","#chi");
+    plotAntiMetmDiff=new CPlot(histName,"","#slash{E}_{T} [GeV]","(data-mc)/#sigma_{data}");
     if(ipt>8)
-      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      //plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","#chi");
+      plotAntiMetmDiff=new CPlot(histName,"","M_{T} [GeV]","(data-mc)/#sigma_{data}");
     plotAntiMetmDiff->setOutDir(CPlot::sOutDir);
-    plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
-    plotAntiMetmDiff->SetYRange(-8,8);
+    //plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"EX0",ratioColor);
+    plotAntiMetmDiff->AddHist1D(hAntiMetmDiff,"",kAzure+1,1,1001);
+    //plotAntiMetmDiff->SetYRange(-8,8);
+    plotAntiMetmDiff->SetYRange(-5,5);
     plotAntiMetmDiff->AddLine(0, 0,METMAX, 0,kBlack,1);
-    plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
-    plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
+    //plotAntiMetmDiff->AddLine(0, 5,METMAX, 5,kBlack,3);
+    //plotAntiMetmDiff->AddLine(0,-5,METMAX,-5,kBlack,3);
     plotAntiMetmDiff->Draw(c,kTRUE,format,2);
     
     sprintf(histName,"WmMuNu_cont_%d_log",ipt);
@@ -3564,17 +3586,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWpt->AddHist1D(hdataWpt,"Data","E");
   plotWpt->SetLegend(0.78,0.65,.98,0.88);
   plotWpt->SetYRange(0.1,1.1*(hWptMC->GetMaximum()));
+  plotWpt->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWpt->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
-  plotWptDiff=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWptDiff=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWptDiff=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWptDiff->setOutDir(CPlot::sOutDir);
   //plotWptDiff->AddHist1D(hWptDiff,"EX0",ratioColor);
-  plotWptDiff->AddHist1D(hWptDiff,"hist p",kBlack);
-  plotWptDiff->SetYRange(-0.1,0.1);
+  //plotWptDiff->AddHist1D(hWptDiff,"hist p",kBlack);
+  plotWptDiff->AddHist1D(hWptDiff,"",kAzure+1,1,1001);
+  //plotWptDiff->SetYRange(-0.1,0.1);
+  plotWptDiff->SetYRange(-0.15,0.15);
   plotWptDiff->AddLine(0, 0,600, 0,kBlack,1);
-  plotWptDiff->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWptDiff->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWptDiff->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff->Draw(c,kTRUE,format,2);
 
   //sprintf(histName,"FitWDistribution_MuonLog");
@@ -3638,17 +3664,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWptLog->SetYRange(5e-6*(hWptMC->GetMaximum()),1.4*(hWptMC->GetMaximum()));
   plotWptLog->SetLogx();
   plotWptLog->SetLogy();
+  plotWptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
   
-  plotWptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWptDiffLog->setOutDir(CPlot::sOutDir);
   //plotWptDiffLog->AddHist1D(hWptDiffLog,"EX0",ratioColor);
-  plotWptDiffLog->AddHist1D(hWptDiffLog,"hist p",kBlack);
-  plotWptDiffLog->SetYRange(-0.1,0.1);
+  //plotWptDiffLog->AddHist1D(hWptDiffLog,"hist p",kBlack);
+  plotWptDiffLog->AddHist1D(hWptDiffLog,"",kAzure+1,1,1001);
+  //plotWptDiffLog->SetYRange(-0.1,0.1);
+  plotWptDiffLog->SetYRange(-0.15,0.15);
   plotWptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
-  plotWptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiffLog->SetLogx();
   plotWptDiffLog->Draw(c,kTRUE,format,2);
 
@@ -3675,17 +3705,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWpt_p->AddHist1D(hdataWPpt,"Data","E");
   plotWpt_p->SetLegend(0.78,0.65,.98,0.88);
   plotWpt_p->SetYRange(0.1,1.1*(hWptMC_p->GetMaximum()));
+  plotWpt_p->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWpt_p->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
-  plotWptDiff_p=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWptDiff_p=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWptDiff_p=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWptDiff_p->setOutDir(CPlot::sOutDir);
   //plotWptDiff_p->AddHist1D(hWptDiff_p,"EX0",ratioColor);
-  plotWptDiff_p->AddHist1D(hWptDiff_p,"hist p",kBlack);
-  plotWptDiff_p->SetYRange(-0.1,0.1);
+  //plotWptDiff_p->AddHist1D(hWptDiff_p,"hist p",kBlack);
+  plotWptDiff_p->AddHist1D(hWptDiff_p,"",kAzure+1,1,1001);
+  //plotWptDiff_p->SetYRange(-0.1,0.1);
+  plotWptDiff_p->SetYRange(-0.15,0.15);
   plotWptDiff_p->AddLine(0, 0,600, 0,kBlack,1);
-  plotWptDiff_p->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWptDiff_p->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWptDiff_p->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_p->Draw(c,kTRUE,format,2);
   
   //sprintf(histName,"FitWDistribution_MuonPLog");
@@ -3746,17 +3780,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWPptLog->SetYRange(5e-6*(hWptMC_p->GetMaximum()),1.4*(hWptMC_p->GetMaximum()));
   plotWPptLog->SetLogx();
   plotWPptLog->SetLogy();
+  plotWPptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWPptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
   
-  plotWPptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWPptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWPptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWPptDiffLog->setOutDir(CPlot::sOutDir);
   //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"EX0",ratioColor);
-  plotWPptDiffLog->AddHist1D(hWPptDiffLog,"hist p",kBlack);
-  plotWPptDiffLog->SetYRange(-0.1,0.1);
+  //plotWPptDiffLog->AddHist1D(hWPptDiffLog,"hist p",kBlack);
+  plotWPptDiffLog->AddHist1D(hWPptDiffLog,"",kAzure+1,1,1001);
+  //plotWPptDiffLog->SetYRange(-0.1,0.1);
+  plotWPptDiffLog->SetYRange(-0.15,0.15);
   plotWPptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
-  plotWPptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWPptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWPptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWPptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWPptDiffLog->SetLogx();
   plotWPptDiffLog->Draw(c,kTRUE,format,2);
 
@@ -3783,17 +3821,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWpt_m->AddHist1D(hdataWMpt,"Data","E");
   plotWpt_m->SetLegend(0.78,0.65,.98,0.88);
   plotWpt_m->SetYRange(0.1,1.1*(hWptMC_m->GetMaximum()));
+  plotWpt_m->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWpt_m->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
-  plotWptDiff_m=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWptDiff_m=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWptDiff_m=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWptDiff_m->setOutDir(CPlot::sOutDir);
   //plotWptDiff_m->AddHist1D(hWptDiff_m,"EX0",ratioColor);
-  plotWptDiff_m->AddHist1D(hWptDiff_m,"hist p",kBlack);
-  plotWptDiff_m->SetYRange(-0.1,0.1);
+  //plotWptDiff_m->AddHist1D(hWptDiff_m,"hist p",kBlack);
+  plotWptDiff_m->AddHist1D(hWptDiff_m,"",kAzure+1,1,1001);
+  //plotWptDiff_m->SetYRange(-0.1,0.1);
+  plotWptDiff_m->SetYRange(-0.15,0.15);
   plotWptDiff_m->AddLine(0, 0,600, 0,kBlack,1);
-  plotWptDiff_m->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWptDiff_m->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWptDiff_m->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWptDiff_m->Draw(c,kTRUE,format,2);
   
   //sprintf(histName,"FitWDistribution_MuonMLog");
@@ -3854,17 +3896,21 @@ aqcdMsigma2[ipt]->setVal(2.69409);
   plotWMptLog->SetYRange(5e-6*(hWptMC_m->GetMaximum()),1.4*(hWptMC_m->GetMaximum()));
   plotWMptLog->SetLogx();
   plotWMptLog->SetLogy();
+  plotWMptLog->AddTextBox("CMS Preliminary, 18.4 pb^{-1} at #sqrt{s} = 8TeV ",0.40,0.91,0.95,0.97,0);
   plotWMptLog->Draw(c,kFALSE,format,1);
   gPad->RedrawAxis();
 
-  plotWMptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  //plotWMptDiffLog=new CPlot(histName,"","p_{T} [Gev]","#chi");
+  plotWMptDiffLog=new CPlot(histName,"","p_{T}^{W} [Gev]","(data-mc)/#sigma_{data}");
   plotWMptDiffLog->setOutDir(CPlot::sOutDir);
   //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"EX0",ratioColor);
-  plotWMptDiffLog->AddHist1D(hWMptDiffLog,"hist p",kBlack);
-  plotWMptDiffLog->SetYRange(-0.1,0.1);
+  //plotWMptDiffLog->AddHist1D(hWMptDiffLog,"hist p",kBlack);
+  plotWMptDiffLog->AddHist1D(hWMptDiffLog,"",kAzure+1,1,1001);
+  //plotWMptDiffLog->SetYRange(-0.1,0.1);
+  plotWMptDiffLog->SetYRange(-0.15,0.15);
   plotWMptDiffLog->AddLine(0, 0,600, 0,kBlack,1);
-  plotWMptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
-  plotWMptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
+  //plotWMptDiffLog->AddLine(0, 0.05,600, 0.05,kBlack,3);
+  //plotWMptDiffLog->AddLine(0,-0.05,600,-0.05,kBlack,3);
   plotWMptDiffLog->SetLogx();
   plotWMptDiffLog->Draw(c,kTRUE,format,2);
 		    
@@ -3891,18 +3937,20 @@ TH1D *makeDiffHist(TH1D* hData, TH1D* hFit, const TString name)
     
     if(err>0) hDiff->SetBinContent(ibin,diff/err);
     else      hDiff->SetBinContent(ibin,0);
-    hDiff->SetBinError(ibin,1);   
+    //hDiff->SetBinError(ibin,1);   
   }
   
-  hDiff->GetYaxis()->SetTitleOffset(0.42);
-  hDiff->GetYaxis()->SetTitleSize(0.13);
+  //hDiff->GetYaxis()->SetTitleOffset(0.42);
+  hDiff->GetYaxis()->SetTitleOffset(0.55);
+  //hDiff->GetYaxis()->SetTitleSize(0.13);
+  hDiff->GetYaxis()->SetTitleSize(0.10);
   hDiff->GetYaxis()->SetLabelSize(0.10);
   hDiff->GetYaxis()->SetNdivisions(104);
   hDiff->GetYaxis()->CenterTitle();
   hDiff->GetXaxis()->SetTitleOffset(1.2);
   hDiff->GetXaxis()->SetTitleSize(0.13);
   hDiff->GetXaxis()->SetLabelSize(0.12);
-  hDiff->GetXaxis()->CenterTitle();
+  //hDiff->GetXaxis()->CenterTitle();
   
   return hDiff;
 }
@@ -3918,18 +3966,20 @@ TH1D *makeDiffHistWpt(TH1D* hData, TH1D* hFit, const TString name)
     if(err==0) err= sqrt(hFit->GetBinContent(ibin));
     if(err>0) hDiff->SetBinContent(ibin,diff/err);
     else      hDiff->SetBinContent(ibin,0);
-    hDiff->SetBinError(ibin,1);
+    //hDiff->SetBinError(ibin,1);
   }
 
-  hDiff->GetYaxis()->SetTitleOffset(0.42);
-  hDiff->GetYaxis()->SetTitleSize(0.13);
+  //hDiff->GetYaxis()->SetTitleOffset(0.42);
+  hDiff->GetYaxis()->SetTitleOffset(0.55);
+  //hDiff->GetYaxis()->SetTitleSize(0.13);
+  hDiff->GetYaxis()->SetTitleSize(0.10);
   hDiff->GetYaxis()->SetLabelSize(0.10);
   hDiff->GetYaxis()->SetNdivisions(104);
   hDiff->GetYaxis()->CenterTitle();
   hDiff->GetXaxis()->SetTitleOffset(1.2);
   hDiff->GetXaxis()->SetTitleSize(0.13);
   hDiff->GetXaxis()->SetLabelSize(0.12);
-  hDiff->GetXaxis()->CenterTitle();
+  //hDiff->GetXaxis()->CenterTitle();
   
   return hDiff;
 }
@@ -3950,18 +4000,20 @@ TH1D *makeDiffHistWptLog(TH1D* hData, TH1D* hFit, const TString name)
     if(err>0) hDiff->Fill(xaxis->GetBinCenter(ibin),diff/err);
     else      hDiff->Fill(xaxis->GetBinCenter(ibin),0);
     Double_t errDiff = sqrt(hData->GetBinError(ibin)*hData->GetBinError(ibin)+hFit->GetBinError(ibin)*hFit->GetBinError(ibin));
-    hDiff->SetBinError(ibin,errDiff);
+    //hDiff->SetBinError(ibin,errDiff);
   }
   
-  hDiff->GetYaxis()->SetTitleOffset(0.42);
-  hDiff->GetYaxis()->SetTitleSize(0.13);
+  //hDiff->GetYaxis()->SetTitleOffset(0.42);
+  hDiff->GetYaxis()->SetTitleOffset(0.55);
+  //hDiff->GetYaxis()->SetTitleSize(0.13);
+  hDiff->GetYaxis()->SetTitleSize(0.10);
   hDiff->GetYaxis()->SetLabelSize(0.10);
   hDiff->GetYaxis()->SetNdivisions(104);
   hDiff->GetYaxis()->CenterTitle();
   hDiff->GetXaxis()->SetTitleOffset(1.2);
   hDiff->GetXaxis()->SetTitleSize(0.13);
   hDiff->GetXaxis()->SetLabelSize(0.12);
-  hDiff->GetXaxis()->CenterTitle();
+  //hDiff->GetXaxis()->CenterTitle();
   
   return hDiff;
 }
