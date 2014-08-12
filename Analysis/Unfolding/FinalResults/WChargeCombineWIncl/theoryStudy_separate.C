@@ -304,7 +304,7 @@ int theoryStudy_separate(const TString BaseName)
     FewzTotErr[ipt]= sqrt(lFEWZ->GetBinError(ipt)*lFEWZ->GetBinError(ipt) + fScale[ipt]*fScale[ipt]);
     //PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
     //PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/18.429;
-    PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt);
+    PowhegStatErr[ipt] = lPowheg->GetBinContent(ipt)*sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt);
     PowhegPDFErr[ipt] = lPowheg_pdf->GetBinContent(ipt)/18.429;
     //PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
     PowhegTotErr[ipt] = sqrt(PowhegStatErr[ipt]*PowhegStatErr[ipt] + PowhegPDFErr[ipt]*PowhegPDFErr[ipt]);
