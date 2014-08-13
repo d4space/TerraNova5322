@@ -990,22 +990,43 @@
   TH1D* SVD_BornGen = new TH1D("SVD_Born.Gen","SVD_Born.Gen",13,0,13);SVD_BornGen->Sumw2();
   TH1D* SVD_BornGen_UnWeighted = new TH1D("SVD_Born.Gen_UnWeighted","SVD_Born.Gen_UnWeighted",13,0,13);SVD_BornGen_UnWeighted->Sumw2();
   TH1D* data_Rec = new TH1D("data_Rec","data_Rec",13,0,13);data_Rec->Sumw2();
-    
+
+  TH1D* PowhegStatErrRatioP = new TH1D("PowhegStatErrRatioP","PowhegStatErrRatioP",13,0,13);
+  TH1D* PowhegStatErrRatioM = new TH1D("PowhegStatErrRatioM","PowhegStatErrRatioM",13,0,13);
+  for(int i(1);i<14;i++)
+  {
+    PowhegStatErrRatioP->SetBinContent(i,sqrt(h_MC_p_UnWeighted->GetBinContent(i))/h_MC_p_UnWeighted->GetBinContent(i));
+    PowhegStatErrRatioM->SetBinContent(i,sqrt(h_MC_m_UnWeighted->GetBinContent(i))/h_MC_m_UnWeighted->GetBinContent(i));
+    cout << "Powheg StatErr Ratio P : " << sqrt(h_MC_p_UnWeighted->GetBinContent(i))/h_MC_p_UnWeighted->GetBinContent(i) << "\t Powheg StatErr Ratio M : " << sqrt(h_MC_m_UnWeighted->GetBinContent(i))/h_MC_m_UnWeighted->GetBinContent(i) << endl;
+  }
+
+  h_MC_p->Scale(1./18.429);
+  h_MC_m->Scale(1./18.429);
+
+  double PowhegStatErrP[14];
+  double PowhegStatErrM[14];
+  for(int i(1);i<14;i++)
+  {
+    PowhegStatErrP[i] = h_MC_p->GetBinContent(i) * PowhegStatErrRatioP->GetBinContent(i);
+    PowhegStatErrM[i] = h_MC_m->GetBinContent(i) * PowhegStatErrRatioM->GetBinContent(i);
+    cout << "Powheg BinContent P : "<<h_MC_p->GetBinContent(i) << "\t Powheg StatErrP : " << h_MC_p->GetBinContent(i) * PowhegStatErrRatioP->GetBinContent(i) <<"\t Powheg BinContentM : "<< h_MC_m->GetBinContent(i) << "\t Powheg StatErrM : " <<h_MC_m->GetBinContent(i) * PowhegStatErrRatioM->GetBinContent(i) << endl;
+  }
+
     for(int i(1);i<14;i++)
     {
       BornEffCorr->SetBinContent(i,h_data_p->GetBinContent(i) + h_data_m->GetBinContent(i));
       BornEffCorr->SetBinError(i,muTotalUnceri[i]);
       SVD_BornGen->SetBinContent(i,h_MC_p->GetBinContent(i) + h_MC_m->GetBinContent(i));
-      SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinContent(i)+h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) +h_MC_m->GetBinContent(i)+ h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
-      SVD_BornGen_UnWeighted->SetBinContent(i,h_MC_p_UnWeighted->GetBinContent(i) + h_MC_m_UnWeighted->GetBinContent(i));
+      //SVD_BornGen->SetBinError(i,sqrt(h_MC_p->GetBinContent(i)+h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) +h_MC_m->GetBinContent(i)+ h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      SVD_BornGen->SetBinError(i,sqrt(PowhegStatErrP[i]*PowhegStatErrP[i] + PowhegStatErrM[i]*PowhegStatErrM[i]));
       data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
       data_Rec->SetBinError(i,sqrt(h_dataRec_p->GetBinError(i)*h_dataRec_p->GetBinError(i) + h_dataRec_m->GetBinError(i)*h_dataRec_m->GetBinError(i)));
       PowhegErr->SetBinContent(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      cout << "Powheg PDF ErrorP : " << h_MC_p->GetBinError(i) << "\t Powheg PDF ErrorM : "<< h_MC_m->GetBinError(i) << endl;
     }
     BornEffCorr->Write();
     PowhegErr->Write();
     SVD_BornGen->Write();
-    SVD_BornGen_UnWeighted->Write();
     data_Rec->Write();
 
   // */

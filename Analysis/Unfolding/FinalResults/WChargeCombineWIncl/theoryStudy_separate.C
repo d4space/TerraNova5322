@@ -206,7 +206,7 @@ int theoryStudy_separate(const TString BaseName)
   TH1D* lFEWZ;
   TH1D* lPowheg;
   TH1D* lPowheg_pdf;
-  TH1D* orgPowheg;
+  //TH1D* orgPowheg;
   TH1D* lData;
   TH1D* orgData;
   TH1D* hRD;
@@ -226,7 +226,7 @@ int theoryStudy_separate(const TString BaseName)
   lFEWZ   = (TH1D*)f_Fewz->Get("hxsec")->Clone();
   lPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen")->Clone();
   lPowheg_pdf = (TH1D*)f_Data->Get("PowhegErr")->Clone();
-  orgPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen_UnWeighted")->Clone();
+  //orgPowheg = (TH1D*)f_Data->Get("SVD_Born.Gen_UnWeighted")->Clone();
   lData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
   orgData   = (TH1D*)f_Data->Get("BornEffCorr")->Clone();
   hRD     = (TH1D*)f_Data->Get("data_Rec")->Clone();
@@ -243,7 +243,7 @@ int theoryStudy_separate(const TString BaseName)
     //cout << "lData before scale : " << lData->GetBinContent(ipt) << endl;
   }
 
-  lPowheg->Scale(1./18.429);
+  //lPowheg->Scale(1./18.429);
   lData->Scale(1./18.429);
   //hRD->Scale(1./18.429);
   
@@ -251,7 +251,7 @@ int theoryStudy_separate(const TString BaseName)
   {
     //cout << "lData after scale : " << lData->GetBinContent(ipt) << endl;
   //  cout << "lPowheg after scale : " << lPowheg->GetBinContent(ipt) << " sqrt(lPowheg) : " << sqrt(lPowheg->GetBinContent(ipt)) << " PDF : " << lPowheg->GetBinError(ipt)<< endl;
-    cout << "SVD_Born.Gen(UnWeighted) : " << orgPowheg->GetBinContent(ipt) << " sqrt(SVD_Born.Gen) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " Percent : : " << sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)*100 << " %" <<  endl;
+//    cout << "SVD_Born.Gen(UnWeighted) : " << orgPowheg->GetBinContent(ipt) << " sqrt(SVD_Born.Gen) : " << sqrt(orgPowheg->GetBinContent(ipt)) << " Percent : : " << sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt)*100 << " %" <<  endl;
   }
   
   for( int ipt(1);ipt<nBins;ipt++)
@@ -304,8 +304,10 @@ int theoryStudy_separate(const TString BaseName)
     FewzTotErr[ipt]= sqrt(lFEWZ->GetBinError(ipt)*lFEWZ->GetBinError(ipt) + fScale[ipt]*fScale[ipt]);
     //PowhegStatErr[ipt] = sqrt(lPowheg->GetBinContent(ipt));
     //PowhegStatErr[ipt] = sqrt(orgPowheg->GetBinContent(ipt))/18.429;
-    PowhegStatErr[ipt] = lPowheg->GetBinContent(ipt)*sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt);
-    PowhegPDFErr[ipt] = lPowheg_pdf->GetBinContent(ipt)/18.429;
+    //PowhegStatErr[ipt] = lPowheg->GetBinContent(ipt)*sqrt(orgPowheg->GetBinContent(ipt))/orgPowheg->GetBinContent(ipt);
+    PowhegStatErr[ipt] = lPowheg->GetBinError(ipt);
+    //PowhegPDFErr[ipt] = lPowheg_pdf->GetBinContent(ipt)/18.429;
+    PowhegPDFErr[ipt] = lPowheg_pdf->GetBinContent(ipt);
     //PowhegTotErr[ipt] = sqrt(lPowheg->GetBinContent(ipt) + lPowheg->GetBinError(ipt)*lPowheg->GetBinError(ipt));
     PowhegTotErr[ipt] = sqrt(PowhegStatErr[ipt]*PowhegStatErr[ipt] + PowhegPDFErr[ipt]*PowhegPDFErr[ipt]);
     DataStatErr[ipt] = lData->GetBinContent(ipt) * hRD->GetBinError(ipt)/hRD->GetBinContent(ipt);
