@@ -127,8 +127,10 @@ int theoryStudy_separate(const TString BaseName)
 
   for(int i(0);i<14;i++)
   {
-    fScale_WtoMu[i] = sqrt((fScale_WptoMu[i]*fScale_WptoMu[i])+(fScale_WmtoMu[i]*fScale_WmtoMu[i]));
-    fScale_WtoEle[i] = sqrt((fScale_WptoEle[i]*fScale_WptoEle[i])+(fScale_WmtoEle[i]*fScale_WmtoEle[i]));
+    //fScale_WtoMu[i] = sqrt((fScale_WptoMu[i]*fScale_WptoMu[i])+(fScale_WmtoMu[i]*fScale_WmtoMu[i]));
+    //fScale_WtoEle[i] = sqrt((fScale_WptoEle[i]*fScale_WptoEle[i])+(fScale_WmtoEle[i]*fScale_WmtoEle[i]));
+    fScale_WtoMu[i] = fScale_WptoMu[i]+fScale_WmtoMu[i];
+    fScale_WtoEle[i] = fScale_WptoEle[i]+fScale_WmtoEle[i];
   }
 
   

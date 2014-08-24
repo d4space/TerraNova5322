@@ -949,7 +949,8 @@
       SVD_BornGen_UnWeighted->SetBinContent(i,h_MC_p_UnWeighted->GetBinContent(i) + h_MC_m_UnWeighted->GetBinContent(i));
       data_Rec->SetBinContent(i,h_dataRec_p->GetBinContent(i) + h_dataRec_m->GetBinContent(i));
       data_Rec->SetBinError(i,sqrt(h_dataRec_p->GetBinError(i)*h_dataRec_p->GetBinError(i) + h_dataRec_m->GetBinError(i)*h_dataRec_m->GetBinError(i)));
-      PowhegErr->SetBinContent(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      //PowhegErr->SetBinContent(i,sqrt(h_MC_p->GetBinError(i)*h_MC_p->GetBinError(i) + h_MC_m->GetBinError(i)*h_MC_m->GetBinError(i)));
+      PowhegErr->SetBinContent(i,h_MC_p->GetBinError(i)+ h_MC_m->GetBinError(i));
       cout << "Powheg PDF ErrorP : " << h_MC_p->GetBinError(i) << "\t Powheg PDF ErrorM : "<< h_MC_m->GetBinError(i) << endl;
     }
     BornEffCorr->Write();
