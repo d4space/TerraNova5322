@@ -971,7 +971,19 @@
     muStatErri[i] = sqrt(muStatErrp[i]*muStatErrp[i] + muStatErrm[i]*muStatErrm[i]);
     cout << muStatErrp[i] << "\t" << muStatErrm[i] <<"\t" << muStatErri[i] <<endl;
   }
-  
+ 
+  double muTotalSystp[14]={0};
+  double muTotalSystm[14]={0};
+  double muTotalSysti[14]={0};
+  cout <<"W+ TotSyst \t W- TotSyst \t W TotSyst" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    muTotalSystp[i] = sqrt(muEffErrp[i]*muEffErrp[i] + muMomResErrp[i]*muMomResErrp[i]+muMetErrp[i]*muMetErrp[i]+ muQCDBckErrp[i]*muQCDBckErrp[i] + muQCDShapeErrp[i]*muQCDShapeErrp[i]+ muEWKErrp[i]*muEWKErrp[i] + muSVDUnfErrp[i]*muSVDUnfErrp[i] + muFSRErrp[i]*muFSRErrp[i]+ muLumiErrp[i]*muLumiErrp[i] + muUnfBiasErrp[i]*muUnfBiasErrp[i]);
+    muTotalSystm[i] = sqrt(muEffErrm[i]*muEffErrm[i] + muMomResErrm[i]*muMomResErrm[i]+muMetErrm[i]*muMetErrm[i]+ muQCDBckErrm[i]*muQCDBckErrm[i] + muQCDShapeErrm[i]*muQCDShapeErrm[i]+ muEWKErrm[i]*muEWKErrm[i] + muSVDUnfErrm[i]*muSVDUnfErrm[i] + muFSRErrm[i]*muFSRErrm[i]+ muLumiErrm[i]*muLumiErrm[i] + muUnfBiasErrm[i]*muUnfBiasErrm[i]);
+    muTotalSysti[i] = sqrt(muEffErri[i]*muEffErri[i] + muMomResErri[i]*muMomResErri[i]+muMetErri[i]*muMetErri[i]+ muQCDBckErri[i]*muQCDBckErri[i] + muQCDShapeErri[i]*muQCDShapeErri[i]+ muEWKErri[i]*muEWKErri[i] + muSVDUnfErri[i]*muSVDUnfErri[i] + muFSRErri[i]*muFSRErri[i]+ muLumiErri[i]*muLumiErri[i] + muUnfBiasErri[i]*muUnfBiasErri[i]);
+    cout << muTotalSystp[i] << "\t" << muTotalSystm[i] << "\t" << muTotalSysti[i] <<endl;
+  }
+
   double muTotalUnceri[14]={0};
   cout <<" Wincl TotalUncertainty" <<endl;
   for(int i(1);i<14;i++)

@@ -899,6 +899,18 @@
     cout << eleStatErrp[i] << "\t" << eleStatErrm[i] <<"\t" << eleStatErri[i] <<endl;
   }
   
+  double eleTotalSystp[14]={0};
+  double eleTotalSystm[14]={0};
+  double eleTotalSysti[14]={0};
+  cout <<"W+ TotSyst \t W- TotSyst \t W TotSyst" <<endl;
+  for(int i(1);i<14;i++)
+  {
+    eleTotalSystp[i] = sqrt(eleEffErrp[i]*eleEffErrp[i] + eleEnResErrp[i]*eleEnResErrp[i]+eleMetErrp[i]*eleMetErrp[i]+ eleQCDBckErrp[i]*eleQCDBckErrp[i] + eleQCDShapeErrp[i]*eleQCDShapeErrp[i]+ eleEWKErrp[i]*eleEWKErrp[i] + eleSVDUnfErrp[i]*eleSVDUnfErrp[i] + eleFSRErrp[i]*eleFSRErrp[i]+ eleLumiErrp[i]*eleLumiErrp[i] + eleUnfBiasErrp[i]*eleUnfBiasErrp[i]);
+    eleTotalSystm[i] = sqrt(eleEffErrm[i]*eleEffErrm[i] + eleEnResErrm[i]*eleEnResErrm[i]+eleMetErrm[i]*eleMetErrm[i]+ eleQCDBckErrm[i]*eleQCDBckErrm[i] + eleQCDShapeErrm[i]*eleQCDShapeErrm[i]+ eleEWKErrm[i]*eleEWKErrm[i] + eleSVDUnfErrm[i]*eleSVDUnfErrm[i] + eleFSRErrm[i]*eleFSRErrm[i]+ eleLumiErrm[i]*eleLumiErrm[i] + eleUnfBiasErrm[i]*eleUnfBiasErrm[i]);
+    eleTotalSysti[i] = sqrt(eleEffErri[i]*eleEffErri[i] + eleEnResErri[i]*eleEnResErri[i]+eleMetErri[i]*eleMetErri[i]+ eleQCDBckErri[i]*eleQCDBckErri[i] + eleQCDShapeErri[i]*eleQCDShapeErri[i]+ eleEWKErri[i]*eleEWKErri[i] + eleSVDUnfErri[i]*eleSVDUnfErri[i] + eleFSRErri[i]*eleFSRErri[i]+ eleLumiErri[i]*eleLumiErri[i] + eleUnfBiasErri[i]*eleUnfBiasErri[i]);
+    cout << eleTotalSystp[i] << "\t" << eleTotalSystm[i] << "\t" <<  eleTotalSysti[i] <<endl;
+  }
+
   double eleTotalUnceri[14]={0};
   cout <<" Wincl TotalUncertainty" <<endl;
   for(int i(1);i<14;i++)
