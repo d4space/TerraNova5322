@@ -23,19 +23,11 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
   StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
   
-  //lHDiff->GetYaxis()->SetRangeUser(0.6,1.6); //Wplus
   lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Eleminus
-  //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Muminus
   if(chnl==2)
-    //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
-    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Muminus
-    lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
-    //lHDiff->GetYaxis()->SetRangeUser(0.1,1.9);//Eleminus
+    lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Eleminus
   if(chnl==3)
-    //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
-    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
-    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
-    lHDiff->GetYaxis()->SetRangeUser(0.45,1.45);
+    lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
   lHDiff->GetYaxis()->SetTitleOffset(0.4);
   lHDiff->GetYaxis()->SetTitleSize(0.12);
   lHDiff->GetYaxis()->SetLabelSize(0.12);
@@ -504,8 +496,12 @@ int theoryStudy_separate(const TString BaseName)
     sprintf(tmpName,"wmenCrossSec.png");
   if(BaseName=="WInclToMuNu")
     sprintf(tmpName,"winclmnCrossSec.png");
+    //sprintf(tmpName,"winclmnCrossSec.pdf");
+    //sprintf(tmpName,"winclmnCrossSec.eps");
   if(BaseName=="WInclToEleNu")
     sprintf(tmpName,"winclenCrossSec.png");
+    //sprintf(tmpName,"winclenCrossSec.pdf");
+    //sprintf(tmpName,"winclenCrossSec.eps");
   lC1->SaveAs(tmpName);
   
   TCanvas *lC2 = new TCanvas("Can","Can",800,800); lC2->cd(); lC2->SetLogy();
@@ -659,8 +655,12 @@ int theoryStudy_separate(const TString BaseName)
     sprintf(tmpName,"wmenRatioTheoData.png");
   if(BaseName=="WInclToMuNu")
     sprintf(tmpName,"winclmnRatioTheoData.png");
+    //sprintf(tmpName,"winclmnRatioTheoData.pdf");
+    //sprintf(tmpName,"winclmnRatioTheoData.eps");
   if(BaseName=="WInclToEleNu")
     sprintf(tmpName,"winclenRatioTheoData.png");
+    //sprintf(tmpName,"winclenRatioTheoData.pdf");
+    //sprintf(tmpName,"winclenRatioTheoData.eps");
   lC2->SaveAs(tmpName);
 
   return 0;

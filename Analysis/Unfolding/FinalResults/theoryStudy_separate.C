@@ -24,21 +24,11 @@ void drawDifference(TH1* iH0,TH1 *iH1,TH1* iH2, TGraphErrors* iH3, int chnl,TGra
   StatErrBand->SetMarkerStyle(kFullCircle); StatErrBand->SetMarkerColor(kBlack);StatErrBand->SetMarkerSize(0.6);
   StatErrBand->SetLineWidth(2); StatErrBand->SetLineColor(kBlack);
   
-  //lHDiff->GetYaxis()->SetRangeUser(0.6,1.6); //Wplus
   lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Eleminus
-  //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5); //Muminus
   if(chnl==2)
-    //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
-    //lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Muminus
-    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);//Eleminus
     lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);//Eleminus
-    //lHDiff->GetYaxis()->SetRangeUser(0.1,1.9);//Eleminus
-    //lHDiff->GetYaxis()->SetRangeUser(-0.2.,2.1);//Eleminus
   if(chnl==3)
-    //lHDiff->GetYaxis()->SetRangeUser(0.6,1.4);//Wplus
     lHDiff->GetYaxis()->SetRangeUser(0.5,1.5);
-    //lHDiff->GetYaxis()->SetRangeUser(0.4,1.4);
-    //lHDiff->GetYaxis()->SetRangeUser(0.45,1.45);
   lHDiff->GetYaxis()->SetTitleOffset(0.4);
   lHDiff->GetYaxis()->SetTitleSize(0.12);
   lHDiff->GetYaxis()->SetLabelSize(0.12);
@@ -464,12 +454,20 @@ int theoryStudy_separate(const TString BaseName)
   
   if(BaseName=="WpToMuNu")
     sprintf(tmpName,"wpmnCrossSec.png");
+    //sprintf(tmpName,"wpmnCrossSec.pdf");
+    //sprintf(tmpName,"wpmnCrossSec.eps");
   if(BaseName=="WmToMuNu")
     sprintf(tmpName,"wmmnCrossSec.png");
+    //sprintf(tmpName,"wmmnCrossSec.pdf");
+    //sprintf(tmpName,"wmmnCrossSec.eps");
   if(BaseName=="WpToEleNu")
     sprintf(tmpName,"wpenCrossSec.png");
+    //sprintf(tmpName,"wpenCrossSec.pdf");
+    //sprintf(tmpName,"wpenCrossSec.eps");
   if(BaseName=="WmToEleNu")
     sprintf(tmpName,"wmenCrossSec.png");
+    //sprintf(tmpName,"wmenCrossSec.pdf");
+    //sprintf(tmpName,"wmenCrossSec.eps");
   lC1->SaveAs(tmpName);
   
   TCanvas *lC2 = new TCanvas("Can","Can",800,800); lC2->cd(); lC2->SetLogy();
@@ -614,13 +612,21 @@ int theoryStudy_separate(const TString BaseName)
   tL3->Draw();
 
   if(BaseName=="WpToMuNu")
-    sprintf(tmpName,"wpmnRatioTheoData.png");
+    //sprintf(tmpName,"wpmnRatioTheoData.png");
+    //sprintf(tmpName,"wpmnRatioTheoData.pdf");
+    sprintf(tmpName,"wpmnRatioTheoData.eps");
   if(BaseName=="WmToMuNu")
-    sprintf(tmpName,"wmmnRatioTheoData.png");
+    //sprintf(tmpName,"wmmnRatioTheoData.png");
+    //sprintf(tmpName,"wmmnRatioTheoData.pdf");
+    sprintf(tmpName,"wmmnRatioTheoData.eps");
   if(BaseName=="WpToEleNu")
-    sprintf(tmpName,"wpenRatioTheoData.png");
+    //sprintf(tmpName,"wpenRatioTheoData.png");
+    //sprintf(tmpName,"wpenRatioTheoData.pdf");
+    sprintf(tmpName,"wpenRatioTheoData.eps");
   if(BaseName=="WmToEleNu")
-    sprintf(tmpName,"wmenRatioTheoData.png");
+    //sprintf(tmpName,"wmenRatioTheoData.png");
+    //sprintf(tmpName,"wmenRatioTheoData.pdf");
+    sprintf(tmpName,"wmenRatioTheoData.eps");
   lC2->SaveAs(tmpName);
 
   return 0;
