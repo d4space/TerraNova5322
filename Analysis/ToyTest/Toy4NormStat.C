@@ -9,6 +9,14 @@ int Toy4NormStat()
 
   TFile *myF = new TFile("Toy4NormStat.root","recreate");
   TH1D *hRD = new TH1D("hRD","hRD",50, -4, 4);
+  TH1D *hPull[NBin];
+  char histName[50];
+  for(int i(0);i<NBin;i++)
+  {
+    sprintf(histName,"hPull_%d",i);
+    hPull[i]= new TH1D(histName,histName,50, -4, 4);
+  }
+  
   TRandom3 *myRandom=new TRandom3();
   //myRandom->SetSeed(0); --> Not fixing the seed
   myRandom->SetSeed(0x1347); // fixing the seed to give the same series of RN
@@ -17,13 +25,16 @@ int Toy4NormStat()
   double RN[Ntoy];
   double YieldTot(0);
   double RNtemp;
-  double Yield_tmp;
-  double Yield_Total_tmp;
+  double ToyYield;
+  double ToyYieldErr;
+  double ToyYield_Total;
   double NormXsec[NBin];
   double ToyNormXsec[NBin];
+  double ToyNormXsecErr[NBin];
   double SumToyNormXsec[NBin];
   double VarNormXsec[NBin][Ntoy];
   double SumVarNormXsec[NBin];
+  double pull;
 
 
 
@@ -64,19 +75,24 @@ int Toy4NormStat()
   }
   for(int i(0);i<Ntoy;i++)
   {
-    Yield_Total_tmp = 0;
+    ToyYield_Total = 0;
     for(int ibin(0);ibin<NBin;ibin++)
     {
       RNtemp = myRandom->Gaus(0,1);
-      Yield_tmp = Yield[ibin] + Yield_Error[ibin]*RNtemp;
-      Yield_Total_tmp += Yield_tmp;
-      ToyNormXsec[ibin] = Yield_tmp/BinWidth[ibin];
+      ToyYield = Yield[ibin] + Yield_Error[ibin]*RNtemp;
+      ToyYieldErr = TMath::Sqrt(ToyYield);
+      ToyYield_Total += ToyYield;
+      ToyNormXsec[ibin]    = ToyYield/BinWidth[ibin];
+      ToyNormXsecErr[ibin] = ToyYieldErr/BinWidth[ibin];
     }
     for(int ibin(0);ibin<NBin;ibin++)
     {
-      ToyNormXsec[ibin] /= Yield_Total_tmp;
+      ToyNormXsec[ibin] /= ToyYield_Total;
+      ToyNormXsecErr[ibin] /= ToyYield_Total;
       SumToyNormXsec[ibin] += ToyNormXsec[ibin];
       VarNormXsec[ibin][i] = ToyNormXsec[ibin] - NormXsec[ibin];
+      pull = VarNormXsec[ibin][i]/ToyNormXsecErr[ibin];
+      hPull[ibin]->Fill(pull);
       SumVarNormXsec[ibin] += VarNormXsec[ibin][i];
     }
     RN[i]=myRandom->Gaus(0,1);
@@ -97,6 +113,13 @@ int Toy4NormStat()
     double RMsNormXsec = TMath::Sqrt(SumVar2NormXsec/Ntoy);
     cout<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec<<endl;
     myTxt<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec<<endl;
+  }
+  // Plot of pull distributions
+  for(int i(0);i<NBin;i++)
+  {
+    hPull[i]->Draw();
+    sprintf(histName,"Plots/hPull_%d.png",i);
+    c1->SaveAs(histName);
   }
   cout<<"<<<<<<<<< Toy Test >>>>>>>>>>>"<<endl;
   // Calculation of dispersion
