@@ -45,8 +45,8 @@ int Toy4NormStat()
 
 
   YieldTot = 0;
-  cout<<"Yields+Error       "<<"BindWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
-  myTxt<<"Yields+Error       "<<"BindWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
+  cout<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
+  myTxt<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
   for(int i(0);i<NBin;i++)
   {
     YieldTot +=Yield[i];
