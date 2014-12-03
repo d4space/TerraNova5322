@@ -35,6 +35,8 @@ int Toy4NormStat()
   double VarNormXsec[NBin][Ntoy];
   double SumVarNormXsec[NBin];
   double pull;
+  double RMsNormXsec[NBin];
+  double Yield_PoissonErr[NBin];
 
 
 
@@ -43,10 +45,15 @@ int Toy4NormStat()
   double Yield_Error[NBin]={236.047, 133.515, 84.0563, 71.8006, 56.4416, 59.711, 49.6092, 49.0328, 39.4345, 19.0838, 11.7062, 10.5994, 6.96515};
   double BinWidth[NBin] ={7.5-0, 12.5-7.5,17.5-12.5, 24.0-17.5, 30.0-24.0, 40.0-30.0, 50.0-40.0, 70.0-50.0, 110.0-70.0, 150.0-110.0, 190.0-150.0, 250.0-190.0, 600.0-250.0};
 
+  for(int i(0);i<NBin;i++)
+  {
+    Yield_PoissonErr[i] = TMath::Sqrt(Yield[i]);
+  }
+
 
   YieldTot = 0;
-  cout<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
-  myTxt<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<endl;
+  cout<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<"\t"<<"PoissonErr"<<"\t"<<"Binomial"<<endl;
+  myTxt<<"Yields+Error       "<<"BinWidth"<<"\t"<<"Diff X-sec"<<"\t"<<"Normalized diff+Error"<<"\t"<<"PoissonErr"<<"\t"<<"Binomial"<<endl;
   for(int i(0);i<NBin;i++)
   {
     YieldTot +=Yield[i];
@@ -57,11 +64,17 @@ int Toy4NormStat()
     cout<<Yield[i]<<"+"<<Yield_Error[i]<<"\t"<<BinWidth[i]
       <<"\t"<<Yield[i]/BinWidth[i]/18.5<<"\t\t" // diff x-sec
       <<NormXsec[i]
-      <<"+"<<Yield_Error[i]/BinWidth[i]/YieldTot<<endl;
+      <<"+"<<Yield_Error[i]/BinWidth[i]/YieldTot
+      <<"\t"<<Yield_PoissonErr[i]/BinWidth[i]/YieldTot
+      <<"\t"<<TMath::Sqrt( Yield[i]*(1-Yield[i]/YieldTot) )/BinWidth[i]/YieldTot
+      <<endl;
     myTxt<<Yield[i]<<"+"<<Yield_Error[i]<<"\t"<<BinWidth[i]
       <<"\t"<<Yield[i]/BinWidth[i]/18.5<<"\t\t" // diff x-sec
       <<NormXsec[i]
-      <<"+"<<Yield_Error[i]/BinWidth[i]/YieldTot<<endl;
+      <<"+"<<Yield_Error[i]/BinWidth[i]/YieldTot
+      <<"\t"<<Yield_PoissonErr[i]/BinWidth[i]/YieldTot
+      <<"\t"<<TMath::Sqrt(Yield[i]*(1-Yield[i]/YieldTot) )/BinWidth[i]/YieldTot
+      <<endl;
   }
   cout<<endl;
   myTxt<<endl;
@@ -91,8 +104,6 @@ int Toy4NormStat()
       ToyNormXsecErr[ibin] /= ToyYield_Total;
       SumToyNormXsec[ibin] += ToyNormXsec[ibin];
       VarNormXsec[ibin][i] = ToyNormXsec[ibin] - NormXsec[ibin];
-      pull = VarNormXsec[ibin][i]/ToyNormXsecErr[ibin];
-      hPull[ibin]->Fill(pull);
       SumVarNormXsec[ibin] += VarNormXsec[ibin][i];
     }
     RN[i]=myRandom->Gaus(0,1);
@@ -109,10 +120,16 @@ int Toy4NormStat()
     for(int iTy(0);iTy<Ntoy;iTy++)
     {
       SumVar2NormXsec +=(VarNormXsec[i][iTy] - 0)*(VarNormXsec[i][iTy] - 0);
+
     }
-    double RMsNormXsec = TMath::Sqrt(SumVar2NormXsec/Ntoy);
-    cout<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec<<endl;
-    myTxt<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec<<endl;
+    RMsNormXsec[i] = TMath::Sqrt(SumVar2NormXsec/Ntoy);
+    for(int iTy(0);iTy<Ntoy;iTy++)
+    {
+      pull = VarNormXsec[i][iTy]/RMsNormXsec[i];
+      hPull[i]->Fill(pull);
+    }
+    cout<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec[i]<<endl;
+    myTxt<<i<<"   "<<SumToyNormXsec[i]/Ntoy<<"\t\t"<<SumVarNormXsec[i]/Ntoy<<"\t"<<RMsNormXsec[i]<<endl;
   }
   // Plot of pull distributions
   for(int i(0);i<NBin;i++)
