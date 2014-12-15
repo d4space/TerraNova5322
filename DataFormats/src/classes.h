@@ -1,12 +1,12 @@
 #include "DataFormats/Common/interface/Wrapper.h"
 
-#include "TerraNova/DataFormats/interface/ZCandidate.h"
-#include "TerraNova/DataFormats/interface/Lepton.h"
-#include "TerraNova/DataFormats/interface/METCandidate.h"
-#include "TerraNova/DataFormats/interface/TTbarEvent.h"
-#include "TerraNova/DataFormats/interface/TTbarGenEvent.h"
-#include "TerraNova/DataFormats/interface/TTbarMass.h"
-#include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
+#include "TerraNova5322/DataFormats/interface/ZCandidate.h"
+#include "TerraNova5322/DataFormats/interface/Lepton.h"
+#include "TerraNova5322/DataFormats/interface/METCandidate.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarEvent.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarGenEvent.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarMass.h"
+#include "TerraNova5322/DataFormats/interface/WLeptNeuCand.h"
 
 #include <vector>
 
@@ -37,23 +37,23 @@ namespace {
     edm::Wrapper<std::vector<Ky::METCandidate> > dummyMETCandidateCollectionWrapper;
     edm::Ptr<Ky::METCandidate> dummyMETCandidatePtr;
 
-    Ky::TTbarEvent dummyTTbarEvent;
-    edm::Wrapper<Ky::TTbarEvent> dummyTTbarEventWrapper;
-    std::vector<Ky::TTbarEvent> dummyTTbarEventCollection;
-    edm::Wrapper<std::vector<Ky::TTbarEvent> > dummyTTbarEventCollectionWrapper;
-    edm::Ptr<Ky::TTbarEvent> dummyTTbarEventPtr;
+    //Ky::TTbarEvent dummyTTbarEvent;
+    //edm::Wrapper<Ky::TTbarEvent> dummyTTbarEventWrapper;
+    //std::vector<Ky::TTbarEvent> dummyTTbarEventCollection;
+    //edm::Wrapper<std::vector<Ky::TTbarEvent> > dummyTTbarEventCollectionWrapper;
+    //edm::Ptr<Ky::TTbarEvent> dummyTTbarEventPtr;
 
-    Ky::TTbarGenEvent dummyTTbarGenEvent;
-    edm::Wrapper<Ky::TTbarGenEvent> dummyTTbarGenEventWrapper;
-    std::vector<Ky::TTbarGenEvent> dummyTTbarGenEventCollection;
-    edm::Wrapper<std::vector<Ky::TTbarGenEvent> > dummyTTbarGenEventCollectionWrapper;
-    edm::Ptr<Ky::TTbarGenEvent> dummyTTbarGenEventPtr;
+    //Ky::TTbarGenEvent dummyTTbarGenEvent;
+    //edm::Wrapper<Ky::TTbarGenEvent> dummyTTbarGenEventWrapper;
+    //std::vector<Ky::TTbarGenEvent> dummyTTbarGenEventCollection;
+    //edm::Wrapper<std::vector<Ky::TTbarGenEvent> > dummyTTbarGenEventCollectionWrapper;
+    //edm::Ptr<Ky::TTbarGenEvent> dummyTTbarGenEventPtr;
 
-    Ky::TTbarMass dummyTTbarMass;
-    edm::Wrapper<Ky::TTbarMass> dummyTTbarMassWrapper;
-    std::vector<Ky::TTbarMass> dummyTTbarMassCollection;
-    edm::Wrapper<std::vector<Ky::TTbarMass> > dummyTTbarMassCollectionWrapper;
-    edm::Ptr<Ky::TTbarMass> dummyTTbarMassPtr;
+    //Ky::TTbarMass dummyTTbarMass;
+    //edm::Wrapper<Ky::TTbarMass> dummyTTbarMassWrapper;
+    //std::vector<Ky::TTbarMass> dummyTTbarMassCollection;
+    //edm::Wrapper<std::vector<Ky::TTbarMass> > dummyTTbarMassCollectionWrapper;
+    //edm::Ptr<Ky::TTbarMass> dummyTTbarMassPtr;
 
   };
 

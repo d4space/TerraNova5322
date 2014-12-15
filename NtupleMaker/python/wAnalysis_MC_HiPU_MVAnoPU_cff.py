@@ -9,15 +9,15 @@ from TrackingTools.TransientTrack.TransientTrackBuilder_cfi import *
 
 GlobalTag.globaltag = cms.string('START52_V10::All')
 
-from TerraNova.CommonTools.countingSequences_cfi import *
+from TerraNova5322.CommonTools.countingSequences_cfi import *
 from PhysicsTools.SelectorUtils.pfJetIDSelector_cfi import pfJetIDSelector
 myJetId = pfJetIDSelector.clone()
 
-from TerraNova.NtupleMaker.wLeptonSelector_cfi import *
-from TerraNova.NtupleMaker.triggerFilterByRun_cfi import *
-from TerraNova.NtupleMaker.wHLTfilter_cff import *
-from TerraNova.CommonTools.PileUpWeight_cff import *
-from TerraNova.CommonTools.JetEnergyScale_cfi import *
+from TerraNova5322.NtupleMaker.wLeptonSelector_cfi import *
+from TerraNova5322.NtupleMaker.triggerFilterByRun_cfi import *
+from TerraNova5322.NtupleMaker.wHLTfilter_cff import *
+from TerraNova5322.CommonTools.PileUpWeight_cff import *
+from TerraNova5322.CommonTools.JetEnergyScale_cfi import *
 
 VertexFilter = cms.EDFilter('VertexFilter',
     vertexLabel =  cms.InputTag('offlinePrimaryVertices'),

@@ -12,7 +12,7 @@
 #include "DataFormats/PatCandidates/interface/Jet.h"//VertexCollection
 //#include "DataFormats/PatCandidates/interface/LookupTableRecord.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
-#include "TerraNova/CommonTools/interface/ElectronIDSelector.h"
+#include "TerraNova5322/CommonTools/interface/ElectronIDSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatElectronSelector.h"
 //#include "PFAnalyses/CommonTools/interface/PatLeptonSelector.h"
 

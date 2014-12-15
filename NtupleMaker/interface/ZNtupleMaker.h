@@ -79,17 +79,17 @@
 #include <map> //L1
 #include <string> // L1
 
-#include "TerraNova/DataFormats/interface/Lepton.h"
-#include "TerraNova/DataFormats/interface/ZCandidate.h"
-#include "TerraNova/DataFormats/interface/TTbarGenEvent.h"
-#include "TerraNova/DataFormats/interface/TTbarMass.h"
-#include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
-#include "TerraNova/DataFormats/interface/METCandidate.h"
-#include "TerraNova/DataFormats/interface/Maos.h"
+#include "TerraNova5322/DataFormats/interface/Lepton.h"
+#include "TerraNova5322/DataFormats/interface/ZCandidate.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarGenEvent.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarMass.h"
+#include "TerraNova5322/DataFormats/interface/WLeptNeuCand.h"
+#include "TerraNova5322/DataFormats/interface/METCandidate.h"
+//#include "TerraNova5322/DataFormats/interface/Maos.h"
 
-#include "TerraNova/NtupleMaker/interface/ZBranchVars.h"
-#include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
-#include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/ZBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/BasicBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/MEtBranchVars.h"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -1277,7 +1277,7 @@ void ZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
     vetos_nh.push_back(new ThresholdVeto( 0.5 ));
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < mu1_hand->size(); i++)
     {
       pat::Muon it1 = mu1_hand->at(i);
@@ -1326,7 +1326,7 @@ void ZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
 	  Lept1_trackerHits=-9999;
       }
       //Vertex realted
-      goodVtx=false;
+      //goodVtx=false;
       if( recVtxs_->size() >0)
       {
 	reco::VertexRef vtx(recVtxs_,0);
@@ -1431,7 +1431,7 @@ void ZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
         }
 
         //Vertex realted
-        goodVtx=false;
+        //goodVtx=false;
 	/******************************
         for( reco::VertexCollection::const_iterator v=recVtxs_->begin();v!=recVtxs_->end();++v)
         {
@@ -1662,7 +1662,7 @@ void ZNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
 }
 void ZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
       pat::Electron it1 = ele1_hand->at(i);
@@ -1774,8 +1774,8 @@ void ZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
 	pat::Electron it2 = ele2_hand->at(j);
         it2.setP4(it2.pfCandidateRef()->p4());
 
-        const bool match = MatchObjects( it1.p4(), it2.p4(), true);
-        //if(match) continue;
+        //const bool match = MatchObjects( it1.p4(), it2.p4(), true);
+        ////if(match) continue;
 
         const Ky::Lepton lep2(it2.p4(), (int) it2.charge());
         lepton2->push_back(lep2);
@@ -1817,7 +1817,7 @@ void ZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
           Lept2_dxy = it2.gsfTrack()->dxy();
           Lept2_dz = it2.gsfTrack()->dz();
         }
-        Direction Dir2 = Direction(Lept2_etaSC, Lept2_phiSC);
+        //Direction Dir2 = Direction(Lept2_etaSC, Lept2_phiSC);
         if(isRD){
           Lept2_AEff03 = ElectronEffectiveArea::GetElectronEffectiveArea(
               ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03,
@@ -2059,7 +2059,7 @@ void ZNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
 }
 void ZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)
     {
       pat::Tau it1 = tau1_hand->at(i);
@@ -2085,8 +2085,8 @@ void ZNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
 	pat::Tau it2 = tau2_hand->at(j);
         //it2.setP4(it2.pfCandidateRef()->p4());
 
-        const bool match = MatchObjects( it1.p4(), it2.p4(), true);
-        //if(match) continue;
+        //const bool match = MatchObjects( it1.p4(), it2.p4(), true);
+        ////if(match) continue;
 
         const Ky::Lepton lep2(it2.p4(), (int) it2.charge());
         lepton2->push_back(lep2);

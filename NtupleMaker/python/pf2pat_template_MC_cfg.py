@@ -27,7 +27,7 @@ acceptedElectronFilter = cms.EDFilter("CandViewCountFilter",
     src = cms.InputTag('acceptedElectrons'),
     minNumber = cms.uint32(1)
 )
-from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from TerraNova5322.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 METsrcElectrons = cms.EDProducer(
     "KyElectronSelector",
     version = cms.untracked.int32( 13 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut) 13(medium pt 30) 14(medium pt 15)
@@ -52,8 +52,8 @@ acceptedMuonsFilter = cms.EDFilter("CandViewCountFilter",
   minNumber = cms.uint32(1)
 )
 
-from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova5322.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova5322.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 METsrcMuons = cms.EDProducer("KyMuonSelector",
     # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
     version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
@@ -117,7 +117,7 @@ patMuEleTauFilter = cms.EDFilter("MultiObjectCountFilter",
 
 
 ##################################################################
-from TerraNova.NtupleMaker.wHLTfilter_cff import *
+from TerraNova5322.NtupleMaker.wHLTfilter_cff import *
 
 nEventsTotal = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")

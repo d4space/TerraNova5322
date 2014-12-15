@@ -35,7 +35,7 @@
 #include "DataFormats/METReco/interface/GenMETCollection.h"
 #include "DataFormats/METReco/interface/CaloMETCollection.h"
 #include "DataFormats/JetReco/interface/CaloJetCollection.h"
-#include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
+//#include "DataFormats/JetReco/interface/PileupJetIdentifier.h"
 
 #include "DataFormats/Candidate/interface/VertexCompositeCandidate.h"
 #include "DataFormats/Candidate/interface/VertexCompositeCandidateFwd.h"
@@ -80,18 +80,18 @@
 #include <map> //L1
 #include <string> // L1
 
-#include "TerraNova/DataFormats/interface/Lepton.h"
-#include "TerraNova/DataFormats/interface/ZCandidate.h"
-#include "TerraNova/DataFormats/interface/TTbarGenEvent.h"
-#include "TerraNova/DataFormats/interface/TTbarMass.h"
-#include "TerraNova/DataFormats/interface/WLeptNeuCand.h"
-#include "TerraNova/DataFormats/interface/METCandidate.h"
-#include "TerraNova/DataFormats/interface/Maos.h"
+#include "TerraNova5322/DataFormats/interface/Lepton.h"
+#include "TerraNova5322/DataFormats/interface/ZCandidate.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarGenEvent.h"
+//#include "TerraNova5322/DataFormats/interface/TTbarMass.h"
+#include "TerraNova5322/DataFormats/interface/WLeptNeuCand.h"
+#include "TerraNova5322/DataFormats/interface/METCandidate.h"
+//#include "TerraNova5322/DataFormats/interface/Maos.h"
 
-#include "TerraNova/NtupleMaker/interface/WBranchVars.h"
-#include "TerraNova/NtupleMaker/interface/ZBranchVars.h"
-#include "TerraNova/NtupleMaker/interface/BasicBranchVars.h"
-#include "TerraNova/NtupleMaker/interface/MEtBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/WBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/ZBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/BasicBranchVars.h"
+#include "TerraNova5322/NtupleMaker/interface/MEtBranchVars.h"
 
 #include "TFile.h"
 #include "TTree.h"
@@ -1954,7 +1954,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
     vetos_nh.push_back(new ThresholdVeto( 0.5 ));
     vetos_ph.push_back(new ThresholdVeto( 0.5 ));
 
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < mu1_hand->size(); i++)
     {
       EvtPass = true;
@@ -2005,7 +2005,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
       }
 
       //Vertex realted
-      goodVtx=false;
+      //goodVtx=false;
       /******************
       for( reco::VertexCollection::const_iterator v=recVtxs_->begin();v!=recVtxs_->end();++v)
       {
@@ -2251,7 +2251,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
         }
 
         //Vertex realted
-        goodVtx=false;
+        //goodVtx=false;
 	/******************************
         for( reco::VertexCollection::const_iterator v=recVtxs_->begin();v!=recVtxs_->end();++v)
         {
@@ -2482,7 +2482,7 @@ void WNtupleMaker::LoopMuon(const edm::Event &iEvent, const edm::EventSetup& iSe
 }
 void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < ele1_hand->size(); i++)
     {
       EvtPass = true;
@@ -2716,7 +2716,7 @@ void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
 	pat::Electron it2 = ele2_hand->at(j);
         it2.setP4(it2.pfCandidateRef()->p4());
 
-        const bool match = MatchObjects( it1.p4(), it2.p4(), true);
+        //const bool match = MatchObjects( it1.p4(), it2.p4(), true);
         //if(match) continue;
 
         const Ky::Lepton lep2(it2.p4(), (int) it2.charge());
@@ -2759,7 +2759,7 @@ void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
           Lept2_dxy = it2.gsfTrack()->dxy();
           Lept2_dz = it2.gsfTrack()->dz();
         }
-        Direction Dir2 = Direction(Lept2_etaSC, Lept2_phiSC);
+//        Direction Dir2 = Direction(Lept2_etaSC, Lept2_phiSC);
         if(isRD){
           Lept2_AEff03 = ElectronEffectiveArea::GetElectronEffectiveArea(
               ElectronEffectiveArea::kEleGammaAndNeutralHadronIso03,
@@ -3001,7 +3001,7 @@ void WNtupleMaker::LoopElectron(const edm::Event &iEvent, const edm::EventSetup&
 }
 void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSetup)
 {
-    bool goodVtx=false;
+    //bool goodVtx=false;
     for(unsigned i = 0; i < tau1_hand->size(); i++)
     {
       EvtPass = true;
@@ -3115,7 +3115,7 @@ void WNtupleMaker::LoopTau(const edm::Event &iEvent, const edm::EventSetup& iSet
 	pat::Tau it2 = tau2_hand->at(j);
         //it2.setP4(it2.pfCandidateRef()->p4());
 
-        const bool match = MatchObjects( it1.p4(), it2.p4(), true);
+        //const bool match = MatchObjects( it1.p4(), it2.p4(), true);
         //if(match) continue;
 
         const Ky::Lepton lep2(it2.p4(), (int) it2.charge());
@@ -3257,36 +3257,36 @@ void WNtupleMaker::LoopJets(const edm::Event &iEvent, const edm::EventSetup& iSe
    
     for(i_jet = JetS->begin(); i_jet != JetS->end(); ++i_jet)
     {
-      double chf = 0.0;
-      double nhf = 0.0;
-      double pef = 0.0;
-      double eef = 0.0;
-      double mef = 0;
+      //double chf = 0.0;
+      //double nhf = 0.0;
+      //double pef = 0.0;
+      //double eef = 0.0;
+      //double mef = 0;
 
       edm::Ptr<reco::Jet> ptrToJet = JetS->ptrAt( i_jet - JetS->begin() );
       if( ptrToJet.isNonnull() && ptrToJet.isAvailable() )
       {
 	reco::PFJet const * pfJet = dynamic_cast<reco::PFJet const *>(ptrToJet.get() );
 	if( pfJet != 0){
-	  chf = pfJet->chargedHadronEnergyFraction();
-	  nhf = pfJet->neutralHadronEnergyFraction();
-	  pef = pfJet->photonEnergyFraction();
-	  eef = pfJet->electronEnergy() / pfJet->energy();
-	  mef = pfJet->muonEnergyFraction();
+	  //chf = pfJet->chargedHadronEnergyFraction();
+	  //nhf = pfJet->neutralHadronEnergyFraction();
+	  //pef = pfJet->photonEnergyFraction();
+	  //eef = pfJet->electronEnergy() / pfJet->energy();
+	  //mef = pfJet->muonEnergyFraction();
 	}
       }
-      bool passPU = true;
-      float JetMva = 0;
-      int JetIdFlag = 0;
+      //bool passPU = true;
+      //float JetMva = 0;
+      //int JetIdFlag = 0;
      
-      if( PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0 )
-      {
-	JetMva    = (*PUJetIdMVA) [ptrToJet];
-	JetIdFlag = (*PUJetIdFlag)[ptrToJet];
-	if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
-	//cout<<"passPU: "<<passPU<<endl;
-      }
-      if(!passPU) continue;
+      //if( PUJetIdDisc.label().size() != 0 && PUJetId.label().size() != 0 )
+      //{
+      //  JetMva    = (*PUJetIdMVA) [ptrToJet];
+      //  JetIdFlag = (*PUJetIdFlag)[ptrToJet];
+      //  if(! PileupJetIdentifier::passJetId( JetIdFlag, PileupJetIdentifier::kLoose ) ) passPU = false;
+      //  //cout<<"passPU: "<<passPU<<endl;
+      //}
+      //if(!passPU) continue;
       //cout<<"Jet pt: "<<i_jet->pt()<<endl;
       ///// Count the jets in the event /////////////
 

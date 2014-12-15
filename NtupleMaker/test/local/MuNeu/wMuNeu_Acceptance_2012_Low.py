@@ -4,7 +4,7 @@ process = cms.Process("wAcceptance")
 
 
 
-process.load("TerraNova.NtupleMaker.wAnalysis_MC_cff")
+process.load("TerraNova5322.NtupleMaker.wAnalysis_MC_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )

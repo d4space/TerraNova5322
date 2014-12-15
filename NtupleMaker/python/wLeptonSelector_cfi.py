@@ -1,8 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
-from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
-from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova5322.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova5322.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from TerraNova5322.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 muonId = muonSelectorPSet.clone()
 muonId.verbose = False 
 muonId.dB = 0.2

@@ -33,7 +33,7 @@ noscraping = cms.EDFilter("FilterOutScraping",
 #    #cut = cms.string("pt > 20 && abs(eta) < 2.5 && ecalDrivenSeed")
 #    filter = cms.bool(False),
 #)
-from TerraNova.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
+from TerraNova5322.CommonTools.eleSelectorPSet_cff import eleSelectorPSet
 acceptedElectrons = cms.EDProducer(
     "KyElectronSelector",
     version = cms.untracked.int32( 13 ),# -1(no cut), 0(check cut, isocut pset), 1(WptCut) 13(medium pt 30) 14(medium pt 15)
@@ -91,8 +91,8 @@ patElectronFilter = cms.EDFilter("CandViewCountFilter",
 #    cut =cms.string("pt > 27 && "+MuonIDFlags.POgTight12.value()), # for W
 #    #cut =cms.string("pt > 27 && abs(eta) < 2.1"),
 #)
-from TerraNova.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
-from TerraNova.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
+from TerraNova5322.CommonTools.muonSelectorPSet_cff import muonSelectorPSet
+from TerraNova5322.CommonTools.muonIsoSelectorPSet_cff import muonIsoSelectorPSet
 acceptedMuons = cms.EDProducer("KyMuonSelector",
     # 6(pt>10, tight, for DiMu) 7(pt>27, tight for SingleMu)
     version = cms.untracked.int32( 6 ),# -1(no cut) 0(check cut, isocut pset)
@@ -149,7 +149,7 @@ HBHENoiseFilter.minIsolatedNoiseSumEt = cms.double(9999)
 
 
 ##################################################################
-from TerraNova.NtupleMaker.wHLTfilter_cff import *
+from TerraNova5322.NtupleMaker.wHLTfilter_cff import *
 
 nEventsTotal = cms.EDProducer("EventCountProducer")
 nEventsNoscrap = cms.EDProducer("EventCountProducer")

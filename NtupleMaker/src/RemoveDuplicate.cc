@@ -15,7 +15,7 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 
-#include "TerraNova/DataFormats/interface/Event.h"
+#include "TerraNova5322/DataFormats/interface/Event.h"
 
 #include <set>
 //

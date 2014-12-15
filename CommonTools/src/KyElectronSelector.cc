@@ -1,4 +1,4 @@
-#include "TerraNova/CommonTools/interface/KyElectronSelector.h"
+#include "TerraNova5322/CommonTools/interface/KyElectronSelector.h"
 #include "DataFormats/Common/interface/Handle.h"
 #include "DataFormats/Common/interface/View.h"
 #include "DataFormats/Common/interface/Ptr.h"
@@ -174,7 +174,7 @@ void KyElectronSelector::produce(edm::Event& iEvent, const edm::EventSetup& es)
     const double nhIso03=electron.isoDeposit(pat::PfNeutralHadronIso)->depositAndCountWithin(0.3, vetos_nh).first;
     const double phIso03=electron.isoDeposit(pat::PfGammaIso)->depositAndCountWithin(0.3, vetos_ph).first;
     const double puChIso03=electron.isoDeposit(pat::PfPUChargedHadronIso)->depositAndCountWithin(0.3, vetos_ch).first;
-    const double chAllIso03=electron.isoDeposit(pat::PfChargedAllIso)->depositAndCountWithin(0.3, vetos_ch).first;
+//    const double chAllIso03=electron.isoDeposit(pat::PfChargedAllIso)->depositAndCountWithin(0.3, vetos_ch).first;
 
     //using access ftn
     //const double chIso03=electron.chargedHadronIso();
@@ -192,10 +192,10 @@ void KyElectronSelector::produce(edm::Event& iEvent, const edm::EventSetup& es)
 
     bool passed = false;
     //bool passPre = electron.pt() > ptcut_ && fabs(electron.eta()) < etacut_ && fabs(electron.gsfTrack()->dxy(beamSpot_->position())) < 0.04;
-    const double eleMva = electron.mva();
+//    const double eleMva = electron.mva();
     //const int eidBit = (int)electron.electronID(eidName_);
 
-    const bool passMVA = eleMva > 0.4;
+//    const bool passMVA = eleMva > 0.4;
     //const bool passEId = eidBitMask_ < 0 or ((eidBit & eidBitMask_) == eidBitMask_);
 
     if(version_ == -1)
@@ -204,7 +204,7 @@ void KyElectronSelector::produce(edm::Event& iEvent, const edm::EventSetup& es)
     }else if (version_ == 0 )
     {
       bool passId = true;
-      bool passIso = true;
+//      bool passIso = true;
       for(size_t ic(0); ic < cut_.size(); ic++)
       {
 	passId = eleIdSel.test(cut_[ic]);

@@ -23,7 +23,7 @@
 <use name="DataFormats/L1GlobalMuonTrigger"/>
 <use name="DataFormats/L1Trigger"/>
 <use name="HLTrigger/HLTcore"/>
-<use name="TerraNova/DataFormats"/>
+<use name="TerraNova5322/DataFormats"/>
 <use name="CommonTools/CandUtils"/>
 <use name="root"/>
 <use name="boost"/>

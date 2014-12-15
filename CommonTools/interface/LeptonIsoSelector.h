@@ -42,8 +42,8 @@
  
 #include "DataFormats/RecoCandidate/interface/IsoDepositDirection.h"
 
-#include "TerraNova/CommonTools/interface/KySpecificIsolation.h"
-#include "TerraNova/CommonTools/interface/KyCombinedIsolation.h"
+#include "TerraNova5322/CommonTools/interface/KySpecificIsolation.h"
+#include "TerraNova5322/CommonTools/interface/KyCombinedIsolation.h"
 
 #include "Math/VectorUtil.h"
 #include "TMath.h"
