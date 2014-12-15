@@ -841,6 +841,7 @@ virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
   unsigned int gensize = genParticles->size();
   int nLepts(0);
 
+//  cout<<"ganSize: "<<gensize<<endl;
   for (unsigned int i = 0; i<gensize; ++i) {
     const reco::GenParticle& boson = (*genParticles)[i];
     // Pythia 0 (null entry),
@@ -850,7 +851,9 @@ virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     // i.e. the partons that are used in the matrix
     // element calculation, including immediate decays of resonances.)
     //                       W+ = 24
-    if( (abs(boson.pdgId()) == 24 ) && (boson.status() == 3))
+ //   cout<<abs(boson.pdgId()) <<"\t"<<boson.status()<<endl;
+    if( (abs(boson.pdgId()) == 24 ) && (boson.status() == 62)) // Pythia8 outgoing http://home.thep.lu.se/~torbjorn/pythia81html/ParticleProperties.html
+    //if( (abs(boson.pdgId()) == 24 ) && (boson.status() == 3))
     {
       EvtPass = true;
 
@@ -864,8 +867,12 @@ virtual void GetGenInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
       BornWinfo.pt 	= boson.pt();
       BornWinfo.eta 	= boson.eta();
       BornWinfo.phi 	= boson.phi();
+
       //cout<<"W boson number: "<<++BosonN<<endl;
       // Loop through boson's daughters and look for leptons
+
+
+
       for(unsigned int j=0; j<boson.numberOfDaughters(); j++)
       {
 	reco::GenParticleRef daughter = boson.daughterRef(j);
@@ -1184,10 +1191,16 @@ virtual void GetFSRInfoW(edm::Event &iEvent, const edm::EventSetup& iSetup)
     const reco::GenParticle& lepton = (*genParticles)[i];
     if (lepton.status()!=3) continue;
     int leptonId = lepton.pdgId();
-    if(Channel == "Muon")
-      if (fabs(leptonId)!=13) continue;
-      else if(Channel == "Electron")
+    if(Channel == "Muon"){
+      if (fabs(leptonId)!=13)
+      {
+	continue;
+      }
+    }else if(Channel == "Electron")
+    {
 	if (fabs(leptonId)!=11) continue;
+    }
+
     if (lepton.numberOfMothers()!=1) continue;
     const reco::Candidate *boson = lepton.mother();
     int bosonId = fabs(boson->pdgId());

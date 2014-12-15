@@ -1,7 +1,7 @@
 import FWCore.ParameterSet.Config as cms
 
 process = cms.Process("wNTuple")
-process.load("TerraNova.NtupleMaker.wAnalysis_MC_cff")
+process.load("TerraNova5322.NtupleMaker.wAnalysis_MC_HiPU_MVAnoPU_cff")
 
 process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
@@ -16,7 +16,9 @@ process.MessageLogger.cerr.FwkReport.reportEvery = 1000
 #)
 
 process.source = cms.Source("PoolSource",
-    fileNames = cms.untracked.vstring()
+    fileNames = cms.untracked.vstring(
+      'file:/afs/cern.ch/user/s/spak/Work/public/ForDrLee/WJetsToLNu_TuneCUETP8M1_8TeV.root',
+      )
 )
 
 process.load("SimGeneral.HepPDTESSource.pythiapdt_cfi")
@@ -25,7 +27,7 @@ process.printTree = cms.EDAnalyzer("ParticleListDrawer",
     printVertex = cms.untracked.bool(False),
     src = cms.InputTag("genParticles")
     )
-process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
+#process.load("TerraNova.NtupleMaker.Sources.WplusToMuNu_S8_8TeV_AODSIM_PatSkim_local_cff")
 
 process.p = cms.Path(
     process.printTree

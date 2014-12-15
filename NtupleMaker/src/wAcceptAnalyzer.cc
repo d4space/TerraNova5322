@@ -19,8 +19,8 @@ bool wAcceptAnalyzer::filter(edm::Event& iEvent, const edm::EventSetup& iSetup)
   if(! isRD)
   {
     GetGenInfoW(iEvent, iSetup);
-    GetGenInfoZ(iEvent, iSetup);
-    GetFSRInfoW(iEvent, iSetup);
+    //GetGenInfoZ(iEvent, iSetup);
+    //GetFSRInfoW(iEvent, iSetup);
   }
 
 
